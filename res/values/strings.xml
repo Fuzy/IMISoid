@@ -134,5 +134,7 @@
     <string name="eula_text">EULA goes here.</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
+    
+    <string name="label">Imisoid</string>
 
 </resources>

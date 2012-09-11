@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 
 public class MyEventContentProvider extends ContentProvider {
@@ -27,6 +28,7 @@ public class MyEventContentProvider extends ContentProvider {
   
   @Override
   public boolean onCreate() {
+    Log.d(TAG, "onCreate()");
     database = new EventDatabaseHelper(getContext());
     return true;
   }

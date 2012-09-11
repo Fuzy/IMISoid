@@ -11,6 +11,28 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <!-- Vlastni poskytovatel obsahu -->
+        <provider
+            android:exported="false"
+            android:name=".persistent.MyEventContentProvider"
+            android:authorities="imis.client.events.contentprovider" >
+        </provider>
+
+        <!-- Sluzba authentikace -->
+        <service
+            android:name=".authentication.AuthenticationService"
+            android:exported="true" 
+            android:permission="normal">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        
         <activity
             android:name=".MainActivity" >
             <intent-filter>
