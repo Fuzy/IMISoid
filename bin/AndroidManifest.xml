@@ -33,6 +33,20 @@
                 android:resource="@xml/authenticator" />
         </service>
         
+        <!-- Sluzba synchronizace -->
+        <service
+            android:name=".syncadapter.SyncService"
+            android:exported="true" 
+            android:permission="normal">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+        
         <activity
             android:name=".MainActivity" >
             <intent-filter>

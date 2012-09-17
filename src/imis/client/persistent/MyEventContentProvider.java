@@ -13,6 +13,8 @@ import android.util.Log;
 
 public class MyEventContentProvider extends ContentProvider {
   private static final String TAG = "MyEventContentProvider";
+  //TODO pouzivat ContentProviderClient
+  //TODO rozsirit o praci s dalsi tabulkou?, asi jen nutne operace jako query
   
   private EventDatabaseHelper database;
   private static final int EVENTS = 1;
@@ -119,6 +121,7 @@ public class MyEventContentProvider extends ContentProvider {
       // muze vlozit jen 1 zaznam
       id = sqlDB.insert(TABLE_EVENTS, null, values);
       break;
+      //TODO jako default vyjimka?
     }
     // upozorni posluchace
     getContext().getContentResolver().notifyChange(uri, null);
