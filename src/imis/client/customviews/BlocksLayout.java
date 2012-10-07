@@ -119,11 +119,13 @@ public class BlocksLayout extends ViewGroup {
       if (child instanceof BlockView) {
         final BlockView blockView = (BlockView) child;
         final int top = rulerView.getTimeVerticalOffset(blockView.getStartTime());
+        System.out.println(TAG + " top: " + top);
+        System.out.println(TAG + " now: " + System.currentTimeMillis());
         final int bottom = rulerView.getTimeVerticalOffset(blockView.getEndTime());
         final int left = headerWidth + (blockView.getColumn() * columnWidth);
         final int right = left + columnWidth;
         child.layout(left, top, right, bottom);
-        //TODO jak malou udalost dokaze jeste vykreslit
+        // TODO jak malou udalost dokaze jeste vykreslit
       }
     }
 

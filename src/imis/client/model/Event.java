@@ -4,22 +4,24 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.google.gson.JsonObject;
+
 public class Event {
   private String icp;
   private Date datum;
   private String kod_po;
   private String druh;
-  private float cas;
+  private double cas;// TODO asi prevest na ms from epoch, uz na serveru
   private String ic_obs;
   private String typ;
   private Date datum_zmeny;
   private String poznamka;
-  
+
   public Event() {
   }
 
-  public Event(String icp, Date datum, String kod_po, String druh, float cas,
-      String ic_obs, String typ, Date datum_zmeny, String poznamka) {
+  public Event(String icp, Date datum, String kod_po, String druh, double cas, String ic_obs,
+      String typ, Date datum_zmeny, String poznamka) {
     super();
     this.icp = icp;
     this.datum = datum;
@@ -64,11 +66,11 @@ public class Event {
     this.druh = druh;
   }
 
-  public float getCas() {
+  public double getCas() {
     return cas;
   }
 
-  public void setCas(float cas) {
+  public void setCas(double cas) {
     this.cas = cas;
   }
 
@@ -106,12 +108,11 @@ public class Event {
 
   @Override
   public String toString() {
-    return "Event [icp=" + icp + ", datum=" + datum + ", kod_po=" + kod_po
-        + ", druh=" + druh + ", cas=" + cas + ", ic_obs=" + ic_obs
-        + ", typ=" + typ + ", datum_zmeny=" + datum_zmeny
-        + ", poznamka=" + poznamka + "]";
+    return "Event [icp=" + icp + ", datum=" + Util.df.format(datum) + ", kod_po=" + kod_po
+        + ", druh=" + druh + ", cas=" + cas + ", ic_obs=" + ic_obs + ", typ=" + typ
+        + ", datum_zmeny=" + Util.df.format(datum_zmeny) + ", poznamka=" + poznamka + "]";
   }
-  
+
   public static Event resultSetToEvent(ResultSet rsSet) throws SQLException {
     Event event = new Event();
     event.setIcp(rsSet.getString(COL_ICP));
@@ -125,7 +126,12 @@ public class Event {
     event.setPoznamka(rsSet.getString(COL_POZNAMKA));
     return event;
   }
-  
+
+  public static Event jsonToEvent(JsonObject object) {
+    Event event = Util.gson.fromJson(object, Event.class);
+    return event;
+  }
+
   private static String COL_ICP = "ICP";
   private static String COL_DATUM = "DATUM";
   private static String COL_KOD_PO = "KOD_PO";
@@ -135,7 +141,5 @@ public class Event {
   private static String COL_TYP = "TYP";
   private static String COL_DATUM_ZMENY = "DATUM_ZMENY";
   private static String COL_POZNAMKA = "POZNAMKA";
-  
-  
 
 }
