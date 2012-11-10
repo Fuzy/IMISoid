@@ -1,9 +1,16 @@
 package imis.client.persistent;
 
+import android.net.Uri;
+
 public class Consts {
-  
+  public static final String SCHEME = "content://";
+  public static final String AUTHORITY = "imis.client.events.contentprovider";
+  public static final Uri URI = Uri.parse(SCHEME + AUTHORITY + "/"
+      + EventDatabaseHelper.TABLE_EVENTS);
+
   final public static class ColumnName {
-    public static final String COLUMN_ID = EventDatabaseHelper.COLUMN_ID; // client id
+    public static final String COLUMN_ID = EventDatabaseHelper.COLUMN_ID; // client
+                                                                          // id
     public static final String COLUMN_ICP = EventDatabaseHelper.COLUMN_ICP;
     public static final String COLUMN_DATUM = EventDatabaseHelper.COLUMN_DATUM;
     public static final String COLUMN_KOD_PO = EventDatabaseHelper.COLUMN_KOD_PO;

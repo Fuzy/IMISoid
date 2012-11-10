@@ -1,5 +1,14 @@
 package imis.client.syncadapter;
 
+import imis.client.network.NetworkUtilities;
+import imis.client.persistent.EventManager;
+
+import java.util.List;
+
+import org.json.JSONObject;
+
+import com.google.gson.JsonObject;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
@@ -31,7 +40,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
   public void onPerformSync(Account account, Bundle extras, String authority,
       ContentProviderClient provider, SyncResult syncResult) {
     Log.d(TAG, "onPerformSync()");
+    
+    long lastSyncMarker = getServerSyncMarker(account);
 
+    List<JsonObject> serverEvents;
+    
+    serverEvents = NetworkUtilities.getEvents();
+    
+    EventManager.updateEvents(context, serverEvents, lastSyncMarker);
    
   }
 

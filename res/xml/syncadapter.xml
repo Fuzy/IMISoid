@@ -3,7 +3,7 @@
 
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
     android:contentAuthority="imis.client.events.contentprovider"
-    android:accountType="imis.client"
+    android:accountType="imisoid"
     android:supportsUploading="false"
     android:userVisible="true"
 />

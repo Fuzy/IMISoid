@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 public class Util {
   private static GsonBuilder gsonBuilder = new GsonBuilder();
   public static Gson gson;
-  private static final Type listType = new TypeToken<List<Event>>() {
+  public static final Type listType = new TypeToken<List<Event>>() {
   }.getType();
   public static final JsonParser parser = new JsonParser();
   public static final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
@@ -23,6 +23,14 @@ public class Util {
     gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
     gsonBuilder.registerTypeAdapter(java.sql.Date.class, new DateDeserializer());
     gson = gsonBuilder.create();
+  }
+  
+  public static String formatDate(java.sql.Date date) {
+    String dateS = null;
+    if (date != null) {
+      dateS = df.format(date);
+    }
+    return dateS;
   }
 
 }

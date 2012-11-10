@@ -30,7 +30,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
   private void finishLogin(String authToken) {
     Log.d(TAG, "finishLogin()");
-    final Account account = new Account(username, ACCOUNT_TYPE);
+    final Account account = new Account(username, ACCOUNT_TYPE);//TODO zmenit account name
 
     // vytvori novy ucet, na heslu nezalezi
     accountManager.addAccountExplicitly(account, password, null);

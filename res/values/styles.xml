@@ -15,27 +15,27 @@
   -->
 
 <resources>
-    <!-- Base application theme is the default theme. -->
-    <style name="Theme" parent="android:style/Theme" />
+    <!-- Base application theme is the default theme.
+    <style name="Theme" parent="android:style/Theme" /> -->
 
-    <!-- Variation on the Light theme that turns off the title -->
+    <!-- Variation on the Light theme that turns off the title
     <style name="Theme.IOSched" parent="android:style/Theme.Light">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowContentOverlay">@null</item> -->
 
-        <!-- custom attributes -->
+        <!-- custom attributes 
         <item name="textHeaderMaxLines">3</item>
-        <item name="trackAbstractMaxLines">2</item>
+        <item name="trackAbstractMaxLines">2</item>-->
 
-        <!-- for programmatic instantiation -->
+        <!-- for programmatic instantiation 
         <item name="actionbarCompatButtonStyle">@style/ActionBarCompatButton</item>
         <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
         <item name="actionbarCompatSeparatorStyle">@style/ActionBarCompatSeparator</item>
         <item name="actionbarCompatLogoStyle">@style/ActionBarCompatLogo</item>
-        <item name="actionbarCompatTextStyle">@style/ActionBarCompatText</item>
-    </style>
+        <item name="actionbarCompatTextStyle">@style/ActionBarCompatText</item>-->
+  <!--   </style>-->
 
-    <!-- Start with the Holographic Light theme -->
+    <!-- Start with the Holographic Light theme 
     <style name="Theme.IOSched.Home" parent="style/Theme.IOSched">
         <item name="android:windowBackground">@drawable/background_noise</item>
     </style>
@@ -119,17 +119,17 @@
 
     <style name="ListItemContainerBase">
         <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
-    </style>
+    </style>-->
 
-    <!-- a simple list item is one whose container and content are the same view -->
+    <!-- a simple list item is one whose container and content are the same view 
     <style name="SimpleListItem" parent="style/ListItemContainerBase">
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-    </style>
+    </style>-->
 
-    <!-- used for more complex list items, e.g. those with stars aligned to the top-right -->
+    <!-- used for more complex list items, e.g. those with stars aligned to the top-right
 
     <style name="ListItemContainer" parent="style/ListItemContainerBase" />
 
@@ -138,9 +138,9 @@
         <item name="android:paddingRight">10dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-    </style>
+    </style> -->
 
-    <!-- What's On section in Home activity -->
+    <!-- What's On section in Home activity 
 
     <style name="WhatsOnItemBase">
         <item name="android:layout_width">0dp</item>
@@ -168,9 +168,9 @@
         <item name="android:paddingRight">@dimen/whats_on_button_right_padding</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
-    </style>
+    </style>-->
 
-    <!-- body content -->
+    <!-- body content 
 
     <style name="TextHeader">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
@@ -212,7 +212,7 @@
     <style name="PushButton">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:background">@drawable/btn</item>
-    </style>
+    </style>-->
 
 
 </resources>

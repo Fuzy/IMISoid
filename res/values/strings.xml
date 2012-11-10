@@ -13,11 +13,13 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Google I/O 2011</string>
 
-    <string name="description_logo">Google I/O 2011</string>
+    <string name="app_name">Imisoid</string>
+
+    <!--
+    <string name="description_logo">Imisoid</string>
     <string name="description_home">Home</string>
     <string name="description_search">Search</string>
     <string name="description_map">Map</string>
@@ -118,8 +120,9 @@
     <string name="permission_write">Modify Google I/O schedule data</string>
 
     <string name="toast_now_not_visible">Press this button during Google I/O to show the current time.</string>
-
-    <!-- Notes integration -->
+    -->
+    <!--
+    Notes integration 
     <string name="notes_catch_powered_by">Notes are powered by <a href="http://www.catch.com/">Catch.com</a>.</string>
     <string name="notes_catch_market_title">Install Catch Notes</string>
     <string name="notes_catch_market_subtitle">You can take notes for Google I/O sessions using the latest version of Catch Notes, available from Android Market.</string>
@@ -128,13 +131,17 @@
     <string name="toast_notes_error_invoking">Error invoking Catch Notes.</string>
 
     <string name="note_template">Session: <xliff:g id="title">%1$s</xliff:g>\n\n\n\n__________\nTags: <xliff:g id="hashtags">%2$s</xliff:g></string>
-
-    <!-- EULA -->
+    -->
+    <!--
+    EULA 
     <string name="eula_title">EULA title.</string>
     <string name="eula_text">EULA goes here.</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
     
     <string name="label">Imisoid</string>
+    -->
+    <string name="sync_button">Synchronizovat</string>
+    <string name="menu_add">Přidat</string>
 
 </resources>

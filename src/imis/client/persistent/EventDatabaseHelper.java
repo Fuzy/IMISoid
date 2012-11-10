@@ -27,7 +27,7 @@ public class EventDatabaseHelper extends SQLiteOpenHelper {
   public static final String COLUMN_POZNAMKA = "poznamka";
 
   // Sloupce nutne pro synchronizaci.
-  public static final String COLUMN_SERVER_ID = "server_id";
+  public static final String COLUMN_SERVER_ID = "server_id";//rowid v oracle db
   public static final String COLUMN_DIRTY = "dirty";
   public static final String COLUMN_DELETED = "deleted";
 

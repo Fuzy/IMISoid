@@ -1,10 +1,8 @@
 package imis.client.network;
 
-import imis.client.model.Event;
 import imis.client.model.Util;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +17,10 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 import android.util.Log;
 
@@ -37,8 +33,8 @@ public class NetworkUtilities {
   private static final int TIMEOUT = 30 * 1000; // ms
   private static HttpClient httpClient = null;
 
-  private static final String PARAM_FROM_DATE = "from";
-  private static final String PARAM_TO_DATE = "to";
+  /*private static final String PARAM_FROM_DATE = "from";
+  private static final String PARAM_TO_DATE = "to";*/
 
   /**
    * Configures the httpClient to connect to the URL provided.
@@ -56,13 +52,14 @@ public class NetworkUtilities {
   }
 
   //@SuppressWarnings("unchecked")
-  public static List<Event> getEvents() {
-    List<Event> events = new ArrayList<Event>();
+  public static List<JsonObject> getEvents() {
+    List<JsonObject> events = new ArrayList<JsonObject>();
 
     HttpClient httpclient = getHttpClient();
     // Prepare a request object
     //HttpGet httpget = new HttpGet(EVENTS_URI + "/0000001?from=29.7.2004&to=29.7.2004");
     HttpGet httpget = new HttpGet(EVENTS_URI + "/700510?from=1.11.2001&to=1.11.2001");
+    //TODO UriBuilder
     Log.d(TAG, " " + httpget.getURI().toString());
 
     // Execute the request
@@ -78,10 +75,10 @@ public class NetworkUtilities {
       //Type listType = new TypeToken<List<Event>>() {
       //}.getType();
       //events = (List<Event>) gson.fromJson(resp, listType);
-      JsonObject o = (JsonObject)Util.parser.parse(resp);
-      JsonArray array = o.getAsJsonArray("event");
+      JsonElement o = Util.parser.parse(resp);
+      JsonArray array = o.getAsJsonArray();
       for (JsonElement jsonElement : array) {
-        events.add(Event.jsonToEvent(jsonElement.getAsJsonObject()));
+        events.add(jsonElement.getAsJsonObject());
       }
 
     }

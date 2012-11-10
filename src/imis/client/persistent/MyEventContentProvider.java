@@ -19,7 +19,7 @@ public class MyEventContentProvider extends ContentProvider {
   private EventDatabaseHelper database;
   private static final int EVENTS = 1;
   private static final int EVENT_ID = 2;
-  private static final String AUTHORITY = "imis.client.events.contentprovider";
+  private static final String AUTHORITY = Consts.AUTHORITY;
   private static final String TABLE_EVENTS = EventDatabaseHelper.TABLE_EVENTS;
   private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
   

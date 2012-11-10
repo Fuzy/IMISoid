@@ -12,40 +12,47 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
-<view
-    class="imis.client.customviews.ObservableScrollView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+-->
+<view xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:iosched="http://schemas.android.com/apk/res/imis.client"
     android:id="@+id/blocks_scroll"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fadingEdge="vertical">
+    class="imis.client.ui.ObservableScrollView"
+    android:fadingEdge="vertical" >
+
     <view
-        class="imis.client.customviews.BlocksLayout"
         android:id="@+id/blocks"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layerType="software"
-        iosched:columns="3">
+        class="imis.client.ui.BlocksLayout"
+        iosched:columns="3" >
+<!--  
         <view
-            class="imis.client.customviews.TimeRulerView"
             android:id="@id/blocks_ruler"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            iosched:headerWidth="@dimen/schedule_label_header_width"
-            iosched:hourHeight="@dimen/schedule_hour_height"
-            iosched:horizontalDivider="true"
-            iosched:labelTextSize="@dimen/text_size_small"
-            iosched:labelPaddingLeft="@dimen/schedule_label_padding"
-            iosched:labelColor="#000000"
+            class="imis.client.ui.TimeRulerView"
             iosched:dividerColor="#22000000"
-            iosched:startHour="0"
-            iosched:endHour="24" />
+            iosched:endHour="24"
+            iosched:headerWidth="@dimen/schedule_label_header_width"
+            iosched:horizontalDivider="true"
+            iosched:hourHeight="@dimen/schedule_hour_height"
+            iosched:labelColor="#000000"
+            iosched:labelPaddingLeft="@dimen/schedule_label_padding"
+            iosched:labelTextSize="@dimen/text_size_small"
+            iosched:startHour="0" />
+
         <View
             android:id="@id/blocks_now"
-            android:background="@drawable/now_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/now_bar" />-->
     </view>
-</view>
+
+</view> <!-- android:layerType="software" -->
+
+
+
+
+<!-- android:id="@id/blocks_ruler" -->
