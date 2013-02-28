@@ -15,6 +15,7 @@
   -->
 
 <resources>
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar" />
     <!-- Base application theme is the default theme.
     <style name="Theme" parent="android:style/Theme" /> -->
 

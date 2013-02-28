@@ -24,6 +24,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.view.MotionEvent;
+import android.view.View;
 
 import imis.client.R;
 
@@ -34,16 +35,16 @@ import java.util.TimeZone;
  * title and time span that it occupies. Usually organized automatically by
  * {@link BlocksLayout} to match up against a {@link TimeRulerView} instance.
  */
-public class BlockView extends Button {
+public class BlockView extends View  {//TODO je nutne aby to byl button?Button
   private static final String TAG = BlockView.class.getSimpleName();
   private static final int TIME_STRING_FLAGS = DateUtils.FORMAT_SHOW_DATE
       | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
       | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;
 
   private String blockId;
-  private String title;
   private long startTime;
   private long endTime;
+  //TODO dalsi atributy
 
   public BlockView(Context context) {
     this(context, null, null, 0, 0);
@@ -51,14 +52,13 @@ public class BlockView extends Button {
 
   public BlockView(Context context, String blockId, String title, long startTime, long endTime) {
     super(context);
-    Log.d(TAG, "BlockView()");
+    //Log.d(TAG, "BlockView()");
 
     this.blockId = blockId;
-    this.title = title;
     this.startTime = startTime;
     this.endTime = endTime;
 
-    setText(title);
+    //setText(title);
 
     // TODO: turn into color state list with layers?
     int textColor = Color.WHITE;
@@ -68,7 +68,7 @@ public class BlockView extends Button {
         R.drawable.btn_block);
     buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
 
-    setTextColor(textColor);
+    //setTextColor(textColor);
     setBackgroundDrawable(buttonDrawable);
   }
 
@@ -79,14 +79,6 @@ public class BlockView extends Button {
   public String getBlockTimeString() {
     TimeZone.setDefault(TimeZone.getTimeZone("Etc/GMT-2"));
     return DateUtils.formatDateTime(getContext(), startTime, TIME_STRING_FLAGS);
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
   }
 
   public long getStartTime() {
@@ -111,14 +103,8 @@ public class BlockView extends Button {
 
   @Override
   public String toString() {
-    return "BlockView [blockId=" + blockId + ", title=" + title + ", startTime=" + startTime
+    return "BlockView [blockId=" + blockId + ", startTime=" + startTime
         + ", endTime=" + endTime + "]";
-  }
-
-  @Override
-  public boolean onTouchEvent(MotionEvent event) {
-    Log.d(TAG, "onTouchEvent(): " + event.getAction() + " id: " + blockId);
-    return true;
   }
 
 }

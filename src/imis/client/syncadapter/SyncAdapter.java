@@ -5,8 +5,6 @@ import imis.client.persistent.EventManager;
 
 import java.util.List;
 
-import org.json.JSONObject;
-
 import com.google.gson.JsonObject;
 
 import android.accounts.Account;

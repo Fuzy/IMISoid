@@ -3,16 +3,11 @@ package imis.client.ui.activity;
 import imis.client.R;
 import imis.client.authentication.Consts;
 import static imis.client.persistent.Consts.URI;
-import imis.client.model.Event;
+import imis.client.persistent.EventManager;
 import imis.client.persistent.EventManager.DataQuery;
-import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ObservableScrollView;
 import imis.client.ui.adapter.EventsAdapter;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -22,16 +17,19 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import android.app.LoaderManager;
 
-public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {// extends
+public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {// extends
                                                                                                     // Activity
   private static final String TAG = DayTimelineActivity.class.getSimpleName();
   private static final String ACCOUNT_TYPE = Consts.ACCOUNT_TYPE;
@@ -56,15 +54,18 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     blocks = (BlocksLayout) findViewById(R.id.blocks);
     adapter = new EventsAdapter(getApplicationContext(), null, -1);
     blocks.setAdapter(adapter);
+    blocks.setOnItemClickListener(this);
+    
+    EventManager.deleteAllEvents(getApplicationContext());
+    Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
   }
 
   @Override
   protected void onResume() {
     Log.d(TAG, "onResume()");
     super.onResume();
-    // getContentResolver().delete(ContentUris.withAppendedId(URI, 1), null,
-    // null);
     
+
     scroll.post(new Runnable() {
       public void run() {
         Log.d(TAG, "onResume() scroll.getBottom(): " + scroll.getBottom());
@@ -88,91 +89,30 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     Log.d(TAG, "onOptionsItemSelected");
     switch (item.getItemId()) {
     case R.id.menu_add:
-      // Spusti aktivitu pro pridani noveho ukolu
-      startActivity(new Intent(Intent.ACTION_INSERT, getIntent().getData()));
+      startInsertActivity();
       return true;
     case R.id.sync_button:
-      Log.d(TAG, "onOptionsItemSelected sync request");
-      Account[] acc = accountManager.getAccountsByType(ACCOUNT_TYPE);
-      if (acc.length > 0) {
-        ContentResolver.requestSync(acc[0], AUTHORITY, new Bundle());
-      }
-      else {
-        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
-        toast.show();
-      }
+      performSync();
       return true;
     default:
       return super.onOptionsItemSelected(item);
     }
   }
 
-  @Deprecated
-  private List<BlockView> blocksFromEvents(List<Event> events) {
-    List<BlockView> blocks = new ArrayList<BlockView>();
-    final String arrival = "P";
-    final String leave = "O";
-    // TODO upozornit ze data nejsou v poradku
-
-    String next = arrival;
-    @SuppressWarnings("unused")
-    boolean error;
-    BlockView block = null;
-    for (Event event : events) {
-      if (event.getDruh().equals(arrival) && next.equals(arrival)) {
-        // ocekavany prichod
-        block = new BlockView(getApplicationContext());
-        next = leave;
-        block.setStartTime(event.getCas());
-      }
-      else if (event.getDruh().equals(leave) && next.equals(leave)) {
-        // ocekavany odchod
-        next = arrival;
-        block.setEndTime(event.getCas());
-        blocks.add(block);
-      }
-      else {
-        // TODO nepocita s prvni denni udalost = O
-        error = true;// chyba v datech, neni sekvence P,O,P..
-      }
-    }
-
-    if (block != null && block.getEndTime() == 0) {
-      // nastavim end time na akt cas
-      block.setEndTime(timeFromEpochMsToDayMs(System.currentTimeMillis()));
-      blocks.add(block);
-    }
-
-    return blocks;
+  private void startInsertActivity() {
+    startActivity(new Intent(Intent.ACTION_INSERT));
   }
 
-  /* *//**
-   * Time is <0.0-24.0>h
-   * 
-   * @return Time since midnight.
-   */
-  /*
-   * private long timeFromDayDoubleToDayMs(double time) { final double msInHourD
-   * = 60 * 60 * 1000; final long msInHourL = 60 * 60 * 1000;
-   * 
-   * long m = (long) time; double dec = time % 1;
-   * 
-   * long thisHourMs = (long) (dec * msInHourD); long todayMs = m * msInHourL +
-   * thisHourMs;
-   * 
-   * return todayMs; }
-   */
-
-  /**
-   * @param sinceEpoch
-   * @return Time since midnight.
-   */
-  private long timeFromEpochMsToDayMs(long sinceEpoch) {
-    Calendar rightNow = Calendar.getInstance();
-    // offset to add since we're not UTC
-    long offset = rightNow.get(Calendar.ZONE_OFFSET) + rightNow.get(Calendar.DST_OFFSET);
-    long sinceMidnight = (rightNow.getTimeInMillis() + offset) % (24 * 60 * 60 * 1000);
-    return sinceMidnight;
+  private void performSync() {
+    Log.d(TAG, "onOptionsItemSelected sync request");
+    Account[] acc = accountManager.getAccountsByType(ACCOUNT_TYPE);
+    if (acc.length > 0) {
+      ContentResolver.requestSync(acc[0], AUTHORITY, new Bundle());
+    }
+    else {
+      Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+      toast.show();
+    }
   }
 
   @Override
@@ -185,7 +125,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
     Log.d(TAG, "onLoadFinished() rows: " + data.getCount());
     adapter.swapCursor(data);
-    blocks.setVisibility(View.GONE);
+    blocks.setVisibility(View.GONE);//TODO k cemu to je?
     blocks.setVisibility(View.VISIBLE);
   }
 
@@ -193,6 +133,25 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   public void onLoaderReset(Loader<Cursor> arg0) {
     Log.d(TAG, "onLoaderReset()");
     adapter.swapCursor(null);
+  }
+  
+  @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+      // TODO Auto-generated method stub
+      super.onActivityResult(requestCode, resultCode, data);
+      //TODO refresh view
+    }
+
+  @Override
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    Log.d(TAG, "onItemClick() position: " + position + " id: " + id);
+    startEditActivity(id);
+  }
+  
+  private void startEditActivity(long id) {
+    Intent intent = new Intent(Intent.ACTION_VIEW);
+    intent.putExtra("id", id);
+    startActivity(intent);
   }
 
 }

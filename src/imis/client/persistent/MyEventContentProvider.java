@@ -1,5 +1,7 @@
 package imis.client.persistent;
 
+import java.util.Date;
+
 import imis.client.persistent.Consts.ColumnName;
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -10,24 +12,25 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
+import static imis.client.model.Util.df;
 
 public class MyEventContentProvider extends ContentProvider {
   private static final String TAG = "MyEventContentProvider";
-  //TODO pouzivat ContentProviderClient
-  //TODO rozsirit o praci s dalsi tabulkou?, asi jen nutne operace jako query
-  
+  // TODO pouzivat ContentProviderClient
+  // TODO rozsirit o praci s dalsi tabulkou?, asi jen nutne operace jako query
+
   private EventDatabaseHelper database;
   private static final int EVENTS = 1;
   private static final int EVENT_ID = 2;
   private static final String AUTHORITY = Consts.AUTHORITY;
   private static final String TABLE_EVENTS = EventDatabaseHelper.TABLE_EVENTS;
   private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-  
+
   static {
     sURIMatcher.addURI(AUTHORITY, TABLE_EVENTS, EVENTS);
     sURIMatcher.addURI(AUTHORITY, TABLE_EVENTS + "/#", EVENT_ID);
   }
-  
+
   @Override
   public boolean onCreate() {
     Log.d(TAG, "onCreate()");
@@ -50,8 +53,7 @@ public class MyEventContentProvider extends ContentProvider {
     case EVENT_ID:
       // smaze jednu polozku
       String id = uri.getLastPathSegment();
-      rowsDeleted = sqlDB.delete(TABLE_EVENTS, EventDatabaseHelper.COLUMN_ID + "="
-          + id, null);
+      rowsDeleted = sqlDB.delete(TABLE_EVENTS, EventDatabaseHelper.COLUMN_ID + "=" + id, null);
       break;
     }
     getContext().getContentResolver().notifyChange(uri, null);
@@ -80,23 +82,24 @@ public class MyEventContentProvider extends ContentProvider {
 
     // Vsechna not null pole musi byt nastavena, vytvari se novy ukol,
     // insert se vola po pridani ukolu uzivatelem i po pridani pri synchronizaci
+    Date now = new Date();
     if (values.containsKey(ColumnName.COLUMN_SERVER_ID) == false) {
       values.put(ColumnName.COLUMN_SERVER_ID, -1);
     }
-    if (values.containsKey(ColumnName.COLUMN_DIRTY) == false) {
+    /*if (values.containsKey(ColumnName.COLUMN_DIRTY) == false) {
       values.put(ColumnName.COLUMN_DIRTY, 1);
     }
     if (values.containsKey(ColumnName.COLUMN_DELETED) == false) {
       values.put(ColumnName.COLUMN_DELETED, 0);
-    }
+    }*/
     if (values.containsKey(ColumnName.COLUMN_DATUM_ZMENY) == false) {
-      values.put(ColumnName.COLUMN_DATUM_ZMENY, "");//TODO default datum
+      values.put(ColumnName.COLUMN_DATUM_ZMENY, df.format(now));
     }
     if (values.containsKey(ColumnName.COLUMN_ICP) == false) {
       values.put(ColumnName.COLUMN_ICP, "");
     }
     if (values.containsKey(ColumnName.COLUMN_DATUM) == false) {
-      values.put(ColumnName.COLUMN_DATUM, "");//TODO default datum
+      values.put(ColumnName.COLUMN_DATUM, df.format(now));
     }
     if (values.containsKey(ColumnName.COLUMN_KOD_PO) == false) {
       values.put(ColumnName.COLUMN_KOD_PO, "");
@@ -104,16 +107,15 @@ public class MyEventContentProvider extends ContentProvider {
     if (values.containsKey(ColumnName.COLUMN_DRUH) == false) {
       values.put(ColumnName.COLUMN_DRUH, "");
     }
-    if (values.containsKey(ColumnName.COLUMN_CAS) == false) {
+    /*if (values.containsKey(ColumnName.COLUMN_CAS) == false) {
       values.put(ColumnName.COLUMN_CAS, "");
-    }
+    }*/
     if (values.containsKey(ColumnName.COLUMN_TYP) == false) {
       values.put(ColumnName.COLUMN_TYP, "");
     }
 
     long id = 0;
     // ziska odkaz na databazi
-
     SQLiteDatabase sqlDB = database.getWritableDatabase();
 
     switch (uriType) {
@@ -121,7 +123,7 @@ public class MyEventContentProvider extends ContentProvider {
       // muze vlozit jen 1 zaznam
       id = sqlDB.insert(TABLE_EVENTS, null, values);
       break;
-      //TODO jako default vyjimka?
+    // TODO jako default vyjimka?
     }
     // upozorni posluchace
     getContext().getContentResolver().notifyChange(uri, null);
@@ -173,8 +175,7 @@ public class MyEventContentProvider extends ContentProvider {
       break;
     case EVENT_ID:
       String id = uri.getLastPathSegment();
-      rowsUpdated = sqlDB.update(TABLE_EVENTS, values,
-          ColumnName.COLUMN_ID + "=" + id, null);
+      rowsUpdated = sqlDB.update(TABLE_EVENTS, values, ColumnName.COLUMN_ID + "=" + id, null);
       break;
     }
     getContext().getContentResolver().notifyChange(uri, null);

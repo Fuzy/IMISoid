@@ -2,9 +2,9 @@ package imis.client.model;
 
 import imis.client.persistent.EventDatabaseHelper;
 import static imis.client.model.Util.formatDate;
+import static imis.client.model.Util.stringToDate;
 
 import java.sql.Date;
-import java.text.ParseException;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -28,7 +28,7 @@ public class Event {
   private Date datum_zmeny;
   private String poznamka;
 
-  //private static final String TAG = Event.class.getSimpleName();
+  // private static final String TAG = Event.class.getSimpleName();
 
   public Event() {
   }
@@ -169,55 +169,73 @@ public class Event {
   // "dd.MM.yyyy"
   public static Event cursorToEvent(Cursor c) {
     Event event = new Event();
-    event.set_id(c.getInt(0));
-    // event.setIcp(c.getString(1));
-    try {
-      //Log.d(TAG, "cursorToEvent()" + " datum: " + c.getString(5));
-      event.setDatum(new java.sql.Date((Util.df.parse(c.getString(5))).getTime()));
-      //TODO na null to spadne
-      //TODO metoda util
-      //TODO indexy - konstanty
-    }
-    catch (ParseException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    /*
-     * event.setKod_po(c.getString(3)); event.setDruh(c.getString(4));
-      event.setIc_obs(c.getString(6));
-     * event.setTyp(c.getString(7));
-     */
-    event.setCas(c.getLong(8));
-    try {
-      //Log.d(TAG, "cursorToEvent()" + " datum zmeny: " + c.getString(11));
-      event.setDatum_zmeny(new java.sql.Date((Util.df.parse(c.getString(11))).getTime()));
-    }
-    catch (ParseException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    // event.setPoznamka(c.getString(9))
+    event.set_id(c.getInt(COL_NUM_ID));
+    event.setServer_id(c.getString(COL_NUM_SERVER_ID));
+    event.setDirty(c.getInt(COL_NUM_DIRTY) > 0);
+    event.setDeleted(c.getInt(COL_NUM_DELETED) > 0);
+    event.setIcp(c.getString(COL_NUM_ICP));
+    event.setDatum(stringToDate(c.getString(COL_NUM_DATUM)));
+    event.setKod_po(c.getString(COL_NUM_KOD_PO));
+    event.setDruh(c.getString(COL_NUM_DRUH));
+    event.setCas(c.getLong(COL_NUM_CAS));
+    event.setIc_obs(c.getString(COL_NUM_IC_OBS));
+    event.setTyp(c.getString(COL_NUM_TYP));
+    event.setDatum_zmeny(stringToDate(c.getString(COL_NUM_DATUM_ZMENY)));
+    event.setPoznamka(c.getString(COL_NUM_POZNAMKA));
     return event;
   }
 
   public ContentValues getAsContentValues() {
+    //TODO asi tam dat jen to spolecne pro add a update
     ContentValues values = new ContentValues();
     values.put(COL_DIRTY, dirty);
     values.put(COL_DELETED, deleted);
-    values.put(COL_SERVER_ID, server_id);
-    values.put(COL_ICP, icp);
-    values.put(COL_DATUM, Util.df.format(datum));
-    values.put(COL_KOD_PO, kod_po);
-    values.put(COL_DRUH, druh);
+    if (server_id != null) {
+      values.put(COL_SERVER_ID, server_id);
+    }
+    if (icp != null) {
+      values.put(COL_ICP, icp);
+    }
+    if (datum != null) {
+      values.put(COL_DATUM, Util.df.format(datum));
+    }
+    if (kod_po != null) {
+      values.put(COL_KOD_PO, kod_po);
+    }
+    if (druh != null) {
+      values.put(COL_DRUH, druh);
+    }
     values.put(COL_CAS, cas);
-    values.put(COL_IC_OBS, ic_obs);
-    values.put(COL_TYP, typ);
-    values.put(COL_DATUM_ZMENY, Util.df.format(datum_zmeny));
-    values.put(COL_POZNAMKA, poznamka);
+    if (ic_obs != null) {
+      values.put(COL_IC_OBS, ic_obs);
+    }
+    if (typ != null) {
+      values.put(COL_TYP, typ);
+    }
+    if (datum != null) {
+      values.put(COL_DATUM_ZMENY, Util.df.format(datum_zmeny));
+    }
+    if (poznamka != null) {
+      values.put(COL_POZNAMKA, poznamka);
+    }
     return values;
   }
 
-  private static String COL_DIRTY = EventDatabaseHelper.COLUMN_DIRTY;
+  private static int COL_NUM_ID = 0;
+  private static int COL_NUM_SERVER_ID = 1;
+  private static int COL_NUM_DIRTY = 2;
+  private static int COL_NUM_DELETED = 3;
+  private static int COL_NUM_ICP = 4;
+  private static int COL_NUM_DATUM = 5;
+  private static int COL_NUM_KOD_PO = 6;
+  private static int COL_NUM_DRUH = 7;
+  private static int COL_NUM_CAS = 8;
+  private static int COL_NUM_IC_OBS = 9;
+  private static int COL_NUM_TYP = 10;
+  private static int COL_NUM_DATUM_ZMENY = 11;
+  private static int COL_NUM_POZNAMKA = 12;
+
+  public static String COL_DIRTY = EventDatabaseHelper.COLUMN_DIRTY;
   private static String COL_SERVER_ID = EventDatabaseHelper.COLUMN_SERVER_ID;
   private static String COL_DELETED = EventDatabaseHelper.COLUMN_DELETED;
 

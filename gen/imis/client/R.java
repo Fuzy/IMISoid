@@ -8,6 +8,10 @@
 package imis.client;
 
 public final class R {
+    public static final class array {
+        public static final int kody_po_desc=0x7f090000;
+        public static final int kody_po_values=0x7f090001;
+    }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -215,11 +219,15 @@ containing a value of this type.
         public static final int ic_action_search=0x7f020013;
         public static final int ic_launcher=0x7f020014;
         public static final int ic_menu_compose=0x7f020015;
-        public static final int icon=0x7f020016;
-        public static final int now_bar=0x7f020017;
-        public static final int whats_on_button=0x7f020018;
-        public static final int whats_on_button_default=0x7f020019;
-        public static final int whats_on_button_pressed=0x7f02001a;
+        public static final int ic_menu_delete=0x7f020016;
+        public static final int ic_menu_discard=0x7f020017;
+        public static final int ic_menu_revert=0x7f020018;
+        public static final int ic_menu_save=0x7f020019;
+        public static final int icon=0x7f02001a;
+        public static final int now_bar=0x7f02001b;
+        public static final int whats_on_button=0x7f02001c;
+        public static final int whats_on_button_default=0x7f02001d;
+        public static final int whats_on_button_pressed=0x7f02001e;
     }
     public static final class id {
         public static final int actionbar_compat=0x7f070000;
@@ -232,23 +240,41 @@ containing a value of this type.
         public static final int blocks_scroll=0x7f07000d;
         public static final int dialog_discard_confirm=0x7f070009;
         public static final int dialog_moderator=0x7f07000a;
+        public static final int edit_poznamka=0x7f070011;
+        public static final int event_editor=0x7f07000f;
         public static final int fragment_session_detail=0x7f070005;
         public static final int fragment_sessions=0x7f070004;
         public static final int fragment_vendor_detail=0x7f070007;
         public static final int fragment_vendors=0x7f070006;
-        public static final int menu_add=0x7f07000f;
+        public static final int menu_add=0x7f070016;
+        public static final int menu_delete=0x7f070014;
+        public static final int menu_edit=0x7f070015;
         public static final int menu_refresh_progress=0x7f070008;
-        public static final int sync_button=0x7f070010;
+        public static final int menu_revert=0x7f070013;
+        public static final int menu_save=0x7f070012;
+        public static final int spinner_kod_po=0x7f070010;
+        public static final int sync_button=0x7f070017;
     }
     public static final class layout {
         public static final int blocks_content=0x7f030000;
+        public static final int event_editor=0x7f030001;
     }
     public static final class menu {
-        public static final int list_options_menu=0x7f0a0000;
+        public static final int editor_options_menu=0x7f0b0000;
+        public static final int list_options_menu=0x7f0b0001;
     }
     public static final class string {
         public static final int app_name=0x7f080000;
+        public static final int button_ok=0x7f080003;
+        public static final int error_title=0x7f080005;
+        public static final int kody_po_prompt=0x7f080004;
         public static final int menu_add=0x7f080002;
+        public static final int menu_delete=0x7f08000b;
+        public static final int menu_edit=0x7f08000c;
+        public static final int menu_revert=0x7f08000a;
+        /**  Polozky menu pri edit aktivite 
+         */
+        public static final int menu_save=0x7f080009;
         /** 
     <string name="description_logo">Imisoid</string>
     <string name="description_home">Home</string>
@@ -374,9 +400,12 @@ containing a value of this type.
     
          */
         public static final int sync_button=0x7f080001;
+        public static final int title_create=0x7f080006;
+        public static final int title_edit=0x7f080007;
+        public static final int title_view=0x7f080008;
     }
     public static final class style {
-        public static final int AppTheme=0x7f090000;
+        public static final int AppTheme=0x7f0a0000;
     }
     public static final class xml {
         public static final int authenticator=0x7f040000;

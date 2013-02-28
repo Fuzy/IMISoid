@@ -20,8 +20,10 @@ import imis.client.R;
 import imis.client.ui.adapter.EventsAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -30,8 +32,11 @@ import android.widget.AdapterView;
  * instances of {@link BlockView}. Also positions current "now" divider using
  * {@link R.id#blocks_now} view when applicable.
  */
-public class BlocksLayout extends AdapterView<EventsAdapter> {
+public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
+                                                              // android.widget.AdapterView.OnItemClickListener
   private static final String TAG = BlocksLayout.class.getSimpleName();
+  private static final int INVALID_INDEX = -1;
+  private Rect mRect;
 
   private EventsAdapter mAdapter;
   private TimeRulerView mRulerView;
@@ -73,6 +78,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    // TODO prostudovat
     ensureChildren();
 
     mRulerView.measure(widthMeasureSpec, heightMeasureSpec);
@@ -87,6 +93,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
 
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    // TODO prostudovat
     Log.d(TAG, "onLayout()");
     ensureChildren();
 
@@ -111,8 +118,8 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
         // if (child.getVisibility() == GONE)
         // continue;
 
-        // final BlockView blockView = (BlockView) child;
         final int top = rulerView.getTimeVerticalOffset(blockView.getStartTime());
+        Log.d(TAG, "top: " + top + " height: " + rulerView.getHeight());
         final int bottom = rulerView.getTimeVerticalOffset(blockView.getEndTime());
         final int left = headerWidth;
         final int right = left + columnWidth;
@@ -123,6 +130,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
         }
         addViewInLayout(blockView, -1, params3, true);
         blockView.layout(left, top, right, bottom);
+        Log.d(TAG, "left: " + left + " top: " + top + " right: " + " bottom: " + bottom);
         // TODO jak malou udalost dokaze jeste vykreslit
       }
 
@@ -141,7 +149,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
     if (params2 == null) {
       params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
-    addViewInLayout(mNowView, -1, params2);
+    //addViewInLayout(mNowView, -1, params2);
     nowView.layout(left, top, right, bottom);
 
     Log.d(TAG, "onLayout() end");
@@ -175,5 +183,58 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
   public void setSelection(int arg0) {
     Log.d(TAG, "setSelection()");
     throw new UnsupportedOperationException("Not supported");
+  }
+
+  /*
+   * @Override public void onItemClick(AdapterView<?> parent, View view, int
+   * position, long id) { Log.d(TAG, "onItemClick() position: " + position +
+   * " id: " + id);
+   * 
+   * }
+   */
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    Log.d(TAG, "onTouchEvent " + event.getAction());
+    if (getChildCount() == 0) {
+      return false;
+    }
+    switch (event.getAction()) {
+    case MotionEvent.ACTION_DOWN:
+      Log.d(TAG, "ACTION_DOWN");
+      clickChildAt((int) event.getX(), (int) event.getY());
+      break;
+    }
+    return super.onTouchEvent(event);
+  }
+
+  private void clickChildAt(final int x, final int y) {
+
+    final int index = getContainingChildIndex(x, y);
+    Log.d(TAG, "onTouchEvent x:" + x + " y:" + y + " index: " + index);
+    if (index != INVALID_INDEX) {
+      final View itemView = getChildAt(index);
+      final int position = index;
+      final long id = Long.valueOf(((BlockView)itemView).getBlockId());//mAdapter.getItemId(position);
+      performItemClick(itemView, position, id);
+    }
+  }
+
+  private int getContainingChildIndex(final int x, final int y) {
+    if (mRect == null) {
+      mRect = new Rect();
+    }
+    for (int index = 0; index < getChildCount(); index++) {
+      
+      View child = getChildAt(index);
+      Log.d(TAG, "index:" + index + " class: "  + child.toString());
+      if (child instanceof BlockView) {
+        child.getHitRect(mRect);
+        if (mRect.contains(x, y)) {
+          return index;
+        }
+      }
+
+    }
+    return INVALID_INDEX;
   }
 }
