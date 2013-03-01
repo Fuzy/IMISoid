@@ -20,6 +20,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
 public class EventEditor extends Activity implements OnItemSelectedListener {// View.OnClickListener,
   private static final String TAG = EventEditor.class.getSimpleName();
@@ -32,7 +33,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
 
   // Identifikace aktualniho ukolu
   private Event event = null;
-  private long id = -1;
+  private long id = -1;//TODO zaroven id odchoyi udalosti
 
   // Ruzne stavy ve kterych muze aktivita bezet.
   private static final int STATE_EDIT = 0;
@@ -40,7 +41,6 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
   private static final int STATE_VIEWING = 2;
 
   private int state;
-  private boolean isFinishedByUser = false;
 
   // UI polozky
   private Spinner spinnerKod_po;
@@ -82,7 +82,11 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
   }
 
   private void init() {
-    textPoznamka = (EditText) this.findViewById(R.id.edit_poznamka);
+    textPoznamka = (EditText) this.findViewById(R.id.edit_poznamka_arrive);
+    TimePicker arriveTime = (TimePicker)this.findViewById(R.id.time_arrive);
+    arriveTime.setIs24HourView(true);
+    TimePicker leaveTime = (TimePicker)this.findViewById(R.id.time_leave);
+    leaveTime.setIs24HourView(true);
     prepareSpinner();
 
   }
@@ -92,7 +96,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
     kody_po_values = getResources().getStringArray(R.array.kody_po_values);
 
     // Vyber kodu dochazky
-    spinnerKod_po = (Spinner) this.findViewById(R.id.spinner_kod_po);
+    spinnerKod_po = (Spinner) this.findViewById(R.id.spinner_kod_po_arrive);
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
         R.array.kody_po_desc, android.R.layout.simple_spinner_item);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -102,7 +106,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
 
   private void disableChanges() {
     Log.d(TAG, "disableChanges");
-    spinnerKod_po.setEnabled(false);// TODO test
+    spinnerKod_po.setEnabled(false);
 
     textPoznamka.setEnabled(false);
     textPoznamka.setInputType(InputType.TYPE_NULL);
@@ -167,7 +171,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
     String kod_po = "";
     String poznamka = "";
     kod_po = event.getKod_po();
-    selected = Arrays.asList(kody_po_values).indexOf(kod_po);// TODO test
+    selected = Arrays.asList(kody_po_values).indexOf(kod_po);
     spinnerKod_po.setSelection(selected);
     poznamka = event.getPoznamka();
     textPoznamka.setText(poznamka);
@@ -213,12 +217,12 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
         EventManager.updateEvent(getApplicationContext(), event);
       }
       else if (state == STATE_INSERT) {
+        event.setDruh(Event.DRUH_ARRIVAL);//TODO
         id = EventManager.addEvent(getApplicationContext(), true, event);
       }
 
     }
 
-    isFinishedByUser = true;
     finish();
   }
 

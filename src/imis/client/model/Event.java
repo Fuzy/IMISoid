@@ -36,6 +36,14 @@ public class Event {
   public boolean isDirty() {
     return dirty;
   }
+  
+  public boolean isDruhArrival() {
+    return DRUH_ARRIVAL.equals(druh);
+  }
+  
+  public boolean isDruhLeave() {
+    return DRUH_LEAVE.equals(druh);
+  }
 
   public void setDirty(boolean dirty) {
     this.dirty = dirty;
@@ -254,7 +262,10 @@ public class Event {
   public static final String JSON_DELETED = "de";
   public static final String JSON_UPDATED = "u";
   public static final String JSON_SUMMARY = "sm";
-  public static final String JSON_DESCRIPTION = "ds";
+  public static final String JSON_DESCRIPTION = "ds";//TODO z jinyho projektu
   public static final String JSON_SYNC = "sy";
+  
+  public static final String DRUH_ARRIVAL = "P";
+  public static final String DRUH_LEAVE = "O";
 
 }

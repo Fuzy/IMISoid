@@ -17,7 +17,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -29,8 +28,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import android.app.LoaderManager;
 
-public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {// extends
-                                                                                                    // Activity
+public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
+    OnItemClickListener {// extends
+  // Activity
   private static final String TAG = DayTimelineActivity.class.getSimpleName();
   private static final String ACCOUNT_TYPE = Consts.ACCOUNT_TYPE;
   private static final String AUTHORITY = Consts.AUTHORITY;
@@ -55,8 +55,8 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     adapter = new EventsAdapter(getApplicationContext(), null, -1);
     blocks.setAdapter(adapter);
     blocks.setOnItemClickListener(this);
-    
-    EventManager.deleteAllEvents(getApplicationContext());
+
+    // EventManager.deleteAllEvents(getApplicationContext());
     Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
   }
 
@@ -64,7 +64,6 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   protected void onResume() {
     Log.d(TAG, "onResume()");
     super.onResume();
-    
 
     scroll.post(new Runnable() {
       public void run() {
@@ -100,7 +99,9 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   }
 
   private void startInsertActivity() {
-    startActivity(new Intent(Intent.ACTION_INSERT));
+    Intent intent = new Intent(Intent.ACTION_INSERT);
+    intent.setType("vnd.android.cursor.dir/event.imisoid");
+    startActivity(intent);
   }
 
   private void performSync() {
@@ -125,7 +126,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
     Log.d(TAG, "onLoadFinished() rows: " + data.getCount());
     adapter.swapCursor(data);
-    blocks.setVisibility(View.GONE);//TODO k cemu to je?
+    blocks.setVisibility(View.GONE);// TODO k cemu to je?
     blocks.setVisibility(View.VISIBLE);
   }
 
@@ -134,23 +135,24 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     Log.d(TAG, "onLoaderReset()");
     adapter.swapCursor(null);
   }
-  
+
   @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-      // TODO Auto-generated method stub
-      super.onActivityResult(requestCode, resultCode, data);
-      //TODO refresh view
-    }
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    // TODO Auto-generated method stub
+    super.onActivityResult(requestCode, resultCode, data);
+    // TODO refresh view
+  }
 
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     Log.d(TAG, "onItemClick() position: " + position + " id: " + id);
     startEditActivity(id);
   }
-  
+
   private void startEditActivity(long id) {
     Intent intent = new Intent(Intent.ACTION_VIEW);
     intent.putExtra("id", id);
+    intent.setType("vnd.android.cursor.item/event.imisoid");
     startActivity(intent);
   }
 

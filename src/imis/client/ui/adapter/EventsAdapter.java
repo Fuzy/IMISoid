@@ -37,15 +37,40 @@ public class EventsAdapter extends CursorAdapter {
 
   @Override
   public View newView(Context context, Cursor cursor, ViewGroup parent) {
-    Log.d(TAG, "newView()");
-    Event event = Event.cursorToEvent(cursor);
-    Log.d(TAG, event.toString());
+    int initPos = cursor.getPosition();
 
-    BlockView block = new BlockView(context, String.valueOf(event.get_id()), event.getPoznamka(),
-        event.getCas() - 5 * 1000 * 60 * 60, event.getCas()- 2 * 1000 * 60 * 60);// TODO mozna
-                                                             // predavat event
+    Event event, leaveEvent;
+    event = Event.cursorToEvent(cursor);
+    if (event.isDruhLeave()) {
+      Log.d(TAG, "newView() isDruhLeave");
+      return null;
+    }
+    // Log.d(TAG, event.toString());
 
+    // Mam prichozi udalost, hledam zda existuje i odchozi
+    leaveEvent = getNextLeaveEvent(cursor);
+    long leaveTime = (leaveEvent == null) ? System.currentTimeMillis() : leaveEvent.getCas();
+
+    int leaveId = (leaveEvent == null) ? -1 : leaveEvent.get_id();// TODO log
+    Log.d(TAG, "newView() arrive id: " + event.get_id() + " leave id: " + leaveId);
+    BlockView block = new BlockView(context, event.get_id(), leaveId, event.getCas(), leaveTime);
+
+    cursor.moveToPosition(initPos);
     return block;
+  }
+
+  private Event getNextLeaveEvent(Cursor cursor) {
+    int initPos = cursor.getPosition();
+
+    Event event = null;
+    while (cursor.moveToNext()) {
+      event = Event.cursorToEvent(cursor);
+      if (event.isDruhLeave())
+        break;
+      event = null;
+    }
+    cursor.moveToPosition(initPos);
+    return event;
   }
 
   // TODO upravit 2->1 komponentu: getCount, mapovaci kolekce

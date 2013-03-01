@@ -21,9 +21,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.text.format.DateUtils;
-import android.util.Log;
-import android.widget.Button;
-import android.view.MotionEvent;
 import android.view.View;
 
 import imis.client.R;
@@ -35,30 +32,35 @@ import java.util.TimeZone;
  * title and time span that it occupies. Usually organized automatically by
  * {@link BlocksLayout} to match up against a {@link TimeRulerView} instance.
  */
-public class BlockView extends View  {//TODO je nutne aby to byl button?Button
+public class BlockView extends View {// TODO je nutne aby to byl button?Button
   private static final String TAG = BlockView.class.getSimpleName();
   private static final int TIME_STRING_FLAGS = DateUtils.FORMAT_SHOW_DATE
       | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
-      | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;
+      | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;// TODO co to
+                                                                  // je?
 
-  private String blockId;
+  // private String blockId;
+  private int arriveId;
+  private int leaveId;
   private long startTime;
   private long endTime;
-  //TODO dalsi atributy
+
+  // TODO dalsi atributy
 
   public BlockView(Context context) {
-    this(context, null, null, 0, 0);
+    this(context, -1, -1, 0, 0);
   }
 
-  public BlockView(Context context, String blockId, String title, long startTime, long endTime) {
+  public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime) {
     super(context);
-    //Log.d(TAG, "BlockView()");
+    // Log.d(TAG, "BlockView()");
 
-    this.blockId = blockId;
+    this.arriveId = arriveId;
+    this.leaveId = leaveId;
     this.startTime = startTime;
     this.endTime = endTime;
 
-    //setText(title);
+    // setText(title);
 
     // TODO: turn into color state list with layers?
     int textColor = Color.WHITE;
@@ -68,12 +70,24 @@ public class BlockView extends View  {//TODO je nutne aby to byl button?Button
         R.drawable.btn_block);
     buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
 
-    //setTextColor(textColor);
+    // setTextColor(textColor);
     setBackgroundDrawable(buttonDrawable);
   }
 
-  public String getBlockId() {
-    return blockId;
+  public int getArriveId() {
+    return arriveId;
+  }
+
+  public void setArriveId(int arriveId) {
+    this.arriveId = arriveId;
+  }
+
+  public int getLeaveId() {
+    return leaveId;
+  }
+
+  public void setLeaveId(int leaveId) {
+    this.leaveId = leaveId;
   }
 
   public String getBlockTimeString() {
@@ -97,13 +111,9 @@ public class BlockView extends View  {//TODO je nutne aby to byl button?Button
     this.endTime = endTime;
   }
 
-  public void setBlockId(String blockId) {
-    this.blockId = blockId;
-  }
-
   @Override
   public String toString() {
-    return "BlockView [blockId=" + blockId + ", startTime=" + startTime
+    return "BlockView [arriveId=" + arriveId + ", leaveId=" + leaveId + ", startTime=" + startTime
         + ", endTime=" + endTime + "]";
   }
 

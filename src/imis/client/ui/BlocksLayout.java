@@ -115,6 +115,10 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
       Log.d(TAG, "count: " + count);
       for (int i = 0; i < count; i++) {
         final BlockView blockView = (BlockView) mAdapter.getView(i, null, this);
+        if (blockView == null) {
+          Log.d(TAG, "onLayout() blockView=null");
+          continue;
+        }
         // if (child.getVisibility() == GONE)
         // continue;
 
@@ -210,11 +214,11 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
   private void clickChildAt(final int x, final int y) {
 
     final int index = getContainingChildIndex(x, y);
-    Log.d(TAG, "onTouchEvent x:" + x + " y:" + y + " index: " + index);
+    //Log.d(TAG, "onTouchEvent x:" + x + " y:" + y + " index: " + index);
     if (index != INVALID_INDEX) {
       final View itemView = getChildAt(index);
       final int position = index;
-      final long id = Long.valueOf(((BlockView)itemView).getBlockId());//mAdapter.getItemId(position);
+      final long id = Long.valueOf(((BlockView)itemView).getArriveId());//mAdapter.getItemId(position);
       performItemClick(itemView, position, id);
     }
   }
@@ -226,7 +230,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
     for (int index = 0; index < getChildCount(); index++) {
       
       View child = getChildAt(index);
-      Log.d(TAG, "index:" + index + " class: "  + child.toString());
+      //Log.d(TAG, "index:" + index + " class: "  + child.toString());
       if (child instanceof BlockView) {
         child.getHitRect(mRect);
         if (mRect.contains(x, y)) {

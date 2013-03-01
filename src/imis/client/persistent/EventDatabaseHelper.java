@@ -33,17 +33,19 @@ public class EventDatabaseHelper extends SQLiteOpenHelper {
 
   // Tabulka kody_po - puvodni model (tabulka kody_po).
   // TODO sloupes _id, kod_po jako unique
-  /*public static final String COLUMN_KOD_PO_PRIM = "kod_po";
-  public static final String COLUMN_POPIS = "popis";*/
+  /*
+   * public static final String COLUMN_KOD_PO_PRIM = "kod_po"; public static
+   * final String COLUMN_POPIS = "popis";
+   */
 
   // Database creation sql statement
   private static final String CREATE_EVENTS_TABLE = "create table " + TABLE_EVENTS + "("
-      + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_SERVER_ID
-      + " integer not null," + COLUMN_DIRTY + " integer not null, " + COLUMN_DELETED
-      + " integer not null, " + COLUMN_ICP + " text not null, " + COLUMN_DATUM
-      + " integer not null," + COLUMN_KOD_PO + " text not null," + COLUMN_DRUH + " text not null,"
-      + COLUMN_CAS + " text not null," + COLUMN_IC_OBS + " text," + COLUMN_TYP + " text not null,"
-      + COLUMN_DATUM_ZMENY + " text not null," + COLUMN_POZNAMKA + " text);";
+      + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_SERVER_ID + " text not null,"
+      + COLUMN_DIRTY + " integer not null, " + COLUMN_DELETED + " integer not null, " + COLUMN_ICP
+      + " text not null, " + COLUMN_DATUM + " integer not null," + COLUMN_KOD_PO
+      + " text not null," + COLUMN_DRUH + " text not null," + COLUMN_CAS + " text not null,"
+      + COLUMN_IC_OBS + " text," + COLUMN_TYP + " text not null," + COLUMN_DATUM_ZMENY
+      + " text not null," + COLUMN_POZNAMKA + " text);";
 
   public EventDatabaseHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -57,16 +59,17 @@ public class EventDatabaseHelper extends SQLiteOpenHelper {
   public void onCreate(SQLiteDatabase database) {
     Log.d(TAG, "onCreate()");
     database.execSQL(CREATE_EVENTS_TABLE);
+    insertTestData(database);
   }
 
   @Override
   public void onOpen(SQLiteDatabase db) {
     Log.d(TAG, "onOpen()");
     super.onOpen(db);
-    /*if (!db.isReadOnly()) {
-      // Enable foreign key constraints
-      db.execSQL("PRAGMA foreign_keys=ON;");
-    }*/
+    /*
+     * if (!db.isReadOnly()) { // Enable foreign key constraints
+     * db.execSQL("PRAGMA foreign_keys=ON;"); }
+     */
   }
 
   /**
@@ -79,6 +82,27 @@ public class EventDatabaseHelper extends SQLiteOpenHelper {
   public void onUpgrade(SQLiteDatabase database, int arg1, int arg2) {
     database.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
     onCreate(database);
+
+  }
+
+  private void insertTestData(SQLiteDatabase database) {
+    Log.d(TAG, "insertTestData()");
+    database
+        .execSQL("insert into "
+            + TABLE_EVENTS
+            + " values (1,'AAAC4zAAMAAARwQAB7',1,0,'700510','2001.11.15','00','P','57600000','JJJ','O','2001.11.15',null)");
+    database
+    .execSQL("insert into "
+        + TABLE_EVENTS
+        + " values (2,'AAAC4zAAMAAARwQAB8',1,0,'700510','2001.11.15','00','O','61200000','JJJ','O','2001.11.15',null)");
+    database
+    .execSQL("insert into "
+        + TABLE_EVENTS
+        + " values (3,'AAAC4zAAMAAARwQAB9',1,0,'700510','2001.11.15','00','P','68400000','JJJ','O','2001.11.15',null)");
+database
+.execSQL("insert into "
+    + TABLE_EVENTS
+    + " values (4,'AAAC4zAAMAAARwQAB+',1,0,'700510','2001.11.15','00','O','72000000','JJJ','O','2001.11.15',null)");
 
   }
 

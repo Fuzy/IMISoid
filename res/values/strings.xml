@@ -150,6 +150,10 @@
     <string name="title_create">Vytvořit</string>
     <string name="title_edit">Editovat</string>
     <string name="title_view">Prohlížení</string>
+    
+    <string name="title_arrive">Příchod</string>
+    <string name="title_leave">Odchod</string>
+    <string name="label_note">Poznámka</string>
 
     <string-array name="kody_po_desc">
         <item>Normální pracovní doba</item>
