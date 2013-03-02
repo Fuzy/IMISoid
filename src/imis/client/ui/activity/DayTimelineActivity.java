@@ -1,17 +1,19 @@
 package imis.client.ui.activity;
 
+import static imis.client.persistent.Consts.URI;
+//import imis.client.ui.activity.ActivityConsts;
 import imis.client.R;
 import imis.client.authentication.Consts;
-import static imis.client.persistent.Consts.URI;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.EventManager.DataQuery;
+import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ObservableScrollView;
 import imis.client.ui.adapter.EventsAdapter;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -26,7 +28,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import android.app.LoaderManager;
 
 public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
     OnItemClickListener {// extends
@@ -145,13 +146,19 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
 
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    Log.d(TAG, "onItemClick() position: " + position + " id: " + id);
-    startEditActivity(id);
+
+    // TODO ziskat id
+    BlockView block = (BlockView) view;
+    int arriveID = block.getArriveId(), leaveID = block.getLeaveId();
+    Log.d(TAG, "onItemClick() position: " + position + " id: " + id + " arriveID: " + arriveID
+        + " leaveID: " + leaveID);
+    startEditActivity(arriveID, leaveID);
   }
 
-  private void startEditActivity(long id) {
+  private void startEditActivity(int arriveID, int leaveID) {
     Intent intent = new Intent(Intent.ACTION_VIEW);
-    intent.putExtra("id", id);
+    intent.putExtra(ActivityConsts.ID_ARRIVE, arriveID);
+    intent.putExtra(ActivityConsts.ID_LEAVE, leaveID);
     intent.setType("vnd.android.cursor.item/event.imisoid");
     startActivity(intent);
   }

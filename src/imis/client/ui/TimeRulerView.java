@@ -84,12 +84,13 @@ public class TimeRulerView extends View {
    * milliseconds since epoch).
    */
   public int getTimeVerticalOffset(long timeMillis) {
-    //Time time = new Time("Etc/GMT-2");
+    // Time time = new Time("Etc/GMT-2");
     // Time time = new Time("Etc/GMT+1");
     // TimeZone.getTimeZone("Etc/GMT-2").getID()
     Time time = new Time();
     time.set(timeMillis);
-    Log.d(TAG, "timeMillis: " + timeMillis + " time.hour: " + time.hour);
+    Log.d(TAG, "timeMillis: " + timeMillis + " time.hour: " + time.hour + " time.minute: "
+        + time.minute);
 
     final int minutes = ((time.hour - mStartHour) * 60) + time.minute;
     return (minutes * mHourHeight) / 60;
@@ -141,16 +142,8 @@ public class TimeRulerView extends View {
       // draw text title for timestamp
       canvas.drawRect(0, dividerY, mHeaderWidth, nextDividerY, dividerPaint);
 
-      // TODO: localize these labels better, including handling
-      // 24-hour mode when set in framework.
       final int hour = mStartHour + i;
       String label;
-      /*
-       * if (hour == 0) { label = "12am"; } else if (hour <= 11) { label = hour
-       * + "am"; } else if (hour == 12) { label = "12pm"; } else { label = (hour
-       * - 12) + "pm"; }
-       */
-
       label = String.valueOf(hour);
 
       final float labelWidth = labelPaint.measureText(label);

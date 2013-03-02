@@ -49,13 +49,13 @@ public class EventManager {
    * @param event
    * @return
    */
-  public static long addEvent(Context context, boolean dirty, Event event) {
+  public static int addEvent(Context context, boolean dirty, Event event) {
     Log.d(TAG, "addEvent()");
     ContentValues values = event.getAsContentValues();
     values.put(ColumnName.COLUMN_DIRTY, dirty);
     ContentResolver resolver = context.getContentResolver();
     Uri uri = resolver.insert(DataQuery.CONTENT_URI, values);
-    return Long.valueOf(uri.getLastPathSegment());
+    return Integer.valueOf(uri.getLastPathSegment());
   }
 
   public static int deleteEvent(Context context, long id) {
