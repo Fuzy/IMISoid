@@ -240,24 +240,24 @@ containing a value of this type.
         public static final int blocks_scroll=0x7f07000d;
         public static final int dialog_discard_confirm=0x7f070009;
         public static final int dialog_moderator=0x7f07000a;
-        public static final int edit_poznamka_arrive=0x7f070012;
+        public static final int edit_poznamka_arrive=0x7f070011;
         public static final int edit_poznamka_leave=0x7f070016;
         public static final int fragment_session_detail=0x7f070005;
         public static final int fragment_sessions=0x7f070004;
         public static final int fragment_vendor_detail=0x7f070007;
         public static final int fragment_vendors=0x7f070006;
-        public static final int label_arrive=0x7f07000f;
-        public static final int label_leave=0x7f070013;
+        public static final int leave_add_btn=0x7f070012;
+        public static final int leave_layout=0x7f070013;
         public static final int menu_add=0x7f07001b;
         public static final int menu_delete=0x7f070019;
         public static final int menu_edit=0x7f07001a;
         public static final int menu_refresh_progress=0x7f070008;
         public static final int menu_revert=0x7f070018;
         public static final int menu_save=0x7f070017;
-        public static final int spinner_kod_po_arrive=0x7f070010;
+        public static final int spinner_kod_po_arrive=0x7f07000f;
         public static final int spinner_kod_po_leave=0x7f070014;
         public static final int sync_button=0x7f07001c;
-        public static final int time_arrive=0x7f070011;
+        public static final int time_arrive=0x7f070010;
         public static final int time_leave=0x7f070015;
     }
     public static final class layout {
@@ -273,14 +273,14 @@ containing a value of this type.
         public static final int button_ok=0x7f080003;
         public static final int error_title=0x7f080005;
         public static final int kody_po_prompt=0x7f080004;
-        public static final int label_note=0x7f08000b;
+        public static final int label_note=0x7f08000c;
         public static final int menu_add=0x7f080002;
-        public static final int menu_delete=0x7f08000e;
-        public static final int menu_edit=0x7f08000f;
-        public static final int menu_revert=0x7f08000d;
+        public static final int menu_delete=0x7f08000f;
+        public static final int menu_edit=0x7f080010;
+        public static final int menu_revert=0x7f08000e;
         /**  Polozky menu pri edit aktivite 
          */
-        public static final int menu_save=0x7f08000c;
+        public static final int menu_save=0x7f08000d;
         /** 
     <string name="description_logo">Imisoid</string>
     <string name="description_home">Home</string>
@@ -410,6 +410,7 @@ containing a value of this type.
         public static final int title_create=0x7f080006;
         public static final int title_edit=0x7f080007;
         public static final int title_leave=0x7f08000a;
+        public static final int title_leave_btn=0x7f08000b;
         public static final int title_view=0x7f080008;
     }
     public static final class style {

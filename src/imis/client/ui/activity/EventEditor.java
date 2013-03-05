@@ -5,8 +5,6 @@ import java.util.Arrays;
 import imis.client.R;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
-import static imis.client.model.Util.timeFromEpochMsToDayMs;
-import android.animation.TimeAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,11 +18,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-public class EventEditor extends Activity implements OnItemSelectedListener {// View.OnClickListener,
+public class EventEditor extends Activity implements OnItemSelectedListener, View.OnClickListener { // View.OnClickListener
   private static final String TAG = EventEditor.class.getSimpleName();
 
   // Ulozena data v pripade preruseni aktivity (onSaveInstanceState)
@@ -46,6 +46,8 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
   private String[] kody_po_values;
   private EditText textPoznamkaArrive, textPoznamkaLeave;
   private TimePicker arriveTime, leaveTime;
+  private Button leaveBtn;
+  private LinearLayout leaveLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +91,27 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
   }
 
   private void init() {
-    prepareNoteFields();
-    prepareTimePickers();
     prepareSpinners();
+    prepareTimePickers();
+    prepareNoteFields();
+    leaveLayout = (LinearLayout) findViewById(R.id.leave_layout);
+    leaveBtn = (Button) findViewById(R.id.leave_add_btn);
+    leaveBtn.setOnClickListener(this);
+    //leaveEvent = null;//TODO
+    if (leaveEvent == null) {
+      Log.d(TAG, "init leaveEvent == null");
+      /*
+       * spinnerKod_poLeave.setVisibility(View.GONE);
+       * leaveTime.setVisibility(View.GONE);
+       * textPoznamkaLeave.setVisibility(View.GONE);
+       */
+      leaveLayout.setVisibility(View.GONE);
+    }
+    else {
+      Log.d(TAG, "init leaveEvent != null");
+      leaveBtn.setVisibility(View.GONE);
+    }
+
   }
 
   private void prepareTimePickers() {
@@ -187,6 +207,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
 
     if (leaveEvent != null) {
       populatLeaveFields();
+      // TODO tlacitko pridat odchod
     }
 
     /*
@@ -271,7 +292,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
     Log.d(TAG, "saveEvent state " + state);
     if (arriveEvent != null) {
       // Ulozi aktualizovane hodnoty
-      arriveEvent.setKod_po(kody_po_values[selectedArrive]);      
+      arriveEvent.setKod_po(kody_po_values[selectedArrive]);
       arriveEvent.setCas(getPickerCurrentTimeInMs(arriveTime));
       arriveEvent.setPoznamka(textPoznamkaArrive.getText().toString());
       if (state == STATE_EDIT) {
@@ -284,7 +305,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
     }
     if (leaveEvent != null) {
       // Ulozi aktualizovane hodnoty
-      leaveEvent.setKod_po(kody_po_values[selectedLeave]); 
+      leaveEvent.setKod_po(kody_po_values[selectedLeave]);
       leaveEvent.setCas(getPickerCurrentTimeInMs(leaveTime));
       leaveEvent.setPoznamka(textPoznamkaLeave.getText().toString());
       if (state == STATE_EDIT) {
@@ -313,12 +334,6 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
     invalidateOptionsMenu();
     // TODO dokoncit
   }
-
-  /*
-   * @Override public void onClick(View arg0) { Log.d(TAG, "onClick"); // Pokud
-   * uzivatel stiskne tlacitko, aktivita se ukonci // a probehne onPause metoda,
-   * kde se data ulozi isFinishedByUser = true; finish(); }
-   */
 
   @Override
   public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -429,5 +444,13 @@ public class EventEditor extends Activity implements OnItemSelectedListener {// 
     Log.d(TAG, "onSaveInstanceState");
     outState.putString(orig_kod_po, orig_kod_po);
     outState.putString(orig_poznamka, orig_poznamka);
+  }
+
+  @Override
+  public void onClick(View arg0) {
+    Log.d(TAG, "onClick");
+    leaveBtn.setVisibility(View.GONE);
+    leaveLayout.setVisibility(View.VISIBLE);
+    leaveEvent = new Event();//TODO test
   }
 }

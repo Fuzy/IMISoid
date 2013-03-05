@@ -153,6 +153,7 @@
     
     <string name="title_arrive">Příchod</string>
     <string name="title_leave">Odchod</string>
+    <string name="title_leave_btn">Zadej odchod</string>
     <string name="label_note">Poznámka</string>
 
     <string-array name="kody_po_desc">
