@@ -40,7 +40,7 @@ public class EventDatabaseHelper extends SQLiteOpenHelper {
 
   // Database creation sql statement
   private static final String CREATE_EVENTS_TABLE = "create table " + TABLE_EVENTS + "("
-      + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_SERVER_ID + " text not null,"
+      + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_SERVER_ID + " text,"
       + COLUMN_DIRTY + " integer not null, " + COLUMN_DELETED + " integer not null, " + COLUMN_ICP
       + " text not null, " + COLUMN_DATUM + " integer not null," + COLUMN_KOD_PO
       + " text not null," + COLUMN_DRUH + " text not null," + COLUMN_CAS + " text not null,"
@@ -90,19 +90,23 @@ public class EventDatabaseHelper extends SQLiteOpenHelper {
     database
         .execSQL("insert into "
             + TABLE_EVENTS
-            + " values (1,'AAAC4zAAMAAARwQAB7',1,0,'700510','2001.11.15','00','P','57600000','JJJ','O','2001.11.15',null)");
+            + " values (1,'AAAC4zAAMAAARwQAB7',1,0,'700510','15.11.2001','00','P','57600000','JJJ','O','15.11.2001',null)");
     database
     .execSQL("insert into "
         + TABLE_EVENTS
-        + " values (2,'AAAC4zAAMAAARwQAB8',1,0,'700510','2001.11.15','00','O','61200000','JJJ','O','2001.11.15',null)");
+        + " values (2,'AAAC4zAAMAAARwQAB8',1,0,'700510','15.11.2001','00','O','61200000','JJJ','O','15.11.2001',null)");
     database
     .execSQL("insert into "
         + TABLE_EVENTS
-        + " values (3,'AAAC4zAAMAAARwQAB9',1,0,'700510','2001.11.15','00','P','68400000','JJJ','O','2001.11.15',null)");
+        + " values (3,'AAAC4zAAMAAARwQAB9',1,0,'700510','15.11.2001','00','P','68400000','JJJ','O','15.11.2001',null)");
 database
 .execSQL("insert into "
     + TABLE_EVENTS
-    + " values (4,'AAAC4zAAMAAARwQAB+',1,0,'700510','2001.11.15','00','O','72000000','JJJ','O','2001.11.15',null)");
+    + " values (4,'AAAC4zAAMAAARwQAB+',1,0,'700510','15.11.2001','00','O','72000000','JJJ','O','15.11.2001',null)");
+database
+.execSQL("insert into "
+    + TABLE_EVENTS
+    + " values (5,null,1,0,'700510','15.11.2001','00','O','72000000','JJJ','O','15.11.2001',null)");
 
   }
 

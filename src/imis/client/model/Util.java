@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
@@ -22,11 +23,14 @@ public class Util {
   public static final Type listType = new TypeToken<List<Event>>() {
   }.getType();
   public static final JsonParser parser = new JsonParser();
+  @SuppressLint("SimpleDateFormat")
   public static final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
   static {
     gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
     gsonBuilder.registerTypeAdapter(java.sql.Date.class, new DateDeserializer());
+    gsonBuilder.registerTypeAdapter(java.sql.Date.class, new DateSerializer());
+    gsonBuilder.setExclusionStrategies(new MyExclusionStrategy());
     gson = gsonBuilder.create();
   }
 

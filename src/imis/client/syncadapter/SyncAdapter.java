@@ -1,5 +1,6 @@
 package imis.client.syncadapter;
 
+import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 
@@ -39,8 +40,23 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
       ContentProviderClient provider, SyncResult syncResult) {
     Log.d(TAG, "onPerformSync()");
     
-    long lastSyncMarker = getServerSyncMarker(account);
-
+    //long lastSyncMarker = getServerSyncMarker(account);
+    List<Event> dirtyEvents = EventManager.getDirtyEvents(context);
+    for (Event event : dirtyEvents) {
+      if (event.isDeleted()) {
+        NetworkUtilities.deleteEvent(event.getServer_id());
+      } else {
+        NetworkUtilities.createOrUpdateEvent(event);
+      }
+        /*else if (event.hasServer_id()) {
+      }
+        
+      } else if (event.hasServer_id() == false) {
+        //Log.d(TAG, "onPerformSync() event.hasServer_id() " + event.hasServer_id());
+      } */
+    }
+    //Log.d(TAG, "onPerformSync() dirtyEvents: " + dirtyEvents);
+    Log.d(TAG, "onPerformSync() end");
     //List<JsonObject> serverEvents;
     
     //serverEvents = NetworkUtilities.getEvents();

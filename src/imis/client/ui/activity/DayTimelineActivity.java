@@ -120,7 +120,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   @Override
   public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
     Log.d(TAG, "onCreateLoader()");
-    return new CursorLoader(getApplicationContext(), URI, DataQuery.PROJECTION, null, null, null);
+    return new CursorLoader(getApplicationContext(), URI, DataQuery.PROJECTION_ALL, DataQuery.SELECTION_UNDELETED, null, null);
   }
 
   @Override

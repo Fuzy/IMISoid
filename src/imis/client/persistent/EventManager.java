@@ -20,7 +20,7 @@ public class EventManager {
   private static final String TAG = "EventManager";
 
   //TODO serverEvents jako Event
-  public static long updateEvents(Context context, List<JsonObject> serverEvents,
+  private static long updateEvents(Context context, List<JsonObject> serverEvents,
       long lastSyncMarker) {
     Log.d(TAG, "updateEvents()");
     long currentSyncMarker = lastSyncMarker;
@@ -76,8 +76,8 @@ public class EventManager {
   public static Event getEvent(Context context, long id) {
     Log.d(TAG, "getEvent()");
     ContentResolver resolver = context.getContentResolver();
-    Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION,
-        DataQuery.SELECTION, new String[] { String.valueOf(id) }, null);
+    Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL,
+        DataQuery.SELECTION_ID, new String[] { String.valueOf(id) }, null);
     Event event = null;
     while (cursor.moveToNext()) {
       event = Event.cursorToEvent(cursor);
@@ -86,12 +86,25 @@ public class EventManager {
     return event;
   }
   
-  //TODO getDirtyEvents 
+  //TODO test
+  public static List<Event> getDirtyEvents(Context context) {
+    Log.d(TAG, "getDirtyEvents()");
+    ContentResolver resolver = context.getContentResolver();
+    Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL, DataQuery.SELECTION_DIRTY, null, null);
+    List<Event> events = new ArrayList<Event>();
+    Event event = null;
+    while (cursor.moveToNext()) {
+      event = Event.cursorToEvent(cursor);
+      events.add(event);
+    }
+    cursor.close();
+    return events;
+  }
   
   public static List<Event> getAllEvents(Context context) {
     Log.d(TAG, "getAllEvents()");
     ContentResolver resolver = context.getContentResolver();
-    Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION, null, null, null);
+    Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL, null, null, null);
     List<Event> events = new ArrayList<Event>();
     Event event = null;
     while (cursor.moveToNext()) {
@@ -103,7 +116,7 @@ public class EventManager {
   }
 
   public static int markEventAsDeleted(Context context, long id) {
-    Log.d(TAG, "markEventAsDeleted()");
+    Log.d(TAG, "markEventAsDeleted() id: " + id);
     Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(id));
     ContentResolver resolver = context.getContentResolver();
     ContentValues values = new ContentValues();
@@ -129,14 +142,18 @@ public class EventManager {
         + EventDatabaseHelper.TABLE_EVENTS);
 
     // vybere vsechny sloupce
-    public static final String[] PROJECTION = { ColumnName.COLUMN_ID, ColumnName.COLUMN_SERVER_ID,
+    public static final String[] PROJECTION_ALL = { ColumnName.COLUMN_ID, ColumnName.COLUMN_SERVER_ID,
         ColumnName.COLUMN_DIRTY, ColumnName.COLUMN_DELETED, ColumnName.COLUMN_ICP,
         ColumnName.COLUMN_DATUM, ColumnName.COLUMN_KOD_PO, ColumnName.COLUMN_DRUH,
         ColumnName.COLUMN_CAS, ColumnName.COLUMN_IC_OBS, ColumnName.COLUMN_TYP,
         ColumnName.COLUMN_DATUM_ZMENY, ColumnName.COLUMN_POZNAMKA };
 
     // vyber podle id ukolu
-    public static final String SELECTION = ColumnName.COLUMN_ID + "=?";
+    public static final String SELECTION_ID = ColumnName.COLUMN_ID + "=?";
+    // vyber urcenych k sync
+    public static final String SELECTION_DIRTY = ColumnName.COLUMN_DIRTY + "=1";
+   // vyber nesmazanych
+    public static final String SELECTION_UNDELETED = ColumnName.COLUMN_DELETED + "=0";
 
   }
 

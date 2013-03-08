@@ -164,6 +164,7 @@ public class MyEventContentProvider extends ContentProvider {
 
   @Override
   public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    Log.d(TAG, "update");
     int rowsUpdated = 0;
 
     int uriType = sURIMatcher.match(uri);
@@ -174,7 +175,9 @@ public class MyEventContentProvider extends ContentProvider {
       rowsUpdated = sqlDB.update(TABLE_EVENTS, values, selection, selectionArgs);
       break;
     case EVENT_ID:
+     
       String id = uri.getLastPathSegment();
+      Log.d(TAG, "update EVENT_ID id: " + id);
       rowsUpdated = sqlDB.update(TABLE_EVENTS, values, ColumnName.COLUMN_ID + "=" + id, null);
       break;
     }

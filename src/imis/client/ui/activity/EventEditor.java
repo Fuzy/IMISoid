@@ -62,6 +62,8 @@ public class EventEditor extends Activity implements OnItemSelectedListener, Vie
     if (Intent.ACTION_VIEW.equals(action)) {
       // Prohlizeni: nacte udalosti
       state = STATE_VIEWING;
+      arriveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_ARRIVE));
+      leaveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_LEAVE));
       loadEvents(arriveId, leaveId, intent);
     }
     else if (Intent.ACTION_INSERT.equals(action)) {
@@ -80,8 +82,6 @@ public class EventEditor extends Activity implements OnItemSelectedListener, Vie
   }
 
   private void loadEvents(int arriveId, int leaveId, Intent intent) {
-    arriveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_ARRIVE));
-    leaveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_LEAVE));
     Log.d(TAG, "onCreate arriveId: " + arriveId + " leaveId: " + leaveId);
     // Ziska cursor pro pristup k ukolu
     arriveEvent = EventManager.getEvent(getApplicationContext(), arriveId);

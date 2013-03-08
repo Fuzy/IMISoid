@@ -88,6 +88,11 @@ public class Event {
   public void setServer_id(String server_id) {
     this.server_id = server_id;
   }
+  
+  public boolean hasServer_id() {
+    if (server_id == null) return false;//TODO nebo prazdny retezec?
+    else return true;
+  }
 
   public String getIcp() {
     return icp;
@@ -172,6 +177,10 @@ public class Event {
   public static Event jsonToEvent(JsonObject object) {
     Event event = Util.gson.fromJson(object, Event.class);
     return event;
+  }
+  
+  public static String getAsJson(Event event) {
+    return Util.gson.toJson(event);
   }
 
   // "dd.MM.yyyy"

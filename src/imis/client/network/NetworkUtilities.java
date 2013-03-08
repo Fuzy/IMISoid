@@ -4,6 +4,7 @@ import imis.client.model.Event;
 import imis.client.model.Util;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -30,9 +33,9 @@ public class NetworkUtilities {
   private static final String TAG = "NetworkUtilities";
   // private static final String BASE_URL =
   // "http://172.20.3.196:8080/Imisoid_WS/";
-  private static final String BASE_URL = "http://10.0.2.2:8081/Imisoid_WS/";
+  private static final String BASE_URL = "http://10.0.0.3:8081/Imisoid_WS/";//10.0.2.2
   private static final String EVENTS_URI = BASE_URL + "events";
-  private static final int TIMEOUT = 30 * 1000; // ms
+  private static final int TIMEOUT = 5 * 1000; // ms
   private static HttpClient httpClient = null;
 
   /*
@@ -43,7 +46,7 @@ public class NetworkUtilities {
   /**
    * Configures the httpClient to connect to the URL provided.
    */
-  public static HttpClient getHttpClient() {
+  private static HttpClient getHttpClient() {
     Log.d(TAG, "getHttpClient()");
     if (httpClient == null) {
       httpClient = new DefaultHttpClient();
@@ -87,6 +90,12 @@ public class NetworkUtilities {
 
     return events;
   }
+  
+  public static void createOrUpdateEvent(Event event) {
+    Log.d(TAG, "createOrUpdateEvent() event: " + event);
+    String uri = EVENTS_URI;
+    sendHttpPost(uri, event);
+  }
 
   private static String sendHttpGetForUserEvents(String uri) {
     Log.d(TAG, "sendHttpGetForUserEvents() uri: " + uri);
@@ -114,7 +123,7 @@ public class NetworkUtilities {
   }
 
   private static void sendHttpDelete(String uri) {
-    HttpClient httpClient = new DefaultHttpClient();
+    HttpClient httpClient = getHttpClient();
     HttpDelete delete = new HttpDelete(uri);
     HttpResponse resp;
     int code = -1;
@@ -134,6 +143,31 @@ public class NetworkUtilities {
   }
 
   private static void sendHttpPost(String uri, Event event) {
+    HttpClient httpClient = getHttpClient();
+    HttpPost post = new HttpPost(uri);
+    HttpResponse resp;
+    int code = -1;
+    try {
+      StringEntity se = new StringEntity(Event.getAsJson(event));
+      post.setEntity(se);
+      post.setHeader("Accept", "application/json");
+      post.setHeader("Content-type", "application/json");
+      resp = httpClient.execute(post);
+      code = resp.getStatusLine().getStatusCode();
+    }
+    catch (UnsupportedEncodingException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (ClientProtocolException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    Log.d(TAG, "sendHttpPost uri: " + uri + "code: " + code);
 
   }
 
