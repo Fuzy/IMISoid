@@ -1,8 +1,10 @@
 package imis.client.network;
 
+import imis.client.model.Event;
 import imis.client.model.Util;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -20,7 +23,6 @@ import org.apache.http.util.EntityUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 
 import android.util.Log;
 
@@ -33,8 +35,10 @@ public class NetworkUtilities {
   private static final int TIMEOUT = 30 * 1000; // ms
   private static HttpClient httpClient = null;
 
-  /*private static final String PARAM_FROM_DATE = "from";
-  private static final String PARAM_TO_DATE = "to";*/
+  /*
+   * private static final String PARAM_FROM_DATE = "from"; private static final
+   * String PARAM_TO_DATE = "to";
+   */
 
   /**
    * Configures the httpClient to connect to the URL provided.
@@ -51,36 +55,51 @@ public class NetworkUtilities {
     return httpClient;
   }
 
-  //@SuppressWarnings("unchecked")
-  public static List<JsonObject> getEvents() {
-    List<JsonObject> events = new ArrayList<JsonObject>();
+  public static void deleteEvent(String rowid) {
+    Log.d(TAG, "deleteEvent() rowid: " + rowid);
+    String uri = EVENTS_URI + "/" + rowid;
+    sendHttpDelete(uri);
+  }
 
+  // @SuppressWarnings("unchecked")
+  public static List<Event> getUserEvents(final String icp, final Date from, final Date to) {
+    String strFrom = Util.formatDate(from);
+    String strTo = Util.formatDate(to);
+    Log.d(TAG, "getUserEvents() cip: " + icp + " strFrom: " + strFrom + " strTo:" + strTo);
+
+    String uri = EVENTS_URI + "/" + icp + "?from=" + strFrom + "&to=" + strTo;// TODO
+    // uri
+    // builder
+    Log.d(TAG, "getUserEvents uri: " + uri);
+
+    final String resp = sendHttpGetForUserEvents(uri);
+
+    JsonElement o = Util.parser.parse(resp);
+    JsonArray array = o.getAsJsonArray();
+    JsonObject eventJson;
+    List<Event> events = new ArrayList<Event>();
+    Event event;
+    for (JsonElement jsonElement : array) {
+      eventJson = jsonElement.getAsJsonObject();
+      event = Event.jsonToEvent(eventJson);
+      events.add(event);
+    }
+
+    return events;
+  }
+
+  private static String sendHttpGetForUserEvents(String uri) {
+    Log.d(TAG, "sendHttpGetForUserEvents() uri: " + uri);
     HttpClient httpclient = getHttpClient();
-    // Prepare a request object
-    //HttpGet httpget = new HttpGet(EVENTS_URI + "/0000001?from=29.7.2004&to=29.7.2004");
-    HttpGet httpget = new HttpGet(EVENTS_URI + "/700510?from=1.11.2001&to=1.11.2001");
-    //TODO UriBuilder
-    Log.d(TAG, " " + httpget.getURI().toString());
-
-    // Execute the request
+    HttpGet httpget = new HttpGet(uri);
+    HttpResponse resp;
+    int code = -1;
+    String respStr = null;
     try {
-      Log.d(TAG, "getEvents() executing");
-      HttpResponse response = httpclient.execute(httpget);
-      // Get hold of the response entity
-      HttpEntity entity = response.getEntity();
-      final String resp = EntityUtils.toString(entity);
-
-      // events = (ArrayList<Event>) Util.gson.fromJson(resp, Util.listType);
-      //Gson gson = new Gson();
-      //Type listType = new TypeToken<List<Event>>() {
-      //}.getType();
-      //events = (List<Event>) gson.fromJson(resp, listType);
-      JsonElement o = Util.parser.parse(resp);
-      JsonArray array = o.getAsJsonArray();
-      for (JsonElement jsonElement : array) {
-        events.add(jsonElement.getAsJsonObject());
-      }
-
+      resp = httpclient.execute(httpget);
+      HttpEntity entity = resp.getEntity();
+      code = resp.getStatusLine().getStatusCode();
+      respStr = EntityUtils.toString(entity);
     }
     catch (ClientProtocolException e) {
       // TODO Auto-generated catch block
@@ -90,11 +109,32 @@ public class NetworkUtilities {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    catch (JsonSyntaxException e) {
+    Log.d(TAG, "sendHttpGetForUserEvents uri: " + uri + "code: " + code);
+    return respStr;
+  }
+
+  private static void sendHttpDelete(String uri) {
+    HttpClient httpClient = new DefaultHttpClient();
+    HttpDelete delete = new HttpDelete(uri);
+    HttpResponse resp;
+    int code = -1;
+    try {
+      resp = httpClient.execute(delete);
+      code = resp.getStatusLine().getStatusCode();
+    }
+    catch (ClientProtocolException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    Log.d(TAG, "sendDelete uri: " + uri + "code: " + code);
+  }
 
-    return events;
+  private static void sendHttpPost(String uri, Event event) {
+
   }
 
 }

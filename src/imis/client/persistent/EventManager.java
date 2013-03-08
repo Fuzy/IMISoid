@@ -19,6 +19,7 @@ import android.util.Log;
 public class EventManager {
   private static final String TAG = "EventManager";
 
+  //TODO serverEvents jako Event
   public static long updateEvents(Context context, List<JsonObject> serverEvents,
       long lastSyncMarker) {
     Log.d(TAG, "updateEvents()");
@@ -84,6 +85,8 @@ public class EventManager {
     cursor.close();
     return event;
   }
+  
+  //TODO getDirtyEvents 
   
   public static List<Event> getAllEvents(Context context) {
     Log.d(TAG, "getAllEvents()");

@@ -41,11 +41,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     
     long lastSyncMarker = getServerSyncMarker(account);
 
-    List<JsonObject> serverEvents;
+    //List<JsonObject> serverEvents;
     
-    serverEvents = NetworkUtilities.getEvents();
+    //serverEvents = NetworkUtilities.getEvents();
     
-    EventManager.updateEvents(context, serverEvents, lastSyncMarker);
+    //EventManager.updateEvents(context, serverEvents, lastSyncMarker);
    
   }
 
