@@ -42,6 +42,18 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
   private TimeRulerView mRulerView;
   private View mNowView;
 
+  /** User is not touching the list */
+  private static final int TOUCH_STATE_RESTING = 0;
+
+  /** User is touching the list and right now it's still a "click" */
+  private static final int TOUCH_STATE_CLICK = 1;
+
+  /** User is scrolling the list */
+  private static final int TOUCH_STATE_SCROLL = 2;
+
+  /** Current touch state */
+  private int touchState = TOUCH_STATE_RESTING;
+
   public BlocksLayout(Context context) {
     this(context, null);
   }
@@ -131,7 +143,8 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
         if (params3 == null) {
           params3 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         }
-        addViewInLayout(blockView, -1, params3, true);//TODO jsou indexy podle vyrustajiciho casu
+        addViewInLayout(blockView, -1, params3, true);// TODO jsou indexy podle
+                                                      // vyrustajiciho casu
         blockView.layout(left, top, right, bottom);
         Log.d(TAG, "left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom
             + " ruler height: " + rulerView.getHeight());
@@ -198,17 +211,35 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
    */
   @Override
   public boolean onTouchEvent(MotionEvent event) {
-    Log.d(TAG, "onTouchEvent " + event.getAction());
     if (getChildCount() == 0) {
       return false;
     }
     switch (event.getAction()) {
     case MotionEvent.ACTION_DOWN:
-      Log.d(TAG, "ACTION_DOWN");
-      clickChildAt((int) event.getX(), (int) event.getY());
+      //Log.d(TAG, "ACTION_DOWN");
+      startTouch();
+      break;
+    case MotionEvent.ACTION_MOVE:
+      //Log.d(TAG, "ACTION_MOVE");
+      break;
+    case MotionEvent.ACTION_UP:
+      //Log.d(TAG, "ACTION_UP");
+      if (touchState == TOUCH_STATE_CLICK) {
+        clickChildAt((int) event.getX(), (int) event.getY());
+      }
+      endTouch();
       break;
     }
-    return super.onTouchEvent(event);
+    // return super.onTouchEvent(event);
+    return true;
+  }
+
+  private void startTouch() {
+    touchState = TOUCH_STATE_CLICK;
+  }
+
+  private void endTouch() {
+    touchState = TOUCH_STATE_RESTING;
   }
 
   private void clickChildAt(final int x, final int y) {

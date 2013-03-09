@@ -127,8 +127,9 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
     Log.d(TAG, "onLoadFinished() rows: " + data.getCount());
     adapter.swapCursor(data);
-    blocks.setVisibility(View.GONE);// TODO k cemu to je?
-    blocks.setVisibility(View.VISIBLE);
+    /*blocks.setVisibility(View.GONE);// TODO k cemu to je?
+    blocks.setVisibility(View.VISIBLE);*/
+    blocks.invalidate();//TODO test
   }
 
   @Override

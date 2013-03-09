@@ -5,6 +5,7 @@ import imis.client.model.Util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class NetworkUtilities {
   private static final String TAG = "NetworkUtilities";
   // private static final String BASE_URL =
   // "http://172.20.3.196:8080/Imisoid_WS/";
-  private static final String BASE_URL = "http://10.0.0.3:8081/Imisoid_WS/";//10.0.2.2
+  private static final String BASE_URL = "http://10.0.0.1:8081/Imisoid_WS/";// 10.0.2.2
   private static final String EVENTS_URI = BASE_URL + "events";
   private static final int TIMEOUT = 5 * 1000; // ms
   private static HttpClient httpClient = null;
@@ -58,10 +59,11 @@ public class NetworkUtilities {
     return httpClient;
   }
 
-  public static void deleteEvent(String rowid) {
+  public static int deleteEvent(String rowid) {
     Log.d(TAG, "deleteEvent() rowid: " + rowid);
     String uri = EVENTS_URI + "/" + rowid;
-    sendHttpDelete(uri);
+    int code = sendHttpDelete(uri);
+    return code;
   }
 
   // @SuppressWarnings("unchecked")
@@ -75,7 +77,8 @@ public class NetworkUtilities {
     // builder
     Log.d(TAG, "getUserEvents uri: " + uri);
 
-    final String resp = sendHttpGetForUserEvents(uri);
+    String resp = new String();
+    int code = sendHttpGetForUserEvents(uri, resp);
 
     JsonElement o = Util.parser.parse(resp);
     JsonArray array = o.getAsJsonArray();
@@ -88,27 +91,35 @@ public class NetworkUtilities {
       events.add(event);
     }
 
-    return events;
-  }
-  
-  public static void createOrUpdateEvent(Event event) {
-    Log.d(TAG, "createOrUpdateEvent() event: " + event);
-    String uri = EVENTS_URI;
-    sendHttpPost(uri, event);
+    return events;// TODO vracet kod
   }
 
-  private static String sendHttpGetForUserEvents(String uri) {
+  public static int createEvent(Event event) {
+    Log.d(TAG, "createEvent() event: " + event);
+    String uri = EVENTS_URI;
+    int code = sendHttpPost(uri, event);
+    return code;
+  }
+
+  public static int updateEvent(Event event) {
+    Log.d(TAG, "updateEvent() event: " + event);
+    String uri = EVENTS_URI;
+    int code = sendHttpPost(uri, event);
+    return code;
+  }
+
+  private static int sendHttpGetForUserEvents(String uri, String response) {
     Log.d(TAG, "sendHttpGetForUserEvents() uri: " + uri);
     HttpClient httpclient = getHttpClient();
     HttpGet httpget = new HttpGet(uri);
     HttpResponse resp;
     int code = -1;
-    String respStr = null;
+    // String respStr = null;
     try {
       resp = httpclient.execute(httpget);
       HttpEntity entity = resp.getEntity();
       code = resp.getStatusLine().getStatusCode();
-      respStr = EntityUtils.toString(entity);
+      response = EntityUtils.toString(entity);
     }
     catch (ClientProtocolException e) {
       // TODO Auto-generated catch block
@@ -119,10 +130,10 @@ public class NetworkUtilities {
       e.printStackTrace();
     }
     Log.d(TAG, "sendHttpGetForUserEvents uri: " + uri + "code: " + code);
-    return respStr;
+    return code;
   }
 
-  private static void sendHttpDelete(String uri) {
+  private static int sendHttpDelete(String uri) {
     HttpClient httpClient = getHttpClient();
     HttpDelete delete = new HttpDelete(uri);
     HttpResponse resp;
@@ -140,9 +151,10 @@ public class NetworkUtilities {
       e.printStackTrace();
     }
     Log.d(TAG, "sendDelete uri: " + uri + "code: " + code);
+    return code;
   }
 
-  private static void sendHttpPost(String uri, Event event) {
+  private static int sendHttpPost(String uri, Event event) {
     HttpClient httpClient = getHttpClient();
     HttpPost post = new HttpPost(uri);
     HttpResponse resp;
@@ -154,6 +166,14 @@ public class NetworkUtilities {
       post.setHeader("Content-type", "application/json");
       resp = httpClient.execute(post);
       code = resp.getStatusLine().getStatusCode();
+      // TODO event doplni rowid
+      if (event.getServer_id() == null) {
+        String s = resp.getLastHeader("Location").getValue();
+        URI location = URI.create(s);
+        String path = location.getPath();
+        event.setServer_id(path.substring(path.lastIndexOf('/') + 1));
+        Log.d(TAG, "sendHttpPost event: " + event);
+      }
     }
     catch (UnsupportedEncodingException e) {
       // TODO Auto-generated catch block
@@ -168,7 +188,7 @@ public class NetworkUtilities {
       e.printStackTrace();
     }
     Log.d(TAG, "sendHttpPost uri: " + uri + "code: " + code);
-
+    return code;
   }
 
 }

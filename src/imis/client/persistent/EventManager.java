@@ -6,6 +6,7 @@ import imis.client.persistent.Consts.ColumnName;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -133,6 +134,18 @@ public class EventManager {
                                                       // aktual.
     values.put(Event.COL_DIRTY, true);
     return resolver.update(uri, values, null, null);
+  }
+  
+  public static void updateEventServerId(Context context, long id, String rowid) {
+    Log.d(TAG, "updateEventServerId()");
+    // Uri ukolu
+    Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(id));
+    ContentResolver resolver = context.getContentResolver();
+    ContentValues values = new ContentValues();
+    values.put(ColumnName.COLUMN_SERVER_ID, rowid);
+
+    // Updatuje ukol - deleted = true
+    resolver.update(uri, values, null, null);
   }
 
   final public static class DataQuery {

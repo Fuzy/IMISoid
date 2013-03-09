@@ -6,6 +6,8 @@ import imis.client.persistent.EventManager;
 
 import java.util.List;
 
+import org.apache.http.HttpStatus;
+
 import com.google.gson.JsonObject;
 
 import android.accounts.Account;
@@ -39,30 +41,66 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
   public void onPerformSync(Account account, Bundle extras, String authority,
       ContentProviderClient provider, SyncResult syncResult) {
     Log.d(TAG, "onPerformSync()");
-    
-    //long lastSyncMarker = getServerSyncMarker(account);
+
+    // long lastSyncMarker = getServerSyncMarker(account);
+    int httpCode = -1;
+    // ziska vsechny lokalni zmeny
     List<Event> dirtyEvents = EventManager.getDirtyEvents(context);
     for (Event event : dirtyEvents) {
       if (event.isDeleted()) {
-        NetworkUtilities.deleteEvent(event.getServer_id());
-      } else {
-        NetworkUtilities.createOrUpdateEvent(event);
+        // mazani
+        httpCode = NetworkUtilities.deleteEvent(event.getServer_id());
+        if (httpCode == HttpStatus.SC_OK) {// lepsi kod OK
+          EventManager.deleteEvent(context, event.get_id());
+        }
+        else {
+          // TODO neuspech
+        }
       }
-        /*else if (event.hasServer_id()) {
+      else if (event.hasServer_id()) {
+        // update
+        httpCode = NetworkUtilities.updateEvent(event);
+        if (httpCode == HttpStatus.SC_ACCEPTED) {
+          Log.d(TAG, "onPerformSync() update ok");
+        }
+        else {
+          // TODO neuspech
+        }
       }
-        
-      } else if (event.hasServer_id() == false) {
-        //Log.d(TAG, "onPerformSync() event.hasServer_id() " + event.hasServer_id());
-      } */
+
+      else if (event.hasServer_id() == false) {
+        // pridani nove udalosti
+        httpCode = NetworkUtilities.createEvent(event);
+        if (httpCode == HttpStatus.SC_CREATED) {
+          EventManager.updateEventServerId(context, event.get_id(), event.getServer_id());
+        }
+        else {
+          // TODO neuspech
+        }
+      }
+
+      /*
+       * else { // odesle novy nebo zmeneny httpCode =
+       * NetworkUtilities.createOrUpdateEvent(event); if (httpCode ==
+       * HttpStatus.SC_NO_CONTENT) {
+       * 
+       * } else { // TODO neuspech } }
+       */
+      /*
+       * else if (event.hasServer_id()) { }
+       * 
+       * } else if (event.hasServer_id() == false) { //Log.d(TAG,
+       * "onPerformSync() event.hasServer_id() " + event.hasServer_id()); }
+       */
     }
-    //Log.d(TAG, "onPerformSync() dirtyEvents: " + dirtyEvents);
+    // Log.d(TAG, "onPerformSync() dirtyEvents: " + dirtyEvents);
     Log.d(TAG, "onPerformSync() end");
-    //List<JsonObject> serverEvents;
-    
-    //serverEvents = NetworkUtilities.getEvents();
-    
-    //EventManager.updateEvents(context, serverEvents, lastSyncMarker);
-   
+    // List<JsonObject> serverEvents;
+
+    // serverEvents = NetworkUtilities.getEvents();
+
+    // EventManager.updateEvents(context, serverEvents, lastSyncMarker);
+
   }
 
   /**

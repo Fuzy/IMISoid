@@ -97,7 +97,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener, Vie
     leaveLayout = (LinearLayout) findViewById(R.id.leave_layout);
     leaveBtn = (Button) findViewById(R.id.leave_add_btn);
     leaveBtn.setOnClickListener(this);
-    //leaveEvent = null;//TODO
+    // leaveEvent = null;//TODO
     if (leaveEvent == null) {
       Log.d(TAG, "init leaveEvent == null");
       /*
@@ -202,18 +202,14 @@ public class EventEditor extends Activity implements OnItemSelectedListener, Vie
     // Pokud se podarilo ziskat event s daty lze pokracovat dal.
     if (arriveEvent != null) {
       populateArriveFields();
-      disableChanges();
+      if (state == STATE_VIEWING) {
+        disableChanges();
+      }
     }
 
     if (leaveEvent != null) {
       populatLeaveFields();
-      // TODO tlacitko pridat odchod
     }
-
-    /*
-     * else { // TODO muze nastat? setTitle(getText(R.string.error_title)); }
-     */
-
   }
 
   @Override
@@ -451,6 +447,6 @@ public class EventEditor extends Activity implements OnItemSelectedListener, Vie
     Log.d(TAG, "onClick");
     leaveBtn.setVisibility(View.GONE);
     leaveLayout.setVisibility(View.VISIBLE);
-    leaveEvent = new Event();//TODO test
+    leaveEvent = new Event();// TODO test
   }
 }
