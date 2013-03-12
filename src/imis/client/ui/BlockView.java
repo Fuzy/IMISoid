@@ -44,6 +44,7 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
   private int leaveId;
   private long startTime;
   private long endTime;
+  LayerDrawable buttonDrawable;
 
   // TODO dalsi atributy
 
@@ -70,6 +71,13 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         R.drawable.btn_block);
     buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
 
+    // setTextColor(textColor);
+    setBackgroundDrawable(buttonDrawable);
+  }
+  
+  public void setAsDeleted() {
+    int accentColor = getResources().getColor(R.color.block_column_2_del);   
+    buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
     // setTextColor(textColor);
     setBackgroundDrawable(buttonDrawable);
   }

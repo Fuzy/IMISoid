@@ -32,7 +32,8 @@
 
     <color name="all_track_color">#ff222222</color>
 -->
-    <color name="block_column_1">#ff0fabff</color>
+    <color name="block_column_1">#ff0fabff</color>    
     <color name="block_column_2">#ffdf1831</color>
+    <color name="block_column_2_del">#ffDE596A</color>
     <color name="block_column_3">#ff009939</color>
 </resources>

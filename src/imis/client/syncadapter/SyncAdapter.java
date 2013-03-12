@@ -41,9 +41,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
   public void onPerformSync(Account account, Bundle extras, String authority,
       ContentProviderClient provider, SyncResult syncResult) {
     Log.d(TAG, "onPerformSync()");
+    int httpCode = -1;
+    httpCode = NetworkUtilities.testRemoteDBAvailability();
+    if (httpCode != HttpStatus.SC_OK) {
+      Log.d(TAG, "onPerformSync() connection unavailable");
+      return;
+    }
 
     // long lastSyncMarker = getServerSyncMarker(account);
-    int httpCode = -1;
+    
     // ziska vsechny lokalni zmeny
     List<Event> dirtyEvents = EventManager.getDirtyEvents(context);
     for (Event event : dirtyEvents) {
@@ -78,21 +84,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
           // TODO neuspech
         }
       }
-
-      /*
-       * else { // odesle novy nebo zmeneny httpCode =
-       * NetworkUtilities.createOrUpdateEvent(event); if (httpCode ==
-       * HttpStatus.SC_NO_CONTENT) {
-       * 
-       * } else { // TODO neuspech } }
-       */
-      /*
-       * else if (event.hasServer_id()) { }
-       * 
-       * } else if (event.hasServer_id() == false) { //Log.d(TAG,
-       * "onPerformSync() event.hasServer_id() " + event.hasServer_id()); }
-       */
     }
+    
     // Log.d(TAG, "onPerformSync() dirtyEvents: " + dirtyEvents);
     Log.d(TAG, "onPerformSync() end");
     // List<JsonObject> serverEvents;

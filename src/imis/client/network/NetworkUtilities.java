@@ -5,7 +5,10 @@ import imis.client.model.Util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URI;
+import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,11 @@ public class NetworkUtilities {
   private static final String TAG = "NetworkUtilities";
   // private static final String BASE_URL =
   // "http://172.20.3.196:8080/Imisoid_WS/";
-  private static final String BASE_URL = "http://10.0.0.1:8081/Imisoid_WS/";// 10.0.2.2
+  private static final String SCHEME = "http://";
+  private static final String DOMAIN = "10.0.0.1";
+  private static final String PORT = "8081";
+  private static final String PATH = "/Imisoid_WS/";
+  private static final String BASE_URL = SCHEME + DOMAIN + ":" + PORT + PATH;// 10.0.2.2
   private static final String EVENTS_URI = BASE_URL + "events";
   private static final int TIMEOUT = 5 * 1000; // ms
   private static HttpClient httpClient = null;
@@ -108,8 +115,45 @@ public class NetworkUtilities {
     return code;
   }
 
+  //TODO skonsolidovat do jednoho testu
+  public static int testRemoteDBAvailability() {
+    int code = sendHttpGetTest(EVENTS_URI);
+    return code;
+  }
+
+  public static boolean testWebServiceAvailability(String domain) {
+    String strUrl = "http://stackoverflow.com/about";
+
+    try {
+      URL url = new URL(strUrl);
+      HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+      urlConn.connect();
+      if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+        return true;
+      }
+    }
+    catch (IOException e) {
+      System.err.println("Error creating HTTP connection");
+      e.printStackTrace();
+      // throw e;
+    }
+    return false;
+  }
+
+  public static boolean testHostReachability(String domain) {
+    boolean isReachable = false;
+    try {
+      InetAddress inet = InetAddress.getByName(domain);
+      isReachable = inet.isReachable(5000);
+    }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return isReachable;
+  }
+
   private static int sendHttpGetForUserEvents(String uri, String response) {
-    Log.d(TAG, "sendHttpGetForUserEvents() uri: " + uri);
     HttpClient httpclient = getHttpClient();
     HttpGet httpget = new HttpGet(uri);
     HttpResponse resp;
@@ -129,7 +173,29 @@ public class NetworkUtilities {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    Log.d(TAG, "sendHttpGetForUserEvents uri: " + uri + "code: " + code);
+
+    return code;
+  }
+
+  private static int sendHttpGetTest(String uri) {
+    HttpClient httpclient = getHttpClient();
+    HttpGet httpget = new HttpGet(uri);
+    HttpResponse resp;
+    int code = -1;
+    try {
+      resp = httpclient.execute(httpget);
+      code = resp.getStatusLine().getStatusCode();
+    }
+    catch (ClientProtocolException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    Log.d(TAG, "sendHttpGetTest uri: " + uri + "code: " + code);
     return code;
   }
 
@@ -189,6 +255,10 @@ public class NetworkUtilities {
     }
     Log.d(TAG, "sendHttpPost uri: " + uri + "code: " + code);
     return code;
+  }
+
+  private static int testHttp() {
+    return 0;
   }
 
 }

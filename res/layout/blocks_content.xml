@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         class="imis.client.ui.BlocksLayout"
         iosched:columns="3" >
-<!--  
+<!--
         <view
             android:id="@id/blocks_ruler"
             android:layout_width="fill_parent"

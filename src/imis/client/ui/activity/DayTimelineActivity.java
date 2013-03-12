@@ -127,9 +127,11 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
     Log.d(TAG, "onLoadFinished() rows: " + data.getCount());
     adapter.swapCursor(data);
-    /*blocks.setVisibility(View.GONE);// TODO k cemu to je?
-    blocks.setVisibility(View.VISIBLE);*/
-    blocks.invalidate();//TODO test
+      //adapter.notifyDataSetInvalidated();
+    blocks.setVisibility(View.GONE);// TODO k cemu to je?
+    blocks.setVisibility(View.VISIBLE);
+    //blocks.requestLayout();
+    //blocks.invalidate();//TODO test
   }
 
   @Override
@@ -162,6 +164,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     intent.putExtra(ActivityConsts.ID_LEAVE, leaveID);
     intent.setType("vnd.android.cursor.item/event.imisoid");
     startActivity(intent);
+      //TODO mazani polozky?
   }
 
 }
