@@ -33,96 +33,117 @@ import java.util.TimeZone;
  * {@link BlocksLayout} to match up against a {@link TimeRulerView} instance.
  */
 public class BlockView extends View {// TODO je nutne aby to byl button?Button
-  private static final String TAG = BlockView.class.getSimpleName();
-  private static final int TIME_STRING_FLAGS = DateUtils.FORMAT_SHOW_DATE
-      | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
-      | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;// TODO co to
-                                                                  // je?
+    private static final String TAG = BlockView.class.getSimpleName();
+    private static final int TIME_STRING_FLAGS = DateUtils.FORMAT_SHOW_DATE
+            | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
+            | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;// TODO co to
+    // je?
 
-  // private String blockId;
-  private int arriveId;
-  private int leaveId;
-  private long startTime;
-  private long endTime;
-  LayerDrawable buttonDrawable;
+    // private String blockId;
+    private int arriveId;
+    private int leaveId;
+    private long startTime;
+    private long endTime;
 
-  // TODO dalsi atributy
 
-  public BlockView(Context context) {
-    this(context, -1, -1, 0, 0);
-  }
+    private boolean deleted;
+    LayerDrawable buttonDrawable;
 
-  public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime) {
-    super(context);
-    // Log.d(TAG, "BlockView()");
+    // TODO dalsi atributy
 
-    this.arriveId = arriveId;
-    this.leaveId = leaveId;
-    this.startTime = startTime;
-    this.endTime = endTime;
+    public BlockView(Context context) {
+        this(context, -1, -1, 0, 0, false);
+    }
 
-    // setText(title);
+    public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime, boolean deleted) {
+        super(context);
+        // Log.d(TAG, "BlockView()");
 
-    // TODO: turn into color state list with layers?
-    int textColor = Color.WHITE;
-    int accentColor = getResources().getColor(R.color.block_column_2);
+        this.arriveId = arriveId;
+        this.leaveId = leaveId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.deleted = deleted;
 
-    LayerDrawable buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
-        R.drawable.btn_block);
-    buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
+        // setText(title);
 
-    // setTextColor(textColor);
-    setBackgroundDrawable(buttonDrawable);
-  }
-  
-  public void setAsDeleted() {
-    int accentColor = getResources().getColor(R.color.block_column_2_del);   
-    buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
-    // setTextColor(textColor);
-    setBackgroundDrawable(buttonDrawable);
-  }
+        // TODO: turn into color state list with layers?
+        int textColor = Color.WHITE;
 
-  public int getArriveId() {
-    return arriveId;
-  }
+        int accentColor;
+        if (deleted) {
+            accentColor = getResources().getColor(R.color.block_column_2_del);
+        } else {
+            accentColor = getResources().getColor(R.color.block_column_2);
+        }
+        LayerDrawable buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
+                R.drawable.btn_block);
+        buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
 
-  public void setArriveId(int arriveId) {
-    this.arriveId = arriveId;
-  }
+        // setTextColor(textColor);
+        setBackgroundDrawable(buttonDrawable);
+    }
 
-  public int getLeaveId() {
-    return leaveId;
-  }
+    public void setAsDeleted() {
+        int accentColor = getResources().getColor(R.color.block_column_2_del);
+        buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
+        // setTextColor(textColor);
+        setBackgroundDrawable(buttonDrawable);
+    }
 
-  public void setLeaveId(int leaveId) {
-    this.leaveId = leaveId;
-  }
+    public int getArriveId() {
+        return arriveId;
+    }
 
-  public String getBlockTimeString() {
-    TimeZone.setDefault(TimeZone.getTimeZone("Etc/GMT-2"));
-    return DateUtils.formatDateTime(getContext(), startTime, TIME_STRING_FLAGS);
-  }
+    public void setArriveId(int arriveId) {
+        this.arriveId = arriveId;
+    }
 
-  public long getStartTime() {
-    return startTime;
-  }
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-  public void setStartTime(long startTime) {
-    this.startTime = startTime;
-  }
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
-  public long getEndTime() {
-    return endTime;
-  }
+    public int getLeaveId() {
+        return leaveId;
+    }
 
-  public void setEndTime(long endTime) {
-    this.endTime = endTime;
-  }
+    public void setLeaveId(int leaveId) {
+        this.leaveId = leaveId;
+    }
 
-  @Override
-  public String toString() {
-    return "BlockView [arriveId=" + arriveId + ", leaveId=" + leaveId + ", startTime=" + startTime
-        + ", endTime=" + endTime + "]";
-  }
+    public String getBlockTimeString() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Etc/GMT-2"));
+        return DateUtils.formatDateTime(getContext(), startTime, TIME_STRING_FLAGS);
+    }
 
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "BlockView{" +
+                "arriveId=" + arriveId +
+                ", leaveId=" + leaveId +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", deleted=" + deleted +
+                '}';
+    }
 }

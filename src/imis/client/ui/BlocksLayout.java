@@ -125,7 +125,8 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
         ensureChildren();
 
         if (mAdapter != null) {
-
+            removeViewsInLayout(0, getChildCount() - 2);
+            printAllChilds();
             final int count = mAdapter.getCount();
             Log.d(TAG, "count: " + count);
             for (int i = 0; i < count; i++) {
@@ -135,16 +136,15 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
                     continue;
                 }
 
-                if (findViewById(blockView.getId()) == null) {
-                    blockView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));//TODO staci 1
-                    blockView.setId(blockView.getArriveId());
-                    addViewInLayout(blockView, -1, blockView.getLayoutParams(), true);// TODO jsou indexy podle
-                    bringChildToFront(mRulerView);
-                    bringChildToFront(mNowView);
-                }
+
+                Log.d(TAG, "onLayout() new id: " + blockView.getArriveId());
+                blockView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));//TODO staci 1
+                blockView.setId(blockView.getArriveId());
+                addViewInLayout(blockView, -1, blockView.getLayoutParams(), true);
+                bringChildToFront(mRulerView);
+                bringChildToFront(mNowView);
             }
         }
-
         positionItems();
         printAllChilds();
         Log.d(TAG, "onLayout() end");

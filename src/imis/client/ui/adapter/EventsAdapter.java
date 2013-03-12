@@ -52,7 +52,7 @@ public class EventsAdapter extends CursorAdapter {
 
     int leaveId = (leaveEvent == null) ? -1 : leaveEvent.get_id();// TODO log
     Log.d(TAG, "newView() arrive id: " + event.get_id() + " leave id: " + leaveId);
-    BlockView block = new BlockView(context, event.get_id(), leaveId, event.getCas(), leaveTime);
+    BlockView block = new BlockView(context, event.get_id(), leaveId, event.getCas(), leaveTime, event.isDeleted());
 
     cursor.moveToPosition(initPos);
     return block;
