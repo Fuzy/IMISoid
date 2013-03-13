@@ -2,6 +2,7 @@ package imis.client.ui.activity;
 
 import static imis.client.persistent.Consts.URI;
 //import imis.client.ui.activity.ActivityConsts;
+import android.content.*;
 import imis.client.R;
 import imis.client.authentication.Consts;
 import imis.client.persistent.EventManager;
@@ -14,10 +15,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.ContentResolver;
-import android.content.CursorLoader;
-import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +33,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
   private static final String ACCOUNT_TYPE = Consts.ACCOUNT_TYPE;
   private static final String AUTHORITY = Consts.AUTHORITY;
   private String text = "Neni nastaven ucet pro synchronizaci";
+    BroadcastReceiver _broadcastReceiver;
   private AccountManager accountManager;
   private BlocksLayout blocks;
   private ObservableScrollView scroll;
@@ -61,7 +59,31 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
   }
 
-  @Override
+    @Override
+    protected void onStart() {
+        super.onStart();
+        _broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context ctx, Intent intent)
+            {
+                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
+                    blocks.setVisibility(View.GONE);
+                    blocks.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+        registerReceiver(_broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        if (_broadcastReceiver != null)
+            unregisterReceiver(_broadcastReceiver);
+    }
+
+    @Override
   protected void onResume() {
     Log.d(TAG, "onResume()");
     super.onResume();
@@ -128,7 +150,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     Log.d(TAG, "onLoadFinished() rows: " + data.getCount());
     adapter.swapCursor(data);
       //adapter.notifyDataSetInvalidated();
-    blocks.setVisibility(View.GONE);// TODO k cemu to je?
+    blocks.setVisibility(View.GONE);
     blocks.setVisibility(View.VISIBLE);
     //blocks.requestLayout();
     //blocks.invalidate();//TODO test

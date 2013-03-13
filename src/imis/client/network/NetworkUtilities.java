@@ -74,15 +74,14 @@ public class NetworkUtilities {
   }
 
   // @SuppressWarnings("unchecked")
-  public static List<Event> getUserEvents(final String icp, final Date from, final Date to) {
-    String strFrom = Util.formatDate(from);
-    String strTo = Util.formatDate(to);
-    Log.d(TAG, "getUserEvents() cip: " + icp + " strFrom: " + strFrom + " strTo:" + strTo);
+  public static int getUserEvents(List<Event> events, final String icp, final Date from, final Date to) {
+    //String strFrom = Util.formatDate(from);
+    //String strTo = Util.formatDate(to);
+      String strFrom = "29.7.2004";
+      String strTo = "29.7.2004";
+      Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo:" + strTo);
 
-    String uri = EVENTS_URI + "/" + icp + "?from=" + strFrom + "&to=" + strTo;// TODO
-    // uri
-    // builder
-    Log.d(TAG, "getUserEvents uri: " + uri);
+    String uri = EVENTS_URI + "/" + icp + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
 
     String resp = new String();
     int code = sendHttpGetForUserEvents(uri, resp);
@@ -90,7 +89,7 @@ public class NetworkUtilities {
     JsonElement o = Util.parser.parse(resp);
     JsonArray array = o.getAsJsonArray();
     JsonObject eventJson;
-    List<Event> events = new ArrayList<Event>();
+    //List<Event> events = new ArrayList<Event>();
     Event event;
     for (JsonElement jsonElement : array) {
       eventJson = jsonElement.getAsJsonObject();
@@ -98,7 +97,7 @@ public class NetworkUtilities {
       events.add(event);
     }
 
-    return events;// TODO vracet kod
+    return code;
   }
 
   public static int createEvent(Event event) {
