@@ -3,10 +3,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_add"
           android:icon="@drawable/ic_menu_compose"
-          android:alphabeticShortcut='a'
           android:title="@string/menu_add" />
     <item android:id="@+id/sync_button"
           android:icon="@drawable/ic_menu_compose"
-          android:alphabeticShortcut='a'
           android:title="@string/sync_button" />
+    <item android:id="@+id/network_settings"
+          android:icon="@drawable/ic_menu_settings_holo_light"
+          android:title="@string/menu_network" />
+    <item android:id="@+id/menu_calendar"
+          android:icon="@drawable/ic_menu_settings_holo_light"
+          android:title="@string/menu_calendar" />
 </menu>

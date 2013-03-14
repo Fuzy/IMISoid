@@ -7,15 +7,13 @@ import imis.client.R;
 /**
  * Created with IntelliJ IDEA.
  * User: Martin Kadlec
- * Date: 12.3.13
- * Time: 11:05
+ * Date: 14.3.13
+ * Time: 23:03
  */
-public class NetworkSettingsActivity extends Activity {
-
+public class CalendarActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.network_settings);
+        setContentView(R.layout.calendar);
     }
 }
-
