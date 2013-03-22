@@ -1,5 +1,7 @@
 package imis.client.network;
 
+import android.os.Handler;
+import android.os.Looper;
 import imis.client.model.Event;
 import imis.client.model.Util;
 
@@ -139,7 +141,7 @@ public class NetworkUtilities {
     return false;
   }
 
-  public static boolean testHostReachability(String domain) {
+  /*private static boolean testHostReachability(String domain) {
     boolean isReachable = false;
     try {
       InetAddress inet = InetAddress.getByName(domain);
@@ -150,7 +152,7 @@ public class NetworkUtilities {
       e.printStackTrace();
     }
     return isReachable;
-  }
+  }*/
 
   private static int sendHttpGetForUserEvents(String uri, String response) {
     HttpClient httpclient = getHttpClient();
@@ -260,4 +262,7 @@ public class NetworkUtilities {
     return 0;
   }
 
+    public static String authenticate(String username, String password) {
+        return "qwerty";
+    }
 }

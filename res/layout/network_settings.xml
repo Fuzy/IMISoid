@@ -8,7 +8,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="@string/network_settings_lab"
             android:id="@+id/settLabServer" android:layout_gravity="left|center_vertical"/>
     <LinearLayout
             android:orientation="horizontal"
@@ -17,22 +17,27 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
+                android:text="@string/network_host_lab"
                 android:id="@+id/settLabIP" android:layout_gravity="center_horizontal|top"/>
         <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="New EditText"
+                android:text=""
                 android:id="@+id/settEditIP"/>
     </LinearLayout>
     <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                   android:layout_height="wrap_content" android:layout_gravity="left|center_vertical"
                   android:id="@+id/linearLayout">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text"
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/network_port_lab"
                   android:id="@+id/settLabPort" android:layout_gravity="center_horizontal|top"/>
-        <EditText android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="New EditText"
+        <EditText android:layout_width="fill_parent" android:layout_height="wrap_content" android:text=""
                   android:id="@+id/settEditPort"/>
     </LinearLayout>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/network_services_reach_lab" android:layout_gravity="left|center_vertical"/>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -40,13 +45,13 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="New Text"
+                android:text="@string/network_host_reach_lab"
                 android:id="@+id/settLabHost"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView" android:layout_gravity="center"
-                android:src="@drawable/btn_check_buttonless_on"/>
+                android:id="@+id/setHostImage" android:layout_gravity="center"
+                android:src="@drawable/ic_lockscreen_forgotpassword_pressed"/>
     </LinearLayout>
     <LinearLayout
             android:orientation="horizontal"
@@ -55,12 +60,13 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
+                android:text="@string/network_ws_reach_lab"
                 android:id="@+id/settLabWS" android:layout_gravity="center"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView1" android:layout_gravity="center" android:src="@drawable/ic_delete"/>
+                android:id="@+id/setWSImage" android:layout_gravity="center"
+                android:src="@drawable/ic_lockscreen_forgotpassword_pressed"/>
     </LinearLayout>
     <LinearLayout
             android:orientation="horizontal"
@@ -69,12 +75,12 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
+                android:text="@string/network_db_reach_lab"
                 android:id="@+id/settLabDB" android:layout_gravity="center_horizontal|top"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView2" android:layout_gravity="center"
+                android:id="@+id/setDBImage" android:layout_gravity="center"
                 android:src="@drawable/ic_lockscreen_forgotpassword_pressed"/>
     </LinearLayout>
 </LinearLayout>
