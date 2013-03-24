@@ -26,6 +26,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
+import static imis.client.model.Util.todayInLong;
+
+import java.util.Calendar;
+
 public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
         OnItemClickListener {// extends
     // Activity
@@ -38,8 +42,11 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     private BlocksLayout blocks;
     private ObservableScrollView scroll;
     private EventsAdapter adapter;
+    private long date = 0;
 
     private static final int LOADER_ID = 0x02;
+    private static final int CALENDAR_ACTIVITY_CODE = 1;
+    private static final int NETWORK_SETTINGS_ACTIVITY_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +61,8 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         adapter = new EventsAdapter(getApplicationContext(), null, -1);
         blocks.setAdapter(adapter);
         blocks.setOnItemClickListener(this);
-
+        date = todayInLong();
+        Log.d(TAG, "onCreate() date: " + date);
         // EventManager.deleteAllEvents(getApplicationContext());
         Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
     }
@@ -144,8 +152,9 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-        Log.d(TAG, "onCreateLoader()");
-        return new CursorLoader(getApplicationContext(), URI, DataQuery.PROJECTION_ALL, null, null, null);
+        Log.d(TAG, "onCreateLoader() date: " + date);
+        return new CursorLoader(getApplicationContext(), URI, DataQuery.PROJECTION_ALL,
+                DataQuery.SELECTION_DATUM, new String[]{String.valueOf(date)}, null);
     }
 
     @Override
@@ -165,12 +174,6 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         adapter.swapCursor(null);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        super.onActivityResult(requestCode, resultCode, data);
-        // TODO refresh view
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -194,12 +197,33 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
 
     private void startNetworkSettingActivity() {
         Intent intent = new Intent(this, NetworkSettingsActivity.class);
+        Log.d("DayTimelineActivity", "startNetworkSettingActivity() intent " + intent);
         startActivity(intent);
     }
 
     private void startCalendarActivity() {
         Intent intent = new Intent(this, CalendarActivity.class);
-        startActivity(intent);
+        Log.d("DayTimelineActivity", "startCalendarActivity() intent " + intent);
+        startActivityForResult(intent, CALENDAR_ACTIVITY_CODE);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case CALENDAR_ACTIVITY_CODE:
+                Log.d("DayTimelineActivity", "onActivityResult() CALENDAR_ACTIVITY_CODE");
+                if (resultCode == RESULT_OK) {
+                    long result = data.getLongExtra("millis", -1);
+                    Log.d("DayTimelineActivity", "onActivityResult() result: " + result);
+                    date = result;
+                    getLoaderManager().restartLoader(LOADER_ID, null, this);
+                }
+                break;
+            case NETWORK_SETTINGS_ACTIVITY_CODE:
+                Log.d("DayTimelineActivity", "onActivityResult() NETWORK_SETTINGS_ACTIVITY_CODE");
+                break;
+        }
     }
 
 }

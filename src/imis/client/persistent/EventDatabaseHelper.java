@@ -46,7 +46,7 @@ public class EventDatabaseHelper extends SQLiteOpenHelper {
       + " text not null," + COLUMN_DRUH + " text not null," + COLUMN_CAS + " text not null,"
       + COLUMN_IC_OBS + " text," + COLUMN_TYP + " text not null," + COLUMN_DATUM_ZMENY
       + " text not null," + COLUMN_POZNAMKA + " text);";
-
+     //TODO datum jako YYYY-MM-DD HH:MM:SS ne long
   public EventDatabaseHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
   }
@@ -90,23 +90,23 @@ public class EventDatabaseHelper extends SQLiteOpenHelper {
     database
         .execSQL("insert into "
             + TABLE_EVENTS
-            + " values (1,'AAAC4zAAMAAARwQAB7',1,0,'700510','15.11.2001','00','P','57600000','JJJ','O','15.11.2001',null)");
+            + " values (1,'AAAC4zAAMAAARwQAB7',1,0,'700510',1364169600000,'00','P','57600000','JJJ','O',1364169600000,null)");
     database
     .execSQL("insert into "
         + TABLE_EVENTS
-        + " values (2,'AAAC4zAAMAAARwQAB8',1,0,'700510','15.11.2001','00','O','61200000','JJJ','O','15.11.2001',null)");
+        + " values (2,'AAAC4zAAMAAARwQAB8',1,0,'700510',1364169600000,'00','O','61200000','JJJ','O',1364169600000,null)");
     database
     .execSQL("insert into "
         + TABLE_EVENTS
-        + " values (3,'AAAC4zAAMAAARwQAB9',1,0,'700510','15.11.2001','00','P','68400000','JJJ','O','15.11.2001',null)");
+        + " values (3,'AAAC4zAAMAAARwQAB9',1,0,'700510',1364169600000,'00','P','68400000','JJJ','O',1364169600000,null)");
 database
 .execSQL("insert into "
     + TABLE_EVENTS
-    + " values (4,'AAAC4zAAMAAARwQAB+',1,0,'700510','15.11.2001','00','O','72000000','JJJ','O','15.11.2001',null)");
+    + " values (4,'AAAC4zAAMAAARwQAB+',1,0,'700510',1364169600000,'00','O','72000000','JJJ','O',1364169600000,null)");
 database
 .execSQL("insert into "
     + TABLE_EVENTS
-    + " values (5,null,1,0,'700510','15.11.2001','00','O','72000000','JJJ','O','15.11.2001',null)");
+    + " values (5,null,1,0,'700510',1364169600000,'00','O','72000000','JJJ','O',1364169600000,null)");
 
   }
 

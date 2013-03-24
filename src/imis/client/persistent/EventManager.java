@@ -167,6 +167,8 @@ public class EventManager {
     public static final String SELECTION_DIRTY = ColumnName.COLUMN_DIRTY + "=1";
    // vyber nesmazanych
     public static final String SELECTION_UNDELETED = ColumnName.COLUMN_DELETED + "=0";
+      // vyber podle data
+      public static final String SELECTION_DATUM = ColumnName.COLUMN_DATUM + "=?";
 
   }
 

@@ -109,10 +109,8 @@
                 someone who explicitly knows the class name
             -->
         </activity>
+         <activity android:name=".ui.activity.NetworkSettingsActivity"/>
 
-        <activity android:name=".ui.activity.NetworkSettingsActivity"
-                >
-        </activity>
         <activity android:name=".ui.activity.CalendarActivity"
                 ></activity>
     </application>

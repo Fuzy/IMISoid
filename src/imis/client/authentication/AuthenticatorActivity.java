@@ -55,7 +55,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         super.onCreate(icicle);
         // ziska account manager
         accountManager = AccountManager.get(this);
-
+        //TODO dodelat podle predlohy
         requestNewAccount = (username == null) ? true : false;
 
 
