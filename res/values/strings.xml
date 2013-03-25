@@ -19,9 +19,9 @@
     <string name="app_name">Imisoid</string>
 
 
-    <string name="sync_button">Synchronizovat</string>
-    <string name="menu_refresh">Aktualizovat</string>
-    <string name="menu_network">Nastavení síťě</string>
+    <string name="sync_button">Synchronizuj</string>
+    <string name="menu_network_save">Uložit</string>
+    <string name="menu_network">Síť</string>
     <string name="menu_calendar">Kalendář</string>
     <string name="menu_add">Přidat</string>
     <string name="button_ok">OK</string>
@@ -79,7 +79,7 @@
     <string name="network_settings_lab">Síť</string>
     <string name="network_host_lab">Host</string>
     <string name="network_port_lab">Port</string>
-    <string name="network_services_reach_lab">DB</string>
+    <string name="network_services_reach_lab">Dostupnost</string>
     <string name="network_host_reach_lab">Host</string>
     <string name="network_ws_reach_lab">WS</string>
     <string name="network_db_reach_lab">DB</string>

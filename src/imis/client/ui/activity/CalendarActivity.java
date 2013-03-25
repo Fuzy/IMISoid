@@ -19,10 +19,12 @@ import java.util.Calendar;
 public class CalendarActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("CalendarActivity", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
 
         CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
+        calendarView.setDate(getIntent().getLongExtra("date", 0));
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
@@ -33,7 +35,7 @@ public class CalendarActivity extends Activity {
                 cal.set(year, month, dayOfMonth);
                 Log.d("CalendarActivity", "onSelectedDayChange() year: " + year + " month: " + month +
                         " dayOfMonth: " + dayOfMonth + " cal: " + cal.toString());
-
+                //getDate long
                 long millis = cal.getTimeInMillis();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("millis", millis);

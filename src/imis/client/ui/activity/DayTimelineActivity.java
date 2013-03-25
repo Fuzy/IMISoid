@@ -5,6 +5,7 @@ import static imis.client.persistent.Consts.URI;
 import android.content.*;
 import imis.client.R;
 import imis.client.authentication.Consts;
+import imis.client.model.Util;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.EventManager.DataQuery;
 import imis.client.ui.BlockView;
@@ -55,16 +56,23 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         // Vytvori manazer uctu
         accountManager = AccountManager.get(this);
         setContentView(R.layout.blocks_content);
+
         getLoaderManager().initLoader(LOADER_ID, null, this);
         scroll = (ObservableScrollView) findViewById(R.id.blocks_scroll);
         blocks = (BlocksLayout) findViewById(R.id.blocks);
         adapter = new EventsAdapter(getApplicationContext(), null, -1);
         blocks.setAdapter(adapter);
         blocks.setOnItemClickListener(this);
+
         date = todayInLong();
+
         Log.d(TAG, "onCreate() date: " + date);
         // EventManager.deleteAllEvents(getApplicationContext());
         Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
+    }
+
+    private void setDateTitle(long date) {
+        setTitle(Util.formatDate(date));
     }
 
     @Override
@@ -92,8 +100,10 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     @Override
     protected void onResume() {
         Log.d(TAG, "onResume()");
+
         super.onResume();
 
+        setDateTitle(date);
         scroll.post(new Runnable() {
             public void run() {
                 Log.d(TAG, "onResume() scroll.getBottom(): " + scroll.getBottom());
@@ -198,12 +208,13 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     private void startNetworkSettingActivity() {
         Intent intent = new Intent(this, NetworkSettingsActivity.class);
         Log.d("DayTimelineActivity", "startNetworkSettingActivity() intent " + intent);
-        startActivity(intent);
+        startActivityForResult(intent, NETWORK_SETTINGS_ACTIVITY_CODE);
     }
 
     private void startCalendarActivity() {
         Intent intent = new Intent(this, CalendarActivity.class);
         Log.d("DayTimelineActivity", "startCalendarActivity() intent " + intent);
+        intent.putExtra("date", date);
         startActivityForResult(intent, CALENDAR_ACTIVITY_CODE);
     }
 
@@ -218,10 +229,19 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
                     Log.d("DayTimelineActivity", "onActivityResult() result: " + result);
                     date = result;
                     getLoaderManager().restartLoader(LOADER_ID, null, this);
+                } else {
+                    Log.d("DayTimelineActivity", "onActivityResult() resultCode: " + resultCode);
                 }
                 break;
             case NETWORK_SETTINGS_ACTIVITY_CODE:
                 Log.d("DayTimelineActivity", "onActivityResult() NETWORK_SETTINGS_ACTIVITY_CODE");
+                if (resultCode == RESULT_OK) {
+                    String address = data.getStringExtra("address");
+                    int port = data.getIntExtra("port", -1);
+                    Log.d("DayTimelineActivity", "onActivityResult() address: " + address + " port: " + port);
+                } else {
+                    Log.d("DayTimelineActivity", "onActivityResult() resultCode: " + resultCode);
+                }
                 break;
         }
     }

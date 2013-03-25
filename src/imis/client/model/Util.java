@@ -77,7 +77,6 @@ public class Util {
     }
 
     /**
-     * @param sinceEpoch
      * @return Time since midnight.
      */
     public static long timeFromEpochMsToDayMs() {

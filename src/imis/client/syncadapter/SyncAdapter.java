@@ -43,7 +43,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync()");
         int httpCode = -1;
-        httpCode = NetworkUtilities.testRemoteDBAvailability();
+        httpCode = NetworkUtilities.testWebServiceAndDBAvailability();
         if (httpCode != HttpStatus.SC_OK) {
             Log.d(TAG, "onPerformSync() connection unavailable");
             return;

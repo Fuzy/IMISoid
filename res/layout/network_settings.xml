@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/network_services_reach_lab" android:layout_gravity="left|center_vertical"/>
-    <LinearLayout
+    <!--<LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="24dp" android:layout_gravity="left|center_vertical">
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setHostImage" android:layout_gravity="center"
                 android:src="@drawable/ic_lockscreen_forgotpassword_pressed"/>
-    </LinearLayout>
+    </LinearLayout>-->
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -83,4 +83,9 @@
                 android:id="@+id/setDBImage" android:layout_gravity="center"
                 android:src="@drawable/ic_lockscreen_forgotpassword_pressed"/>
     </LinearLayout>
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test spojení"
+            android:id="@+id/buttonTest" android:layout_gravity="center"/>
 </LinearLayout>

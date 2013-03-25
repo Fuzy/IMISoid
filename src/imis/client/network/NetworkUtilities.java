@@ -42,7 +42,7 @@ public class NetworkUtilities {
     // private static final String BASE_URL =
     // "http://172.20.3.196:8080/Imisoid_WS/";
     private static final String SCHEME = "http://";
-    private static final String DOMAIN = "10.0.0.4";// TODO
+    private static final String DOMAIN = "10.0.0.3";// TODO
     private static final String PORT = "8081";
     private static final String PATH = "/Imisoid_WS/";
     private static final String BASE_URL = SCHEME + DOMAIN + ":" + PORT + PATH;// 10.0.2.2
@@ -122,12 +122,13 @@ public class NetworkUtilities {
     }
 
     //TODO skonsolidovat do jednoho testu
-    public static int testRemoteDBAvailability() {
+    public static int testWebServiceAndDBAvailability() {
         int code = sendHttpGetTest(EVENTS_URI);
         return code;
     }
 
-    public static boolean testWebServiceAvailability(String domain) {
+    @Deprecated
+    public static boolean testWebServiceAndDBAvailability2(String domain) {
         String strUrl = "http://stackoverflow.com/about";
 
         try {
@@ -145,18 +146,20 @@ public class NetworkUtilities {
         return false;
     }
 
-  /*private static boolean testHostReachability(String domain) {
-    boolean isReachable = false;
-    try {
-      InetAddress inet = InetAddress.getByName(domain);
-      isReachable = inet.isReachable(5000);
+    @Deprecated
+    public static boolean testHostReachability(String domain, StringBuilder errMsg) {
+        Log.d("NetworkUtilities", "testHostReachability()");
+        boolean isReachable = false;
+        try {
+            InetAddress inet = InetAddress.getByName(domain);
+            isReachable = inet.isReachable(5000);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            errMsg.append(e.getMessage());
+        }
+        return isReachable;
     }
-    catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    return isReachable;
-  }*/
 
     private static int sendHttpGetForUserEvents(String uri, String response) {
         HttpClient httpclient = getHttpClient();
