@@ -100,6 +100,8 @@
             name="login_activity_loginfail_text_usmissing">Zadej zkratku uživatele.
     </string>
     <string name="ui_activity_authenticating">Authentikace\u2026</string>
+    <string name="menu_records_resfresh">Aktualizovat</string>
+    <string name="menu_records">Výkazy</string>
 
 
 </resources>

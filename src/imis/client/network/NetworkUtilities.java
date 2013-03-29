@@ -1,9 +1,7 @@
 package imis.client.network;
 
-import android.os.Handler;
-import android.os.Looper;
 import imis.client.model.Event;
-import imis.client.model.Util;
+import imis.client.json.Util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -13,8 +11,10 @@ import java.net.URI;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import imis.client.model.Record;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -42,11 +42,12 @@ public class NetworkUtilities {
     // private static final String BASE_URL =
     // "http://172.20.3.196:8080/Imisoid_WS/";
     private static final String SCHEME = "http://";
-    private static final String DOMAIN = "10.0.0.3";// TODO
+    private static final String DOMAIN = "10.0.0.2";// TODO
     private static final String PORT = "8081";
     private static final String PATH = "/Imisoid_WS/";
     private static final String BASE_URL = SCHEME + DOMAIN + ":" + PORT + PATH;// 10.0.2.2
     private static final String EVENTS_URI = BASE_URL + "events";
+    private static final String RECORDS_URI = BASE_URL + "records";
     private static final String AUTH_URI = BASE_URL + "authentication";
     private static final int TIMEOUT = 5 * 1000; // ms
     private static HttpClient httpClient = null;
@@ -84,7 +85,7 @@ public class NetworkUtilities {
     public static int getUserEvents(List<Event> events, final String icp, final Date from, final Date to) {
         //String strFrom = Util.formatDate(from);
         //String strTo = Util.formatDate(to);
-        String strFrom = "29.7.2004";
+        String strFrom = "29.7.2004";//TODO pryc
         String strTo = "29.7.2004";
         Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo:" + strTo);
 
@@ -105,6 +106,50 @@ public class NetworkUtilities {
         }
 
         return code;
+    }
+
+    //TODO date /> long nebo string
+    /*public static int getUserRecords(List<Record> records, final String kodpra, final Date from, final Date to) {
+        String strFrom = "29.7.2004";//TODO pryc
+        String strTo = "29.7.2004";
+        String kodpraL = "JEL";
+        Log.d(TAG, "getUserRecords() kodpraL: " + kodpraL + " strFrom: " + strFrom + " strTo:" + strTo);
+
+        String uri = RECORDS_URI + "/" + kodpraL + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
+        String resp = new String();
+        int code = sendHttpGetForUserEvents(uri, resp);
+
+        JsonElement o = Util.parser.parse(resp);
+        JsonArray array = o.getAsJsonArray();
+        JsonObject recordJson;
+
+        Record record;
+        for (JsonElement jsonElement : array) {
+            recordJson = jsonElement.getAsJsonObject();
+            record = Record.jsonToRecord(recordJson);
+            records.add(record);
+        }
+
+        return code;
+    }*/
+
+    public static String getUserRecords(final String kodpra, final String from, final String to) {
+        Log.d(TAG, "getUserRecords() kodpra: " + kodpra + " strFrom: " + from + " strTo:" + to);
+
+        String response = null;
+        String uri = RECORDS_URI + "/" + kodpra;// + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
+        HashMap<String, String> params = new HashMap<String, String>(2);
+        params.put("from", from);
+        params.put("to", to);
+        try {
+            Log.d("NetworkUtilities", "getUserRecords() pre");
+            response = HttpRequest.sendRequest(uri, "GET", null, params, null);
+            Log.d("NetworkUtilities", "getUserRecords() after");
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
     }
 
     public static int createEvent(Event event) {
@@ -161,6 +206,7 @@ public class NetworkUtilities {
         return isReachable;
     }
 
+    //TODO prejemnovat
     private static int sendHttpGetForUserEvents(String uri, String response) {
         HttpClient httpclient = getHttpClient();
         HttpGet httpget = new HttpGet(uri);

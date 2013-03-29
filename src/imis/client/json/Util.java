@@ -1,4 +1,4 @@
-package imis.client.model;
+package imis.client.json;
 
 import java.lang.reflect.Type;
 import java.text.DateFormat;
@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import imis.client.model.Event;
 
 public class Util {
     private static final String TAG = Util.class.getSimpleName();
@@ -24,7 +25,7 @@ public class Util {
     }.getType();
     public static final JsonParser parser = new JsonParser();
     @SuppressLint("SimpleDateFormat")
-    public static final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+    public static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
     public static final DateFormat dfTime = new SimpleDateFormat("HH:mm:ss");
     public static final SimpleDateFormat iso8601Format = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss");

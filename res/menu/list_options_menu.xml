@@ -17,4 +17,8 @@
           android:icon="@drawable/ic_menu_my_calendar"
           android:title="@string/menu_calendar"
           android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/menu_records"
+          android:icon="@drawable/ic_menu_my_calendar"
+          android:title="@string/menu_records"
+          android:showAsAction="ifRoom|withText"/>
 </menu>

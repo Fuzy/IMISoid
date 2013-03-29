@@ -24,8 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-public class EventEditor extends Activity implements OnItemSelectedListener, View.OnClickListener { // View.OnClickListener
-    private static final String TAG = EventEditor.class.getSimpleName();
+public class EventEditorActivity extends Activity implements OnItemSelectedListener, View.OnClickListener { // View.OnClickListener
+    private static final String TAG = EventEditorActivity.class.getSimpleName();
 
     // Ulozena data v pripade preruseni aktivity (onSaveInstanceState)
     private static final String ORIG_KOD_PO = "orig_kod_po", ORIG_POZNAMKA = "orig_poznamka";
@@ -122,7 +122,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener, Vie
     }
 
     private void setTimePickerToNow(TimePicker timePicker) {
-        Log.d("EventEditor", "setTimePickerToNow() " + timePicker.getId());
+        Log.d("EventEditorActivity", "setTimePickerToNow() " + timePicker.getId());
         Time time = new Time();
         time.setToNow();
         timePicker.setCurrentHour(time.hour);
@@ -130,7 +130,7 @@ public class EventEditor extends Activity implements OnItemSelectedListener, Vie
     }
 
     private void setTimePickerToTime(TimePicker timePicker, long millis) {
-        Log.d("EventEditor", "setTimePickerToNow() " + timePicker.getId());
+        Log.d("EventEditorActivity", "setTimePickerToNow() " + timePicker.getId());
         Time time = new Time();
         time.set(millis);
         timePicker.setCurrentHour(time.hour);

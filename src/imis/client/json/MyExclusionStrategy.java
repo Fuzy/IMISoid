@@ -1,4 +1,4 @@
-package imis.client.model;
+package imis.client.json;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

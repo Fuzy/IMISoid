@@ -1,9 +1,10 @@
 package imis.client.model;
 
-import imis.client.persistent.EventDatabaseHelper;
+import imis.client.json.Util;
+import imis.client.persistent.MyDatabaseHelper;
 
-import static imis.client.model.Util.formatDate;
-import static imis.client.model.Util.formatTime;
+import static imis.client.json.Util.formatDate;
+import static imis.client.json.Util.formatTime;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -249,19 +250,19 @@ public class Event {
     private static int COL_NUM_DATUM_ZMENY = 11;
     private static int COL_NUM_POZNAMKA = 12;
 
-    public static String COL_DIRTY = EventDatabaseHelper.COLUMN_DIRTY;
-    private static String COL_SERVER_ID = EventDatabaseHelper.COLUMN_SERVER_ID;
-    private static String COL_DELETED = EventDatabaseHelper.COLUMN_DELETED;
+    public static String COL_DIRTY = MyDatabaseHelper.COLUMN_DIRTY;
+    private static String COL_SERVER_ID = MyDatabaseHelper.COLUMN_SERVER_ID;
+    private static String COL_DELETED = MyDatabaseHelper.COLUMN_DELETED;
 
-    private static String COL_ICP = EventDatabaseHelper.COLUMN_ICP;
-    private static String COL_DATUM = EventDatabaseHelper.COLUMN_DATUM;
-    private static String COL_KOD_PO = EventDatabaseHelper.COLUMN_KOD_PO;
-    private static String COL_DRUH = EventDatabaseHelper.COLUMN_DRUH;
-    private static String COL_CAS = EventDatabaseHelper.COLUMN_CAS;
-    private static String COL_IC_OBS = EventDatabaseHelper.COLUMN_IC_OBS;
-    private static String COL_TYP = EventDatabaseHelper.COLUMN_TYP;
-    private static String COL_DATUM_ZMENY = EventDatabaseHelper.COLUMN_DATUM_ZMENY;
-    private static String COL_POZNAMKA = EventDatabaseHelper.COLUMN_POZNAMKA;
+    private static String COL_ICP = MyDatabaseHelper.COLUMN_ICP;
+    private static String COL_DATUM = MyDatabaseHelper.COLUMN_DATUM;
+    private static String COL_KOD_PO = MyDatabaseHelper.COLUMN_KOD_PO;
+    private static String COL_DRUH = MyDatabaseHelper.COLUMN_DRUH;
+    private static String COL_CAS = MyDatabaseHelper.COLUMN_CAS;
+    private static String COL_IC_OBS = MyDatabaseHelper.COLUMN_IC_OBS;
+    private static String COL_TYP = MyDatabaseHelper.COLUMN_TYP;
+    private static String COL_DATUM_ZMENY = MyDatabaseHelper.COLUMN_DATUM_ZMENY;
+    private static String COL_POZNAMKA = MyDatabaseHelper.COLUMN_POZNAMKA;
 
     public static final String JSON_CLIENT_ID = "c";
     public static final String JSON_SERVER_ID = "si";

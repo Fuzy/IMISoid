@@ -32,7 +32,7 @@
 
         <!-- Vlastni poskytovatel obsahu -->
         <provider
-                android:name=".persistent.MyEventContentProvider"
+                android:name=".persistent.MyContentProvider"
                 android:authorities="imis.client.events.contentprovider"
                 android:exported="false">
         </provider>
@@ -78,7 +78,7 @@
         </activity>
 
         <!-- Aktivita pro editaci a pridani nove udalosti. -->
-        <activity android:name=".ui.activity.EventEditor"
+        <activity android:name=".ui.activity.EventEditorActivity"
                   android:configChanges="orientation|screenSize"
                 >
 
@@ -113,6 +113,9 @@
          <activity android:name=".ui.activity.NetworkSettingsActivity"/>
 
         <activity android:name=".ui.activity.CalendarActivity"
+                ></activity>
+
+        <activity android:name=".ui.activity.RecordsChartActivity"
                 ></activity>
     </application>
 

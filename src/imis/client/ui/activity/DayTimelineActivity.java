@@ -5,7 +5,7 @@ import static imis.client.persistent.Consts.URI;
 import android.content.*;
 import imis.client.R;
 import imis.client.authentication.Consts;
-import imis.client.model.Util;
+import imis.client.json.Util;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.EventManager.DataQuery;
 import imis.client.ui.BlockView;
@@ -27,9 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-import static imis.client.model.Util.todayInLong;
-
-import java.util.Calendar;
+import static imis.client.json.Util.todayInLong;
 
 public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
         OnItemClickListener {// extends
@@ -138,6 +136,9 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
             case R.id.menu_calendar:
                 startCalendarActivity();
                 return true;
+            case R.id.menu_records:
+                startRecordsChartActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -216,6 +217,13 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         Log.d("DayTimelineActivity", "startCalendarActivity() intent " + intent);
         intent.putExtra("date", date);
         startActivityForResult(intent, CALENDAR_ACTIVITY_CODE);
+    }
+
+    private void startRecordsChartActivity() {
+        Intent intent = new Intent(this, RecordsChartActivity.class);
+        Log.d("DayTimelineActivity", "startRecordsChartActivity() intent " + intent);
+        //intent.putExtra("date", date);
+        startActivity(intent, null);
     }
 
 

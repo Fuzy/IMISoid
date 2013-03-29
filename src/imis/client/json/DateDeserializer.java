@@ -1,4 +1,4 @@
-package imis.client.model;
+package imis.client.json;
 
 import java.lang.reflect.Type;
 import java.sql.Date;

@@ -152,7 +152,7 @@ public class EventManager {
 
     // uri zdroje dat
     public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
-        + EventDatabaseHelper.TABLE_EVENTS);
+        + MyDatabaseHelper.TABLE_EVENTS);
 
     // vybere vsechny sloupce
     public static final String[] PROJECTION_ALL = { ColumnName.COLUMN_ID, ColumnName.COLUMN_SERVER_ID,
