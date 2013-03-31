@@ -9,7 +9,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
-import com.saulpower.piechart.extra.UiUtils;
 
 /**
  * The PieSliceDrawable provides drawing a specific slice of a Pie Chart
@@ -100,9 +99,6 @@ public class PieSliceDrawable extends Drawable {
 	 * Create a new pie slice to be used in a pie chart.
 	 * 
 	 * @param context the context for this view
-	 * @param degreeOffset the starting degree offset for the slice
-	 * @param percent the percent the slice covers
-	 * @param color the color of the slice
 	 */
 	public PieSliceDrawable(Callback cb, Context context) {
 		

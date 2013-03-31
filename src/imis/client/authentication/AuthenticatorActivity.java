@@ -21,9 +21,9 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private static final String TAG = "AuthenticatorActivity";
     private String username = null;
     private String password = null;
-    private static final String ACCOUNT_TYPE = Consts.ACCOUNT_TYPE;
-    private static final String AUTHORITY = Consts.AUTHORITY;
-    private static final String AUTH_TOKEN = Consts.AUTH_TOKEN;
+    private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
+    private static final String AUTHORITY = AuthenticationConsts.AUTHORITY;
+    private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
     /**
      * The Intent extras.
      */
@@ -139,7 +139,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
      */
     private void finishConfirmCredentials(boolean result) {
         Log.i(TAG, "finishConfirmCredentials()");
-        final Account account = new Account(username, Consts.ACCOUNT_TYPE);
+        final Account account = new Account(username, AuthenticationConsts.ACCOUNT_TYPE);
         accountManager.setPassword(account, password);
         final Intent intent = new Intent();
         intent.putExtra(AccountManager.KEY_BOOLEAN_RESULT, result);

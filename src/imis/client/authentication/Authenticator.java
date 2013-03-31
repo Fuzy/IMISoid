@@ -14,8 +14,8 @@ import imis.client.network.NetworkUtilities;
 
 public class Authenticator extends AbstractAccountAuthenticator {
   private static final String TAG = "Authenticator";
-  private static final String ACCOUNT_TYPE = Consts.ACCOUNT_TYPE;
-  private static final String AUTH_TOKEN = Consts.AUTH_TOKEN;
+  private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
+  private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
 
   // Authentication Service context
   private final Context context;
@@ -57,7 +57,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
     Log.d(TAG, "getAuthToken()");
       // If the caller requested an authToken type we don't support, then
       // return an error
-      if (!authTokenType.equals(Consts.AUTHTOKEN_TYPE)) {
+      if (!authTokenType.equals(AuthenticationConsts.AUTHTOKEN_TYPE)) {
           final Bundle result = new Bundle();
           result.putString(AccountManager.KEY_ERROR_MESSAGE, "invalid authTokenType");
           return result;
@@ -72,7 +72,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
           if (!TextUtils.isEmpty(authToken)) {
               final Bundle result = new Bundle();
               result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
-              result.putString(AccountManager.KEY_ACCOUNT_TYPE, Consts.ACCOUNT_TYPE);
+              result.putString(AccountManager.KEY_ACCOUNT_TYPE, AuthenticationConsts.ACCOUNT_TYPE);
               result.putString(AccountManager.KEY_AUTHTOKEN, authToken);
               return result;
           }

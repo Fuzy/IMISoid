@@ -1,6 +1,6 @@
 package imis.client.authentication;
 
-public class Consts {
+public class AuthenticationConsts {
 
     public static final String AUTH_TOKEN = "qwerty";
     public static final String ACCOUNT_TYPE = "imisoid";

@@ -1,20 +1,11 @@
 package imis.client.network;
 
-import imis.client.model.Event;
+import android.util.Log;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import imis.client.json.Util;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URI;
-import java.net.URL;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import imis.client.model.Record;
+import imis.client.model.Event;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -31,19 +22,25 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URI;
+import java.net.URL;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import android.util.Log;
-
+//TODO jako singleton
 public class NetworkUtilities {
     private static final String TAG = "NetworkUtilities";
     // private static final String BASE_URL =
     // "http://172.20.3.196:8080/Imisoid_WS/";
     private static final String SCHEME = "http://";
-    private static final String DOMAIN = "10.0.0.2";// TODO
-    private static final String PORT = "8081";
+    private static String DOMAIN = "10.0.0.2";// TODO nacist ze shared
+    private static String PORT = "8081";
     private static final String PATH = "/Imisoid_WS/";
     private static final String BASE_URL = SCHEME + DOMAIN + ":" + PORT + PATH;// 10.0.2.2
     private static final String EVENTS_URI = BASE_URL + "events";
@@ -53,6 +50,12 @@ public class NetworkUtilities {
     private static HttpClient httpClient = null;
     private static final String PARAM_USERNAME = "username";
     private static final String PARAM_PASSWORD = "password";
+
+    /*static {
+        SharedPreferences settings =  getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        editTextIP.setText(settings.getString(KEY_DOMAIN, "10.0.0.1"));//"10.0.0.3"
+        editTextPort.setText(String.valueOf(settings.getInt(KEY_PORT, 8081)));//"8081"
+    }*/
 
   /*
    * private static final String PARAM_FROM_DATE = "from"; private static final
@@ -72,7 +75,7 @@ public class NetworkUtilities {
             ConnManagerParams.setTimeout(params, TIMEOUT);
         }
         return httpClient;
-    }
+    } //TODO refaktor sitovani
 
     public static int deleteEvent(String rowid) {
         Log.d(TAG, "deleteEvent() rowid: " + rowid);
@@ -168,7 +171,7 @@ public class NetworkUtilities {
 
     //TODO skonsolidovat do jednoho testu
     public static int testWebServiceAndDBAvailability() {
-        int code = sendHttpGetTest(EVENTS_URI);
+        int code = sendHttpGetTest(EVENTS_URI);//TODO domain + port implicitne
         return code;
     }
 
@@ -334,5 +337,23 @@ public class NetworkUtilities {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return "qwertyxx";
+    }
+
+    public static String getDOMAIN() {
+        return DOMAIN;
+    }
+
+    public static void setDOMAIN(String DOMAIN) {
+        Log.d("NetworkUtilities", "setDOMAIN() " + DOMAIN);
+        NetworkUtilities.DOMAIN = DOMAIN;
+    }
+
+    public static String getPORT() {
+        return PORT;
+    }
+
+    public static void setPORT(String PORT) {
+        Log.d("NetworkUtilities", "setPORT() " + PORT);
+        NetworkUtilities.PORT = PORT;
     }
 }

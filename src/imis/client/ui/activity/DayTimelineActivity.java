@@ -1,21 +1,10 @@
 package imis.client.ui.activity;
 
-import static imis.client.persistent.Consts.URI;
-//import imis.client.ui.activity.ActivityConsts;
-import android.content.*;
-import imis.client.R;
-import imis.client.authentication.Consts;
-import imis.client.json.Util;
-import imis.client.persistent.EventManager;
-import imis.client.persistent.EventManager.DataQuery;
-import imis.client.ui.BlockView;
-import imis.client.ui.BlocksLayout;
-import imis.client.ui.ObservableScrollView;
-import imis.client.ui.adapter.EventsAdapter;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,15 +15,27 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import imis.client.R;
+import imis.client.authentication.AuthenticationConsts;
+import imis.client.json.Util;
+import imis.client.persistent.EventManager;
+import imis.client.persistent.EventManager.DataQuery;
+import imis.client.ui.BlockView;
+import imis.client.ui.BlocksLayout;
+import imis.client.ui.ObservableScrollView;
+import imis.client.ui.adapter.EventsAdapter;
 
 import static imis.client.json.Util.todayInLong;
+import static imis.client.persistent.Consts.URI;
+
+//import imis.client.ui.activity.ActivityConsts;
 
 public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
         OnItemClickListener {// extends
     // Activity
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
-    private static final String ACCOUNT_TYPE = Consts.ACCOUNT_TYPE;
-    private static final String AUTHORITY = Consts.AUTHORITY;
+    private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
+    private static final String AUTHORITY = AuthenticationConsts.AUTHORITY;
     private String text = "Neni nastaven ucet pro synchronizaci";
     BroadcastReceiver _broadcastReceiver;
     private AccountManager accountManager;
@@ -45,7 +46,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
 
     private static final int LOADER_ID = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
-    private static final int NETWORK_SETTINGS_ACTIVITY_CODE = 2;
+    //private static final int NETWORK_SETTINGS_ACTIVITY_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,8 +209,9 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
 
     private void startNetworkSettingActivity() {
         Intent intent = new Intent(this, NetworkSettingsActivity.class);
+        startActivity(intent);
         Log.d("DayTimelineActivity", "startNetworkSettingActivity() intent " + intent);
-        startActivityForResult(intent, NETWORK_SETTINGS_ACTIVITY_CODE);
+        //startActivityForResult(intent, NETWORK_SETTINGS_ACTIVITY_CODE);
     }
 
     private void startCalendarActivity() {
@@ -241,17 +243,20 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
                     Log.d("DayTimelineActivity", "onActivityResult() resultCode: " + resultCode);
                 }
                 break;
-            case NETWORK_SETTINGS_ACTIVITY_CODE:
+           /* case NETWORK_SETTINGS_ACTIVITY_CODE:
                 Log.d("DayTimelineActivity", "onActivityResult() NETWORK_SETTINGS_ACTIVITY_CODE");
                 if (resultCode == RESULT_OK) {
-                    String address = data.getStringExtra("address");
+                    //TODO dat do shared preferences
+                    String domain = data.getStringExtra("domain");
                     int port = data.getIntExtra("port", -1);
-                    Log.d("DayTimelineActivity", "onActivityResult() address: " + address + " port: " + port);
+                    Log.d("DayTimelineActivity", "onActivityResult() domain: " + domain + " port: " + port);
                 } else {
                     Log.d("DayTimelineActivity", "onActivityResult() resultCode: " + resultCode);
                 }
-                break;
+                break;*/
         }
     }
+
+    //TODO zmena polohy
 
 }

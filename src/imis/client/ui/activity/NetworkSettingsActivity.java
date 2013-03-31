@@ -1,7 +1,9 @@
 package imis.client.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,14 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.network.NetworkUtilities;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
+
+import static imis.client.AppConsts.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,9 +31,9 @@ import java.net.UnknownHostException;
  */
 public class NetworkSettingsActivity extends Activity {
     private static final String TAG = NetworkSettingsActivity.class.getSimpleName();
-    private ImageView imageHost, imageWebService, imageDatabase;
+    private ImageView imageWebService, imageDatabase;
     private EditText editTextIP, editTextPort;
-    String address = null;
+    String domain = null;
     StringBuilder errMsg = new StringBuilder();
     int port = -1;
 
@@ -42,14 +43,18 @@ public class NetworkSettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.network_settings);
 
-        //imageHost = (ImageView) findViewById(R.id.setHostImage);
         imageWebService = (ImageView) findViewById(R.id.setWSImage);
         imageDatabase = (ImageView) findViewById(R.id.setDBImage);
 
         editTextIP = (EditText) findViewById(R.id.settEditIP);
-        editTextIP.setText("10.0.0.3");
         editTextPort = (EditText) findViewById(R.id.settEditPort);
-        editTextPort.setText("8081");
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        editTextIP.setText(settings.getString(KEY_DOMAIN, "10.0.0.1"));//"10.0.0.3"
+        editTextPort.setText(String.valueOf(settings.getInt(KEY_PORT, 8081)));//"8081"
+
+
+
         Button testBut = (Button) findViewById(R.id.buttonTest);
         testBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,14 +65,24 @@ public class NetworkSettingsActivity extends Activity {
     }
 
     private void testIPandPort() {
-        address = editTextIP.getText().toString();
+        readAndSaveDomainAndPort();
+        Log.d("NetworkSettingsActivity", "testIPandPort() domain: " + domain + " port: " + port);
+        refreshState();
+    }
+
+    private void readAndSaveDomainAndPort() {
+        readDomainAndPort();
+        setNetworkDomainAndPort();
+        saveNetworkSettingsToSharedPrefs();
+    }
+
+    private void readDomainAndPort() {
+        domain = editTextIP.getText().toString();
         try {
             port = Integer.parseInt(editTextPort.getText().toString());
         } catch (Exception e) {
             port = -1;
         }
-        Log.d("NetworkSettingsActivity", "testIPandPort() address: " + address + " port: " + port);
-        refreshState();
     }
 
     @Override
@@ -91,7 +106,6 @@ public class NetworkSettingsActivity extends Activity {
         // Ziska menu z XML zdroje
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.network_options_menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -100,33 +114,43 @@ public class NetworkSettingsActivity extends Activity {
         Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.networkSave:
-                sendResultToDayTimelineActivity();
+                saveDomainAndPortAndFinish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void sendResultToDayTimelineActivity() {
-        Log.d("NetworkSettingsActivity", "sendResultToDayTimelineActivity()");
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("address", address);
-        returnIntent.putExtra("port", port);
-        setResult(RESULT_OK, returnIntent);
+    //TODO dat do shared preferences
+    private void saveDomainAndPortAndFinish() {
+        Log.d("NetworkSettingsActivity", "saveDomainAndPort()");
+        readAndSaveDomainAndPort();
+        setResult(RESULT_OK, new Intent());
         finish();
+    }
+
+    private void saveNetworkSettingsToSharedPrefs() {
+        SharedPreferences settings = getSharedPreferences(AppConsts.PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(KEY_DOMAIN, domain);
+        editor.putInt(KEY_PORT, port);
+        editor.commit();
+    }
+
+    private void setNetworkDomainAndPort() {
+        NetworkUtilities.setDOMAIN(domain);
+        NetworkUtilities.setPORT(String.valueOf(port));
     }
 
     private void refreshState() {
         Log.d("NetworkSettingsActivity", "refreshState()");
-        if (address.length() != 0 && address != null) {
-            //new CheckHostReachability().execute(new String[]{address});
-            new CheckWebServiceAndDBAvailability().execute(null);
+        if (domain.length() != 0 && domain != null) {
+            new CheckWebServiceAndDBAvailability().execute(null);//TODO nastavit parametry
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "address = null or 0", Toast.LENGTH_LONG);
-            toast.show();
+            Toast toast = Toast.makeText(getApplicationContext(), "domain = null or 0", Toast.LENGTH_LONG);
+            toast.show(); //TODO
         }
 
-        //new CheckWSReachability().execute(null);
     }
 
     private void setImageAsReachable(ImageView imageView) {
@@ -137,46 +161,13 @@ public class NetworkSettingsActivity extends Activity {
         imageView.setImageResource(R.drawable.ic_delete);
     }
 
-   /* private class CheckHostReachability extends AsyncTask<String, Void, Boolean> {
-
-
-        @Override
-        protected Boolean doInBackground(String... host) {
-
-            boolean isReachable = NetworkUtilities.testHostReachability(host[0], errMsg);
-            Log.d("NetworkSettingsActivity$CheckHostReachability", "doInBackground() host: " + host[0] + " errMsg: " + errMsg);
-            *//*try {
-                InetAddress inet = InetAddress.getByName(host[0]);//TODO
-                isReachable = inet.isReachable(5000);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }*//*
-            return isReachable;
-        }
+    private class CheckWebServiceAndDBAvailability extends AsyncTask<Void, Void, Integer> {
 
         @Override
-        protected void onPostExecute(Boolean result) {
-            Log.d("NetworkSettingsActivity$CheckHostReachability", "onPostExecute() result: " + result);
-            Toast toast = Toast.makeText(getApplicationContext(), "test: " + result, Toast.LENGTH_LONG);
-            toast.show();
-
-            if (result) {
-                setImageAsReachable(imageHost);
-            } else {
-                setImageAsUnreachable(imageHost);
-            }
-        }
-    }*/
-
-    private class CheckWebServiceAndDBAvailability extends AsyncTask<String, Void, Integer> {
-
-        @Override
-        protected Integer doInBackground(String... params) {
+        protected Integer doInBackground(Void... params) {
             Log.d("NetworkSettingsActivity$CheckWSReachability", "doInBackground()");
             return NetworkUtilities.testWebServiceAndDBAvailability();
         }
-
 
         @Override
         protected void onPostExecute(Integer result) {
