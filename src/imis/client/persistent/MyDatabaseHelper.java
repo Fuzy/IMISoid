@@ -55,13 +55,31 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
    */
 
     // Database creation sql statement
-    private static final String CREATE_EVENTS_TABLE = "create table " + TABLE_EVENTS + "("
+    /*private static final String CREATE_EVENTS_TABLE = "create table " + TABLE_EVENTS + "("
             + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_SERVER_ID + " text,"
             + COLUMN_DIRTY + " integer not null, " + COLUMN_DELETED + " integer not null, " + COLUMN_ICP
             + " text not null, " + COLUMN_DATUM + " integer not null," + COLUMN_KOD_PO
             + " text not null," + COLUMN_DRUH + " text not null," + COLUMN_CAS + " text not null,"
             + COLUMN_IC_OBS + " text," + COLUMN_TYP + " text not null," + COLUMN_DATUM_ZMENY
-            + " text not null," + COLUMN_POZNAMKA + " text);";
+            + " text not null," + COLUMN_POZNAMKA + " text);";*/
+
+    private static final String CREATE_EVENTS_TABLE = new String()
+            .concat("create table " + TABLE_EVENTS)
+            .concat("(")
+            .concat(COLUMN_ID + " integer primary key autoincrement, ")
+            .concat(COLUMN_SERVER_ID + " text,")
+            .concat(COLUMN_DIRTY + " integer not null, ")
+            .concat(COLUMN_DELETED + " integer not null, ")
+            .concat(COLUMN_ICP + " text not null, ")
+            .concat(COLUMN_DATUM + " integer not null,")
+            .concat(COLUMN_KOD_PO + " text not null,")
+            .concat(COLUMN_DRUH + " text not null,")
+            .concat(COLUMN_CAS + " text not null,")
+            .concat(COLUMN_IC_OBS + " text,")
+            .concat(COLUMN_TYP + " text not null,")
+            .concat(COLUMN_DATUM_ZMENY + " text not null,")
+            .concat(COLUMN_POZNAMKA + " text")
+            .concat(");");
 
     // Database creation sql statement
     private static final String CREATE_RECORDS_TABLE = new String()
@@ -78,7 +96,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             .concat(REC_COL_MNOZSTVI_ODVED + " integer not null, ")
             .concat(REC_COL_POZN_HL + " text not null, ")
             .concat(REC_COL_POZN_UKOL + " text not null, ")
-            .concat(REC_COL_POZNAMKA + " text not null, ")
+            .concat(REC_COL_POZNAMKA + " text not null")
             .concat(");");  //TODO null not null?
 
 
@@ -129,23 +147,27 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database
                 .execSQL("insert into "
                         + TABLE_EVENTS
-                        + " values (1,'AAAC4zAAMAAARwQAB7',1,0,'700510',1364169600000,'00','P','57600000','JJJ','O',1364169600000,null)");
+                        + " values (1,null,1,0,'700510',1364169600000,'00','P','57600000','KDA','O',1364169600000,null)");
         database
                 .execSQL("insert into "
                         + TABLE_EVENTS
-                        + " values (2,'AAAC4zAAMAAARwQAB8',1,0,'700510',1364169600000,'00','O','61200000','JJJ','O',1364169600000,null)");
+                        + " values (2,null,1,0,'700510',1364169600000,'02','O','61200000','KDA','O',1364169600000,null)");//61200000
         database
                 .execSQL("insert into "
                         + TABLE_EVENTS
-                        + " values (3,'AAAC4zAAMAAARwQAB9',1,0,'700510',1364169600000,'00','P','68400000','JJJ','O',1364169600000,null)");
+                        + " values (3,null,1,0,'700510',1364169600000,'00','P','64800000','KDA','O',1364169600000,null)");//64800000
         database
                 .execSQL("insert into "
                         + TABLE_EVENTS
-                        + " values (4,'AAAC4zAAMAAARwQAB+',1,0,'700510',1364169600000,'00','O','72000000','JJJ','O',1364169600000,null)");
+                        + " values (4,null,1,0,'700510',1364169600000,'01','O','68400000','KDA','O',1364169600000,null)");//68400000
         database
                 .execSQL("insert into "
                         + TABLE_EVENTS
-                        + " values (5,null,1,0,'700510',1364169600000,'00','O','72000000','JJJ','O',1364169600000,null)");
+                        + " values (5,null,1,0,'700510',1364169600000,'00','P','72000000','KDA','O',1364169600000,null)");//72000000
+        database
+                .execSQL("insert into "
+                        + TABLE_EVENTS
+                        + " values (6,null,1,0,'700510',1364169600000,'00','O','75600000','KDA','O',1364169600000,null)");//75600000
 
     }
 

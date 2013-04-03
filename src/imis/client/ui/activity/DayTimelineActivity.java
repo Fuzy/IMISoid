@@ -3,6 +3,7 @@ package imis.client.ui.activity;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.*;
 import android.database.Cursor;
@@ -24,6 +25,7 @@ import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ObservableScrollView;
 import imis.client.ui.adapter.EventsAdapter;
+import imis.client.ui.dialogs.ColorPickerDialog;
 
 import static imis.client.json.Util.todayInLong;
 import static imis.client.persistent.Consts.URI;
@@ -31,7 +33,7 @@ import static imis.client.persistent.Consts.URI;
 //import imis.client.ui.activity.ActivityConsts;
 
 public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
-        OnItemClickListener {// extends
+        OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {// extends
     // Activity
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
     private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
@@ -62,6 +64,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         adapter = new EventsAdapter(getApplicationContext(), null, -1);
         blocks.setAdapter(adapter);
         blocks.setOnItemClickListener(this);
+        blocks.setOnItemLongClickListener(this);
 
         date = todayInLong();
 
@@ -198,6 +201,17 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         startEditActivity(arriveID, leaveID);
     }
 
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("DayTimelineActivity", "onItemLongClick() position: " + position);
+        //ColorPickerDialog dialog = new ColorPickerDialog(getApplicationContext(), this, 10);
+        //showDialog();
+        //dialog.show();
+        DialogFragment dialog = new ColorPickerDialog();
+        dialog.show(getFragmentManager(), "NoticeDialogFragment");//getSupportFragmentManager()
+        return true;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     private void startEditActivity(int arriveID, int leaveID) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.putExtra(ActivityConsts.ID_ARRIVE, arriveID);
@@ -256,6 +270,12 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
                 break;*/
         }
     }
+
+    @Override
+    public void colorChanged(int color) {
+        Log.d("DayTimelineActivity", "colorChanged()");
+    }
+
 
     //TODO zmena polohy
 

@@ -1,26 +1,22 @@
 package imis.client.network;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-
 import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 
 
 public class HttpRequest {
@@ -89,7 +85,7 @@ public class HttpRequest {
         response = httpclient.execute(httpRequest);
         Log.d("HttpRequest", "sendRequest() after execute");
 
-        StatusLine statusLine = response.getStatusLine();
+        StatusLine statusLine = response.getStatusLine();//TODO vracet kod, Stringbuildre jako parametr
         if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
 
             //Closes the connection.

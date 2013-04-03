@@ -1,15 +1,13 @@
 package imis.client.model;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import com.google.gson.JsonObject;
 import imis.client.json.Util;
 import imis.client.persistent.MyDatabaseHelper;
 
 import static imis.client.json.Util.formatDate;
 import static imis.client.json.Util.formatTime;
-
-import android.content.ContentValues;
-import android.database.Cursor;
-
-import com.google.gson.JsonObject;
 
 public class Event {
     // sync
@@ -274,5 +272,10 @@ public class Event {
 
     public static final String DRUH_ARRIVAL = "P";
     public static final String DRUH_LEAVE = "O";
+    public static final String KOD_PO_ARRIVE_NORMAL = "00";
+    public static final String KOD_PO_ARRIVE_PRIVATE = "10";
+    public static final String KOD_PO_LEAVE_SERVICE = "01";
+    public static final String KOD_PO_LEAVE_LUNCH = "02";
+    public static final String KOD_PO_LEAVE_SUPPER = "03";
 
 }

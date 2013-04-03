@@ -16,26 +16,26 @@
 
 package imis.client.ui;
 
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.NinePatchDrawable;
-import android.provider.MediaStore;
-import imis.client.R;
-import imis.client.ui.adapter.EventsAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
+import imis.client.R;
+import imis.client.ui.adapter.EventsAdapter;
+import imis.client.ui.dialogs.ColorPickerDialog;
 
 /**
  * Custom layout that contains and organizes a {@link TimeRulerView} and several
  * instances of {@link BlockView}. Also positions current "now" divider using
  * {@link R.id#blocks_now} view when applicable.
  */
-public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
+public class BlocksLayout extends AdapterView<EventsAdapter> {// implements ColorPickerDialog.OnColorChangedListener
     // android.widget.AdapterView.OnItemClickListener
     private static final String TAG = BlocksLayout.class.getSimpleName();
     private static final int INVALID_INDEX = -1;
@@ -54,6 +54,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
      * User is touching the list and right now it's still a "click"
      */
     private static final int TOUCH_STATE_CLICK = 1;
+    private static final int TOUCH_STATE_LONG_CLICK = 3;
 
     /**
      * User is scrolling the list
@@ -64,6 +65,10 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
      * Current touch state
      */
     private int touchState = TOUCH_STATE_RESTING;
+    /** Used to check for long press actions */
+    private Runnable mLongPressRunnable;
+    /** X-coordinate of the down event */
+    private int mTouchStartX, mTouchStartY;
 
     public BlocksLayout(Context context) {
         this(context, null);
@@ -229,7 +234,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 //Log.d(TAG, "ACTION_DOWN");
-                startTouch();
+                startTouch(event);
                 break;
             case MotionEvent.ACTION_MOVE:
                 //Log.d(TAG, "ACTION_MOVE");
@@ -246,15 +251,61 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
         return true;
     }
 
-    private void startTouch() {
+    private void startTouch(final MotionEvent event) {
+        Log.d("BlocksLayout", "startTouch()");
+        mTouchStartX = (int) event.getX();
+        mTouchStartY = (int) event.getY();
+        // start checking for a long press
+        startLongPressCheck();
         touchState = TOUCH_STATE_CLICK;
     }
 
     private void endTouch() {
+        Log.d("BlocksLayout", "endTouch()");
+        removeCallbacks(mLongPressRunnable);
         touchState = TOUCH_STATE_RESTING;
     }
 
+    private void startLongPressCheck() {
+        Log.d("BlocksLayout", "startLongPressCheck()");
+
+        if (!isEnabled()) return;
+
+        // create the runnable if we haven't already
+        if (mLongPressRunnable == null) {
+
+            mLongPressRunnable = new Runnable() {
+
+                public void run() {
+
+                    if (touchState == TOUCH_STATE_CLICK) {
+
+                        final int index = getContainingChildIndex(mTouchStartX, mTouchStartY);
+
+                        if (index != INVALID_INDEX) longClickChild(index);
+                    }
+                }
+            };
+        }
+
+        // then post it with a delay
+        postDelayed(mLongPressRunnable, ViewConfiguration.getLongPressTimeout());
+    }
+
+    private void longClickChild(final int index) {
+        touchState = TOUCH_STATE_LONG_CLICK;
+        Log.d("BlocksLayout", "longClickChild()");
+        final View itemView = getChildAt(index);
+        final long id = mAdapter.getItemId(index);
+        final OnItemLongClickListener listener = getOnItemLongClickListener();
+        Log.d("BlocksLayout", "longClickChild() OnItemLongClickListener " + listener);
+        if (listener != null) {
+            listener.onItemLongClick(null, itemView, index, id);
+        }
+    }
+
     private void clickChildAt(final int x, final int y) {
+        Log.d("BlocksLayout", "clickChildAt()");
 
         final int index = getContainingChildIndex(x, y);
         // Log.d(TAG, "onTouchEvent x:" + x + " y:" + y + " index: " + index);
@@ -292,4 +343,8 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements
         }
     }
 
+  /*  @Override
+    public void colorChanged(int color) {
+        Log.d("BlocksLayout", "colorChanged() color " + color);
+    }*/
 }
