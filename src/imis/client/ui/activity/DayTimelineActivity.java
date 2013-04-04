@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.json.Util;
@@ -23,11 +24,12 @@ import imis.client.persistent.EventManager;
 import imis.client.persistent.EventManager.DataQuery;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
+import imis.client.ui.ColorUtil;
 import imis.client.ui.ObservableScrollView;
 import imis.client.ui.adapter.EventsAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
 
-import static imis.client.json.Util.todayInLong;
+import static imis.client.AppConsts.PREFS_NAME;
 import static imis.client.persistent.Consts.URI;
 
 //import imis.client.ui.activity.ActivityConsts;
@@ -44,7 +46,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     private BlocksLayout blocks;
     private ObservableScrollView scroll;
     private EventsAdapter adapter;
-    private long date = 0;
+    private long date = 0L;
 
     private static final int LOADER_ID = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
@@ -52,25 +54,31 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
-        // Vytvori manazer uctu
-        accountManager = AccountManager.get(this);
-        setContentView(R.layout.blocks_content);
+        Log.d(TAG, "onCreate()");
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        // create account manager
+        accountManager = AccountManager.get(this);
+
+        // init UI
+        setContentView(R.layout.blocks_content);
         scroll = (ObservableScrollView) findViewById(R.id.blocks_scroll);
-        blocks = (BlocksLayout) findViewById(R.id.blocks);
         adapter = new EventsAdapter(getApplicationContext(), null, -1);
+        blocks = (BlocksLayout) findViewById(R.id.blocks);
         blocks.setAdapter(adapter);
         blocks.setOnItemClickListener(this);
         blocks.setOnItemLongClickListener(this);
 
-        date = todayInLong();
-
+        // init today date and loader
+        date = 1364169600000L;//todayInLong();
         Log.d(TAG, "onCreate() date: " + date);
+        getLoaderManager().initLoader(LOADER_ID, null, this);
+
+
         // EventManager.deleteAllEvents(getApplicationContext());
         Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
+
+        loadColorSharedPreferences();
     }
 
     private void setDateTitle(long date) {
@@ -92,12 +100,6 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         registerReceiver(_broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (_broadcastReceiver != null)
-            unregisterReceiver(_broadcastReceiver);
-    }
 
     @Override
     protected void onResume() {
@@ -108,10 +110,24 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         setDateTitle(date);
         scroll.post(new Runnable() {
             public void run() {
-                Log.d(TAG, "onResume() scroll.getBottom(): " + scroll.getBottom());
+                //Log.d(TAG, "onResume() scroll.getBottom(): " + scroll.getBottom());
                 scroll.scrollTo(0, blocks.getBottom());
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("DayTimelineActivity", "onPause()");
+        saveColorSharedPreferences();
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (_broadcastReceiver != null)
+            unregisterReceiver(_broadcastReceiver);
     }
 
     @Override
@@ -204,12 +220,9 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d("DayTimelineActivity", "onItemLongClick() position: " + position);
-        //ColorPickerDialog dialog = new ColorPickerDialog(getApplicationContext(), this, 10);
-        //showDialog();
-        //dialog.show();
-        DialogFragment dialog = new ColorPickerDialog();
-        dialog.show(getFragmentManager(), "NoticeDialogFragment");//getSupportFragmentManager()
-        return true;  //To change body of implemented methods use File | Settings | File Templates.
+        DialogFragment dialog = new ColorPickerDialog(-65378);
+        dialog.show(getFragmentManager(), "ColorPickerDialog");
+        return true;
     }
 
     private void startEditActivity(int arriveID, int leaveID) {
@@ -273,10 +286,40 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
 
     @Override
     public void colorChanged(int color) {
-        Log.d("DayTimelineActivity", "colorChanged()");
+        //Log.d("DayTimelineActivity", "colorChanged() color " + color);
+        ColorUtil.setColor_present_normal(color);
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
+    private void loadColorSharedPreferences() {
+        Log.d("DayTimelineActivity", "loadColorSharedPreferences()");
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        int color_present_normal = settings.getInt(ColorUtil.KEY_COLOR_PRESENT_NORMAL,
+                getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT));
+        ColorUtil.setColor_present_normal(color_present_normal);
+        int color_present_private = settings.getInt(ColorUtil.KEY_COLOR_PRESENT_PRIVATE,
+                getResources().getColor(R.color.COLOR_PRESENT_PRIVATE_DEFAULT));
+        ColorUtil.setColor_present_private(color_present_private);
+        int color_present_others = settings.getInt(ColorUtil.KEY_COLOR_PRESENT_OTHERS,
+                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT));
+        ColorUtil.setColor_present_others(color_present_others);
+        int color_absence_service = settings.getInt(ColorUtil.KEY_COLOR_ABSENCE_SERVICE,
+                getResources().getColor(R.color.COLOR_ABSENCE_SERVICE_DEFAULT));
+        ColorUtil.setColor_absence_service(color_absence_service);
+        int color_absence_meal = settings.getInt(ColorUtil.KEY_COLOR_ABSENCE_MEAL,
+                getResources().getColor(R.color.COLOR_ABSENCE_MEAL_DEFAULT));
+        ColorUtil.setColor_absence_meal(color_absence_meal);
+    }
 
-    //TODO zmena polohy
-
+    private void saveColorSharedPreferences() {
+        Log.d("DayTimelineActivity", "saveColorSharedPreferences()");
+        SharedPreferences settings = getSharedPreferences(AppConsts.PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(ColorUtil.KEY_COLOR_PRESENT_NORMAL, ColorUtil.getColor_present_normal());
+        editor.putInt(ColorUtil.KEY_COLOR_PRESENT_PRIVATE, ColorUtil.getColor_present_private());
+        editor.putInt(ColorUtil.KEY_COLOR_PRESENT_OTHERS, ColorUtil.getColor_present_others());
+        editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_SERVICE, ColorUtil.getColor_absence_service());
+        editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_MEAL, ColorUtil.getColor_absence_meal());
+        editor.commit();
+    }
 }

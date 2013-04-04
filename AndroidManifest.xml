@@ -68,7 +68,7 @@
         <activity android:name=".ui.activity.DayTimelineActivity"
                   android:theme="@android:style/Theme.Holo.Light"
 
-                  android:configChanges="orientation|screenSize">
+                  android:configChanges="orientation|screenSize">//TODO nastudovat
             <!--android:screenOrientation="portrait"-->
 
             <intent-filter>

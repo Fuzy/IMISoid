@@ -130,6 +130,7 @@ public class NetworkSettingsActivity extends Activity {
     }
 
     private void saveNetworkSettingsToSharedPrefs() {
+        //TODO tohle volat v onstop
         SharedPreferences settings = getSharedPreferences(AppConsts.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(KEY_DOMAIN, domain);

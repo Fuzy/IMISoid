@@ -33,34 +33,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO jako singleton
 public class NetworkUtilities {
     private static final String TAG = "NetworkUtilities";
-    // private static final String BASE_URL =
-    // "http://172.20.3.196:8080/Imisoid_WS/";
     private static final String SCHEME = "http://";
-    private static String DOMAIN = "10.0.0.2";// TODO nacist ze shared
-    private static String PORT = "8081";
     private static final String PATH = "/Imisoid_WS/";
-    private static final String BASE_URL = SCHEME + DOMAIN + ":" + PORT + PATH;// 10.0.2.2
-    private static final String EVENTS_URI = BASE_URL + "events";
-    private static final String RECORDS_URI = BASE_URL + "records";
-    private static final String AUTH_URI = BASE_URL + "authentication";
-    private static final int TIMEOUT = 5 * 1000; // ms
-    private static HttpClient httpClient = null;
+
+    private static String DOMAIN = "172.20.99.43";// TODO nacist ze shared
+    private static String PORT = "8081";
+    private static String BASE_URL = SCHEME + DOMAIN + ":" + PORT + PATH;// 10.0.2.2
+    private static String EVENTS_URI = BASE_URL + "events";
+    private static String RECORDS_URI = BASE_URL + "records";
+    private static String AUTH_URI = BASE_URL + "authentication";
+
     private static final String PARAM_USERNAME = "username";
     private static final String PARAM_PASSWORD = "password";
-
-    /*static {
-        SharedPreferences settings =  getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        editTextIP.setText(settings.getString(KEY_DOMAIN, "10.0.0.1"));//"10.0.0.3"
-        editTextPort.setText(String.valueOf(settings.getInt(KEY_PORT, 8081)));//"8081"
-    }*/
-
-  /*
-   * private static final String PARAM_FROM_DATE = "from"; private static final
-   * String PARAM_TO_DATE = "to";
-   */
+    private static final int TIMEOUT = 5 * 1000; // ms
+    private static HttpClient httpClient = null;
 
     /**
      * Configures the httpClient to connect to the URL provided.

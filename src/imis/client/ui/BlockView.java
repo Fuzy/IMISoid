@@ -17,27 +17,22 @@
 package imis.client.ui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
-import android.text.format.DateUtils;
 import android.view.View;
-
 import imis.client.R;
 
-import java.util.TimeZone;
-
 /**
- * Custom view that represents a {@link Blocks#BLOCK_ID} instance, including its
+ * Custom view that represents a {Blocks#BLOCK_ID} instance, including its
  * title and time span that it occupies. Usually organized automatically by
  * {@link BlocksLayout} to match up against a {@link TimeRulerView} instance.
  */
 public class BlockView extends View {// TODO je nutne aby to byl button?Button
     private static final String TAG = BlockView.class.getSimpleName();
-    private static final int TIME_STRING_FLAGS = DateUtils.FORMAT_SHOW_DATE
+    /*private static final int TIME_STRING_FLAGS = DateUtils.FORMAT_SHOW_DATE
             | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
             | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;// TODO co to
-    // je?
+    // je?*/
 
     // private String blockId;
     private int arriveId;
@@ -45,17 +40,16 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
     private long startTime;
     private long endTime;
 
-
     private boolean deleted;
     LayerDrawable buttonDrawable;
 
     // TODO dalsi atributy
 
     public BlockView(Context context) {
-        this(context, -1, -1, 0, 0, false);
+        this(context, -1, -1, 0, 0, "", false);
     }
 
-    public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime, boolean deleted) {
+    public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime, String type, boolean deleted) {
         super(context);
         // Log.d(TAG, "BlockView()");
 
@@ -65,31 +59,32 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.endTime = endTime;
         this.deleted = deleted;
 
-        // setText(title);
-
-        // TODO: turn into color state list with layers?
-        int textColor = Color.WHITE;
-
-        int accentColor;
-        if (deleted) {
-            accentColor = getResources().getColor(R.color.block_column_2_del);
+        int accentColor = ColorUtil.getColorForType(type);
+        /*if (deleted) {
+            Log.d("BlockView", "BlockView() deleted");
+            accentColor = ColorUtil.getColor_present_normal();
+            accentColor |= 0x80000000;
+            accentColor = 0;
         } else {
-            accentColor = getResources().getColor(R.color.block_column_2);
-        }
+            accentColor = ColorUtil.getColor_present_normal();//getResources().getColor(R.color.block_column_2);
+        }*/
+        //TODO barva podle typu
         LayerDrawable buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
                 R.drawable.btn_block);
         buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
-
+        //TODO nesync rozlisit
         // setTextColor(textColor);
-        setBackgroundDrawable(buttonDrawable);
+        setBackground(buttonDrawable);
+        //setBackgroundColor(accentColor);
     }
 
-    public void setAsDeleted() {
+
+    /*public void setAsDeleted() {
         int accentColor = getResources().getColor(R.color.block_column_2_del);
         buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
         // setTextColor(textColor);
         setBackgroundDrawable(buttonDrawable);
-    }
+    }*/
 
     public int getArriveId() {
         return arriveId;
@@ -115,10 +110,10 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.leaveId = leaveId;
     }
 
-    public String getBlockTimeString() {
+    /*public String getBlockTimeString() {
         TimeZone.setDefault(TimeZone.getTimeZone("Etc/GMT-2"));
         return DateUtils.formatDateTime(getContext(), startTime, TIME_STRING_FLAGS);
-    }
+    }*/
 
     public long getStartTime() {
         return startTime;
