@@ -110,13 +110,15 @@
                 someone who explicitly knows the class name
             -->
         </activity>
-         <activity android:name=".ui.activity.NetworkSettingsActivity"/>
+        <activity android:name=".ui.activity.NetworkSettingsActivity"/>
 
         <activity android:name=".ui.activity.CalendarActivity"
                 ></activity>
 
         <activity android:name=".ui.activity.RecordsChartActivity"
                 ></activity>
+
+        <activity android:name=".ui.activity.PresentEmployeesActivity"></activity>
     </application>
 
 </manifest>

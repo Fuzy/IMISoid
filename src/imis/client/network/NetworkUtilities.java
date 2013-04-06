@@ -36,14 +36,23 @@ import java.util.List;
 public class NetworkUtilities {
     private static final String TAG = "NetworkUtilities";
     private static final String SCHEME = "http://";
-    private static final String PATH = "/Imisoid_WS/";
+    private static final String BASE_PATH = "/Imisoid_WS/";
+    private static final String EVENTS_PATH = BASE_PATH + "events";
+    private static final String RECORDS_PATH = BASE_PATH + "records";
+    private static final String AUTH_PATH = BASE_PATH + "authentication";
+    private static final String EMPLOYEES_PATH = BASE_PATH + "employees";
 
-    private static String DOMAIN = "172.20.99.43";// TODO nacist ze shared
-    private static String PORT = "8081";
-    private static String BASE_URL = SCHEME + DOMAIN + ":" + PORT + PATH;// 10.0.2.2
-    private static String EVENTS_URI = BASE_URL + "events";
-    private static String RECORDS_URI = BASE_URL + "records";
-    private static String AUTH_URI = BASE_URL + "authentication";
+
+    private static String DOMAIN = null;
+    private static int PORT = -1;
+    private static String BASE_URL;
+    private static String EVENTS_URL;
+    private static String RECORDS_URL;
+    private static String EMPLOYEES_URL;
+    private static String AUTH_URL;
+
+    public static final String DOMAIN_DEFAULT = "10.0.0.1";
+    public static final int PORT_DEFAULT = 8081;
 
     private static final String PARAM_USERNAME = "username";
     private static final String PARAM_PASSWORD = "password";
@@ -67,24 +76,22 @@ public class NetworkUtilities {
 
     public static int deleteEvent(String rowid) {
         Log.d(TAG, "deleteEvent() rowid: " + rowid);
-        String uri = EVENTS_URI + "/" + rowid;
+        String uri = EVENTS_URL + "/" + rowid;
         int code = sendHttpDelete(uri);
         return code;
     }
 
-    // @SuppressWarnings("unchecked")
     public static int getUserEvents(List<Event> events, final String icp, final Date from, final Date to) {
-        //String strFrom = Util.formatDate(from);
-        //String strTo = Util.formatDate(to);
         String strFrom = "29.7.2004";//TODO pryc
         String strTo = "29.7.2004";
         Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo:" + strTo);
 
-        String uri = EVENTS_URI + "/" + icp + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
+        String uri = EVENTS_URL + "/" + icp + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
 
         String resp = new String();
         int code = sendHttpGetForUserEvents(uri, resp);
 
+        //TODO refaktor
         JsonElement o = Util.parser.parse(resp);
         JsonArray array = o.getAsJsonArray();
         JsonObject eventJson;
@@ -99,6 +106,8 @@ public class NetworkUtilities {
         return code;
     }
 
+    //public static int
+
     //TODO date /> long nebo string
     /*public static int getUserRecords(List<Record> records, final String kodpra, final Date from, final Date to) {
         String strFrom = "29.7.2004";//TODO pryc
@@ -106,7 +115,7 @@ public class NetworkUtilities {
         String kodpraL = "JEL";
         Log.d(TAG, "getUserRecords() kodpraL: " + kodpraL + " strFrom: " + strFrom + " strTo:" + strTo);
 
-        String uri = RECORDS_URI + "/" + kodpraL + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
+        String uri = RECORDS_URL + "/" + kodpraL + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
         String resp = new String();
         int code = sendHttpGetForUserEvents(uri, resp);
 
@@ -123,19 +132,29 @@ public class NetworkUtilities {
 
         return code;
     }*/
+    public static HttpResponse getListOfEmployees(final String icp) {
+        String uri = EMPLOYEES_URL + "/" + icp;
+        HttpResponse response = null;
+        try {
+            response = HttpRequest.sendRequest(uri, HttpRequest.GET, null, null, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    public static String getUserRecords(final String kodpra, final String from, final String to) {
+        return response;
+    }
+
+    public static HttpResponse getUserRecords(final String kodpra, final String from, final String to) {
         Log.d(TAG, "getUserRecords() kodpra: " + kodpra + " strFrom: " + from + " strTo:" + to);
 
-        String response = null;
-        String uri = RECORDS_URI + "/" + kodpra;// + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
+        //String response = null;
+        String uri = RECORDS_URL + "/" + kodpra;// + "?from=" + strFrom + "&to=" + strTo;// TODO  uri builder
         HashMap<String, String> params = new HashMap<String, String>(2);
         params.put("from", from);
         params.put("to", to);
+        HttpResponse response = null;
         try {
-            Log.d("NetworkUtilities", "getUserRecords() pre");
-            response = HttpRequest.sendRequest(uri, "GET", null, params, null);
-            Log.d("NetworkUtilities", "getUserRecords() after");
+            response = HttpRequest.sendRequest(uri, HttpRequest.GET, null, params, null);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -145,21 +164,20 @@ public class NetworkUtilities {
 
     public static int createEvent(Event event) {
         Log.d(TAG, "createEvent() event: " + event);
-        String uri = EVENTS_URI;
+        String uri = EVENTS_URL;
         int code = sendHttpPost(uri, event);
         return code;
     }
 
     public static int updateEvent(Event event) {
         Log.d(TAG, "updateEvent() event: " + event);
-        String uri = EVENTS_URI;
+        String uri = EVENTS_URL;
         int code = sendHttpPost(uri, event);
         return code;
     }
 
-    //TODO skonsolidovat do jednoho testu
     public static int testWebServiceAndDBAvailability() {
-        int code = sendHttpGetTest(EVENTS_URI);//TODO domain + port implicitne
+        int code = sendHttpGetTest(EVENTS_URL);
         return code;
     }
 
@@ -300,7 +318,7 @@ public class NetworkUtilities {
     public static String authenticate(String username, String password) {
         Log.d("NetworkUtilities", "authenticate() username: " + username + " password: " + password);
         HttpClient httpClient = getHttpClient();
-        HttpPost post = new HttpPost(AUTH_URI);
+        HttpPost post = new HttpPost(AUTH_URL);
         HttpResponse resp;
         int code = -1;
         try {
@@ -327,21 +345,26 @@ public class NetworkUtilities {
         return "qwertyxx";
     }
 
-    public static String getDOMAIN() {
-        return DOMAIN;
+    public static void resetDomainAndPort(String domain, int port) {
+        Log.d("NetworkUtilities", "resetDomainAndPort()");
+        DOMAIN = domain;
+        PORT = port;
+        BASE_URL = SCHEME + DOMAIN + ":" + PORT;// 10.0.2.2
+        EVENTS_URL = BASE_URL + EVENTS_PATH;
+        RECORDS_URL = BASE_URL + RECORDS_PATH;
+        EMPLOYEES_URL = BASE_URL + EMPLOYEES_PATH;
+        AUTH_URL = BASE_URL + AUTH_PATH;
     }
 
-    public static void setDOMAIN(String DOMAIN) {
-        Log.d("NetworkUtilities", "setDOMAIN() " + DOMAIN);
-        NetworkUtilities.DOMAIN = DOMAIN;
+    private static String getPortAsString(int port) {
+        return String.valueOf(port);
     }
 
-    public static String getPORT() {
-        return PORT;
+    public static String getDomainOrDefault() {
+        return (DOMAIN == null) ? DOMAIN_DEFAULT : DOMAIN;
     }
 
-    public static void setPORT(String PORT) {
-        Log.d("NetworkUtilities", "setPORT() " + PORT);
-        NetworkUtilities.PORT = PORT;
+    public static String getPortOrDefault() {
+        return (PORT == -1) ? getPortAsString(PORT_DEFAULT) : getPortAsString(PORT);
     }
 }

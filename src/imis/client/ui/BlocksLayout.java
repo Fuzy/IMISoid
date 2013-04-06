@@ -27,8 +27,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import imis.client.R;
-import imis.client.ui.adapter.EventsAdapter;
-import imis.client.ui.dialogs.ColorPickerDialog;
+import imis.client.ui.adapters.EventsAdapter;
 
 /**
  * Custom layout that contains and organizes a {@link TimeRulerView} and several

@@ -21,7 +21,8 @@ import imis.client.network.NetworkUtilities;
 
 import java.net.HttpURLConnection;
 
-import static imis.client.AppConsts.*;
+import static imis.client.AppConsts.KEY_DOMAIN;
+import static imis.client.AppConsts.KEY_PORT;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,9 +33,8 @@ import static imis.client.AppConsts.*;
 public class NetworkSettingsActivity extends Activity {
     private static final String TAG = NetworkSettingsActivity.class.getSimpleName();
     private ImageView imageWebService, imageDatabase;
-    private EditText editTextIP, editTextPort;
+    private EditText editTextDomain, editTextPort;
     String domain = null;
-    StringBuilder errMsg = new StringBuilder();
     int port = -1;
 
     @Override
@@ -46,14 +46,11 @@ public class NetworkSettingsActivity extends Activity {
         imageWebService = (ImageView) findViewById(R.id.setWSImage);
         imageDatabase = (ImageView) findViewById(R.id.setDBImage);
 
-        editTextIP = (EditText) findViewById(R.id.settEditIP);
+        editTextDomain = (EditText) findViewById(R.id.settEditIP);
         editTextPort = (EditText) findViewById(R.id.settEditPort);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        editTextIP.setText(settings.getString(KEY_DOMAIN, "10.0.0.1"));//"10.0.0.3"
-        editTextPort.setText(String.valueOf(settings.getInt(KEY_PORT, 8081)));//"8081"
-
-
+        editTextDomain.setText(NetworkUtilities.getDomainOrDefault());
+        editTextPort.setText(NetworkUtilities.getPortOrDefault());
 
         Button testBut = (Button) findViewById(R.id.buttonTest);
         testBut.setOnClickListener(new View.OnClickListener() {
@@ -65,19 +62,18 @@ public class NetworkSettingsActivity extends Activity {
     }
 
     private void testIPandPort() {
-        readAndSaveDomainAndPort();
         Log.d("NetworkSettingsActivity", "testIPandPort() domain: " + domain + " port: " + port);
+        readAndSaveDomainAndPort();
         refreshState();
     }
 
     private void readAndSaveDomainAndPort() {
         readDomainAndPort();
         setNetworkDomainAndPort();
-        saveNetworkSettingsToSharedPrefs();
     }
 
     private void readDomainAndPort() {
-        domain = editTextIP.getText().toString();
+        domain = editTextDomain.getText().toString();
         try {
             port = Integer.parseInt(editTextPort.getText().toString());
         } catch (Exception e) {
@@ -86,18 +82,10 @@ public class NetworkSettingsActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //refreshState();
-    }
-
-    @Override
     protected void onStop() {
         Log.d("NetworkSettingsActivity", "onStop()");
-        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
-        /*Intent returnIntent = new Intent();
-        setResult(RESULT_CANCELED, returnIntent);
-        finish();*/
+        super.onStop();
+        saveNetworkSettingsToSharedPrefs();
     }
 
     @Override
@@ -121,7 +109,6 @@ public class NetworkSettingsActivity extends Activity {
         }
     }
 
-    //TODO dat do shared preferences
     private void saveDomainAndPortAndFinish() {
         Log.d("NetworkSettingsActivity", "saveDomainAndPort()");
         readAndSaveDomainAndPort();
@@ -130,6 +117,7 @@ public class NetworkSettingsActivity extends Activity {
     }
 
     private void saveNetworkSettingsToSharedPrefs() {
+        Log.d("NetworkSettingsActivity", "saveNetworkSettingsToSharedPrefs()");
         //TODO tohle volat v onstop
         SharedPreferences settings = getSharedPreferences(AppConsts.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -139,8 +127,7 @@ public class NetworkSettingsActivity extends Activity {
     }
 
     private void setNetworkDomainAndPort() {
-        NetworkUtilities.setDOMAIN(domain);
-        NetworkUtilities.setPORT(String.valueOf(port));
+        NetworkUtilities.resetDomainAndPort(domain, port);
     }
 
     private void refreshState() {

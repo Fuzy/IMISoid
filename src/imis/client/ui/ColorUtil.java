@@ -14,12 +14,14 @@ public class ColorUtil {
     public static String KEY_COLOR_PRESENT_OTHERS = "color_present_others";
     public static String KEY_COLOR_ABSENCE_SERVICE = "color_absence_service";
     public static String KEY_COLOR_ABSENCE_MEAL = "color_absence_meal";
+    public static String KEY_COLOR_ABSENCE_MEDIC = "color_absence_medic";
 
     private static int color_present_normal = 0;
     private static int color_present_private = 0;
     private static int color_present_others = 0;
     private static int color_absence_service = 0;
     private static int color_absence_meal = 0;
+    private static int color_absence_medic = 0;
 
     public static int getColor_present_normal() {
         return color_present_normal;
@@ -61,6 +63,14 @@ public class ColorUtil {
         ColorUtil.color_absence_meal = color_absence_meal;
     }
 
+    public static int getColor_absence_medic() {
+        return color_absence_medic;
+    }
+
+    public static void setColor_absence_medic(int color_absence_medic) {
+        ColorUtil.color_absence_medic = color_absence_medic;
+    }
+
     public static int getColorForType(String type) {
         if (type.equals(Event.KOD_PO_ARRIVE_NORMAL)) {
               return color_present_normal;
@@ -68,10 +78,16 @@ public class ColorUtil {
         else if (type.equals(Event.KOD_PO_ARRIVE_PRIVATE)) {
             return color_present_private;
         }
+        else if (type.equals(Event.KOD_PO_LEAVE_SERVICE)) {
+            return color_absence_service;
+        }
         else if (type.equals(Event.KOD_PO_LEAVE_LUNCH) || type.equals(Event.KOD_PO_LEAVE_SUPPER)) {
             return color_absence_meal;
         }
-            return 0;
+        else if (type.equals(Event.KOD_PO_LEAVE_MEDIC)) {
+            return color_absence_medic;
+        }
+            return color_present_others;
     }
 
     /*public static final int COLOR_PRESENT_NORMAL_DEFAULT = 15078679;

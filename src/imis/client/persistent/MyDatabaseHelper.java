@@ -4,20 +4,22 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import imis.client.model.Employee;
 import imis.client.model.Record;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "MyDatabaseHelper";
     // TODO osetrit delky vstupu
-    private static final String DATABASE_NAME = "events.db";
+    private static final String DATABASE_NAME = "events.db";//TODO novy nazev imisoid
     private static final int DATABASE_VERSION = 1;
 
-    // Tabulka events - povinne android polozky.
+    // Table names
     public static final String TABLE_EVENTS = "events";
     public static final String TABLE_RECORDS = "records";
-    public static final String COLUMN_ID = "_id"; // client id
+    public static final String TABLE_EMPLOYEES = "employees";
 
     // Tabulka events - puvodni model (tabulka karta).
+    public static final String EV_COL_LOCAL_ID = "_id"; // client id
     public static final String COLUMN_ICP = "icp";
     public static final String COLUMN_DATUM = "datum";
     public static final String COLUMN_KOD_PO = "kod_po";
@@ -47,26 +49,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String REC_COL_CPOLZAK = Record.REC_COL_CPOLZAK;
     private static final String REC_COL_CPOZZAK = Record.REC_COL_CPOZZAK;
 
-    // Tabulka kody_po - puvodni model (tabulka kody_po).
-    // TODO sloupes _id, kod_po jako unique
-  /*
-   * public static final String COLUMN_KOD_PO_PRIM = "kod_po"; public static
-   * final String COLUMN_POPIS = "popis";
-   */
+    // Table of employees
+    private static final String EMP_COL_LOCAL_ID = "_id"; // client id
+    private static final String EMP_COL_ICP = Employee.COL_ICP;
+    private static final String EMP_COL_KODPRA = Employee.COL_KODPRA;
+    private static final String EMP_COL_SUB = Employee.COL_SUB;
 
-    // Database creation sql statement
-    /*private static final String CREATE_EVENTS_TABLE = "create table " + TABLE_EVENTS + "("
-            + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_SERVER_ID + " text,"
-            + COLUMN_DIRTY + " integer not null, " + COLUMN_DELETED + " integer not null, " + COLUMN_ICP
-            + " text not null, " + COLUMN_DATUM + " integer not null," + COLUMN_KOD_PO
-            + " text not null," + COLUMN_DRUH + " text not null," + COLUMN_CAS + " text not null,"
-            + COLUMN_IC_OBS + " text," + COLUMN_TYP + " text not null," + COLUMN_DATUM_ZMENY
-            + " text not null," + COLUMN_POZNAMKA + " text);";*/
 
     private static final String CREATE_EVENTS_TABLE = new String()
             .concat("create table " + TABLE_EVENTS)
             .concat("(")
-            .concat(COLUMN_ID + " integer primary key autoincrement, ")
+            .concat(EV_COL_LOCAL_ID + " integer primary key autoincrement, ")
             .concat(COLUMN_SERVER_ID + " text,")
             .concat(COLUMN_DIRTY + " integer not null, ")
             .concat(COLUMN_DELETED + " integer not null, ")
@@ -99,23 +92,31 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             .concat(REC_COL_POZNAMKA + " text not null")
             .concat(");");  //TODO null not null?
 
+    // Database creation sql statement
+    private static final String CREATE_EMPLOYEES_TABLE = new String()
+            .concat("create table " + TABLE_EMPLOYEES)
+            .concat("(")
+            .concat(EMP_COL_LOCAL_ID + " integer primary key autoincrement, ")
+            .concat(EMP_COL_ICP + " text not null, ")//TODO unique?
+            .concat(EMP_COL_KODPRA + " text, ")
+            .concat(EMP_COL_SUB + " integer not null")
+            .concat(");");
+
 
     //TODO datum jako YYYY-MM-DD HH:MM:SS ne long
     public MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    /**
-     * @see android.database.sqlite.SQLiteOpenHelper#onCreate(android.database.sqlite.SQLiteDatabase)
-     *      Is called by the framework, if the database does not exists.
-     */
     @Override
     public void onCreate(SQLiteDatabase database) {
         Log.d(TAG, "onCreate()");
         Log.d(TAG, "CREATE_EVENTS_TABLE: " + CREATE_EVENTS_TABLE);
         Log.d(TAG, "CREATE_RECORDS_TABLE: " + CREATE_RECORDS_TABLE);
+        Log.d(TAG, "CREATE_EMPLOYEES_TABLE: " + CREATE_EMPLOYEES_TABLE);
         database.execSQL(CREATE_EVENTS_TABLE);
         database.execSQL(CREATE_RECORDS_TABLE);
+        database.execSQL(CREATE_EMPLOYEES_TABLE);
         insertEventsTestData(database);
     }
 
@@ -123,18 +124,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         Log.d(TAG, "onOpen()");
         super.onOpen(db);
-    /*
-     * if (!db.isReadOnly()) { // Enable foreign key constraints
-     * db.execSQL("PRAGMA foreign_keys=ON;"); }
-     */
     }
 
-    /**
-     * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase,
-     *      int, int) Is called, if the database version is increased in your
-     *      application code. This method allows you to update the database
-     *      schema.
-     */
     @Override
     public void onUpgrade(SQLiteDatabase database, int arg1, int arg2) {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);

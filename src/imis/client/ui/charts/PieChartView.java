@@ -29,13 +29,13 @@ import android.view.ViewConfiguration;
 import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 
-//import com.saulpower.piechart.adapter.BasePieChartAdapter;
+//import com.saulpower.piechart.adapters.BasePieChartAdapter;
 //import com.saulpower.piechart.extra.Dynamics;
 //import com.saulpower.piechart.extra.UiUtils;
 //import com.saulpower.piechart.views.ThreadAnimator.AnimationListener;
 
 /**
- * A view that creates a Pie Chart which is backed by an adapter providing the
+ * A view that creates a Pie Chart which is backed by an adapters providing the
  * data for each slice of the pie chart.  The chart can be rotated by touch and
  * automatically snaps to one of the compass points, defaults to {@link PieChartAnchor#RIGHT}.  
  * To turn off the rotation feature simply call {@link #setEnabled(boolean)} and
@@ -113,7 +113,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
     /** Used to check for long press actions */
     private Runnable mLongPressRunnable;
 
-    /** The adapter with all the data */
+    /** The adapters with all the data */
     private BasePieChartAdapter mAdapter;
 
     /** X-coordinate of the down event */
@@ -766,7 +766,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
      * Call the OnItemClickListener, if it is defined.
      *
      * @param view The drawable within the View that was clicked.
-     * @param position The position of the view in the adapter.
+     * @param position The position of the view in the adapters.
      * @param id The row id of the item that was clicked.
      * @return True if there was an assigned OnItemClickListener that was
      *         called, false otherwise is returned.
@@ -908,7 +908,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 
     /**
      * Starts at 0 degrees and adds each pie slice as provided
-     * by the adapter
+     * by the adapters
      */
     private void addPieSlices() {
     	
@@ -921,7 +921,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	        	// Check for any recycled PieSliceDrawables
 	        	PieSliceDrawable recycled = getRecycledSlice();
 	        	
-	        	// Get the slice from the adapter
+	        	// Get the slice from the adapters
 	            final PieSliceDrawable childSlice = mAdapter.getSlice(this, recycled, index, offset);
 	            
 	            childSlice.setBounds(getBounds());
@@ -1224,10 +1224,10 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	}
 
 	/**
-	 * Sets the adapter that will provide the data for this
+	 * Sets the adapters that will provide the data for this
 	 * Pie Chart.
 	 * 
-	 * @param adapter The PieChart adapter
+	 * @param adapter The PieChart adapters
 	 */
 	public void setAdapter(BasePieChartAdapter adapter) {
 		
@@ -1254,13 +1254,13 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	}
 	
 	/**
-	 * Get the sum of all the percents from the adapter
+	 * Get the sum of all the percents from the adapters
 	 * to help with validation.  We need an approximate
 	 * total of 1.0f so that the chart can be rendered
 	 * properly.
 	 * 
-	 * @param adapter The adapter supplying the chart's data
-	 * @return The sum of all percentages provided by the adapter
+	 * @param adapter The adapters supplying the chart's data
+	 * @return The sum of all percentages provided by the adapters
 	 */
 	private float validAdapter(BasePieChartAdapter adapter) {
 		
@@ -1447,7 +1447,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 				}
 
 				// If there are no PieSliceDrawables and we have an
-				// adapter create the necessary slices, the drawing
+				// adapters create the necessary slices, the drawing
 				// cache and snap to the closest position
 				if (mDrawables.size() == 0 && mAdapter != null) {
 					

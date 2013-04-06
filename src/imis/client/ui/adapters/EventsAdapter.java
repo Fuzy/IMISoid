@@ -1,4 +1,4 @@
-package imis.client.ui.adapter;
+package imis.client.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;

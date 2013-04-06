@@ -39,6 +39,7 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
     private int leaveId;
     private long startTime;
     private long endTime;
+    private String type;
 
     private boolean deleted;
     LayerDrawable buttonDrawable;
@@ -57,6 +58,7 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.leaveId = leaveId;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.type = type;
         this.deleted = deleted;
 
         int accentColor = ColorUtil.getColorForType(type);
@@ -129,6 +131,14 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

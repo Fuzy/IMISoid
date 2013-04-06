@@ -3,8 +3,6 @@ package imis.client.network;
 import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
@@ -39,7 +37,8 @@ public class HttpRequest {
      * @throws IOException
      * @throws ClientProtocolException
      */
-    public static String sendRequest(String url, String method, HashMap<String, String> headers, HashMap<String, String> params, String data) throws ClientProtocolException, IOException {
+    public static HttpResponse sendRequest(String url, String method, HashMap<String, String> headers,
+                                     HashMap<String, String> params, String data) throws ClientProtocolException, IOException {
 
         // Define http parameters
         HttpParams httpParameters = new BasicHttpParams();
@@ -81,27 +80,38 @@ public class HttpRequest {
         HttpResponse response = null;
 
         // Execute HTTP Request
-        Log.d("HttpRequest", "sendRequest() execute");
         response = httpclient.execute(httpRequest);
-        Log.d("HttpRequest", "sendRequest() after execute");
 
-        StatusLine statusLine = response.getStatusLine();//TODO vracet kod, Stringbuildre jako parametr
-        if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
+       /* StatusLine statusLine = response.getStatusLine();//TODO vracet kod, Stringbuildre jako parametr
+        int statusCode =  statusLine.getStatusCode();*/
+        /*if (statusCode != HttpStatus.SC_OK) {
 
             //Closes the connection.
-            response.getEntity().getContent().close();
+            response.getEntity().getContent().close(); //TODO na co?
             throw new IOException(statusLine.getReasonPhrase());
-        }
+        }*/
 
         // Return string response
-        return getResponseBody(response.getEntity());
+        //responseBody.append(getResponseBody(response.getEntity()));
+        Log.d("HttpRequest", "sendRequest() return: " + response);
+        return response;
     }
 
-    private static String getResponseBody(final HttpEntity entity) throws IOException {
-
+    public static String getResponseBody(final HttpResponse response) {
+        if (response == null) return null;
+        HttpEntity entity = response.getEntity();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        entity.writeTo(out);
-        out.close();
+        try {
+            entity.writeTo(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         Log.d("HttpRequest", "getResponseBody() " + out.toString());
         return out.toString();
     }

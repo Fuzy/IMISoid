@@ -1,8 +1,5 @@
 package imis.client.persistent;
 
-import java.util.Date;
-
-import imis.client.persistent.Consts.ColumnName;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -11,8 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
-
-import static imis.client.json.Util.df;
+import imis.client.persistent.Consts.ColumnName;
 
 public class MyContentProvider extends ContentProvider {
     private static final String TAG = "MyContentProvider";
@@ -24,17 +20,22 @@ public class MyContentProvider extends ContentProvider {
     private static final int EVENT_ID = 2;
     private static final int RECORDS = 3;
     private static final int RECORD_ID = 4;
+    private static final int EMPLOYEES = 5;
+    private static final int EMPLOYEE_ID = 6;
 
     private static final String AUTHORITY = Consts.AUTHORITY;//TODO prejmenovat
     private static final String TABLE_EVENTS = MyDatabaseHelper.TABLE_EVENTS;
     private static final String TABLE_RECORDS = MyDatabaseHelper.TABLE_RECORDS;
+    private static final String TABLE_EMPLOYEES = MyDatabaseHelper.TABLE_EMPLOYEES;
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         sURIMatcher.addURI(AUTHORITY, TABLE_EVENTS, EVENTS);
         sURIMatcher.addURI(AUTHORITY, TABLE_RECORDS, RECORDS);
+        sURIMatcher.addURI(AUTHORITY, TABLE_EMPLOYEES, EMPLOYEES);
         sURIMatcher.addURI(AUTHORITY, TABLE_EVENTS + "/#", EVENT_ID);
         sURIMatcher.addURI(AUTHORITY, TABLE_RECORDS + "/#", RECORD_ID);
+        sURIMatcher.addURI(AUTHORITY, TABLE_EMPLOYEES + "/#", EMPLOYEE_ID);
     }
     //TODO vykazy zapis,  dotaz
 
@@ -61,10 +62,16 @@ public class MyContentProvider extends ContentProvider {
                 // smaze vice polozek podle WHERE
                 rowsDeleted = sqlDB.delete(TABLE_RECORDS, selection, selectionArgs);
                 break;
+            case EMPLOYEES:
+                // smaze vice polozek podle WHERE
+                rowsDeleted = sqlDB.delete(TABLE_EMPLOYEES, selection, selectionArgs);
+                break;
             case EVENT_ID:
                 // smaze jednu polozku
                 String id = uri.getLastPathSegment();
-                rowsDeleted = sqlDB.delete(TABLE_EVENTS, MyDatabaseHelper.COLUMN_ID + "=" + id, null);
+                rowsDeleted = sqlDB.delete(TABLE_EVENTS, MyDatabaseHelper.EV_COL_LOCAL_ID + "=" + id, null);
+                break;
+            default:
                 break;
         }
         getContext().getContentResolver().notifyChange(uri, null);
@@ -79,11 +86,11 @@ public class MyContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues initialValues) {
+    public Uri insert(Uri uri, ContentValues values) {
         int uriType = sURIMatcher.match(uri);
 
         // Nastavi hodnoty values
-        ContentValues values;
+        /*ContentValues values;
         if (initialValues != null) {
             values = new ContentValues(initialValues);
         } else {
@@ -96,12 +103,12 @@ public class MyContentProvider extends ContentProvider {
         if (values.containsKey(ColumnName.COLUMN_SERVER_ID) == false) {
             values.put(ColumnName.COLUMN_SERVER_ID, -1);
         }
-    /*if (values.containsKey(ColumnName.COLUMN_DIRTY) == false) {
+    *//*if (values.containsKey(ColumnName.COLUMN_DIRTY) == false) {
       values.put(ColumnName.COLUMN_DIRTY, 1);
     }
     if (values.containsKey(ColumnName.COLUMN_DELETED) == false) {
       values.put(ColumnName.COLUMN_DELETED, 0);
-    }*/
+    }*//*
         if (values.containsKey(ColumnName.COLUMN_DATUM_ZMENY) == false) {
             values.put(ColumnName.COLUMN_DATUM_ZMENY, df.format(now));
         }
@@ -117,12 +124,12 @@ public class MyContentProvider extends ContentProvider {
         if (values.containsKey(ColumnName.COLUMN_DRUH) == false) {
             values.put(ColumnName.COLUMN_DRUH, "");
         }
-    /*if (values.containsKey(ColumnName.COLUMN_CAS) == false) {
+    *//*if (values.containsKey(ColumnName.COLUMN_CAS) == false) {
       values.put(ColumnName.COLUMN_CAS, "");
-    }*/
+    }*//*
         if (values.containsKey(ColumnName.COLUMN_TYP) == false) {
             values.put(ColumnName.COLUMN_TYP, "");
-        }
+        }*/
 
         long id = 0;
         // ziska odkaz na databazi
@@ -133,7 +140,10 @@ public class MyContentProvider extends ContentProvider {
                 // muze vlozit jen 1 zaznam
                 id = sqlDB.insert(TABLE_EVENTS, null, values);
                 break;
-            // TODO jako default vyjimka?
+            case EMPLOYEES:
+                id = sqlDB.insert(TABLE_EMPLOYEES, null, values);
+            default:
+                break;
         }
         // upozorni posluchace
         getContext().getContentResolver().notifyChange(uri, null);
@@ -160,6 +170,11 @@ public class MyContentProvider extends ContentProvider {
             case EVENT_ID:
                 // nastavi WHERE sekci dotazu
                 queryBuilder.appendWhere(ColumnName.COLUMN_ID + "=" + uri.getLastPathSegment());
+                break;
+            case EMPLOYEES:
+                queryBuilder.setTables(TABLE_EMPLOYEES);
+                break;
+            default:
                 break;
         }
 
@@ -194,6 +209,8 @@ public class MyContentProvider extends ContentProvider {
                 String id = uri.getLastPathSegment();
                 Log.d(TAG, "update EVENT_ID id: " + id);
                 rowsUpdated = sqlDB.update(TABLE_EVENTS, values, ColumnName.COLUMN_ID + "=" + id, null);
+                break;
+            default:
                 break;
         }
         getContext().getContentResolver().notifyChange(uri, null);

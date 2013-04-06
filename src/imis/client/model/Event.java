@@ -248,6 +248,7 @@ public class Event {
     private static int COL_NUM_DATUM_ZMENY = 11;
     private static int COL_NUM_POZNAMKA = 12;
 
+    //TODO refaktor
     public static String COL_DIRTY = MyDatabaseHelper.COLUMN_DIRTY;
     private static String COL_SERVER_ID = MyDatabaseHelper.COLUMN_SERVER_ID;
     private static String COL_DELETED = MyDatabaseHelper.COLUMN_DELETED;
@@ -277,5 +278,6 @@ public class Event {
     public static final String KOD_PO_LEAVE_SERVICE = "01";
     public static final String KOD_PO_LEAVE_LUNCH = "02";
     public static final String KOD_PO_LEAVE_SUPPER = "03";
+    public static final String KOD_PO_LEAVE_MEDIC = "04";
 
 }

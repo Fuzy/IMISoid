@@ -21,4 +21,10 @@
           android:icon="@drawable/ic_menu_my_calendar"
           android:title="@string/menu_records"
           android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/menu_employeesList"
+          android:title="@string/menu_employees_refresh"
+          android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/menu_employeesPresent"
+          android:title="@string/menu_employees_present"
+          android:showAsAction="ifRoom|withText"/>
 </menu>

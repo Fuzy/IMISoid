@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.*;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,16 +21,23 @@ import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.json.Util;
+import imis.client.model.Employee;
+import imis.client.network.HttpRequest;
+import imis.client.network.NetworkUtilities;
+import imis.client.persistent.EmployeeManager;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.EventManager.DataQuery;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
 import imis.client.ui.ObservableScrollView;
-import imis.client.ui.adapter.EventsAdapter;
+import imis.client.ui.adapters.EventsAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
+import org.apache.http.HttpResponse;
 
-import static imis.client.AppConsts.PREFS_NAME;
+import java.util.List;
+
+import static imis.client.AppConsts.*;
 import static imis.client.persistent.Consts.URI;
 
 //import imis.client.ui.activity.ActivityConsts;
@@ -78,6 +86,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         // EventManager.deleteAllEvents(getApplicationContext());
         Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
 
+        loadNetworkSharedPreferences();
         loadColorSharedPreferences();
     }
 
@@ -159,9 +168,20 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
             case R.id.menu_records:
                 startRecordsChartActivity();
                 return true;
+            case R.id.menu_employeesList:
+                refreshListOfEmployees();
+                return true;
+            case R.id.menu_employeesPresent:
+                startPresentEmployeesActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    private void refreshListOfEmployees() {
+        new RefreshListOfEmployees().execute("1493913");
     }
 
     private void startInsertActivity() {
@@ -192,11 +212,8 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
         Log.d(TAG, "onLoadFinished() rows: " + data.getCount());
         adapter.swapCursor(data);
-        //adapter.notifyDataSetInvalidated();
         blocks.setVisibility(View.GONE);
         blocks.setVisibility(View.VISIBLE);
-        //blocks.requestLayout();
-        //blocks.invalidate();//TODO test
     }
 
     @Override
@@ -220,7 +237,8 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d("DayTimelineActivity", "onItemLongClick() position: " + position);
-        DialogFragment dialog = new ColorPickerDialog(-65378);
+        BlockView block = (BlockView) view;
+        DialogFragment dialog = new ColorPickerDialog(ColorUtil.getColorForType(block.getType()));
         dialog.show(getFragmentManager(), "ColorPickerDialog");
         return true;
     }
@@ -255,6 +273,12 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         startActivity(intent, null);
     }
 
+    private void startPresentEmployeesActivity() {
+        Intent intent = new Intent(this, PresentEmployeesActivity.class);
+        Log.d("DayTimelineActivity", "startPresentEmployeesActivity() intent " + intent);
+        startActivity(intent, null);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -284,11 +308,19 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         }
     }
 
+
     @Override
     public void colorChanged(int color) {
-        //Log.d("DayTimelineActivity", "colorChanged() color " + color);
         ColorUtil.setColor_present_normal(color);
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        blocks.setVisibility(View.GONE);
+        blocks.setVisibility(View.VISIBLE);
+    }
+
+    private void loadNetworkSharedPreferences() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String domain = settings.getString(KEY_DOMAIN, NetworkUtilities.DOMAIN_DEFAULT);
+        int port = (settings.getInt(KEY_PORT, NetworkUtilities.PORT_DEFAULT));
+        NetworkUtilities.resetDomainAndPort(domain, port);
     }
 
     private void loadColorSharedPreferences() {
@@ -309,6 +341,9 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         int color_absence_meal = settings.getInt(ColorUtil.KEY_COLOR_ABSENCE_MEAL,
                 getResources().getColor(R.color.COLOR_ABSENCE_MEAL_DEFAULT));
         ColorUtil.setColor_absence_meal(color_absence_meal);
+        int color_absence_medic = settings.getInt(ColorUtil.KEY_COLOR_ABSENCE_MEDIC,
+                getResources().getColor(R.color.COLOR_ABSENCE_MEDIC_DEFAULT));
+        ColorUtil.setColor_absence_medic(color_absence_medic);
     }
 
     private void saveColorSharedPreferences() {
@@ -320,6 +355,30 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         editor.putInt(ColorUtil.KEY_COLOR_PRESENT_OTHERS, ColorUtil.getColor_present_others());
         editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_SERVICE, ColorUtil.getColor_absence_service());
         editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_MEAL, ColorUtil.getColor_absence_meal());
+        editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_MEDIC, ColorUtil.getColor_absence_medic());
         editor.commit();
+    }
+
+
+    private class RefreshListOfEmployees extends AsyncTask<String, Void, HttpResponse> {
+
+        @Override
+        protected HttpResponse doInBackground(String... params) {
+            Log.d("DayTimelineActivity$RefreshListOfEmployees", "doInBackground()");
+            String icp = params[0];
+            return NetworkUtilities.getListOfEmployees(icp);
+        }
+
+        @Override
+        protected void onPostExecute(HttpResponse httpResponse) {
+            Log.d("DayTimelineActivity$RefreshListOfEmployees", "onPostExecute()");
+            String res = HttpRequest.getResponseBody(httpResponse);
+            List<Employee> employees = EmployeeManager.jsonToList(res);
+            if (employees != null) {
+                EmployeeManager.addEmployees(getApplicationContext(), employees);
+
+            }
+            Log.i(TAG, "employees: " + EmployeeManager.getAllEmployees(getApplicationContext()));
+        }
     }
 }

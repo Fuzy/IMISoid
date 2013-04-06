@@ -106,6 +106,8 @@
     <string name="menu_records">Výkazy</string>
     <string name="ok">Ok</string>
     <string name="cancel">Zrušit</string>
+    <string name="menu_employees_refresh">Zaměstnanci akt.</string>
+    <string name="menu_employees_present">Přítomní zaměstnanci</string>
 
 
 </resources>

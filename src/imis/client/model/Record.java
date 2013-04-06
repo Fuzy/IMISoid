@@ -1,11 +1,9 @@
 package imis.client.model;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import com.google.gson.JsonObject;
 import imis.client.json.Util;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -204,5 +202,6 @@ public class Record {
     public static final String REC_COL_ZC = "ZC";
     public static final String REC_COL_CPOLZAK = "CPOLZAK";
     public static final String REC_COL_CPOZZAK = "CPOZZAK";
+
 
 }

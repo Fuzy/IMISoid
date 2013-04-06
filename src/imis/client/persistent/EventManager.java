@@ -1,21 +1,18 @@
 package imis.client.persistent;
 
-import imis.client.model.Event;
-import imis.client.persistent.Consts.ColumnName;
-
-import java.util.ArrayList;
-import java.util.List;
-
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import imis.client.model.Event;
+import imis.client.persistent.Consts.ColumnName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventManager {
   private static final String TAG = "EventManager";
@@ -154,6 +151,7 @@ public class EventManager {
     public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
         + MyDatabaseHelper.TABLE_EVENTS);
 
+      //TODO refaktor
     // vybere vsechny sloupce
     public static final String[] PROJECTION_ALL = { ColumnName.COLUMN_ID, ColumnName.COLUMN_SERVER_ID,
         ColumnName.COLUMN_DIRTY, ColumnName.COLUMN_DELETED, ColumnName.COLUMN_ICP,

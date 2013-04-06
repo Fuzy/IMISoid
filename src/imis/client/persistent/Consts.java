@@ -2,6 +2,7 @@ package imis.client.persistent;
 
 import android.net.Uri;
 
+//TODO refaktor
 public class Consts {
   public static final String SCHEME = "content://";
   public static final String AUTHORITY = "imis.client.events.contentprovider";
@@ -9,7 +10,7 @@ public class Consts {
       + MyDatabaseHelper.TABLE_EVENTS);
 
   final public static class ColumnName {
-    public static final String COLUMN_ID = MyDatabaseHelper.COLUMN_ID; // client
+    public static final String COLUMN_ID = MyDatabaseHelper.EV_COL_LOCAL_ID; // client
                                                                           // id
     public static final String COLUMN_ICP = MyDatabaseHelper.COLUMN_ICP;
     public static final String COLUMN_DATUM = MyDatabaseHelper.COLUMN_DATUM;
