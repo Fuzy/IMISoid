@@ -116,15 +116,15 @@ public class Employee {
                 '}';
     }
 
-    public static String COL_ID = "_id";
-    public static String COL_ICP = "ICP";
-    public static String COL_KODPRA = "KODPRA";
-    public static String COL_SUB = "SUB";
+    public static final String COL_ID = "_id";
+    public static final String COL_ICP = "ICP";
+    public static final String COL_KODPRA = "KODPRA";
+    public static final String COL_SUB = "SUB";
 
-    public static int IND_COL_ID = 0;
-    public static int IND_COL_ICP = 1;
-    public static int IND_COL_KODPRA = 2;
-    public static int IND_COL_SUB = 3;
+    public static final int IND_COL_ID = 0;
+    public static final int IND_COL_ICP = 1;
+    public static final int IND_COL_KODPRA = 2;
+    public static final int IND_COL_SUB = 3;
 
 
 }

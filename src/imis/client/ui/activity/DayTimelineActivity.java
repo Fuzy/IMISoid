@@ -38,7 +38,6 @@ import org.apache.http.HttpResponse;
 import java.util.List;
 
 import static imis.client.AppConsts.*;
-import static imis.client.persistent.Consts.URI;
 
 //import imis.client.ui.activity.ActivityConsts;
 
@@ -204,7 +203,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     @Override
     public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
         Log.d(TAG, "onCreateLoader() date: " + date);
-        return new CursorLoader(getApplicationContext(), URI, DataQuery.PROJECTION_ALL,
+        return new CursorLoader(getApplicationContext(), DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL,
                 DataQuery.SELECTION_DATUM, new String[]{String.valueOf(date)}, null);
     }
 
@@ -297,7 +296,6 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
            /* case NETWORK_SETTINGS_ACTIVITY_CODE:
                 Log.d("DayTimelineActivity", "onActivityResult() NETWORK_SETTINGS_ACTIVITY_CODE");
                 if (resultCode == RESULT_OK) {
-                    //TODO dat do shared preferences
                     String domain = data.getStringExtra("domain");
                     int port = data.getIntExtra("port", -1);
                     Log.d("DayTimelineActivity", "onActivityResult() domain: " + domain + " port: " + port);

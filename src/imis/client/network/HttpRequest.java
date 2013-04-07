@@ -3,7 +3,6 @@ package imis.client.network;
 import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -13,6 +12,7 @@ import org.apache.http.params.HttpParams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
@@ -35,10 +35,9 @@ public class HttpRequest {
      * @param data
      * @return
      * @throws IOException
-     * @throws ClientProtocolException
      */
     public static HttpResponse sendRequest(String url, String method, HashMap<String, String> headers,
-                                     HashMap<String, String> params, String data) throws ClientProtocolException, IOException {
+                                     HashMap<String, String> params, String data) throws IOException {
 
         // Define http parameters
         HttpParams httpParameters = new BasicHttpParams();
@@ -82,7 +81,7 @@ public class HttpRequest {
         // Execute HTTP Request
         response = httpclient.execute(httpRequest);
 
-       /* StatusLine statusLine = response.getStatusLine();//TODO vracet kod, Stringbuildre jako parametr
+       /* StatusLine statusLine = response.getStatusLine();
         int statusCode =  statusLine.getStatusCode();*/
         /*if (statusCode != HttpStatus.SC_OK) {
 
@@ -133,7 +132,7 @@ public class HttpRequest {
         return null;
     }
 
-    private static String toQueryString(HashMap<String, String> attributes) {
+    private static String toQueryString(HashMap<String, String> attributes) throws UnsupportedEncodingException {
 
         StringBuilder sb = new StringBuilder();
         sb.append("?");
@@ -142,7 +141,7 @@ public class HttpRequest {
             if (attributes.get(key) != null) {
                 sb.append(key);
                 sb.append("=");
-                sb.append(URLEncoder.encode(attributes.get(key)));
+                sb.append(URLEncoder.encode(attributes.get(key),"UTF-8"));
                 sb.append("&");
             }
         }

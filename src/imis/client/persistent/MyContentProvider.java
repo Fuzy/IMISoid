@@ -8,12 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
-import imis.client.persistent.Consts.ColumnName;
+import imis.client.model.Event;
 
 public class MyContentProvider extends ContentProvider {
     private static final String TAG = "MyContentProvider";
-    // TODO pouzivat ContentProviderClient
-    // TODO rozsirit o praci s dalsi tabulkou?, asi jen nutne operace jako query
+    // TODO pouzivat ContentProviderClient?
 
     private MyDatabaseHelper database;
     private static final int EVENTS = 1;
@@ -169,7 +168,7 @@ public class MyContentProvider extends ContentProvider {
                 break;
             case EVENT_ID:
                 // nastavi WHERE sekci dotazu
-                queryBuilder.appendWhere(ColumnName.COLUMN_ID + "=" + uri.getLastPathSegment());
+                queryBuilder.appendWhere(Event.COL_ID + "=" + uri.getLastPathSegment());
                 break;
             case EMPLOYEES:
                 queryBuilder.setTables(TABLE_EMPLOYEES);
@@ -208,7 +207,7 @@ public class MyContentProvider extends ContentProvider {
             case EVENT_ID:
                 String id = uri.getLastPathSegment();
                 Log.d(TAG, "update EVENT_ID id: " + id);
-                rowsUpdated = sqlDB.update(TABLE_EVENTS, values, ColumnName.COLUMN_ID + "=" + id, null);
+                rowsUpdated = sqlDB.update(TABLE_EVENTS, values, Event.COL_ID + "=" + id, null);
                 break;
             default:
                 break;

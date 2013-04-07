@@ -9,7 +9,6 @@ import android.util.Log;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import imis.client.model.Event;
-import imis.client.persistent.Consts.ColumnName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class EventManager {
   public static int addEvent(Context context, boolean dirty, Event event) {
     Log.d(TAG, "addEvent()");
     ContentValues values = event.getAsContentValues();
-    values.put(ColumnName.COLUMN_DIRTY, dirty);
+    values.put(Event.COL_DIRTY, dirty);
     ContentResolver resolver = context.getContentResolver();
     Uri uri = resolver.insert(DataQuery.CONTENT_URI, values);
     return Integer.valueOf(uri.getLastPathSegment());
@@ -118,8 +117,8 @@ public class EventManager {
     Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(id));
     ContentResolver resolver = context.getContentResolver();
     ContentValues values = new ContentValues();
-    values.put(ColumnName.COLUMN_DELETED, true);
-    values.put(ColumnName.COLUMN_DIRTY, true);
+    values.put(Event.COL_DELETED, true);
+    values.put(Event.COL_DIRTY, true);
     return resolver.update(uri, values, null, null);
   }
 
@@ -139,7 +138,7 @@ public class EventManager {
     Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(id));
     ContentResolver resolver = context.getContentResolver();
     ContentValues values = new ContentValues();
-    values.put(ColumnName.COLUMN_SERVER_ID, rowid);
+    values.put(Event.COL_SERVER_ID, rowid);
 
     // Updatuje ukol - deleted = true
     resolver.update(uri, values, null, null);
@@ -153,20 +152,20 @@ public class EventManager {
 
       //TODO refaktor
     // vybere vsechny sloupce
-    public static final String[] PROJECTION_ALL = { ColumnName.COLUMN_ID, ColumnName.COLUMN_SERVER_ID,
-        ColumnName.COLUMN_DIRTY, ColumnName.COLUMN_DELETED, ColumnName.COLUMN_ICP,
-        ColumnName.COLUMN_DATUM, ColumnName.COLUMN_KOD_PO, ColumnName.COLUMN_DRUH,
-        ColumnName.COLUMN_CAS, ColumnName.COLUMN_IC_OBS, ColumnName.COLUMN_TYP,
-        ColumnName.COLUMN_DATUM_ZMENY, ColumnName.COLUMN_POZNAMKA };
+    public static final String[] PROJECTION_ALL = { Event.COL_ID, Event.COL_SERVER_ID,
+              Event.COL_DIRTY, Event.COL_DELETED, Event.COL_ICP,
+              Event.COL_DATUM, Event.COL_KOD_PO, Event.COL_DRUH,
+              Event.COL_CAS, Event.COL_IC_OBS, Event.COL_TYP,
+              Event.COL_DATUM_ZMENY, Event.COL_POZNAMKA };
 
     // vyber podle id ukolu
-    public static final String SELECTION_ID = ColumnName.COLUMN_ID + "=?";
+    public static final String SELECTION_ID = Event.COL_ID + "=?";
     // vyber urcenych k sync
-    public static final String SELECTION_DIRTY = ColumnName.COLUMN_DIRTY + "=1";
+    public static final String SELECTION_DIRTY = Event.COL_DIRTY + "=1";
    // vyber nesmazanych
-    public static final String SELECTION_UNDELETED = ColumnName.COLUMN_DELETED + "=0";
+    public static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
       // vyber podle data
-      public static final String SELECTION_DATUM = ColumnName.COLUMN_DATUM + "=?";
+      public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
 
   }
 

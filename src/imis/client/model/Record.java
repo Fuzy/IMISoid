@@ -129,17 +129,17 @@ public class Record {
 
     public static Record resultSetToRecord(ResultSet rsSet) throws SQLException {
         Record record = new Record();
-        record.setId(rsSet.getString(REC_COL_SERVER_ID));
-        record.setDatum(rsSet.getLong(REC_COL_DATUM));
-        record.setMnozstvi_odved(rsSet.getLong(REC_COL_MNOZSTVI_ODVED));
-        record.setKodpra(rsSet.getString(REC_COL_KODPRA));
-        record.setZc(rsSet.getString(REC_COL_ZC));//TODO ciselne typy jsou ok?
-        record.setCpolzak(rsSet.getInt(REC_COL_CPOLZAK));
-        record.setCpozzak(rsSet.getInt(REC_COL_CPOZZAK));
-        record.setStav_v(rsSet.getString(REC_COL_STAV_V));
-        record.setPozn_hl(rsSet.getString(REC_COL_POZN_HL));
-        record.setPozn_ukol(rsSet.getString(REC_COL_POZN_UKOL));
-        record.setPoznamka(rsSet.getString(REC_COL_POZNAMKA));
+        record.setId(rsSet.getString(COL_SERVER_ID));
+        record.setDatum(rsSet.getLong(COL_DATUM));
+        record.setMnozstvi_odved(rsSet.getLong(COL_MNOZSTVI_ODVED));
+        record.setKodpra(rsSet.getString(COL_KODPRA));
+        record.setZc(rsSet.getString(COL_ZC));//TODO ciselne typy jsou ok?
+        record.setCpolzak(rsSet.getInt(COL_CPOLZAK));
+        record.setCpozzak(rsSet.getInt(COL_CPOZZAK));
+        record.setStav_v(rsSet.getString(COL_STAV_V));
+        record.setPozn_hl(rsSet.getString(COL_POZN_HL));
+        record.setPozn_ukol(rsSet.getString(COL_POZN_UKOL));
+        record.setPoznamka(rsSet.getString(COL_POZNAMKA));
         return record;
     }
 
@@ -147,29 +147,29 @@ public class Record {
         //TODO asi tam dat jen to spolecne pro add a update
         ContentValues values = new ContentValues();
         if (id != null) {
-            values.put(REC_COL_SERVER_ID, id);
+            values.put(COL_SERVER_ID, id);
         }
-        values.put(REC_COL_DATUM, (datum));
+        values.put(COL_DATUM, (datum));
         if (kodpra != null) {
-            values.put(REC_COL_KODPRA, kodpra);
+            values.put(COL_KODPRA, kodpra);
         }
         if (zc != null) {
-            values.put(REC_COL_ZC, zc);
+            values.put(COL_ZC, zc);
         }
         if (stav_v != null) {
-            values.put(REC_COL_STAV_V, stav_v);
+            values.put(COL_STAV_V, stav_v);
         }
-        values.put(REC_COL_CPOLZAK, cpolzak);
-        values.put(REC_COL_CPOZZAK, cpozzak);
-        values.put(REC_COL_MNOZSTVI_ODVED, mnozstvi_odved);
+        values.put(COL_CPOLZAK, cpolzak);
+        values.put(COL_CPOZZAK, cpozzak);
+        values.put(COL_MNOZSTVI_ODVED, mnozstvi_odved);
         if (pozn_hl != null) {
-            values.put(REC_COL_POZN_HL, pozn_hl);
+            values.put(COL_POZN_HL, pozn_hl);
         }
         if (pozn_ukol != null) {
-            values.put(REC_COL_POZN_UKOL, pozn_ukol);
+            values.put(COL_POZN_UKOL, pozn_ukol);
         }
         if (poznamka != null) {
-            values.put(REC_COL_POZNAMKA, poznamka);
+            values.put(COL_POZNAMKA, poznamka);
         }
         return values;
     }
@@ -191,17 +191,18 @@ public class Record {
                 + pozn_ukol + ", poznamka=" + poznamka + "]";
     }
 
-    public static final String REC_COL_POZN_UKOL = "POZN_UKOL";
-    public static final String REC_COL_SERVER_ID = "ID";
-    public static final String REC_COL_DATUM = "DATUM";
-    public static final String REC_COL_KODPRA = "KODPRA";
-    public static final String REC_COL_MNOZSTVI_ODVED = "MNOZSTVI_ODVED";
-    public static final String REC_COL_POZNAMKA = "POZNAMKA";
-    public static final String REC_COL_STAV_V = "STAV_V";
-    public static final String REC_COL_POZN_HL = "POZN_HL";
-    public static final String REC_COL_ZC = "ZC";
-    public static final String REC_COL_CPOLZAK = "CPOLZAK";
-    public static final String REC_COL_CPOZZAK = "CPOZZAK";
+    public static final String COL_ID = "_id";
+    public static final String COL_POZN_UKOL = "POZN_UKOL";
+    public static final String COL_SERVER_ID = "ID";
+    public static final String COL_DATUM = "DATUM";
+    public static final String COL_KODPRA = "KODPRA";
+    public static final String COL_MNOZSTVI_ODVED = "MNOZSTVI_ODVED";
+    public static final String COL_POZNAMKA = "POZNAMKA";
+    public static final String COL_STAV_V = "STAV_V";
+    public static final String COL_POZN_HL = "POZN_HL";
+    public static final String COL_ZC = "ZC";
+    public static final String COL_CPOLZAK = "CPOLZAK";
+    public static final String COL_CPOZZAK = "CPOZZAK";
 
 
 }

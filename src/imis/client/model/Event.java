@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import com.google.gson.JsonObject;
 import imis.client.json.Util;
-import imis.client.persistent.MyDatabaseHelper;
 
 import static imis.client.json.Util.formatDate;
 import static imis.client.json.Util.formatTime;
@@ -234,6 +233,20 @@ public class Event {
         return values;
     }
 
+    public static final String COL_ID = "_id";
+    public static final String COL_SERVER_ID = "server_id";// rowid v oracle db
+    public static final String COL_DIRTY = "dirty";
+    public static final String COL_DELETED = "deleted";
+    public static final String COL_ICP = "ICP";
+    public static final String COL_DATUM = "DATUM";
+    public static final String COL_KOD_PO = "KOD_PO";
+    public static final String COL_DRUH = "DRUH";
+    public static final String COL_CAS = "CAS";
+    public static final String COL_IC_OBS = "IC_OBS";
+    public static final String COL_TYP = "TYP";
+    public static final String COL_DATUM_ZMENY = "DATUM_ZMENY";
+    public static final String COL_POZNAMKA = "POZNAMKA";
+
     private static int COL_NUM_ID = 0;
     private static int COL_NUM_SERVER_ID = 1;
     private static int COL_NUM_DIRTY = 2;
@@ -248,27 +261,8 @@ public class Event {
     private static int COL_NUM_DATUM_ZMENY = 11;
     private static int COL_NUM_POZNAMKA = 12;
 
-    //TODO refaktor
-    public static String COL_DIRTY = MyDatabaseHelper.COLUMN_DIRTY;
-    private static String COL_SERVER_ID = MyDatabaseHelper.COLUMN_SERVER_ID;
-    private static String COL_DELETED = MyDatabaseHelper.COLUMN_DELETED;
-
-    private static String COL_ICP = MyDatabaseHelper.COLUMN_ICP;
-    private static String COL_DATUM = MyDatabaseHelper.COLUMN_DATUM;
-    private static String COL_KOD_PO = MyDatabaseHelper.COLUMN_KOD_PO;
-    private static String COL_DRUH = MyDatabaseHelper.COLUMN_DRUH;
-    private static String COL_CAS = MyDatabaseHelper.COLUMN_CAS;
-    private static String COL_IC_OBS = MyDatabaseHelper.COLUMN_IC_OBS;
-    private static String COL_TYP = MyDatabaseHelper.COLUMN_TYP;
-    private static String COL_DATUM_ZMENY = MyDatabaseHelper.COLUMN_DATUM_ZMENY;
-    private static String COL_POZNAMKA = MyDatabaseHelper.COLUMN_POZNAMKA;
-
-    public static final String JSON_CLIENT_ID = "c";
     public static final String JSON_SERVER_ID = "si";
     public static final String JSON_DELETED = "de";
-    public static final String JSON_UPDATED = "u";
-    public static final String JSON_SUMMARY = "sm";
-    public static final String JSON_DESCRIPTION = "ds";//TODO z jinyho projektu
     public static final String JSON_SYNC = "sy";
 
     public static final String DRUH_ARRIVAL = "P";

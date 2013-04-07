@@ -103,7 +103,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
             //mNowView.setBackgroundColor(R.color.block_column_3);
             NinePatchDrawable buttonDrawable = (NinePatchDrawable) getContext().getResources().getDrawable(
                     R.drawable.now_bar);
-            mNowView.setBackgroundDrawable(buttonDrawable);
+            mNowView.setBackground(buttonDrawable);
             addViewInLayout(mNowView, -1, mNowView.getLayoutParams());
         }
     }

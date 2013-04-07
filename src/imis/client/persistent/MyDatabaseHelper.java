@@ -5,12 +5,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import imis.client.model.Employee;
+import imis.client.model.Event;
 import imis.client.model.Record;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "MyDatabaseHelper";
-    // TODO osetrit delky vstupu
-    private static final String DATABASE_NAME = "events.db";//TODO novy nazev imisoid
+    // TODO osetrit delky vstupu?
+    private static final String DATABASE_NAME = "imisoid.db";
     private static final int DATABASE_VERSION = 1;
 
     // Table names
@@ -18,39 +19,37 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_RECORDS = "records";
     public static final String TABLE_EMPLOYEES = "employees";
 
-    // Tabulka events - puvodni model (tabulka karta).
-    public static final String EV_COL_LOCAL_ID = "_id"; // client id
-    public static final String COLUMN_ICP = "icp";
-    public static final String COLUMN_DATUM = "datum";
-    public static final String COLUMN_KOD_PO = "kod_po";
-    public static final String COLUMN_DRUH = "druh";
-    public static final String COLUMN_CAS = "cas";
-    public static final String COLUMN_IC_OBS = "ic_obs";
-    public static final String COLUMN_TYP = "typ";
-    public static final String COLUMN_DATUM_ZMENY = "datum_zmeny";
-    public static final String COLUMN_POZNAMKA = "poznamka";
+    // Table of events
+    public static final String EV_COL_LOCAL_ID = Event.COL_ID;
+    public static final String EV_COL_SERVER_ID = Event.COL_SERVER_ID;
+    public static final String EV_COL_DIRTY = Event.COL_DIRTY;
+    public static final String EV_COL_DELETED = Event.COL_DELETED;
+    public static final String EV_COL_ICP = Event.COL_ICP;
+    public static final String EV_COL_DATUM = Event.COL_DATUM;
+    public static final String EV_COL_KOD_PO = Event.COL_KOD_PO;
+    public static final String EV_COL_DRUH = Event.COL_DRUH;
+    public static final String EV_COL_CAS = Event.COL_CAS;
+    public static final String EV_COL_IC_OBS = Event.COL_IC_OBS;
+    public static final String EV_COL_TYP = Event.COL_TYP;
+    public static final String EV_COL_DATUM_ZMENY = Event.COL_DATUM_ZMENY;
+    public static final String EV_COL_POZNAMKA = Event.COL_POZNAMKA;
 
-    // Tabulka events - sloupce nutne pro synchronizaci.
-    public static final String COLUMN_SERVER_ID = "server_id";// rowid v oracle db
-    public static final String COLUMN_DIRTY = "dirty";
-    public static final String COLUMN_DELETED = "deleted";
-
-    // Tabulka records
-    private static final String REC_COL_LOCAL_ID = "_id"; // client id
-    private static final String REC_COL_POZN_UKOL = Record.REC_COL_POZN_UKOL;
-    private static final String REC_SERVER_ID = Record.REC_COL_SERVER_ID;
-    private static final String REC_COL_DATUM = Record.REC_COL_DATUM;
-    private static final String REC_COL_KODPRA = Record.REC_COL_KODPRA;
-    private static final String REC_COL_MNOZSTVI_ODVED = Record.REC_COL_MNOZSTVI_ODVED;
-    private static final String REC_COL_POZNAMKA = Record.REC_COL_POZNAMKA;
-    private static final String REC_COL_STAV_V = Record.REC_COL_STAV_V;
-    private static final String REC_COL_POZN_HL = Record.REC_COL_POZN_HL;
-    private static final String REC_COL_ZC = Record.REC_COL_ZC;
-    private static final String REC_COL_CPOLZAK = Record.REC_COL_CPOLZAK;
-    private static final String REC_COL_CPOZZAK = Record.REC_COL_CPOZZAK;
+    // Table of records
+    private static final String REC_COL_LOCAL_ID = Record.COL_ID; // client id
+    private static final String REC_COL_POZN_UKOL = Record.COL_POZN_UKOL;
+    private static final String REC_SERVER_ID = Record.COL_SERVER_ID;
+    private static final String REC_COL_DATUM = Record.COL_DATUM;
+    private static final String REC_COL_KODPRA = Record.COL_KODPRA;
+    private static final String REC_COL_MNOZSTVI_ODVED = Record.COL_MNOZSTVI_ODVED;
+    private static final String REC_COL_POZNAMKA = Record.COL_POZNAMKA;
+    private static final String REC_COL_STAV_V = Record.COL_STAV_V;
+    private static final String REC_COL_POZN_HL = Record.COL_POZN_HL;
+    private static final String REC_COL_ZC = Record.COL_ZC;
+    private static final String REC_COL_CPOLZAK = Record.COL_CPOLZAK;
+    private static final String REC_COL_CPOZZAK = Record.COL_CPOZZAK;
 
     // Table of employees
-    private static final String EMP_COL_LOCAL_ID = "_id"; // client id
+    private static final String EMP_COL_LOCAL_ID = Employee.COL_ID; // client id
     private static final String EMP_COL_ICP = Employee.COL_ICP;
     private static final String EMP_COL_KODPRA = Employee.COL_KODPRA;
     private static final String EMP_COL_SUB = Employee.COL_SUB;
@@ -60,18 +59,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             .concat("create table " + TABLE_EVENTS)
             .concat("(")
             .concat(EV_COL_LOCAL_ID + " integer primary key autoincrement, ")
-            .concat(COLUMN_SERVER_ID + " text,")
-            .concat(COLUMN_DIRTY + " integer not null, ")
-            .concat(COLUMN_DELETED + " integer not null, ")
-            .concat(COLUMN_ICP + " text not null, ")
-            .concat(COLUMN_DATUM + " integer not null,")
-            .concat(COLUMN_KOD_PO + " text not null,")
-            .concat(COLUMN_DRUH + " text not null,")
-            .concat(COLUMN_CAS + " text not null,")
-            .concat(COLUMN_IC_OBS + " text,")
-            .concat(COLUMN_TYP + " text not null,")
-            .concat(COLUMN_DATUM_ZMENY + " text not null,")
-            .concat(COLUMN_POZNAMKA + " text")
+            .concat(EV_COL_SERVER_ID + " text,")
+            .concat(EV_COL_DIRTY + " integer not null, ")
+            .concat(EV_COL_DELETED + " integer not null, ")
+            .concat(EV_COL_ICP + " text not null, ")
+            .concat(EV_COL_DATUM + " integer not null,")
+            .concat(EV_COL_KOD_PO + " text not null,")
+            .concat(EV_COL_DRUH + " text not null,")
+            .concat(EV_COL_CAS + " text not null,")
+            .concat(EV_COL_IC_OBS + " text,")
+            .concat(EV_COL_TYP + " text not null,")
+            .concat(EV_COL_DATUM_ZMENY + " text not null,")
+            .concat(EV_COL_POZNAMKA + " text")
             .concat(");");
 
     // Database creation sql statement
