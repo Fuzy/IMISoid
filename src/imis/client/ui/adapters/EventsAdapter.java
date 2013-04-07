@@ -60,7 +60,7 @@ public class EventsAdapter extends CursorAdapter {
 
         int nextId = (nextEvent == null) ? -1 : nextEvent.get_id();// TODO log
         Log.d(TAG, "newView() id: " + event.get_id() + " nextId id: " + nextId);
-        BlockView block = new BlockView(context, event.get_id(), nextId, event.getCas(), endTime, event.getKod_po(), event.isDeleted());
+        BlockView block = new BlockView(context, event.get_id(), nextId, event.getCas(), endTime, event.getKod_po(), event.isDirty());
         //TODO barevnost
         cursor.moveToPosition(initPos);
         return block;
@@ -79,29 +79,4 @@ public class EventsAdapter extends CursorAdapter {
         cursor.moveToPosition(initPos);
         return event;
     }
-
-
-    // TODO upravit 2->1 komponentu: getCount, mapovaci kolekce
-
-  /*
-   * private List<BlockView> blocksFromEvents(List<Event> events) {
-   * List<BlockView> blocks = new ArrayList<BlockView>(); final String arrival =
-   * "P"; final String leave = "O"; // TODO upozornit ze data nejsou v poradku
-   * 
-   * String next = arrival;
-   * 
-   * @SuppressWarnings("unused") boolean error; BlockView block = null; for
-   * (Event event : events) { if (event.getDruh().equals(arrival) &&
-   * next.equals(arrival)) { // ocekavany prichod block = new
-   * BlockView(context); next = leave; block.setStartTime(event.getCas()); }
-   * else if (event.getDruh().equals(leave) && next.equals(leave)) { //
-   * ocekavany odchod next = arrival; block.setEndTime(event.getCas());
-   * blocks.add(block); } else { // TODO nepocita s prvni denni udalost = O
-   * error = true;// chyba v datech, neni sekvence P,O,P.. } }
-   * 
-   * if (block != null && block.getEndTime() == 0) { // nastavim end time na akt
-   * cas block.setEndTime(timeFromEpochMsToDayMs()); blocks.add(block); }
-   * 
-   * return blocks; }
-   */
 }

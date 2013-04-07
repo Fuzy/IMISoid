@@ -3,6 +3,8 @@ package imis.client.network;
 import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -36,7 +38,7 @@ public class HttpRequest {
      * @return
      * @throws IOException
      */
-    public static HttpResponse sendRequest(String url, String method, HashMap<String, String> headers,
+    public static String sendRequest(String url, String method, HashMap<String, String> headers,
                                      HashMap<String, String> params, String data) throws IOException {
 
         // Define http parameters
@@ -81,22 +83,20 @@ public class HttpRequest {
         // Execute HTTP Request
         response = httpclient.execute(httpRequest);
 
-       /* StatusLine statusLine = response.getStatusLine();
-        int statusCode =  statusLine.getStatusCode();*/
-        /*if (statusCode != HttpStatus.SC_OK) {
+        StatusLine statusLine = response.getStatusLine();
+        if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
 
             //Closes the connection.
-            response.getEntity().getContent().close(); //TODO na co?
+            response.getEntity().getContent().close();
             throw new IOException(statusLine.getReasonPhrase());
-        }*/
+        }
 
         // Return string response
-        //responseBody.append(getResponseBody(response.getEntity()));
-        Log.d("HttpRequest", "sendRequest() return: " + response);
-        return response;
+        return getResponseBody(response.getEntity());
+        //TODO asi vracet i status kod
     }
 
-    public static String getResponseBody(final HttpResponse response) {
+    /*public static String getResponseBody(final HttpResponse response) {
         if (response == null) return null;
         HttpEntity entity = response.getEntity();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -112,6 +112,15 @@ public class HttpRequest {
             }
         }
         Log.d("HttpRequest", "getResponseBody() " + out.toString());
+        return out.toString();
+    }*/
+
+    private static String getResponseBody(final HttpEntity entity) throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        entity.writeTo(out);
+        out.close();
+
         return out.toString();
     }
 

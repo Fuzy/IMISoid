@@ -119,6 +119,7 @@
                 ></activity>
 
         <activity android:name=".ui.activity.PresentEmployeesActivity"></activity>
+        <activity android:name=".ui.activity.EventsChartActivity"></activity>
     </application>
 
 </manifest>

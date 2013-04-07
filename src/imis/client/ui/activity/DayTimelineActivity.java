@@ -22,7 +22,6 @@ import imis.client.R;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.json.Util;
 import imis.client.model.Employee;
-import imis.client.network.HttpRequest;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EmployeeManager;
 import imis.client.persistent.EventManager;
@@ -33,7 +32,6 @@ import imis.client.ui.ColorUtil;
 import imis.client.ui.ObservableScrollView;
 import imis.client.ui.adapters.EventsAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
-import org.apache.http.HttpResponse;
 
 import java.util.List;
 
@@ -173,10 +171,15 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
             case R.id.menu_employeesPresent:
                 startPresentEmployeesActivity();
                 return true;
+            case R.id.menu_eventsChart:
+                startEventsChartActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
 
     private void refreshListOfEmployees() {
@@ -278,6 +281,12 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         startActivity(intent, null);
     }
 
+    private void startEventsChartActivity() {
+        Intent intent = new Intent(this, EventsChartActivity.class);
+        Log.d("DayTimelineActivity", "startEventsChartActivity() intent " + intent);
+        startActivity(intent, null);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -358,20 +367,19 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     }
 
 
-    private class RefreshListOfEmployees extends AsyncTask<String, Void, HttpResponse> {
+    private class RefreshListOfEmployees extends AsyncTask<String, Void, String> {
 
         @Override
-        protected HttpResponse doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             Log.d("DayTimelineActivity$RefreshListOfEmployees", "doInBackground()");
             String icp = params[0];
             return NetworkUtilities.getListOfEmployees(icp);
         }
 
         @Override
-        protected void onPostExecute(HttpResponse httpResponse) {
+        protected void onPostExecute(String response) {
             Log.d("DayTimelineActivity$RefreshListOfEmployees", "onPostExecute()");
-            String res = HttpRequest.getResponseBody(httpResponse);
-            List<Employee> employees = EmployeeManager.jsonToList(res);
+            List<Employee> employees = EmployeeManager.jsonToList(response);
             if (employees != null) {
                 EmployeeManager.addEmployees(getApplicationContext(), employees);
 

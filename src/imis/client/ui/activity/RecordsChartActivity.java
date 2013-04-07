@@ -8,9 +8,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import imis.client.R;
-import imis.client.network.HttpRequest;
+import imis.client.model.Record;
 import imis.client.network.NetworkUtilities;
-import org.apache.http.HttpResponse;
+import imis.client.persistent.RecordManager;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,15 +65,17 @@ public class RecordsChartActivity extends Activity {
             String from = "26.03.08";//TODO pryc
             String to = "26.03.08";
             String kodpra = "JEL";
-            HttpResponse response = NetworkUtilities.getUserRecords(kodpra, from, to);
-            String records = HttpRequest.getResponseBody(response);
-            Log.d("RecordsChartActivity", "resfreshRecords() records: " + records);
-            return records;
+            return NetworkUtilities.getUserRecords(kodpra, from, to);
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String response) {
             Log.d("RecordsChartActivity$GetRecordsAsyncTask", "onPostExecute()");
+            List<Record> records = RecordManager.jsonToList(response);
+            if (records != null) {
+                RecordManager.addRecords(getApplicationContext(), records);
+
+            }
         }
     }
 }

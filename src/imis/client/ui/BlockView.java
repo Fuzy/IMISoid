@@ -41,7 +41,7 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
     private long endTime;
     private String type;
 
-    private boolean deleted;
+    private boolean dirty;
     LayerDrawable buttonDrawable;
 
     // TODO dalsi atributy
@@ -50,7 +50,7 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this(context, -1, -1, 0, 0, "", false);
     }
 
-    public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime, String type, boolean deleted) {
+    public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime, String type, boolean dirty) {
         super(context);
         // Log.d(TAG, "BlockView()");
 
@@ -59,11 +59,11 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.startTime = startTime;
         this.endTime = endTime;
         this.type = type;
-        this.deleted = deleted;
+        this.dirty = dirty;
 
         int accentColor = ColorUtil.getColorForType(type);
-        /*if (deleted) {
-            Log.d("BlockView", "BlockView() deleted");
+        /*if (dirty) {
+            Log.d("BlockView", "BlockView() dirty");
             accentColor = ColorUtil.getColor_present_normal();
             accentColor |= 0x80000000;
             accentColor = 0;
@@ -71,10 +71,17 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
             accentColor = ColorUtil.getColor_present_normal();//getResources().getColor(R.color.block_column_2);
         }*/
         //TODO barva podle typu
-        LayerDrawable buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
-                R.drawable.btn_block);
-        buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
+        LayerDrawable buttonDrawable;
+
         //TODO nesync rozlisit
+        if (dirty) {
+            buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
+                    R.drawable.btn_block_dirty);
+        }  else {
+            buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
+                    R.drawable.btn_block_not_dirty);
+        }
+        buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
         // setTextColor(textColor);
         setBackground(buttonDrawable);
         //setBackgroundColor(accentColor);
@@ -96,12 +103,12 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.arriveId = arriveId;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public boolean isDirty() {
+        return dirty;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 
     public int getLeaveId() {
@@ -148,7 +155,7 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
                 ", leaveId=" + leaveId +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", deleted=" + deleted +
+                ", dirty=" + dirty +
                 '}';
     }
 }

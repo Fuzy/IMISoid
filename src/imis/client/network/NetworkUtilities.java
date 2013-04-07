@@ -24,10 +24,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import java.net.URI;
-import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,9 +129,9 @@ public class NetworkUtilities {
 
         return code;
     }*/
-    public static HttpResponse getListOfEmployees(final String icp) {
+    public static String getListOfEmployees(final String icp) {
         String uri = EMPLOYEES_URL + "/" + icp;
-        HttpResponse response = null;
+        String response = null;
         try {
             response = HttpRequest.sendRequest(uri, HttpRequest.GET, null, null, null);
         } catch (IOException e) {
@@ -144,7 +141,7 @@ public class NetworkUtilities {
         return response;
     }
 
-    public static HttpResponse getUserRecords(final String kodpra, final String from, final String to) {
+    public static String getUserRecords(final String kodpra, final String from, final String to) {
         Log.d(TAG, "getUserRecords() kodpra: " + kodpra + " strFrom: " + from + " strTo:" + to);
 
         //String response = null;
@@ -152,7 +149,7 @@ public class NetworkUtilities {
         HashMap<String, String> params = new HashMap<String, String>(2);
         params.put("from", from);
         params.put("to", to);
-        HttpResponse response = null;
+        String response = null;
         try {
             response = HttpRequest.sendRequest(uri, HttpRequest.GET, null, params, null);
         } catch (IOException e) {
@@ -181,7 +178,7 @@ public class NetworkUtilities {
         return code;
     }
 
-    @Deprecated
+    /*@Deprecated
     public static boolean testWebServiceAndDBAvailability2(String domain) {
         String strUrl = "http://stackoverflow.com/about";
 
@@ -198,9 +195,9 @@ public class NetworkUtilities {
             // throw e;
         }
         return false;
-    }
+    }*/
 
-    @Deprecated
+    /*@Deprecated
     public static boolean testHostReachability(String domain, StringBuilder errMsg) {
         Log.d("NetworkUtilities", "testHostReachability()");
         boolean isReachable = false;
@@ -213,7 +210,7 @@ public class NetworkUtilities {
             errMsg.append(e.getMessage());
         }
         return isReachable;
-    }
+    }*/
 
     //TODO prejemnovat
     private static int sendHttpGetForUserEvents(String uri, String response) {
@@ -366,5 +363,18 @@ public class NetworkUtilities {
 
     public static String getPortOrDefault() {
         return (PORT == -1) ? getPortAsString(PORT_DEFAULT) : getPortAsString(PORT);
+    }
+
+    private static void closeConnection(HttpResponse httpResponse) {
+        if (httpResponse != null) {
+            HttpEntity httpEntity =  httpResponse.getEntity();
+            if (httpEntity != null) {
+                try {
+                    httpEntity.getContent().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

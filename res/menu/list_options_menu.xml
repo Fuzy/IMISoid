@@ -9,9 +9,8 @@
           android:icon="@drawable/ic_menu_refresh"
           android:title="@string/sync_button"
           android:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/network_settings"
-          android:icon="@drawable/ic_menu_settings_holo_light"
-          android:title="@string/menu_network"
+    <item android:id="@+id/menu_eventsChart"
+          android:title="@string/menu_eventsChart"
           android:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/menu_calendar"
           android:icon="@drawable/ic_menu_my_calendar"
@@ -26,5 +25,9 @@
           android:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/menu_employeesPresent"
           android:title="@string/menu_employees_present"
+          android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/network_settings"
+          android:icon="@drawable/ic_menu_settings_holo_light"
+          android:title="@string/menu_network"
           android:showAsAction="ifRoom|withText"/>
 </menu>
