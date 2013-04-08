@@ -131,24 +131,10 @@
       <change type="DELETED" beforePath="C:\Users\Fuzy\workspace\DP\src\imis\client\customviews\ObservableScrollView.java" afterPath="" />
       <change type="DELETED" beforePath="C:\Users\Fuzy\workspace\DP\src\imis\client\customviews\TimeRulerView.java" afterPath="" />
       <change type="DELETED" beforePath="C:\Users\Fuzy\workspace\DP\src\imis\client\persistent\TodoDatabaseHelper.java" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\Fuzy\workspace\DP\res\drawable\btn_block.xml" afterPath="$PROJECT_DIR$/res/drawable/btn_block_not_dirty.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/BlockView.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/BlockView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DP.iml" afterPath="$PROJECT_DIR$/DP.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activity/DayTimelineActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activity/DayTimelineActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/adapters/EventsAdapter.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/adapters/EventsAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/network/HttpRequest.java" afterPath="$PROJECT_DIR$/src/imis/client/network/HttpRequest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/persistent/MyDatabaseHelper.java" afterPath="$PROJECT_DIR$/src/imis/client/persistent/MyDatabaseHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/network/NetworkUtilities.java" afterPath="$PROJECT_DIR$/src/imis/client/network/NetworkUtilities.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activity/RecordsChartActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activity/RecordsChartActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/json/Util.java" afterPath="$PROJECT_DIR$/src/imis/client/json/Util.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/menu/list_options_menu.xml" afterPath="$PROJECT_DIR$/res/menu/list_options_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DP.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365350137920" ignored="false" />
+    <file path="/Dummy.txt" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365423575457" ignored="false" />
     <file path="/fragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365282870295" ignored="false" />
     <file path="/DayTimelineActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365355348234" ignored="false" />
     <file path="/BlocksLayout.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1364990781102" ignored="false" />
@@ -206,6 +192,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -240,7 +227,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -271,7 +257,7 @@
       <file leaf-file-name="HttpRequest.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/imis/client/network/HttpRequest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="38" selection-start="3252" selection-end="3252" vertical-scroll-proportion="1.8602151">
+            <state line="95" column="38" selection-start="3252" selection-end="3252" vertical-scroll-proportion="0.028619528">
               <folding />
             </state>
           </provider>
@@ -364,6 +350,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -680,7 +667,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -701,8 +687,8 @@
     <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -746,6 +732,19 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -771,19 +770,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -914,25 +900,25 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26860842" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3527508" sideWeight="0.49756888" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33656958" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.6569579" sideWeight="0.49675852" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.65645164" sideWeight="0.49675852" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2184466" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2471637" sideWeight="0.34304208" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2471637" sideWeight="0.34304208" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.289644" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.78317153" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20664506" sideWeight="0.78317153" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.8446602" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26860842" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33656958" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.7815534" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1100,7 +1086,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/imis/client/network/HttpRequest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="38" selection-start="3252" selection-end="3252" vertical-scroll-proportion="1.8602151">
+        <state line="95" column="38" selection-start="3252" selection-end="3252" vertical-scroll-proportion="0.028619528">
           <folding />
         </state>
       </provider>
