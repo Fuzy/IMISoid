@@ -109,6 +109,16 @@
     <string name="menu_employees_refresh">Zaměstnanci akt.</string>
     <string name="menu_employees_present">Přítomní zaměstnanci</string>
     <string name="menu_eventsChart">Graf docházky</string>
+    <string name="http_400">400</string>
+    <string name="http_401">401</string>
+    <string name="http_403">403</string>
+    <string name="http_404">404</string>
+    <string name="http_405">405</string>
+    <string name="http_408">408</string>
+    <string name="http_500">500</string>
+    <string name="http_503">503</string>
+    <string name="error_unknown_host">unknown host</string>
+    <string name="working">Working</string>
 
 
 </resources>

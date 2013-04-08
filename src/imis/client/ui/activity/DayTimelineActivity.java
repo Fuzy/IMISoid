@@ -2,12 +2,10 @@ package imis.client.ui.activity;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.*;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,11 +19,10 @@ import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.json.Util;
-import imis.client.model.Employee;
 import imis.client.network.NetworkUtilities;
-import imis.client.persistent.EmployeeManager;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.EventManager.DataQuery;
+import imis.client.services.RefreshListOfEmployees;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
@@ -33,13 +30,11 @@ import imis.client.ui.ObservableScrollView;
 import imis.client.ui.adapters.EventsAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
 
-import java.util.List;
-
 import static imis.client.AppConsts.*;
 
 //import imis.client.ui.activity.ActivityConsts;
 
-public class DayTimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
+public class DayTimelineActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {// extends
     // Activity
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
@@ -183,7 +178,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
 
 
     private void refreshListOfEmployees() {
-        new RefreshListOfEmployees().execute("1493913");
+        new RefreshListOfEmployees(this).execute("1493913");
     }
 
     private void startInsertActivity() {
@@ -367,7 +362,7 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
     }
 
 
-    private class RefreshListOfEmployees extends AsyncTask<String, Void, String> {
+   /* private class RefreshListOfEmployees extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -386,5 +381,5 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
             }
             Log.i(TAG, "employees: " + EmployeeManager.getAllEmployees(getApplicationContext()));
         }
-    }
+    }*/
 }
