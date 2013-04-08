@@ -272,19 +272,19 @@ public class DayTimelineActivity extends Activity implements LoaderManager.Loade
         Intent intent = new Intent(this, RecordsChartActivity.class);
         Log.d("DayTimelineActivity", "startRecordsChartActivity() intent " + intent);
         //intent.putExtra("date", date);
-        startActivity(intent, null);
+        startActivity(intent);
     }
 
     private void startPresentEmployeesActivity() {
         Intent intent = new Intent(this, PresentEmployeesActivity.class);
         Log.d("DayTimelineActivity", "startPresentEmployeesActivity() intent " + intent);
-        startActivity(intent, null);
+        startActivity(intent);
     }
 
     private void startEventsChartActivity() {
         Intent intent = new Intent(this, EventsChartActivity.class);
         Log.d("DayTimelineActivity", "startEventsChartActivity() intent " + intent);
-        startActivity(intent, null);
+        startActivity(intent);
     }
 
 
