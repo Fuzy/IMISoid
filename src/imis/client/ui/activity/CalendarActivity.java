@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.CalendarView;
 import imis.client.R;
+import imis.client.model.Event;
 
 import java.util.Calendar;
 
@@ -16,6 +17,7 @@ import java.util.Calendar;
  * Time: 23:03
  */
 public class CalendarActivity extends Activity {
+    private static final String TAG = CalendarActivity.class.getSimpleName();
     private long initialTime;
 
     @Override
@@ -25,8 +27,8 @@ public class CalendarActivity extends Activity {
         setContentView(R.layout.calendar);
 
         CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
-        //calendarView.setDate(getIntent().getLongExtra("date", 0));//TODO default today
-        initialTime = calendarView.getDate();
+        initialTime = getIntent().getLongExtra(Event.KEY_DATE, System.currentTimeMillis());
+        calendarView.setDate(initialTime);
         calendarView.setOnDateChangeListener(new CalendarDateChangeListener(calendarView));
     }
 
@@ -42,17 +44,23 @@ public class CalendarActivity extends Activity {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(0);
             cal.set(year, month, dayOfMonth);
+
             Log.d("CalendarActivity", "onSelectedDayChange() year: " + year + " month: " + month +
                     " dayOfMonth: " + dayOfMonth);//+ " cal: " + cal.toString()
             if (calendarView.getDate() != initialTime) {
                 Log.d("CalendarActivity$CalendarDateChangeListener", "onSelectedDayChange() finish");
-                long millis = cal.getTimeInMillis();
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("millis", millis);
-                setResult(RESULT_OK, returnIntent);
+                Intent resIntent = getIntentWithDateSet(cal.getTimeInMillis());
+                setResult(RESULT_OK, resIntent);
                 finish();
             }
         }
+
+        private Intent getIntentWithDateSet(long millis) {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(Event.KEY_DATE, millis);
+            return returnIntent;
+        }
+
 
     }
 

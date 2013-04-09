@@ -18,7 +18,10 @@ public class EventsAdapter extends CursorAdapter {
     private static final String TAG = EventsAdapter.class.getSimpleName();
     @SuppressWarnings("unused")
     private Context context;
-    //TODO kolekce s barvami podle klice
+
+
+
+    private long date = 0;
 
     public EventsAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -78,5 +81,13 @@ public class EventsAdapter extends CursorAdapter {
         }
         cursor.moveToPosition(initPos);
         return event;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public long getDate() {
+        return date;
     }
 }

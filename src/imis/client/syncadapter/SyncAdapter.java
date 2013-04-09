@@ -1,16 +1,5 @@
 package imis.client.syncadapter;
 
-import imis.client.model.Event;
-import imis.client.network.NetworkUtilities;
-import imis.client.persistent.EventManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpStatus;
-
-import com.google.gson.JsonObject;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
@@ -20,6 +9,13 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import imis.client.model.Event;
+import imis.client.network.NetworkUtilities;
+import imis.client.persistent.EventManager;
+import org.apache.http.HttpStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = "SyncAdapter";
@@ -88,7 +84,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         //"/0000001?from=29.7.2004&to=29.7.2004"
         NetworkUtilities.getUserEvents(events, "0000001", null, null);//TODO null
         for (Event event : events) {
-            EventManager.addEvent(context, false, event);
+            EventManager.addEvent(context, event);
         }
         Log.d(TAG, "onPerformSync() events length: " + events.size());
         // Log.d(TAG, "onPerformSync() dirtyEvents: " + dirtyEvents);

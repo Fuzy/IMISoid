@@ -1,5 +1,8 @@
 package imis.client.network;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -45,10 +48,10 @@ public class NetworkUtilities {
     private static String BASE_URL;
     private static String EVENTS_URL;
     private static String RECORDS_URL;
-    private static String EMPLOYEES_URL;
+    public static String EMPLOYEES_URL;
     private static String AUTH_URL;
 
-    public static final String DOMAIN_DEFAULT = "10.0.0.1";
+    public static final String DOMAIN_DEFAULT = "147.228.181.121";        //10.0.0.1
     public static final int PORT_DEFAULT = 8081;
 
     private static final String PARAM_USERNAME = "username";
@@ -251,7 +254,7 @@ public class NetworkUtilities {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "sendHttpGetTest uri: " + uri + "code: " + code);
+        Log.d(TAG, "sendHttpGetTest uri: " + uri + " code: " + code);
         return code;
     }
 
@@ -342,6 +345,20 @@ public class NetworkUtilities {
         return "qwertyxx";
     }
 
+    public static boolean isOnline(Context context) {
+
+        ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo i = conMgr.getActiveNetworkInfo();
+        if (i == null)
+            return false;
+        if (!i.isConnected())
+            return false;
+        if (!i.isAvailable())
+            return false;
+        return true;
+    }
+
     public static void resetDomainAndPort(String domain, int port) {
         Log.d("NetworkUtilities", "resetDomainAndPort()");
         DOMAIN = domain;
@@ -365,16 +382,4 @@ public class NetworkUtilities {
         return (PORT == -1) ? getPortAsString(PORT_DEFAULT) : getPortAsString(PORT);
     }
 
-    private static void closeConnection(HttpResponse httpResponse) {
-        if (httpResponse != null) {
-            HttpEntity httpEntity =  httpResponse.getEntity();
-            if (httpEntity != null) {
-                try {
-                    httpEntity.getContent().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 }

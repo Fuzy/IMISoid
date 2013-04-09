@@ -19,6 +19,7 @@ import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.json.Util;
+import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.EventManager.DataQuery;
@@ -70,7 +71,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         blocks.setOnItemLongClickListener(this);
 
         // init today date and loader
-        date = 1364169600000L;//todayInLong();
+        changeDate(1364169600000L); //TODO toto je pro ladici ucely
         Log.d(TAG, "onCreate() date: " + date);
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -174,9 +175,6 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         }
     }
 
-
-
-
     private void refreshListOfEmployees() {
         new RefreshListOfEmployees(this).execute("1493913");
     }
@@ -184,6 +182,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     private void startInsertActivity() {
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.dir/event.imisoid");
+        intent.putExtra(Event.KEY_DATE, date);
         startActivity(intent);
     }
 
@@ -236,7 +235,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         Log.d("DayTimelineActivity", "onItemLongClick() position: " + position);
         BlockView block = (BlockView) view;
         DialogFragment dialog = new ColorPickerDialog(ColorUtil.getColorForType(block.getType()));
-        dialog.show(getFragmentManager(), "ColorPickerDialog");
+        dialog.show(getFragmentManager(), "ColorPickerDialog"); //TODO [rpc nejde support verze
         return true;
     }
 
@@ -245,6 +244,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         intent.putExtra(ActivityConsts.ID_ARRIVE, arriveID);
         intent.putExtra(ActivityConsts.ID_LEAVE, leaveID);
         intent.setType("vnd.android.cursor.item/event.imisoid");
+        //intent.putExtra(Event.KEY_DATE, date);
         startActivity(intent);
         //TODO mazani polozky?
     }
@@ -259,7 +259,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     private void startCalendarActivity() {
         Intent intent = new Intent(this, CalendarActivity.class);
         Log.d("DayTimelineActivity", "startCalendarActivity() intent " + intent);
-        intent.putExtra("date", date);
+        intent.putExtra(Event.KEY_DATE, date);
         startActivityForResult(intent, CALENDAR_ACTIVITY_CODE);
     }
 
@@ -287,26 +287,12 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case CALENDAR_ACTIVITY_CODE:
-                Log.d("DayTimelineActivity", "onActivityResult() CALENDAR_ACTIVITY_CODE");
                 if (resultCode == RESULT_OK) {
-                    long result = data.getLongExtra("millis", -1);
-                    Log.d("DayTimelineActivity", "onActivityResult() result: " + result);
-                    date = result;
+                    changeDate(data.getLongExtra(Event.KEY_DATE, -1));
+                    Log.d("DayTimelineActivity", "onActivityResult() date: " + date);
                     getLoaderManager().restartLoader(LOADER_ID, null, this);
-                } else {
-                    Log.d("DayTimelineActivity", "onActivityResult() resultCode: " + resultCode);
                 }
                 break;
-           /* case NETWORK_SETTINGS_ACTIVITY_CODE:
-                Log.d("DayTimelineActivity", "onActivityResult() NETWORK_SETTINGS_ACTIVITY_CODE");
-                if (resultCode == RESULT_OK) {
-                    String domain = data.getStringExtra("domain");
-                    int port = data.getIntExtra("port", -1);
-                    Log.d("DayTimelineActivity", "onActivityResult() domain: " + domain + " port: " + port);
-                } else {
-                    Log.d("DayTimelineActivity", "onActivityResult() resultCode: " + resultCode);
-                }
-                break;*/
         }
     }
 
@@ -359,6 +345,11 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_MEAL, ColorUtil.getColor_absence_meal());
         editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_MEDIC, ColorUtil.getColor_absence_medic());
         editor.commit();
+    }
+
+    private void changeDate(long date) {
+        this.date = date;
+        adapter.setDate(date);
     }
 
 

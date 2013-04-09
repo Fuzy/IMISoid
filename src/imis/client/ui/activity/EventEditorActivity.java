@@ -1,13 +1,9 @@
 package imis.client.ui.activity;
 
-import java.util.Arrays;
-
-import imis.client.R;
-import imis.client.model.Event;
-import imis.client.persistent.EventManager;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.text.format.Time;
 import android.util.Log;
@@ -15,32 +11,35 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TimePicker;
+import imis.client.AppUtil;
+import imis.client.R;
+import imis.client.model.Event;
+import imis.client.persistent.EventManager;
+import imis.client.ui.dialogs.DeleteEventDialog;
 
-public class EventEditorActivity extends Activity implements OnItemSelectedListener, View.OnClickListener { // View.OnClickListener
+import java.util.Arrays;
+
+public class EventEditorActivity extends FragmentActivity implements OnItemSelectedListener,
+        View.OnClickListener, DeleteEventDialog.OnDeleteEventListener {
     private static final String TAG = EventEditorActivity.class.getSimpleName();
 
     // Ulozena data v pripade preruseni aktivity (onSaveInstanceState)
     private static final String ORIG_KOD_PO = "orig_kod_po", ORIG_POZNAMKA = "orig_poznamka";
     private String orig_kod_po, orig_poznamka;// TODO to samy pro leave
 
-    // Identifikace aktualniho ukolu
+    // Actual event
     private Event arriveEvent = null, leaveEvent = null;
     private int arriveId = -1, leaveId = -1;
+    private long date;
 
-    // Ruzne stavy ve kterych muze aktivita bezet.
+    // States this activity could be in
     private static final int STATE_EDIT = 0, STATE_INSERT = 1, STATE_VIEWING = 2;
 
     private int state;
 
-    // UI polozky
+    // UI units
     private Spinner spinnerKod_poArrive, spinnerKod_poLeave;
     int selectedArrive = 0, selectedLeave = 0;
     private String[] kody_po_values;
@@ -53,9 +52,10 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_editor);
-        Log.d(TAG, "onCreate " + EventManager.getAllEvents(getApplicationContext()));
-
         final Intent intent = getIntent();
+        date = intent.getLongExtra(Event.KEY_DATE, -1);
+        Log.d(TAG, "onCreate date : " + date + "  " + EventManager.getAllEvents(getApplicationContext()));
+
 
         // Provede nastaveni na zaklade akce o kterou se jedna (view/insert).
         final String action = intent.getAction();
@@ -64,7 +64,7 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
             state = STATE_VIEWING;
             arriveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_ARRIVE));
             leaveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_LEAVE));
-            loadEvents(arriveId, leaveId, intent);
+            loadEvents(arriveId, leaveId);
         } else if (Intent.ACTION_INSERT.equals(action)) {
             // Vkladani: nastavi stav a vytvori novy vstup ke zdroji dat.
             state = STATE_INSERT;
@@ -79,7 +79,7 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
         restorePreviousValues(savedInstanceState);
     }
 
-    private void loadEvents(int arriveId, int leaveId, Intent intent) {
+    private void loadEvents(int arriveId, int leaveId) {
         Log.d(TAG, "onCreate arriveId: " + arriveId + " leaveId: " + leaveId);
         // Ziska cursor pro pristup k ukolu
         arriveEvent = EventManager.getEvent(getApplicationContext(), arriveId);
@@ -98,11 +98,6 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
         // leaveEvent = null;//TODO
         if (leaveEvent == null) {
             Log.d(TAG, "init leaveEvent == null");
-      /*
-       * spinnerKod_poLeave.setVisibility(View.GONE);
-       * leaveTime.setVisibility(View.GONE);
-       * textPoznamkaLeave.setVisibility(View.GONE);
-       */
             leaveLayout.setVisibility(View.GONE);
         } else {
             Log.d(TAG, "init leaveEvent != null");
@@ -275,30 +270,75 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
         }
     }
 
-    private void deleteEvent() {
-        // TODO dialog
-        Log.d(TAG, "deleteEvent");
-        if (arriveEvent != null) {
-            arriveEvent = null;
-            leaveEvent = null;
-            spinnerKod_poArrive.setSelection(0);
-            spinnerKod_poLeave.setSelection(0);
-            textPoznamkaArrive.setText("");
-            textPoznamkaLeave.setText("");
-            if (state == STATE_EDIT || state == STATE_VIEWING) {
-                EventManager.markEventAsDeleted(getApplicationContext(), arriveId);
-                if (leaveId != -1) {
-                    EventManager.markEventAsDeleted(getApplicationContext(), leaveId);
-                }
+    @Override
+    public void deleteEvent(int deleteCode) {
+        Log.d(TAG, "deleteEvent() deleteCode " + deleteCode);
+        if (deleteCode == -1) return;
+        switch (deleteCode) {
+            case DeleteEventDialog.DEL_ARRIVE:
+                deleteEvent(arriveEvent);
+                break;
+            case DeleteEventDialog.DEL_LEAVE:
+                deleteEvent(leaveEvent);
+                break;
+            case DeleteEventDialog.DEL_BOTH:
+                deleteEvent(arriveEvent);
+                deleteEvent(leaveEvent);
+                break;
+        }
+    }
+
+    private void deleteEvent(Event event) {
+        if (event != null) {
+            if (event.isDirty()) {
+                EventManager.deleteEvent(getApplicationContext(), event.get_id());
+            } else {
+                EventManager.markEventAsDeleted(getApplicationContext(), event.get_id());
             }
         }
         finish();
     }
 
+   /* private void deleteEvent2() {
+        // TODO dialog
+        Log.d(TAG, "deleteEvent");
+        if (arriveEvent != null) {
+            spinnerKod_poArrive.setSelection(0);
+            spinnerKod_poLeave.setSelection(0);
+            textPoznamkaArrive.setText("");
+            textPoznamkaLeave.setText("");
+            if (state == STATE_EDIT || state == STATE_VIEWING) {
+                if (arriveEvent.isDirty()) {
+                    EventManager.deleteEvent(getApplicationContext(), arriveId);
+                } else {
+                    EventManager.markEventAsDeleted(getApplicationContext(), arriveId);
+                }
+                if (leaveId != -1) {
+                    if (arriveEvent.isDirty()) {
+                        EventManager.deleteEvent(getApplicationContext(), leaveId);
+                    } else {
+                        EventManager.markEventAsDeleted(getApplicationContext(), leaveId);
+                    }
+                }
+            }
+            //TODO oprava, otestovat
+            arriveEvent = null;
+            leaveEvent = null;
+        }
+        finish();
+    }*/
+
     private void saveEvent() {
-        Log.d(TAG, "saveEvent state " + state);
+        Log.d(TAG, "saveEvent()");
+        saveArriveEvent();
+        saveLeaveeEvent();
+        finish();
+    }
+
+    private void saveArriveEvent() {
         if (arriveEvent != null) {
             // Ulozi aktualizovane hodnoty
+            setImplicitEventValues(arriveEvent);
             arriveEvent.setKod_po(kody_po_values[selectedArrive]);
             arriveEvent.setCas(getPickerCurrentTimeInMs(arriveTime));
             arriveEvent.setPoznamka(textPoznamkaArrive.getText().toString());
@@ -306,11 +346,16 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
                 EventManager.updateEvent(getApplicationContext(), arriveEvent);
             } else if (state == STATE_INSERT) {
                 arriveEvent.setDruh(Event.DRUH_ARRIVAL);
-                arriveId = EventManager.addEvent(getApplicationContext(), true, arriveEvent);
+                arriveEvent.setDatum(date);
+                arriveId = EventManager.addEvent(getApplicationContext(), arriveEvent);
             }
         }
+    }
+
+    private void saveLeaveeEvent() {
         if (leaveEvent != null) {
             // Ulozi aktualizovane hodnoty
+            setImplicitEventValues(leaveEvent);
             leaveEvent.setKod_po(kody_po_values[selectedLeave]);
             leaveEvent.setCas(getPickerCurrentTimeInMs(leaveTime));
             leaveEvent.setPoznamka(textPoznamkaLeave.getText().toString());
@@ -318,12 +363,19 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
                 EventManager.updateEvent(getApplicationContext(), leaveEvent);
             } else if (state == STATE_INSERT) {
                 leaveEvent.setDruh(Event.DRUH_LEAVE);
-                leaveId = EventManager.addEvent(getApplicationContext(), true, leaveEvent);
+                leaveEvent.setDatum(date);
+                leaveId = EventManager.addEvent(getApplicationContext(), leaveEvent);
             }
         }
-
-        finish();
     }
+
+    private void setImplicitEventValues(Event event) {
+        event.setDirty(true);
+        event.setDatum_zmeny(AppUtil.getTodayInLong());
+        event.setIcp("123");
+        event.setTyp(Event.TYPE_ORIG);
+    }
+
 
     private long getPickerCurrentTimeInMs(TimePicker picker) {
         Time time = new Time();
@@ -335,6 +387,7 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
     private void makeEventsEditable() {
         Log.d(TAG, "makeEventsEditable");
         state = STATE_EDIT;
+        setTitle(getText(R.string.title_editing));
         enableChanges();
         invalidateOptionsMenu();
         // TODO dokoncit
@@ -343,7 +396,7 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
-        int spinnerId = ((Spinner) parent).getId();
+        int spinnerId = parent.getId();//((Spinner) parent).getId();
 
         switch (spinnerId) {
             case R.id.spinner_kod_po_arrive:
@@ -380,12 +433,6 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
 
         if (state == STATE_EDIT) {
             setActionsToEditState(menu);
-      /*
-       * String savedKod_po = event.getKod_po(); String savedPoznamka =
-       * event.getPoznamka(); String currentKod_po = kody_po_values[selected];
-       * String currentPoznamka = textPoznamka.getText().toString();
-       *
-       */
         } else if (state == STATE_INSERT) {
             setActionsToInsertState(menu);
         } else if (state == STATE_VIEWING) {
@@ -418,21 +465,26 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "onOptionsItemSelected");
-        // Obslouzi akce z menu
+
         switch (item.getItemId()) {
             case R.id.menu_save:
                 saveEvent();
                 break;
             case R.id.menu_delete:
-                deleteEvent();
+                showDeleteDialog();
                 break;
-            case R.id.menu_revert:
-                revertEvent();
+            /*case R.id.menu_revert:
+                revertEvent();*/
             case R.id.menu_edit:
                 makeEventsEditable();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDeleteDialog() {
+        DialogFragment deleteEventDialog = new DeleteEventDialog();
+        deleteEventDialog.show(getSupportFragmentManager(), "DeleteEventDialog");
     }
 
     @Override
@@ -443,11 +495,13 @@ public class EventEditorActivity extends Activity implements OnItemSelectedListe
     }
 
     @Override
-    public void onClick(View arg0) {
+    public void onClick(View arg) {
         Log.d(TAG, "onClick");
         leaveBtn.setVisibility(View.GONE);
         leaveLayout.setVisibility(View.VISIBLE);
         leaveEvent = new Event();// TODO test
         setTimePickerToNow(leaveTime);
     }
+
+
 }

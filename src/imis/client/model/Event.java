@@ -274,4 +274,8 @@ public class Event {
     public static final String KOD_PO_LEAVE_SUPPER = "03";
     public static final String KOD_PO_LEAVE_MEDIC = "04";
 
+    public static final String TYPE_ORIG = "O";
+
+    public static final String KEY_DATE = "date";
+
 }

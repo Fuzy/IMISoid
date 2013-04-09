@@ -88,48 +88,6 @@ public class MyContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         int uriType = sURIMatcher.match(uri);
 
-        // Nastavi hodnoty values
-        /*ContentValues values;
-        if (initialValues != null) {
-            values = new ContentValues(initialValues);
-        } else {
-            values = new ContentValues();
-        }
-
-        // Vsechna not null pole musi byt nastavena, vytvari se novy ukol,
-        // insert se vola po pridani ukolu uzivatelem i po pridani pri synchronizaci
-        Date now = new Date();
-        if (values.containsKey(ColumnName.COLUMN_SERVER_ID) == false) {
-            values.put(ColumnName.COLUMN_SERVER_ID, -1);
-        }
-    *//*if (values.containsKey(ColumnName.COLUMN_DIRTY) == false) {
-      values.put(ColumnName.COLUMN_DIRTY, 1);
-    }
-    if (values.containsKey(ColumnName.COLUMN_DELETED) == false) {
-      values.put(ColumnName.COLUMN_DELETED, 0);
-    }*//*
-        if (values.containsKey(ColumnName.COLUMN_DATUM_ZMENY) == false) {
-            values.put(ColumnName.COLUMN_DATUM_ZMENY, df.format(now));
-        }
-        if (values.containsKey(ColumnName.COLUMN_ICP) == false) {
-            values.put(ColumnName.COLUMN_ICP, "");
-        }
-        if (values.containsKey(ColumnName.COLUMN_DATUM) == false) {
-            values.put(ColumnName.COLUMN_DATUM, df.format(now));
-        }
-        if (values.containsKey(ColumnName.COLUMN_KOD_PO) == false) {
-            values.put(ColumnName.COLUMN_KOD_PO, "");
-        }
-        if (values.containsKey(ColumnName.COLUMN_DRUH) == false) {
-            values.put(ColumnName.COLUMN_DRUH, "");
-        }
-    *//*if (values.containsKey(ColumnName.COLUMN_CAS) == false) {
-      values.put(ColumnName.COLUMN_CAS, "");
-    }*//*
-        if (values.containsKey(ColumnName.COLUMN_TYP) == false) {
-            values.put(ColumnName.COLUMN_TYP, "");
-        }*/
-
         long id = 0;
         // ziska odkaz na databazi
         SQLiteDatabase sqlDB = database.getWritableDatabase();

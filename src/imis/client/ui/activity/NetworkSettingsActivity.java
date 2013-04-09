@@ -1,10 +1,8 @@
 package imis.client.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +16,7 @@ import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.network.NetworkUtilities;
+import imis.client.services.TestConnection;
 
 import java.net.HttpURLConnection;
 
@@ -30,7 +29,7 @@ import static imis.client.AppConsts.KEY_PORT;
  * Date: 12.3.13
  * Time: 11:05
  */
-public class NetworkSettingsActivity extends Activity {
+public class NetworkSettingsActivity extends NetworkingActivity {
     private static final String TAG = NetworkSettingsActivity.class.getSimpleName();
     private ImageView imageWebService, imageDatabase;
     private EditText editTextDomain, editTextPort;
@@ -133,12 +132,13 @@ public class NetworkSettingsActivity extends Activity {
     private void refreshState() {
         Log.d("NetworkSettingsActivity", "refreshState()");
         if (domain.length() != 0 && domain != null) {
-            new CheckWebServiceAndDBAvailability().execute(null);//TODO nastavit parametry
-        } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "domain = null or 0", Toast.LENGTH_LONG);
-            toast.show(); //TODO
+            if (NetworkUtilities.isOnline(getApplicationContext()) == false) {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.network_unavailable, Toast.LENGTH_LONG);
+                toast.show(); //TODO
+                return;
+            }
+            new TestConnection(this).execute(null);
         }
-
     }
 
     private void setImageAsReachable(ImageView imageView) {
@@ -149,7 +149,7 @@ public class NetworkSettingsActivity extends Activity {
         imageView.setImageResource(R.drawable.ic_delete);
     }
 
-    private class CheckWebServiceAndDBAvailability extends AsyncTask<Void, Void, Integer> {
+    /*private class CheckWebServiceAndDBAvailability extends AsyncTask<Void, Void, Integer> {
 
         @Override
         protected Integer doInBackground(Void... params) {
@@ -166,9 +166,9 @@ public class NetworkSettingsActivity extends Activity {
             setIconsOfAvailability(result);
         }
 
-    }
+    }*/
 
-    private void setIconsOfAvailability(int code) {
+    public void setIconsOfAvailability(int code) {
         switch (code) {
             case -1:
                 setImageAsUnreachable(imageWebService);

@@ -67,6 +67,12 @@
         <item>11</item>
     </string-array>
 
+    <string-array name="delete_event_options">
+        <item>Příchod</item>
+        <item>Odchod</item>
+        <item>Obojí</item>
+    </string-array>
+
     <!-- Polozky menu pri edit aktivite -->
     <string name="menu_save">Uložit</string>
     <string name="menu_revert">Zpět</string>
@@ -118,7 +124,11 @@
     <string name="http_500">500</string>
     <string name="http_503">503</string>
     <string name="error_unknown_host">unknown host</string>
-    <string name="working">Working</string>
+    <string name="working">Čekejte prosím</string>
+    <string name="delete_event">Smazat událost</string>
+    <string name="title_editing">Editace</string>
+    <string name="test_connection">Testuji spojení...</string>
+    <string name="network_unavailable">Zkontrolujte dostupnost síťového připojení</string>
 
 
 </resources>

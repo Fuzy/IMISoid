@@ -23,19 +23,15 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.ui.adapters.EventsAdapter;
 
-/**
- * Custom layout that contains and organizes a {@link TimeRulerView} and several
- * instances of {@link BlockView}. Also positions current "now" divider using
- * {@link R.id#blocks_now} view when applicable.
- */
-public class BlocksLayout extends AdapterView<EventsAdapter> {// implements ColorPickerDialog.OnColorChangedListener
-    // android.widget.AdapterView.OnItemClickListener
+public class BlocksLayout extends AdapterView<EventsAdapter> {
     private static final String TAG = BlocksLayout.class.getSimpleName();
     private static final int INVALID_INDEX = -1;
     private Rect mRect;
@@ -43,31 +39,18 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
     private EventsAdapter mAdapter;
     private TimeRulerView mRulerView = null;
     private View mNowView = null;
+    private final int countOfNonBlocksViews = 2;
 
-    /**
-     * User is not touching the list
-     */
     private static final int TOUCH_STATE_RESTING = 0;
-
-    /**
-     * User is touching the list and right now it's still a "click"
-     */
     private static final int TOUCH_STATE_CLICK = 1;
     private static final int TOUCH_STATE_LONG_CLICK = 3;
-
-    /**
-     * User is scrolling the list
-     */
-    private static final int TOUCH_STATE_SCROLL = 2;
-
-    /**
-     * Current touch state
-     */
     private int touchState = TOUCH_STATE_RESTING;
-    /** Used to check for long press actions */
-    private Runnable mLongPressRunnable;
-    /** X-coordinate of the down event */
-    private int mTouchStartX, mTouchStartY;
+    private int touchStartX, touchStartY;
+
+    private Runnable longPressRunnable;
+    private ScaleGestureDetector scaleDetector;
+    private float scaleFactor = 1.f;
+
 
     public BlocksLayout(Context context) {
         this(context, null);
@@ -80,6 +63,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
     public BlocksLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         Log.d(TAG, "BlocksLayout()");
+        scaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BlocksLayout, defStyle,
                 0);
@@ -100,12 +84,18 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
             mNowView.setDrawingCacheEnabled(true);
             mNowView.setId(Integer.MAX_VALUE - 1);
             mNowView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            //mNowView.setBackgroundColor(R.color.block_column_3);
             NinePatchDrawable buttonDrawable = (NinePatchDrawable) getContext().getResources().getDrawable(
                     R.drawable.now_bar);
             mNowView.setBackground(buttonDrawable);
             addViewInLayout(mNowView, -1, mNowView.getLayoutParams());
         }
+
+        if (AppUtil.belongsNowToDate(mAdapter.getDate())) {
+            mNowView.setVisibility(View.VISIBLE);
+        } else {
+            mNowView.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override
@@ -114,7 +104,9 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
         ensureChildren();
 
         mRulerView.measure(widthMeasureSpec, heightMeasureSpec);
-        mNowView.measure(widthMeasureSpec, heightMeasureSpec);
+        if (mNowView != null) {
+            mNowView.measure(widthMeasureSpec, heightMeasureSpec);
+        }
 
         final int width = mRulerView.getMeasuredWidth();
         final int height = mRulerView.getMeasuredHeight();
@@ -129,7 +121,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
         ensureChildren();
 
         if (mAdapter != null) {
-            removeViewsInLayout(0, getChildCount() - 2);
+            removeViewsInLayout(0, getChildCount() - countOfNonBlocksViews);
             printAllChilds();
             final int count = mAdapter.getCount();
             Log.d(TAG, "count: " + count);
@@ -185,6 +177,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
         left = 0;
         right = getWidth();
         mNowView.layout(left, top, right, bottom);
+
     }
 
 
@@ -218,42 +211,37 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
         throw new UnsupportedOperationException("Not supported");
     }
 
-    /*
-     * @Override public void onItemClick(AdapterView<?> parent, View view, int
-     * position, long id) { Log.d(TAG, "onItemClick() position: " + position +
-     * " id: " + id);
-     *
-     * }
-     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (getChildCount() == 0) {
             return false;
         }
+
+        scaleDetector.onTouchEvent(event);
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                //Log.d(TAG, "ACTION_DOWN");
                 startTouch(event);
                 break;
             case MotionEvent.ACTION_MOVE:
-                //Log.d(TAG, "ACTION_MOVE");
                 break;
             case MotionEvent.ACTION_UP:
-                //Log.d(TAG, "ACTION_UP");
                 if (touchState == TOUCH_STATE_CLICK) {
                     clickChildAt((int) event.getX(), (int) event.getY());
                 }
                 endTouch();
                 break;
+            default:
+                endTouch();
+                break;
         }
-        // return super.onTouchEvent(event);
         return true;
     }
 
     private void startTouch(final MotionEvent event) {
         Log.d("BlocksLayout", "startTouch()");
-        mTouchStartX = (int) event.getX();
-        mTouchStartY = (int) event.getY();
+        touchStartX = (int) event.getX();
+        touchStartY = (int) event.getY();
         // start checking for a long press
         startLongPressCheck();
         touchState = TOUCH_STATE_CLICK;
@@ -261,25 +249,22 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
 
     private void endTouch() {
         Log.d("BlocksLayout", "endTouch()");
-        removeCallbacks(mLongPressRunnable);
+        removeCallbacks(longPressRunnable);
         touchState = TOUCH_STATE_RESTING;
     }
 
     private void startLongPressCheck() {
-        Log.d("BlocksLayout", "startLongPressCheck()");
 
         if (!isEnabled()) return;
+        if (longPressRunnable == null) {
 
-        // create the runnable if we haven't already
-        if (mLongPressRunnable == null) {
-
-            mLongPressRunnable = new Runnable() {
+            longPressRunnable = new Runnable() {
 
                 public void run() {
 
                     if (touchState == TOUCH_STATE_CLICK) {
 
-                        final int index = getContainingChildIndex(mTouchStartX, mTouchStartY);
+                        final int index = getContainingChildIndex(touchStartX, touchStartY);
 
                         if (index != INVALID_INDEX) longClickChild(index);
                     }
@@ -287,8 +272,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
             };
         }
 
-        // then post it with a delay
-        postDelayed(mLongPressRunnable, ViewConfiguration.getLongPressTimeout());
+        postDelayed(longPressRunnable, ViewConfiguration.getLongPressTimeout());
     }
 
     private void longClickChild(final int index) {
@@ -304,10 +288,8 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
     }
 
     private void clickChildAt(final int x, final int y) {
-        Log.d("BlocksLayout", "clickChildAt()");
 
         final int index = getContainingChildIndex(x, y);
-        // Log.d(TAG, "onTouchEvent x:" + x + " y:" + y + " index: " + index);
         if (index != INVALID_INDEX) {
             final View itemView = getChildAt(index);
             final int position = index;
@@ -323,7 +305,6 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
         for (int index = 0; index < getChildCount(); index++) {
 
             View child = getChildAt(index);
-            // Log.d(TAG, "index:" + index + " class: " + child.toString());
             if (child instanceof BlockView) {
                 child.getHitRect(mRect);
                 if (mRect.contains(x, y)) {
@@ -335,15 +316,53 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {// implements Colo
         return INVALID_INDEX;
     }
 
-    private void printAllChilds() {
+    private void printAllChilds() {//TODO debug metoda
         for (int index = 0; index < getChildCount(); index++) {
             View child = getChildAt(index);
             Log.d("BlocksLayout", "child i=" + index + " " + child.toString() + " id: " + child.getId());
         }
     }
+/*
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        Log.d(TAG, "onDraw()");
 
-  /*  @Override
-    public void colorChanged(int color) {
-        Log.d("BlocksLayout", "colorChanged() color " + color);
+        canvas.save();
+        canvas.translate(touchStartX, touchStartY);
+        canvas.scale(scaleFactor, scaleFactor);
+        for (int index = 0; index < getChildCount(); index++) {
+            View child = getChildAt(index);
+            child.draw(canvas);
+        }
+        canvas.restore();
     }*/
+
+    /*@Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        Log.d(TAG, "dispatchDraw()");
+        canvas.save();
+        //canvas.translate(touchStartX, touchStartY);
+        canvas.scale(scaleFactor, scaleFactor);
+        for (int index = 0; index < getChildCount(); index++) {
+            View child = getChildAt(index);
+            child.draw(canvas);
+        }
+        canvas.restore();
+    }*/
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            Log.d(TAG, "onScale()");
+            scaleFactor *= detector.getScaleFactor();
+
+            // Don't let the object get too small or too large.
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
+
+            invalidate();
+            return true;
+        }
+    }
 }
