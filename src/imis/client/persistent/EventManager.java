@@ -50,21 +50,21 @@ public class EventManager {
         Log.d(TAG, "addEvent()");
         ContentValues values = event.getAsContentValues();
         ContentResolver resolver = context.getContentResolver();
-        Uri uri = resolver.insert(DataQuery.CONTENT_URI, values);
+        Uri uri = resolver.insert(EventQuery.CONTENT_URI, values);
         Log.d(TAG, "addEvent() uri: " + uri);
         return Integer.valueOf(uri.getLastPathSegment());
     }
 
     public static int deleteEvent(Context context, long id) {
         Log.d(TAG, "deleteEvent()");
-        Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(id));
+        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
         ContentResolver resolver = context.getContentResolver();
         return resolver.delete(uri, null, null);
     }
 
     public static int deleteAllEvents(Context context) {
         Log.d(TAG, "deleteAllEvents()");
-        Uri uri = DataQuery.CONTENT_URI;
+        Uri uri = EventQuery.CONTENT_URI;
         ContentResolver resolver = context.getContentResolver();
         return resolver.delete(uri, null, null);
     }
@@ -72,8 +72,8 @@ public class EventManager {
     public static Event getEvent(Context context, long id) {
         Log.d(TAG, "getEvent()");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL,
-                DataQuery.SELECTION_ID, new String[]{String.valueOf(id)}, null);
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL,
+                EventQuery.SELECTION_ID, new String[]{String.valueOf(id)}, null);
         Event event = null;
         while (cursor.moveToNext()) {
             event = Event.cursorToEvent(cursor);
@@ -86,7 +86,7 @@ public class EventManager {
     public static List<Event> getDirtyEvents(Context context) {
         Log.d(TAG, "getDirtyEvents()");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL, DataQuery.SELECTION_DIRTY, null, null);
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL, EventQuery.SELECTION_DIRTY, null, null);
         List<Event> events = new ArrayList<Event>();
         Event event = null;
         while (cursor.moveToNext()) {
@@ -100,7 +100,7 @@ public class EventManager {
     public static List<Event> getAllEvents(Context context) {
         Log.d(TAG, "getAllEvents()");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL, null, null, null);
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL, null, null, null);
         List<Event> events = new ArrayList<Event>();
         Event event = null;
         while (cursor.moveToNext()) {
@@ -113,7 +113,7 @@ public class EventManager {
 
     public static int markEventAsDeleted(Context context, long id) {
         Log.d(TAG, "markEventAsDeleted() id: " + id);
-        Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(id));
+        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
         ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Event.COL_DELETED, true);
@@ -123,7 +123,7 @@ public class EventManager {
 
     public static int updateEvent(Context context, Event event) {
         Log.d(TAG, "updateEvent()");
-        Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(event.get_id()));
+        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(event.get_id()));
         ContentResolver resolver = context.getContentResolver();
         ContentValues values = event.getAsContentValues();// TODO pozor co vse
         // aktual.
@@ -134,7 +134,7 @@ public class EventManager {
     public static void updateEventServerId(Context context, long id, String rowid) {
         Log.d(TAG, "updateEventServerId()");
         // Uri ukolu
-        Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(id));
+        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
         ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Event.COL_SERVER_ID, rowid);
@@ -143,7 +143,7 @@ public class EventManager {
         resolver.update(uri, values, null, null);
     }
 
-    final public static class DataQuery {
+    final public static class EventQuery {
 
         // uri zdroje dat
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
@@ -165,6 +165,8 @@ public class EventManager {
         public static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
         // vyber podle data
         public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
+
+        public static final String SELECTION_ICP = Event.COL_ICP + "=?";
 
     }
 

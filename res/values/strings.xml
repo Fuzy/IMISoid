@@ -129,6 +129,7 @@
     <string name="title_editing">Editace</string>
     <string name="test_connection">Testuji spojení...</string>
     <string name="network_unavailable">Zkontrolujte dostupnost síťového připojení</string>
+    <string name="no_account_set">Není nastaven účet pro synchronizaci</string>
 
 
 </resources>

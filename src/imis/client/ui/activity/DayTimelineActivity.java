@@ -3,10 +3,11 @@ package imis.client.ui.activity;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.DialogFragment;
-import android.app.LoaderManager;
 import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,41 +18,42 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.R;
-import imis.client.authentication.AuthenticationConsts;
+import imis.client.controller.BlockController;
 import imis.client.json.Util;
+import imis.client.model.Block;
 import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
-import imis.client.persistent.EventManager.DataQuery;
 import imis.client.services.RefreshListOfEmployees;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
 import imis.client.ui.ObservableScrollView;
-import imis.client.ui.adapters.EventsAdapter;
+import imis.client.ui.adapters.EventsArrayAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
 
-import static imis.client.AppConsts.*;
+import java.util.ArrayList;
+import java.util.List;
 
-//import imis.client.ui.activity.ActivityConsts;
+import static imis.client.AppConsts.*;
+import static imis.client.authentication.AuthenticationConsts.ACCOUNT_TYPE;
+import static imis.client.authentication.AuthenticationConsts.AUTHORITY;
 
 public class DayTimelineActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {// extends
-    // Activity
+        OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {
+
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
-    private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
-    private static final String AUTHORITY = AuthenticationConsts.AUTHORITY;
-    private String text = "Neni nastaven ucet pro synchronizaci";
     BroadcastReceiver _broadcastReceiver;
     private AccountManager accountManager;
     private BlocksLayout blocks;
     private ObservableScrollView scroll;
-    private EventsAdapter adapter;
+    //private EventsCursorAdapter adapter;
+    List<Block> blockList;
+    private EventsArrayAdapter adapter;
     private long date = 0L;
 
     private static final int LOADER_ID = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
-    //private static final int NETWORK_SETTINGS_ACTIVITY_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +66,20 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         // init UI
         setContentView(R.layout.blocks_content);
         scroll = (ObservableScrollView) findViewById(R.id.blocks_scroll);
-        adapter = new EventsAdapter(getApplicationContext(), null, -1);
         blocks = (BlocksLayout) findViewById(R.id.blocks);
-        blocks.setAdapter(adapter);
         blocks.setOnItemClickListener(this);
         blocks.setOnItemLongClickListener(this);
+
+
+        // init adapter and underlying list
+        blockList = new ArrayList<>();
+        adapter = new EventsArrayAdapter(getApplicationContext(), -1, blockList);
+        blocks.setAdapter(adapter);
 
         // init today date and loader
         changeDate(1364169600000L); //TODO toto je pro ladici ucely
         Log.d(TAG, "onCreate() date: " + date);
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
 
         // EventManager.deleteAllEvents(getApplicationContext());
@@ -120,9 +126,9 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
     @Override
     protected void onPause() {
+        super.onPause();
         Log.d("DayTimelineActivity", "onPause()");
         saveColorSharedPreferences();
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
@@ -134,11 +140,8 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu");
-        // Ziska menu z XML zdroje
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_options_menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -192,37 +195,41 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         if (acc.length > 0) {
             ContentResolver.requestSync(acc[0], AUTHORITY, new Bundle());
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.no_account_set, Toast.LENGTH_LONG);
             toast.show();
         }
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-        Log.d(TAG, "onCreateLoader() date: " + date);
-        return new CursorLoader(getApplicationContext(), DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL,
-                DataQuery.SELECTION_DATUM, new String[]{String.valueOf(date)}, null);
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
+        return new android.support.v4.content.CursorLoader(getApplicationContext(), EventManager.EventQuery.CONTENT_URI, EventManager.EventQuery.PROJECTION_ALL,
+                EventManager.EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)}, null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
-        Log.d(TAG, "onLoadFinished() rows: " + data.getCount());
-        adapter.swapCursor(data);
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        Log.d(TAG, "onLoaderReset()");
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Cursor cursor) {
+        Log.d(TAG, "onLoadFinished() rows: " + cursor.getCount());
+        resfreshAdaptersDataList(cursor);
+    }
+
+    private void resfreshAdaptersDataList(Cursor data) {
+        adapter.clear();
+        blockList = null;
+        blockList = BlockController.eventsToMapOfBlocks(data);
+        adapter.addAll(blockList);
+        adapter.notifyDataSetChanged();
         blocks.setVisibility(View.GONE);
         blocks.setVisibility(View.VISIBLE);
+        Log.d(TAG, "onLoadFinished() blockList: " + blockList);
     }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> arg0) {
-        Log.d(TAG, "onLoaderReset()");
-        adapter.swapCursor(null);
-    }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        // TODO ziskat id
         BlockView block = (BlockView) view;
         int arriveID = block.getArriveId(), leaveID = block.getLeaveId();
         Log.d(TAG, "onItemClick() position: " + position + " id: " + id + " arriveID: " + arriveID
@@ -246,19 +253,15 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         intent.setType("vnd.android.cursor.item/event.imisoid");
         //intent.putExtra(Event.KEY_DATE, date);
         startActivity(intent);
-        //TODO mazani polozky?
     }
 
     private void startNetworkSettingActivity() {
         Intent intent = new Intent(this, NetworkSettingsActivity.class);
         startActivity(intent);
-        Log.d("DayTimelineActivity", "startNetworkSettingActivity() intent " + intent);
-        //startActivityForResult(intent, NETWORK_SETTINGS_ACTIVITY_CODE);
     }
 
     private void startCalendarActivity() {
         Intent intent = new Intent(this, CalendarActivity.class);
-        Log.d("DayTimelineActivity", "startCalendarActivity() intent " + intent);
         intent.putExtra(Event.KEY_DATE, date);
         startActivityForResult(intent, CALENDAR_ACTIVITY_CODE);
     }
@@ -290,7 +293,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
                 if (resultCode == RESULT_OK) {
                     changeDate(data.getLongExtra(Event.KEY_DATE, -1));
                     Log.d("DayTimelineActivity", "onActivityResult() date: " + date);
-                    getLoaderManager().restartLoader(LOADER_ID, null, this);
+                    getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
                 }
                 break;
         }
@@ -351,26 +354,4 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         this.date = date;
         adapter.setDate(date);
     }
-
-
-   /* private class RefreshListOfEmployees extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            Log.d("DayTimelineActivity$RefreshListOfEmployees", "doInBackground()");
-            String icp = params[0];
-            return NetworkUtilities.getListOfEmployees(icp);
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            Log.d("DayTimelineActivity$RefreshListOfEmployees", "onPostExecute()");
-            List<Employee> employees = EmployeeManager.jsonToList(response);
-            if (employees != null) {
-                EmployeeManager.addEmployees(getApplicationContext(), employees);
-
-            }
-            Log.i(TAG, "employees: " + EmployeeManager.getAllEmployees(getApplicationContext()));
-        }
-    }*/
 }

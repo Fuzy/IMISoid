@@ -29,14 +29,15 @@ import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import imis.client.AppUtil;
 import imis.client.R;
-import imis.client.ui.adapters.EventsAdapter;
+import imis.client.ui.adapters.EventsArrayAdapter;
 
-public class BlocksLayout extends AdapterView<EventsAdapter> {
+public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     private static final String TAG = BlocksLayout.class.getSimpleName();
     private static final int INVALID_INDEX = -1;
     private Rect mRect;
 
-    private EventsAdapter mAdapter;
+    //private EventsCursorAdapter mAdapter;
+    private EventsArrayAdapter mAdapter;
     private TimeRulerView mRulerView = null;
     private View mNowView = null;
     private final int countOfNonBlocksViews = 2;
@@ -121,6 +122,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
         ensureChildren();
 
         if (mAdapter != null) {
+            printAllChilds();
             removeViewsInLayout(0, getChildCount() - countOfNonBlocksViews);
             printAllChilds();
             final int count = mAdapter.getCount();
@@ -186,7 +188,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
     }
 
     @Override
-    public EventsAdapter getAdapter() {
+    public EventsArrayAdapter getAdapter() {
         Log.d(TAG, "getAdapter()");
         return mAdapter;
     }
@@ -198,7 +200,7 @@ public class BlocksLayout extends AdapterView<EventsAdapter> {
     }
 
     @Override
-    public void setAdapter(EventsAdapter adapter) {
+    public void setAdapter(EventsArrayAdapter adapter) {
         Log.d(TAG, "setAdapter()");
         mAdapter = adapter;
         removeAllViewsInLayout();

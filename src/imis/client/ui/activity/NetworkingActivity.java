@@ -1,6 +1,5 @@
 package imis.client.ui.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -8,10 +7,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import imis.client.R;
 import imis.client.services.NetworkingService;
 
-public abstract class NetworkingActivity extends Activity {
+public abstract class NetworkingActivity extends FragmentActivity {
 
 	private volatile ProgressDialog wsProgressDialog;
 	protected volatile boolean progressOn = false;
