@@ -1,4 +1,4 @@
-package imis.client.ui.activity;
+package imis.client.ui.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -95,7 +95,7 @@ public abstract class NetworkingActivity extends FragmentActivity {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
 		synchronized (NetworkingActivity.class) {
 			super.onSaveInstanceState(outState);
 			if (service != null && service.isActive()) {

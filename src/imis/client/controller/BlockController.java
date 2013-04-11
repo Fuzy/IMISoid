@@ -3,10 +3,10 @@ package imis.client.controller;
 import android.database.Cursor;
 import imis.client.model.Block;
 import imis.client.model.Event;
+import imis.client.model.EventsGraphSerie;
+import imis.client.ui.ColorUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class BlockController {
     private static final String TAG = BlockController.class.getSimpleName();
+    private static final long MS_IN_HOUR = 60 * 60 * 1000;
 
     public static final String[] VALUES = new String[]
             {Event.KOD_PO_LEAVE_SERVICE, Event.KOD_PO_LEAVE_LUNCH, Event.KOD_PO_LEAVE_SUPPER};
@@ -52,9 +53,30 @@ public class BlockController {
                 blocks.add(block);
             }
         }
-
+        cursor.moveToPosition(-1);
 
         return blocks;
+    }
+
+    public static List<EventsGraphSerie> countBlocksStatistics(List<Block> blocks) {
+
+        Map<String, Double> statistics = new HashMap<>();
+        for (Block block : blocks) {
+            double amount = (double) ((block.getEndTime() - block.getStartTime()) / MS_IN_HOUR);
+            double count = statistics.containsKey(block.getKod_po()) ? statistics.get(block.getKod_po()) : 0;
+            statistics.put(block.getKod_po(), count + amount);
+        }
+
+        EventsGraphSerie serie;
+        List<EventsGraphSerie> eventsGraphSeries = new ArrayList<>();
+
+        for (Map.Entry<String, Double> entry : statistics.entrySet()) {
+            serie = new EventsGraphSerie(entry.getKey(), entry.getValue());
+            serie.setColor(ColorUtil.getColorForType(entry.getKey()));
+            eventsGraphSeries.add(serie);
+        }
+
+        return eventsGraphSeries;
     }
 
     private static Event getNextEvent(Cursor cursor, String druh) {

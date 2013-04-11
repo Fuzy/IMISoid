@@ -66,11 +66,8 @@
                     android:resource="@xml/syncadapter"/>
         </service>
 
-        <activity android:name=".ui.activity.DayTimelineActivity"
-                  android:theme="@android:style/Theme.Holo.Light"
-
-                  android:configChanges="orientation|screenSize">//TODO nastudovat
-            <!--android:screenOrientation="portrait"-->
+        <activity android:name=".ui.activities.DayTimelineActivity"
+                  android:theme="@android:style/Theme.Holo.Light">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -79,7 +76,7 @@
         </activity>
 
         <!-- Aktivita pro editaci a pridani nove udalosti. -->
-        <activity android:name=".ui.activity.EventEditorActivity"
+        <activity android:name=".ui.activities.EventEditorActivity"
                   android:configChanges="orientation|screenSize"
                 >
 
@@ -107,20 +104,15 @@
                 >
             <!--
             android:theme="@android:style/Theme.Dialog"
-                No intent-filter here! This activity is only ever launched by
+                No intent-filter here! This activities is only ever launched by
                 someone who explicitly knows the class name
             -->
         </activity>
-        <activity android:name=".ui.activity.NetworkSettingsActivity"/>
-
-        <activity android:name=".ui.activity.CalendarActivity"
-                ></activity>
-
-        <activity android:name=".ui.activity.RecordsChartActivity"
-                ></activity>
-
-        <activity android:name=".ui.activity.PresentEmployeesActivity"></activity>
-        <activity android:name=".ui.activity.EventsChartActivity"></activity>
+        <activity android:name=".ui.activities.NetworkSettingsActivity"/>
+        <activity android:name=".ui.activities.CalendarActivity"></activity>
+        <activity android:name=".ui.activities.RecordsChartActivity"></activity>
+        <activity android:name=".ui.activities.PresentEmployeesActivity"></activity>
+        <activity android:name=".ui.activities.EventsChartActivity"></activity>
     </application>
 
 </manifest>

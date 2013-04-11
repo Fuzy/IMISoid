@@ -1,4 +1,4 @@
-package imis.client.ui.activity;
+package imis.client.ui.activities;
 
 import android.database.Cursor;
 import android.os.Bundle;

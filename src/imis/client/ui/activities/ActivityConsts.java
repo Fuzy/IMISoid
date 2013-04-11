@@ -1,4 +1,4 @@
-package imis.client.ui.activity;
+package imis.client.ui.activities;
 
 public class ActivityConsts {
   public static final String ID_ARRIVE = "id_arrive";

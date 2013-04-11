@@ -1,4 +1,4 @@
-package imis.client.ui.activity;
+package imis.client.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +34,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private int arriveId = -1, leaveId = -1;
     private long date;
 
-    // States this activity could be in
+    // States this activities could be in
     private static final int STATE_EDIT = 0, STATE_INSERT = 1, STATE_VIEWING = 2;
 
     private int state;

@@ -63,7 +63,7 @@
                 android:resource="@xml/syncadapter" />
         </service>
 
-        <activity android:name=".ui.activity.DayTimelineActivity"
+        <activity android:name=".ui.activities.DayTimelineActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize" >
             
@@ -74,7 +74,7 @@
         </activity>
         
         <!-- Aktivita pro editaci a pridani nove udalosti. -->
-         <activity android:name=".ui.activity.EventEditorActivity"
+         <activity android:name=".ui.activities.EventEditorActivity"
             android:configChanges="orientation|screenSize"
             >
             
@@ -103,7 +103,7 @@
             android:configChanges="orientation"
             >
             <!--
-                No intent-filter here! This activity is only ever launched by
+                No intent-filter here! This activities is only ever launched by
                 someone who explicitly knows the class name
             -->
         </activity>

@@ -141,7 +141,7 @@
         <item name="android:paddingBottom">8dp</item>
     </style> -->
 
-    <!-- What's On section in Home activity 
+    <!-- What's On section in Home activities
 
     <style name="WhatsOnItemBase">
         <item name="android:layout_width">0dp</item>

@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="match_parent">
+              android:layout_height="fill_parent"
+              android:baselineAligned="false"
+              android:orientation="horizontal" >
 
     <FrameLayout
             android:id="@+id/displayControl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="@color/budgetColorRedBackground">>
-
+            android:background="@color/budgetColorRedBackground">
     </FrameLayout>
-
 
     <FrameLayout
             android:id="@+id/displayChart"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
             android:background="@color/budgetColorGreenBackground">
     </FrameLayout>
 

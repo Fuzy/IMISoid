@@ -5,7 +5,7 @@ import imis.client.model.Employee;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EmployeeManager;
-import imis.client.ui.activity.NetworkingActivity;
+import imis.client.ui.activities.NetworkingActivity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
@@ -14,8 +14,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static imis.client.ui.activity.ProgressState.DONE;
-import static imis.client.ui.activity.ProgressState.RUNNING;
+import static imis.client.ui.activities.ProgressState.DONE;
+import static imis.client.ui.activities.ProgressState.RUNNING;
 
 /**
  * Created with IntelliJ IDEA.

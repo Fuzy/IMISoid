@@ -1,4 +1,4 @@
-package imis.client.ui.activity;
+package imis.client.ui.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.CursorLoader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,8 +48,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     private AccountManager accountManager;
     private BlocksLayout blocks;
     private ObservableScrollView scroll;
-    //private EventsCursorAdapter adapter;
-    List<Block> blockList;
+    private List<Block> blockList;
     private EventsArrayAdapter adapter;
     private long date = 0L;
 
@@ -83,7 +83,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
 
         // EventManager.deleteAllEvents(getApplicationContext());
-        Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
+        //Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
 
         loadNetworkSharedPreferences();
         loadColorSharedPreferences();
@@ -202,25 +202,26 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
-        return new android.support.v4.content.CursorLoader(getApplicationContext(), EventManager.EventQuery.CONTENT_URI, EventManager.EventQuery.PROJECTION_ALL,
+        return new CursorLoader(getApplicationContext(), EventManager.EventQuery.CONTENT_URI, EventManager.EventQuery.PROJECTION_ALL,
                 EventManager.EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)}, null);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         Log.d(TAG, "onLoaderReset()");
+        //getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Override
     public void onLoadFinished(Loader loader, Cursor cursor) {
-        Log.d(TAG, "onLoadFinished() rows: " + cursor.getCount());
+        Log.d(TAG, "onLoadFinished() rows: " + cursor.getCount() + " positon: " + cursor.getPosition());
         resfreshAdaptersDataList(cursor);
     }
 
-    private void resfreshAdaptersDataList(Cursor data) {
+    private void resfreshAdaptersDataList(Cursor cursor) {
         adapter.clear();
         blockList = null;
-        blockList = BlockController.eventsToMapOfBlocks(data);
+        blockList = BlockController.eventsToMapOfBlocks(cursor);
         adapter.addAll(blockList);
         adapter.notifyDataSetChanged();
         blocks.setVisibility(View.GONE);
@@ -315,7 +316,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     private void loadColorSharedPreferences() {
-        Log.d("DayTimelineActivity", "loadColorSharedPreferences()");
+        //Log.d("DayTimelineActivity", "loadColorSharedPreferences()");
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         int color_present_normal = settings.getInt(ColorUtil.KEY_COLOR_PRESENT_NORMAL,
                 getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT));
@@ -338,7 +339,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     private void saveColorSharedPreferences() {
-        Log.d("DayTimelineActivity", "saveColorSharedPreferences()");
+        //Log.d("DayTimelineActivity", "saveColorSharedPreferences()");
         SharedPreferences settings = getSharedPreferences(AppConsts.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(ColorUtil.KEY_COLOR_PRESENT_NORMAL, ColorUtil.getColor_present_normal());

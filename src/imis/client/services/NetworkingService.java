@@ -6,14 +6,15 @@ import android.os.AsyncTask;
 import android.os.Message;
 import imis.client.AppConsts;
 import imis.client.R;
-import imis.client.ui.activity.NetworkingActivity;
-import imis.client.ui.activity.ProgressState;
+import imis.client.ui.activities.NetworkingActivity;
+import imis.client.ui.activities.ProgressState;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.Serializable;
 import java.net.UnknownHostException;
 
+//TODO lepsi neposilat zpravu
 public abstract class NetworkingService<T, U, V> extends AsyncTask<T, U, V> implements Serializable {
 
 	private static final long serialVersionUID = -1800322528900745205L;

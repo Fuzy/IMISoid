@@ -2,11 +2,11 @@ package imis.client.services;
 
 import imis.client.R;
 import imis.client.network.NetworkUtilities;
-import imis.client.ui.activity.NetworkSettingsActivity;
-import imis.client.ui.activity.NetworkingActivity;
+import imis.client.ui.activities.NetworkSettingsActivity;
+import imis.client.ui.activities.NetworkingActivity;
 
-import static imis.client.ui.activity.ProgressState.DONE;
-import static imis.client.ui.activity.ProgressState.RUNNING;
+import static imis.client.ui.activities.ProgressState.DONE;
+import static imis.client.ui.activities.ProgressState.RUNNING;
 /**
  * Created with IntelliJ IDEA.
  * User: Martin Kadlec
