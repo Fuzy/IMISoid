@@ -265,6 +265,27 @@ public class Event {
     public static final String JSON_DELETED = "de";
     public static final String JSON_SYNC = "sy";
 
+
+    //TODO  EnumMap?
+    /*public enum Codes {
+        KOD_PO_ARRIVE_NORMAL("00", 0),
+        KOD_PO_ARRIVE_PRIVATE("10", 1),
+        KOD_PO_LEAVE_SERVICE("01", 2),
+        KOD_PO_LEAVE_LUNCH("02", 3),
+        KOD_PO_LEAVE_SUPPER("03", 4),
+        KOD_PO_LEAVE_MEDIC("04", 5);
+
+        private final String name;
+        private final int index;
+
+        private Codes(String s, int i) {
+            name = s;
+            index = i;
+        }
+    }*/
+
+    public static final String[] KOD_PO_VALUES = {"00", "10", "01", "02", "03", "04"};
+
     public static final String DRUH_ARRIVAL = "P";
     public static final String DRUH_LEAVE = "O";
     public static final String KOD_PO_ARRIVE_NORMAL = "00";
@@ -273,6 +294,9 @@ public class Event {
     public static final String KOD_PO_LEAVE_LUNCH = "02";
     public static final String KOD_PO_LEAVE_SUPPER = "03";
     public static final String KOD_PO_LEAVE_MEDIC = "04";
+
+    public static final int IND_NORMAL = 0, IND_PRIVAT = 1, IND_SERVICE = 2,
+            IND_LUNCH = 3, IND_SUPPER = 4, IND_MEDIC = 5;
 
     public static final String TYPE_ORIG = "O";
 

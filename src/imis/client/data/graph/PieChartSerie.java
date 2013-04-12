@@ -1,4 +1,4 @@
-package imis.client.model;
+package imis.client.data.graph;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,12 +6,12 @@ package imis.client.model;
  * Date: 10.4.13
  * Time: 17:45
  */
-public class EventsGraphSerie {
+public class PieChartSerie {
     private String label;
     private Double amount;
     private int color;
 
-    public EventsGraphSerie(String label, Double amount) {
+    public PieChartSerie(String label, Double amount) {
         this.label = label;
         this.amount = amount;
     }

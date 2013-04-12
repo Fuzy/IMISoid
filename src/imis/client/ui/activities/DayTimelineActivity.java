@@ -19,7 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.R;
-import imis.client.controller.BlockController;
+import imis.client.controller.BlockProcessor;
 import imis.client.json.Util;
 import imis.client.model.Block;
 import imis.client.model.Event;
@@ -221,7 +221,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     private void resfreshAdaptersDataList(Cursor cursor) {
         adapter.clear();
         blockList = null;
-        blockList = BlockController.eventsToMapOfBlocks(cursor);
+        blockList = BlockProcessor.eventsToMapOfBlocks(cursor);
         adapter.addAll(blockList);
         adapter.notifyDataSetChanged();
         blocks.setVisibility(View.GONE);

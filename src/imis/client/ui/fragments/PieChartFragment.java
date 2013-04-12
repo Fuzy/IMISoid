@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import imis.client.R;
-import imis.client.controller.BlockController;
-import imis.client.model.EventsGraphSerie;
+import imis.client.controller.BlockProcessor;
+import imis.client.data.graph.PieChartSerie;
+import imis.client.data.graph.PieChartData;
 import imis.client.ui.activities.EventsChartActivity;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -78,9 +79,9 @@ public class PieChartFragment extends Fragment {
 
     private void displayGraph() {
         Log.d(TAG, "displayGraph()");
-        List<EventsGraphSerie> eventsGraphSeries = BlockController.countBlocksStatistics(mActivity.getBlockList());
+        PieChartData  pieChartData = BlockProcessor.countBlocksStatistics(mActivity.getBlockList());
         clearGraph();
-        prepareGraph(eventsGraphSeries);
+        prepareGraph(pieChartData);
     }
 
     private void initRenderer() {
@@ -95,9 +96,10 @@ public class PieChartFragment extends Fragment {
         mRenderer.setStartAngle(90);
     }
 
-    private void prepareGraph(List<EventsGraphSerie> eventsGraphSeries) {
+    private void prepareGraph(PieChartData  pieChartData) {
         Log.d(TAG, "prepareGraph()");
-        for (EventsGraphSerie eventsGraphSerie : eventsGraphSeries) {
+        List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
+        for (PieChartSerie eventsGraphSerie : eventsGraphSeries) {
             mSeries.add(mActivity.getLabelForCode(eventsGraphSerie.getLabel()), eventsGraphSerie.getAmount());
             addSeriesRenderer(eventsGraphSerie.getColor());
         }

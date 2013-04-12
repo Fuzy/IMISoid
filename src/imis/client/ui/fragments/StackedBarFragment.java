@@ -12,14 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import imis.client.R;
+import imis.client.controller.BlockProcessor;
+import imis.client.data.graph.StackedBarChartData;
 import imis.client.ui.activities.EventsChartActivity;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static imis.client.ui.activities.GraphUtil.*;
 
@@ -70,21 +69,17 @@ public class StackedBarFragment extends Fragment {
     }
 
     private void displayGraph() {
-           execute();
+        Log.d(TAG, "displayGraph()");
+        StackedBarChartData chartData = BlockProcessor.blocksToStackedBarChartData(mActivity.getBlockList());
+        execute(chartData);
     }
 
     /**/
-    public void execute() {
-        String[] titles = new String[]{"2008", "2007"};
-        List<double[]> values = new ArrayList<double[]>();
-        values.add(new double[]{14230, 12300, 14240, 15244, 15900, 19200, 22030, 21200, 19500, 15500,
-                12600, 14000});
-        values.add(new double[]{5230, 7300, 9240, 10540, 7900, 9200, 12030, 11200, 9500, 10500,
-                11600, 13500});
-        int[] colors = new int[]{Color.BLUE, Color.CYAN};
-        XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);
-        setChartSettings(renderer, "Monthly sales in the last 2 years", "Month", "Units sold", 0.5,
-                12.5, 0, 24000, Color.GRAY, Color.LTGRAY);
+    private void execute(StackedBarChartData chartData) {
+        String[] titles = mActivity.codesToTitles(chartData.getTitles());
+        XYMultipleSeriesRenderer renderer = buildBarRenderer(chartData.getColors());
+        setChartSettings(renderer, "Události docházky pro daný den", "Den", "Čas", 0.5,
+                12.5, 0, (chartData.getyMax() * 1.1), Color.GRAY, Color.LTGRAY);
         renderer.getSeriesRendererAt(0).setDisplayChartValues(true);
         renderer.getSeriesRendererAt(1).setDisplayChartValues(true);
         renderer.setXLabels(12);
@@ -95,7 +90,7 @@ public class StackedBarFragment extends Fragment {
         // renderer.setZoomEnabled(false);
         renderer.setZoomRate(1.1f);
         renderer.setBarSpacing(0.5f);
-        mChartView = ChartFactory.getBarChartView(mActivity, buildBarDataset(titles, values), renderer,
+        mChartView = ChartFactory.getBarChartView(mActivity, buildBarDataset(titles, chartData.getValues()), renderer,
                 BarChart.Type.STACKED);
         LinearLayout layout = (LinearLayout) mChartContainerView;
         layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,

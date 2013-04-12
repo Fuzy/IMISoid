@@ -10,7 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import imis.client.R;
-import imis.client.controller.BlockController;
+import imis.client.controller.BlockProcessor;
 import imis.client.model.Block;
 import imis.client.ui.fragments.StackedBarFragment;
 
@@ -81,7 +81,7 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished()"); //TODO pozor na pozici cursoru
-        blockList = BlockController.eventsToMapOfBlocks(cursor);
+        blockList = BlockProcessor.eventsToMapOfBlocks(cursor);
         mDataSetObservable.notifyChanged();
     }
 
@@ -117,6 +117,14 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
     public String getLabelForCode(String kod_po) {
         int index = Arrays.asList(kody_po_values).indexOf(kod_po);
         return kody_po_desc[index];
+    }
+
+    public String[] codesToTitles(String[] kod_po) {
+       String[] titles = new String[kod_po.length];
+        for (int i = 0; i < kod_po.length; i++) {
+            titles[i] = getLabelForCode(kod_po[i]);
+        }
+        return titles;
     }
 
     public List<Block> getBlockList() {
