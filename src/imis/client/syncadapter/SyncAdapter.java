@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import imis.client.model.Event;
+import imis.client.network.EventsSync;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import org.apache.http.HttpStatus;
@@ -52,7 +53,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         for (Event event : dirtyEvents) {
             if (event.isDeleted()) {
                 // mazani
-                httpCode = NetworkUtilities.deleteEvent(event.getServer_id());
+                httpCode = EventsSync.deleteEvent(event.getServer_id());
                 if (httpCode == HttpStatus.SC_OK) {// lepsi kod OK
                     EventManager.deleteEvent(context, event.get_id());
                 } else {
@@ -60,7 +61,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             } else if (event.hasServer_id()) {
                 // update
-                httpCode = NetworkUtilities.updateEvent(event);
+                httpCode = EventsSync.updateEvent(event);
                 if (httpCode == HttpStatus.SC_ACCEPTED) {
                     Log.d(TAG, "onPerformSync() update ok");
                 } else {
@@ -68,7 +69,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             } else if (event.hasServer_id() == false) {
                 // pridani nove udalosti
-                httpCode = NetworkUtilities.createEvent(event);
+                httpCode = EventsSync.createEvent(event);
                 if (httpCode == HttpStatus.SC_CREATED) {
                     EventManager.updateEventServerId(context, event.get_id(), event.getServer_id());
                 } else {
@@ -82,7 +83,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         //stahne vse ze serveru
         List<Event> events = new ArrayList<Event>();
         //"/0000001?from=29.7.2004&to=29.7.2004"
-        NetworkUtilities.getUserEvents(events, "0000001", null, null);//TODO null
+        EventsSync.getUserEvents(events, "0000001", null, null);//TODO null
         for (Event event : events) {
             EventManager.addEvent(context, event);
         }

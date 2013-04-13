@@ -34,7 +34,7 @@ public class EmployeeManager {
         return Integer.valueOf(uri.getLastPathSegment());
     }
 
-    public static void addEmployees(Context context, List<Employee> employees) {
+    public static void addEmployees(Context context, Employee[] employees) {
         Log.d(TAG, "addEmployees()");
         for (Employee employee : employees) {
             addEmployee(context, employee);

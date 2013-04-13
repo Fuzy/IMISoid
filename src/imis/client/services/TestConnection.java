@@ -7,6 +7,7 @@ import imis.client.ui.activities.NetworkingActivity;
 
 import static imis.client.ui.activities.ProgressState.DONE;
 import static imis.client.ui.activities.ProgressState.RUNNING;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Martin Kadlec
@@ -15,6 +16,8 @@ import static imis.client.ui.activities.ProgressState.RUNNING;
  */
 public class TestConnection extends NetworkingService<Void, Void, Integer> {
 
+    private static final String TAG = "TestConnection";
+
     public TestConnection(NetworkingActivity context) {
         super(context);
     }
@@ -22,9 +25,9 @@ public class TestConnection extends NetworkingService<Void, Void, Integer> {
     @Override
     protected Integer doInBackground(Void... voids) {
         changeProgress(RUNNING, R.string.test_connection);
-        Integer result = NetworkUtilities.testWebServiceAndDBAvailability();
+        int statusCode = NetworkUtilities.testWebServiceAndDBAvailability();
         changeProgress(DONE, null);
-        return result;
+        return statusCode;
     }
 
     @Override

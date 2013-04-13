@@ -25,7 +25,7 @@ import imis.client.model.Block;
 import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
-import imis.client.services.RefreshListOfEmployees;
+import imis.client.services.GetListOfEmployees;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
@@ -179,7 +179,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     private void refreshListOfEmployees() {
-        new RefreshListOfEmployees(this).execute("1493913");
+        new GetListOfEmployees(this).execute("1493913");//1493913
     }
 
     private void startInsertActivity() {
@@ -309,7 +309,8 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     private void loadNetworkSharedPreferences() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        Log.d(TAG, "loadNetworkSharedPreferences()");
+        SharedPreferences settings = getSharedPreferences(AppConsts.PREFS_NAME, Context.MODE_PRIVATE);
         String domain = settings.getString(KEY_DOMAIN, NetworkUtilities.DOMAIN_DEFAULT);
         int port = (settings.getInt(KEY_PORT, NetworkUtilities.PORT_DEFAULT));
         NetworkUtilities.resetDomainAndPort(domain, port);

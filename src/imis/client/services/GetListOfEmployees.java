@@ -6,13 +6,12 @@ import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EmployeeManager;
 import imis.client.ui.activities.NetworkingActivity;
+import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import static imis.client.ui.activities.ProgressState.DONE;
 import static imis.client.ui.activities.ProgressState.RUNNING;
@@ -23,44 +22,46 @@ import static imis.client.ui.activities.ProgressState.RUNNING;
  * Date: 8.4.13
  * Time: 22:29
  */
-public class RefreshListOfEmployees extends NetworkingService<String, Void, List<Employee>> {
-    private static final String TAG = RefreshListOfEmployees.class.getSimpleName();
+public class GetListOfEmployees extends NetworkingService<String, Void, Employee[]> {
+    private static final String TAG = GetListOfEmployees.class.getSimpleName();
 
-    public RefreshListOfEmployees(NetworkingActivity context) {
+    public GetListOfEmployees(NetworkingActivity context) {
         super(context);
     }
 
     @Override
-    protected List<Employee> doInBackground(String... params) {
+    protected Employee[] doInBackground(String... params) {
         Log.d(TAG, "doInBackground()");
         changeProgress(RUNNING, "working");
         String icp = params[0];
 
+        HttpHeaders requestHeaders = new HttpHeaders();
+        //requestHeaders.setAuthorization(authHeader);
+        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
 
         //Create a Rest template
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
-//Create a list for the message converters
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
-//Add the Jackson Message converter
-        messageConverters.add(new MappingJacksonHttpMessageConverter());
+        try {
+            //TODO uri variables
+            ResponseEntity<Employee[]> response = restTemplate.exchange(NetworkUtilities.EMPLOYEES_URL, HttpMethod.GET, entity,
+                    Employee[].class, icp);
+            Employee[] body = response.getBody();
+            return body;
+        } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage(), e);
+        }finally {
+            changeProgress(DONE, null);
+        }
 
-//Add the message converters to the restTemplate
-        restTemplate.setMessageConverters(messageConverters);
-
-        //A simple GET request, the response will be mapped to Example.class
-        String url = NetworkUtilities.EMPLOYEES_URL;
-        String employees = restTemplate.getForObject(url, String.class);
-        Log.d(TAG, "doInBackground() employees: " + employees);
-        //TODO pijmout list pomoci rsttemplate
-        changeProgress(DONE, null);//TODO variables
-        //return NetworkUtilities.getListOfEmployees(icp);
-        return null;
+        return new Employee[]{};
     }
 
     @Override
-    protected void onPostExecute(List<Employee> employees) {
+    protected void onPostExecute(Employee[] employees) {
         Log.d(TAG, "onPostExecute()");
         //List<Employee> employees = EmployeeManager.jsonToList(response);
         if (employees != null) {
