@@ -6,15 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
-import com.google.gson.reflect.TypeToken;
 import imis.client.model.Employee;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import static imis.client.json.Util.gson;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,7 +23,7 @@ public class EmployeeManager {
 
     public static int addEmployee(Context context, Employee employee) {
         Log.d(TAG, "addEmployee() " + employee);
-        ContentValues values = employee.getAsContentValues();
+        ContentValues values = employee.asContentValues();
         ContentResolver resolver = context.getContentResolver();
         Uri uri = resolver.insert(DataQuery.CONTENT_URI, values);
         return Integer.valueOf(uri.getLastPathSegment());
@@ -55,12 +50,12 @@ public class EmployeeManager {
         return employees;
     }
 
-    public static List<Employee> jsonToList(String json) {
+    /*public static List<Employee> jsonToList(String json) {
         Log.d(TAG, "jsonToList()");
         Type type = new TypeToken<Collection<Employee>>() {
         }.getType();
         return gson.fromJson(json, type);
-    }
+    }*/
 
     final public static class DataQuery {
 

@@ -15,12 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import imis.client.R;
-import imis.client.network.NetworkUtilities;
 
 public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private static final String TAG = "AuthenticatorActivity";
-    private String username = null;
-    private String password = null;
+    private String username = null, icp = null, password = null;
     private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
     private static final String AUTHORITY = AuthenticationConsts.AUTHORITY;
     private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
@@ -47,7 +45,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     protected boolean requestNewAccount = false;//TODO k cemu?
     private ProgressDialog progressDialog = null;
     private TextView mMessage;
-    private EditText passwordEdit, usernameEdit;
+    private EditText passwordEdit, usernameEdit, icpEdit;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -67,20 +65,24 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        usernameEdit.setText("1520");
-        passwordEdit.setText("1520");
+        usernameEdit.setText("JSA");
+        icpEdit.setText("700510");
+        passwordEdit.setText("");
     }
 
     private void initLayoutComponents() {
         usernameEdit = (EditText) findViewById(R.id.username_edit);
         passwordEdit = (EditText) findViewById(R.id.password_edit);
+        icpEdit = (EditText) findViewById(R.id.icp_edit);
         mMessage = (TextView) findViewById(R.id.message);
     }
 
     private void finishLogin(String authToken) {
         Log.d(TAG, "finishLogin()");
         final Account account = new Account(username, ACCOUNT_TYPE);
-        accountManager.addAccountExplicitly(account, password, null);
+        Bundle userdata= new Bundle();
+        userdata.putString(AuthenticationConsts.KEY_KOD_PRA, icp);
+        accountManager.addAccountExplicitly(account, password, userdata);
 
         // Povoli synchronizaci pro tento ucet
         ContentResolver.setSyncAutomatically(account, AUTHORITY, true);
@@ -173,9 +175,10 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         Log.d("AuthenticatorActivity", "handleLogin()");
         if (requestNewAccount) {
             username = usernameEdit.getText().toString();
+            icp = icpEdit.getText().toString();
         }
         password = passwordEdit.getText().toString();
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(icp)) {
             mMessage.setText(getMessage());
         } else {
             // Show a progress dialog, and kick off a background task to perform
@@ -193,6 +196,9 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         Log.d("AuthenticatorActivity", "getMessage()");
         if (TextUtils.isEmpty(username)) {
             return getText(R.string.login_activity_loginfail_text_usmissing);
+        }
+        if (TextUtils.isEmpty(icp)) {
+            return getText(R.string.login_activity_loginfail_text_icpmissing);
         }
         if (TextUtils.isEmpty(password)) {
             return getText(R.string.login_activity_loginfail_text_pwmissing);
@@ -227,7 +233,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
      * Represents an asynchronous task used to authenticate a user against the
      * SampleSync Service
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, String> {
+    public class UserLoginTask extends AsyncTask<Void, Void, String> {//TODO dat k ostatnim
 
         @Override
         protected String doInBackground(Void... params) {
@@ -235,10 +241,10 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
             // We do the actual work of authenticating the user
             // in the NetworkUtilities class.
             try {
-                return NetworkUtilities.authenticate(username, password);
+                return "bla";// NetworkUtilities.authenticate(username, password);
             } catch (Exception ex) {
                 Log.e(TAG, "UserLoginTask.doInBackground: failed to authenticate");
-                Log.i(TAG, ex.toString());
+                ex.printStackTrace();//TODO hodilo null (asi nenastavena sit)
                 return null;
             }
         }

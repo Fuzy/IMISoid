@@ -1,1 +1,14 @@
 *.class
+*.classpath
+*.project
+/target
+/bin
+.settings
+
+/gen
+
+# IntelliJ Idea
+.git
+.idea
+*.project
+*.iml

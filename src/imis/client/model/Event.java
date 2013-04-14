@@ -2,17 +2,19 @@ package imis.client.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import com.google.gson.JsonObject;
-import imis.client.json.Util;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
-import static imis.client.json.Util.formatDate;
-import static imis.client.json.Util.formatTime;
+import static imis.client.AppUtil.formatDate;
+import static imis.client.AppUtil.formatTime;
 
 public class Event {
     // sync
+    @JsonIgnore
     private int _id;
     private String server_id;
+    @JsonIgnore
     private boolean dirty;
+    @JsonIgnore
     private boolean deleted;
     // data
     private String icp;
@@ -34,10 +36,12 @@ public class Event {
         return dirty;
     }
 
+    @JsonIgnore
     public boolean isDruhArrival() {
         return DRUH_ARRIVAL.equals(druh);
     }
 
+    @JsonIgnore
     public boolean isDruhLeave() {
         return DRUH_LEAVE.equals(druh);
     }
@@ -173,15 +177,6 @@ public class Event {
                 + ", datum_zmeny=" + formatDate(datum_zmeny) + ", poznamka=" + poznamka + "]";
     }
 
-    public static Event jsonToEvent(JsonObject object) {
-        Event event = Util.gson.fromJson(object, Event.class);
-        return event;
-    }
-
-    public static String getAsJson(Event event) {
-        return Util.gson.toJson(event);
-    }
-
     // "dd.MM.yyyy"
     public static Event cursorToEvent(Cursor c) {
         Event event = new Event();
@@ -201,7 +196,7 @@ public class Event {
         return event;
     }
 
-    public ContentValues getAsContentValues() {
+    public ContentValues asContentValues() {
         //TODO asi tam dat jen to spolecne pro add a update
         ContentValues values = new ContentValues();
         values.put(COL_DIRTY, dirty);

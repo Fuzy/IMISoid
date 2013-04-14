@@ -6,8 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import imis.client.model.Event;
 
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ public class EventManager {
     private static final String TAG = "EventManager";
 
     //TODO serverEvents jako Event
-    private static long updateEvents(Context context, List<JsonObject> serverEvents,
+   /* private static long updateEvents(Context context, List<JsonObject> serverEvents,
                                      long lastSyncMarker) {
         Log.d(TAG, "updateEvents()");
         long currentSyncMarker = lastSyncMarker;
@@ -39,7 +37,7 @@ public class EventManager {
         }
 
         return currentSyncMarker;
-    }
+    }*/
 
     /**
      * @param context
@@ -48,7 +46,7 @@ public class EventManager {
      */
     public static int addEvent(Context context, Event event) {
         Log.d(TAG, "addEvent()");
-        ContentValues values = event.getAsContentValues();
+        ContentValues values = event.asContentValues();
         ContentResolver resolver = context.getContentResolver();
         Uri uri = resolver.insert(EventQuery.CONTENT_URI, values);
         Log.d(TAG, "addEvent() uri: " + uri);
@@ -87,8 +85,8 @@ public class EventManager {
         Log.d(TAG, "getDirtyEvents()");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL, EventQuery.SELECTION_DIRTY, null, null);
-        List<Event> events = new ArrayList<Event>();
-        Event event = null;
+        List<Event> events = new ArrayList<>();
+        Event event;
         while (cursor.moveToNext()) {
             event = Event.cursorToEvent(cursor);
             events.add(event);
@@ -125,7 +123,7 @@ public class EventManager {
         Log.d(TAG, "updateEvent()");
         Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(event.get_id()));
         ContentResolver resolver = context.getContentResolver();
-        ContentValues values = event.getAsContentValues();// TODO pozor co vse
+        ContentValues values = event.asContentValues();// TODO pozor co vse
         // aktual.
         values.put(Event.COL_DIRTY, true);
         return resolver.update(uri, values, null, null);

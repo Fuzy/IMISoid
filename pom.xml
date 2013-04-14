@@ -42,11 +42,11 @@
         <artifactId>spring-android-rest-template</artifactId>
         <version>${spring-android-version}</version>
     </dependency>
-    <dependency>
+   <!-- <dependency>
         <groupId>com.google.code.gson</groupId>
         <artifactId>gson</artifactId>
         <version>2.2.2</version>
-    </dependency>
+    </dependency>-->
     <dependency>
         <groupId>org.achartengine</groupId>
         <artifactId>achartengine</artifactId>

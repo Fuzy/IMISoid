@@ -1,5 +1,7 @@
 package imis.client.ui.activities;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +17,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
 import imis.client.ui.dialogs.DeleteEventDialog;
@@ -48,6 +51,8 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private Button leaveBtn;
     private LinearLayout leaveLayout;
 
+    private AccountManager accountManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,8 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         date = intent.getLongExtra(Event.KEY_DATE, -1);
         Log.d(TAG, "onCreate date : " + date + "  " + EventManager.getAllEvents(getApplicationContext()));
 
+        // create account manager
+        accountManager = AccountManager.get(this);
 
         // Provede nastaveni na zaklade akce o kterou se jedna (view/insert).
         final String action = intent.getAction();
@@ -372,8 +379,16 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void setImplicitEventValues(Event event) {
         event.setDirty(true);
         event.setDatum_zmeny(AppUtil.getTodayInLong());
-        event.setIcp("123");
         event.setTyp(Event.TYPE_ORIG);
+
+        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
+        try {
+            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_KOD_PRA);
+            event.setIcp(icp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

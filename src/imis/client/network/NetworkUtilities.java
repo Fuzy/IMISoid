@@ -4,29 +4,19 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import imis.client.json.Util;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicNameValuePair;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-
 public class NetworkUtilities {
     private static final String TAG = "NetworkUtilities";
     private static final String SCHEME = "http://";
     private static final String BASE_PATH = "/Imisoid_WS/";
     private static final String EVENTS_PATH = BASE_PATH + "events";
+    private static final String EVENTS_DELETE_PATH = BASE_PATH + "events/{rowid}";
+    private static final String EVENTS_GET_PATH = BASE_PATH + "events/{icp}?from={from}&to={to}";
     private static final String RECORDS_PATH = BASE_PATH + "records/{kodpra}?from={from}&to={to}";
     private static final String AUTH_PATH = BASE_PATH + "authentication";
     private static final String EMPLOYEES_PATH = BASE_PATH + "employees/{icp}";
@@ -34,6 +24,8 @@ public class NetworkUtilities {
     private static String DOMAIN = null;
     private static int PORT = -1;
     public static String BASE_URL;
+    public static String EVENTS_DELETE_URL;
+    public static String EVENTS_GET_URL;
     public static String EVENTS_URL;
     public static String RECORDS_URL;
     public static String EMPLOYEES_URL;
@@ -45,7 +37,7 @@ public class NetworkUtilities {
     private static final String PARAM_USERNAME = "username";
     private static final String PARAM_PASSWORD = "password";
 
-    public static String authenticate(String username, String password) {
+   /* public static String authenticate(String username, String password) {
         Log.d("NetworkUtilities", "authenticate() username: " + username + " password: " + password);
         HttpClient httpClient = HttpClientFactory.getThreadSafeClient();
         HttpPost post = new HttpPost(AUTH_URL);
@@ -73,7 +65,7 @@ public class NetworkUtilities {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return "qwertyxx";
-    }
+    }*/
 
     public static int testWebServiceAndDBAvailability() {
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -115,6 +107,8 @@ public class NetworkUtilities {
         PORT = port;
         BASE_URL = SCHEME + DOMAIN + ":" + PORT;// 10.0.2.2
         EVENTS_URL = BASE_URL + EVENTS_PATH;
+        EVENTS_DELETE_URL = BASE_URL + EVENTS_DELETE_PATH;
+        EVENTS_GET_URL = BASE_URL + EVENTS_GET_PATH;
         RECORDS_URL = BASE_URL + RECORDS_PATH;
         EMPLOYEES_URL = BASE_URL + EMPLOYEES_PATH;
         AUTH_URL = BASE_URL + AUTH_PATH;

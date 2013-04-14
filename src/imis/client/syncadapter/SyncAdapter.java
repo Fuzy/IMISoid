@@ -9,6 +9,8 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import imis.client.AppUtil;
+import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Event;
 import imis.client.network.EventsSync;
 import imis.client.network.NetworkUtilities;
@@ -39,6 +41,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync()");
+
         int httpCode = -1;
         httpCode = NetworkUtilities.testWebServiceAndDBAvailability();
         if (httpCode != HttpStatus.SC_OK) {
@@ -46,6 +49,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             return;
         }
 
+        String icp = accountManager.getUserData(account, AuthenticationConsts.KEY_KOD_PRA);
+        Log.d(TAG, "onPerformSync() icp " + icp);
         // long lastSyncMarker = getServerSyncMarker(account);
 
         // ziska vsechny lokalni zmeny a odesle je
@@ -81,9 +86,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         //udela misto pro platne udaje
         EventManager.deleteAllEvents(context);
         //stahne vse ze serveru
-        List<Event> events = new ArrayList<Event>();
+        List<Event> events = new ArrayList<>();
         //"/0000001?from=29.7.2004&to=29.7.2004"
-        EventsSync.getUserEvents(events, "0000001", null, null);//TODO null
+        long date = extras.getLong(Event.KEY_DATE,  AppUtil.getTodayInLong());
+        EventsSync.getUserEvents(events, icp, date, date);//TODO jak obdobi spravne?
         for (Event event : events) {
             EventManager.addEvent(context, event);
         }

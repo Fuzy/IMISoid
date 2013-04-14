@@ -130,6 +130,8 @@
     <string name="test_connection">Testuji spojení...</string>
     <string name="network_unavailable">Zkontrolujte dostupnost síťového připojení</string>
     <string name="no_account_set">Není nastaven účet pro synchronizaci</string>
+    <string name="login_icp_label">ICP</string>
+    <string name="login_activity_loginfail_text_icpmissing">Chybí icp</string>
 
 
 </resources>

@@ -5,14 +5,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import com.google.gson.reflect.TypeToken;
 import imis.client.model.Record;
 
-import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.List;
 
-import static imis.client.json.Util.gson;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,12 +34,12 @@ public class RecordManager {
         }
     }
 
-    public static List<Record> jsonToList(String json) {
+    /*public static List<Record> jsonToList(String json) {
         Log.d(TAG, "jsonToList()");
         Type type = new TypeToken<Collection<Record>>() {
         }.getType();
         return gson.fromJson(json, type);
-    }
+    }*/
 
     final public static class DataQuery {
 

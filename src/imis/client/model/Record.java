@@ -1,9 +1,6 @@
 package imis.client.model;
 
 import android.content.ContentValues;
-import com.google.gson.JsonObject;
-import imis.client.json.Util;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -172,15 +169,6 @@ public class Record {
             values.put(COL_POZNAMKA, poznamka);
         }
         return values;
-    }
-
-    public static Record jsonToRecord(JsonObject object) {
-        Record record = Util.gson.fromJson(object, Record.class);
-        return record;
-    }
-
-    public static String getAsJson(Record record) {
-        return Util.gson.toJson(record);
     }
 
     @Override

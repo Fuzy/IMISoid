@@ -7,8 +7,8 @@ import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,9 +18,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.authentication.AuthenticationConsts;
 import imis.client.controller.BlockProcessor;
-import imis.client.json.Util;
 import imis.client.model.Block;
 import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
@@ -77,8 +78,8 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         blocks.setAdapter(adapter);
 
         // init today date and loader
-        changeDate(1364169600000L); //TODO toto je pro ladici ucely
-        Log.d(TAG, "onCreate() date: " + date);
+        changeDate(1364166000000L); //TODO toto je pro ladici ucely
+        Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
 
@@ -90,7 +91,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     private void setDateTitle(long date) {
-        setTitle(Util.formatDate(date));
+        setTitle(AppUtil.formatDate(date));
     }
 
     @Override
@@ -147,7 +148,6 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.menu_add:
                 startInsertActivity();
@@ -179,7 +179,14 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     private void refreshListOfEmployees() {
-        new GetListOfEmployees(this).execute("1493913");//1493913
+        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
+        try {
+            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_KOD_PRA);
+            Log.d(TAG, "refreshListOfEmployees() icp " + icp);
+            new GetListOfEmployees(this).execute(icp);//1493913
+        } catch (Exception e) {
+            e.printStackTrace();  //TODO ucet zatim neexituje
+        }
     }
 
     private void startInsertActivity() {
@@ -191,9 +198,11 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
     private void performSync() {
         Log.d(TAG, "onOptionsItemSelected sync request");
-        Account[] acc = accountManager.getAccountsByType(ACCOUNT_TYPE);
-        if (acc.length > 0) {
-            ContentResolver.requestSync(acc[0], AUTHORITY, new Bundle());
+        Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
+        Bundle extras = new Bundle();
+        extras.putLong(Event.KEY_DATE, date);
+        if (accounts.length > 0) {
+            ContentResolver.requestSync(accounts[0], AUTHORITY, extras);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.no_account_set, Toast.LENGTH_LONG);
             toast.show();
@@ -226,7 +235,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         adapter.notifyDataSetChanged();
         blocks.setVisibility(View.GONE);
         blocks.setVisibility(View.VISIBLE);
-        Log.d(TAG, "onLoadFinished() blockList: " + blockList);
+        //Log.d(TAG, "onLoadFinished() blockList: " + blockList);
     }
 
     @Override
@@ -353,6 +362,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     private void changeDate(long date) {
+        Log.d(TAG, "changeDate() date " + AppUtil.formatDate(date));
         this.date = date;
         adapter.setDate(date);
     }

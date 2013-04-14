@@ -2,8 +2,6 @@ package imis.client.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import com.google.gson.JsonObject;
-import imis.client.json.Util;
 
 /**
  * Created with IntelliJ IDEA.
@@ -78,16 +76,7 @@ public class Employee {
         this.kod_po = kod_po;
     }
 
-    public static Employee jsonToEmployee(JsonObject object) {
-        Employee employee = Util.gson.fromJson(object, Employee.class);
-        return employee;
-    }
-
-    public static String getAsJson(Employee employee) {
-        return Util.gson.toJson(employee);
-    }
-
-    public ContentValues getAsContentValues() {
+    public ContentValues asContentValues() {
         ContentValues values = new ContentValues();
         values.put(COL_ICP, icp);
         values.put(COL_KODPRA, kodpra);

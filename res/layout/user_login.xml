@@ -50,6 +50,22 @@
             <TextView
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_icp_label" />
+            <EditText
+                    android:id="@+id/icp_edit"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minWidth="250dip"
+                    android:scrollHorizontally="true"
+                    android:capitalize="none"
+                    android:autoText="false"
+                    android:inputType="textEmailAddress" />
+            <TextView
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"
                     android:singleLine="true"
                     android:layout_marginTop="2dip"
                     android:layout_width="wrap_content"

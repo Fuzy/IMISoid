@@ -1,16 +1,11 @@
 package imis.client.authentication;
 
-import android.accounts.AbstractAccountAuthenticator;
-import android.accounts.Account;
-import android.accounts.AccountAuthenticatorResponse;
-import android.accounts.AccountManager;
-import android.accounts.NetworkErrorException;
+import android.accounts.*;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import imis.client.network.NetworkUtilities;
 
 public class Authenticator extends AbstractAccountAuthenticator {
   private static final String TAG = "Authenticator";
@@ -68,7 +63,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
       final AccountManager am = AccountManager.get(context);
       final String password = am.getPassword(account);
       if (password != null) {
-          final String authToken = NetworkUtilities.authenticate(account.name, password);
+          final String authToken = "blabla";//NetworkUtilities.authenticate(account.name, password);
           if (!TextUtils.isEmpty(authToken)) {
               final Bundle result = new Bundle();
               result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
