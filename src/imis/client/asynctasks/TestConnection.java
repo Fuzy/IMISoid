@@ -1,4 +1,4 @@
-package imis.client.services;
+package imis.client.asynctasks;
 
 import imis.client.R;
 import imis.client.network.NetworkUtilities;

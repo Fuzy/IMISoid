@@ -26,7 +26,7 @@ import imis.client.model.Block;
 import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
-import imis.client.services.GetListOfEmployees;
+import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
@@ -162,7 +162,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
                 startCalendarActivity();
                 return true;
             case R.id.menu_records:
-                startRecordsChartActivity();
+                startRecordsListActivity();
                 return true;
             case R.id.menu_employeesList:
                 refreshListOfEmployees();
@@ -173,10 +173,15 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
             case R.id.menu_eventsChart:
                 startEventsChartActivity();
                 return true;
+            case R.id.menu_recordsChart:
+                startRecordsChartActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
     private void refreshListOfEmployees() {
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
@@ -278,6 +283,13 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
     private void startRecordsChartActivity() {
         Intent intent = new Intent(this, RecordsChartActivity.class);
+        Log.d("DayTimelineActivity", "startRecordsChartActivity() intent " + intent);
+        //intent.putExtra("date", date);
+        startActivity(intent);
+    }
+
+    private void startRecordsListActivity() {
+        Intent intent = new Intent(this, RecordListActivity.class);
         Log.d("DayTimelineActivity", "startRecordsChartActivity() intent " + intent);
         //intent.putExtra("date", date);
         startActivity(intent);

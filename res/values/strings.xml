@@ -114,7 +114,7 @@
     <string name="cancel">Zrušit</string>
     <string name="menu_employees_refresh">Zaměstnanci akt.</string>
     <string name="menu_employees_present">Přítomní zaměstnanci</string>
-    <string name="menu_eventsChart">Graf docházky</string>
+    <string name="menu_eventsChart">Graf docházka</string>
     <string name="http_400">400</string>
     <string name="http_401">401</string>
     <string name="http_403">403</string>
@@ -132,6 +132,8 @@
     <string name="no_account_set">Není nastaven účet pro synchronizaci</string>
     <string name="login_icp_label">ICP</string>
     <string name="login_activity_loginfail_text_icpmissing">Chybí icp</string>
+    <string name="spinnerEmployee_title">Zaměstnanec</string>
+    <string name="menu_recordsChart">Graf výkazy</string>
 
 
 </resources>

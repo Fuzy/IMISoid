@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent">
+
+    <EditText
+            android:id="@+id/dateFromEdit"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="50dip"
+            android:scrollHorizontally="true"
+            android:capitalize="none"
+            android:autoText="false" android:text=""/>
+
+    <ImageButton
+            android:id="@+id/dateFromButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_day" />
+
+    <EditText
+            android:id="@+id/dateToEdit"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="50dip"
+            android:scrollHorizontally="true"
+            android:capitalize="none"
+            android:autoText="false" android:text=""/>
+
+    <ImageButton
+            android:id="@+id/dateToButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_day" />
+
+
+    <Spinner
+            android:id="@+id/spinnerEmployee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:prompt="@string/spinnerEmployee_title"
+            />
+    <!--android:layout_marginTop="20dip"
+           android:layout_marginLeft="8dip"
+           android:layout_marginRight="8dip"-->
+</LinearLayout>

@@ -1,16 +1,17 @@
-package imis.client.services;
+package imis.client.asynctasks;
 
 import android.util.Log;
-import imis.client.model.Employee;
+import imis.client.model.Record;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
-import imis.client.persistent.EmployeeManager;
 import imis.client.ui.activities.NetworkingActivity;
+import imis.client.ui.activities.RecordsChartActivity;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static imis.client.ui.activities.ProgressState.DONE;
@@ -19,21 +20,20 @@ import static imis.client.ui.activities.ProgressState.RUNNING;
 /**
  * Created with IntelliJ IDEA.
  * User: Martin Kadlec
- * Date: 8.4.13
- * Time: 22:29
+ * Date: 13.4.13
+ * Time: 19:36
  */
-public class GetListOfEmployees extends NetworkingService<String, Void, Employee[]> {
-    private static final String TAG = GetListOfEmployees.class.getSimpleName();
+public class GetListOfRecords extends NetworkingService<String, Void, Record[]> {
+    private static final String TAG = GetListOfRecords.class.getSimpleName();
 
-    public GetListOfEmployees(NetworkingActivity context) {
+    public GetListOfRecords(NetworkingActivity context) {
         super(context);
     }
 
     @Override
-    protected Employee[] doInBackground(String... params) {
-        Log.d(TAG, "doInBackground()");
+    protected Record[] doInBackground(String... params) {
         changeProgress(RUNNING, "working");
-        String icp = params[0];
+        String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
         //requestHeaders.setAuthorization(authHeader);
@@ -46,29 +46,36 @@ public class GetListOfEmployees extends NetworkingService<String, Void, Employee
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
+            Log.d(TAG, "doInBackground()");
             //TODO uri variables
-            ResponseEntity<Employee[]> response = restTemplate.exchange(NetworkUtilities.EMPLOYEES_URL, HttpMethod.GET, entity,
-                    Employee[].class, icp);
-            Employee[] body = response.getBody();
+            ResponseEntity<Record[]> response = restTemplate.exchange(NetworkUtilities.RECORDS_URL, HttpMethod.GET, entity,
+                    Record[].class, kodpra, from, to);
+            Record[] body = response.getBody();
             return body;
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage(), e);
-        }finally {
+        } finally {
             changeProgress(DONE, null);
         }
 
-        return new Employee[]{};
+        return new Record[]{};
     }
 
     @Override
-    protected void onPostExecute(Employee[] employees) {
-        Log.d(TAG, "onPostExecute()");
-        //List<Employee> employees = EmployeeManager.jsonToList(response);
-        if (employees != null) {
-            EmployeeManager.addEmployees(activity, employees);
+    protected void onPostExecute(Record[] records) {
+        Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
+        super.onPostExecute(records);
+        //TODO test data
+       records = new Record[2];
+        Record record = new Record();
+        record.setZc("123");
+        Record record2 = new Record();
+        record2.setZc("456");
+        records[0] = record;
+        records[1] = record2;
+        Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
 
-        }
-
-        Log.i(TAG, "employees: " + EmployeeManager.getAllEmployees(activity));
+        RecordsChartActivity recordsActivity = (RecordsChartActivity) activity;
+        recordsActivity.setRecords(Arrays.asList(records)); //TODO pole nebo kolekce
     }
 }

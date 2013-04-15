@@ -16,7 +16,7 @@ import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.network.NetworkUtilities;
-import imis.client.services.TestConnection;
+import imis.client.asynctasks.TestConnection;
 
 import java.net.HttpURLConnection;
 

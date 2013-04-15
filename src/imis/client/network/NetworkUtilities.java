@@ -6,8 +6,10 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class NetworkUtilities {
@@ -16,6 +18,7 @@ public class NetworkUtilities {
     private static final String BASE_PATH = "/Imisoid_WS/";
     private static final String EVENTS_PATH = BASE_PATH + "events";
     private static final String EVENTS_DELETE_PATH = BASE_PATH + "events/{rowid}";
+    private static final String EVENTS_UPDATE_PATH = BASE_PATH + "events/{rowid}";
     private static final String EVENTS_GET_PATH = BASE_PATH + "events/{icp}?from={from}&to={to}";
     private static final String RECORDS_PATH = BASE_PATH + "records/{kodpra}?from={from}&to={to}";
     private static final String AUTH_PATH = BASE_PATH + "authentication";
@@ -25,6 +28,7 @@ public class NetworkUtilities {
     private static int PORT = -1;
     public static String BASE_URL;
     public static String EVENTS_DELETE_URL;
+    public static String EVENTS_UPDATE_URL;
     public static String EVENTS_GET_URL;
     public static String EVENTS_URL;
     public static String RECORDS_URL;
@@ -80,9 +84,14 @@ public class NetworkUtilities {
             ResponseEntity response = restTemplate.exchange(EVENTS_URL, HttpMethod.GET, entity,
                     null);
             statusCode = response.getStatusCode().value();
-            Log.d(TAG, "doInBackground() statusCode " + statusCode);
-        } catch (Exception e) {
 
+        } catch (Exception e) {
+            if (e instanceof HttpServerErrorException) {
+                HttpServerErrorException httpException = (HttpServerErrorException) e;
+                if (HttpStatus.INTERNAL_SERVER_ERROR.equals(httpException.getStatusCode())) {
+                    return httpException.getStatusCode().value();
+                }
+            }
         }
         return statusCode;
     }
@@ -108,6 +117,7 @@ public class NetworkUtilities {
         BASE_URL = SCHEME + DOMAIN + ":" + PORT;// 10.0.2.2
         EVENTS_URL = BASE_URL + EVENTS_PATH;
         EVENTS_DELETE_URL = BASE_URL + EVENTS_DELETE_PATH;
+        EVENTS_UPDATE_URL = BASE_URL + EVENTS_UPDATE_PATH;
         EVENTS_GET_URL = BASE_URL + EVENTS_GET_PATH;
         RECORDS_URL = BASE_URL + RECORDS_PATH;
         EMPLOYEES_URL = BASE_URL + EMPLOYEES_PATH;

@@ -9,7 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import imis.client.R;
-import imis.client.services.NetworkingService;
+import imis.client.asynctasks.NetworkingService;
 
 public abstract class NetworkingActivity extends FragmentActivity {
 

@@ -1,4 +1,4 @@
-package imis.client.services;
+package imis.client.asynctasks;
 
 import android.content.Context;
 import android.content.SharedPreferences;

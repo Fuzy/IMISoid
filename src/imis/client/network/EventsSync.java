@@ -33,7 +33,8 @@ public class EventsSync {
 
         int statusCode = -1;
         try {
-            ResponseEntity response = restTemplate.exchange(NetworkUtilities.EVENTS_DELETE_URL, HttpMethod.DELETE, entity, null, rowid);
+            ResponseEntity response = restTemplate.exchange(NetworkUtilities.EVENTS_DELETE_URL,
+                    HttpMethod.DELETE, entity, null, rowid);
             statusCode = response.getStatusCode().value();
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,9 +102,29 @@ public class EventsSync {
 
     public static int updateEvent(Event event) {
         Log.d(TAG, "updateEvent() event: " + event);
-        String uri = NetworkUtilities.EVENTS_URL;
-        int code = -1;//sendHttpPost(uri, event);
-        return code;
+
+        HttpHeaders requestHeaders = new HttpHeaders();
+        //requestHeaders.setAuthorization(authHeader);
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        requestHeaders.setContentEncoding(ContentCodingType.valueOf("UTF-8"));
+        HttpEntity<Event> entity = new HttpEntity<>(event, requestHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
+        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+        int statusCode = -1;
+        try {
+            ResponseEntity response = restTemplate.exchange(NetworkUtilities.EVENTS_UPDATE_URL, HttpMethod.PUT,
+                    entity, null, event.getServer_id());
+            URI location = response.getHeaders().getLocation();
+            String path = location.getPath();
+            event.setServer_id(path.substring(location.getPath().lastIndexOf('/') + 1));
+            Log.d(TAG, "createEvent() event uri : " + event);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statusCode;
     }
 
    /* private static int sendHttpGetForUserEvents(String uri, String response) {
