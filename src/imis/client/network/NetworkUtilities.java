@@ -23,6 +23,7 @@ public class NetworkUtilities {
     private static final String RECORDS_PATH = BASE_PATH + "records/{kodpra}?from={from}&to={to}";
     private static final String AUTH_PATH = BASE_PATH + "authentication";
     private static final String EMPLOYEES_PATH = BASE_PATH + "employees/{icp}";
+    private static final String EMPLOYEES_EVENTS_PATH = BASE_PATH + "employees";
 
     private static String DOMAIN = null;
     private static int PORT = -1;

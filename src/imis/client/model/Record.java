@@ -1,6 +1,8 @@
 package imis.client.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -126,7 +128,7 @@ public class Record {
 
     public static Record resultSetToRecord(ResultSet rsSet) throws SQLException {
         Record record = new Record();
-        record.setId(rsSet.getString(COL_SERVER_ID));
+        //record.setId(rsSet.getString(COL_SERVER_ID));
         record.setDatum(rsSet.getLong(COL_DATUM));
         record.setMnozstvi_odved(rsSet.getLong(COL_MNOZSTVI_ODVED));
         record.setKodpra(rsSet.getString(COL_KODPRA));
@@ -140,12 +142,20 @@ public class Record {
         return record;
     }
 
+    public static Record cursorToRecord(Cursor c) {
+        Record record = new Record();
+        record.setId(c.getString(COL_NUM_ID));
+        record.setZc(c.getString(1));
+        //TODO dokoncit
+        return record;
+    }
+
     public ContentValues getAsContentValues() {
         //TODO asi tam dat jen to spolecne pro add a update
         ContentValues values = new ContentValues();
-        if (id != null) {
+        /*if (id != null) {
             values.put(COL_SERVER_ID, id);
-        }
+        }*/
         values.put(COL_DATUM, (datum));
         if (kodpra != null) {
             values.put(COL_KODPRA, kodpra);
@@ -181,7 +191,7 @@ public class Record {
 
     public static final String COL_ID = "_id";
     public static final String COL_POZN_UKOL = "POZN_UKOL";
-    public static final String COL_SERVER_ID = "ID";
+   // public static final String COL_SERVER_ID = "ID";
     public static final String COL_DATUM = "DATUM";
     public static final String COL_KODPRA = "KODPRA";
     public static final String COL_MNOZSTVI_ODVED = "MNOZSTVI_ODVED";
@@ -192,5 +202,15 @@ public class Record {
     public static final String COL_CPOLZAK = "CPOLZAK";
     public static final String COL_CPOZZAK = "CPOZZAK";
 
-
+    private static int COL_NUM_ID = 0;
+    private static int COL_NUM_POZN_UKOL = 1;
+    private static int COL_NUM_DATUM = 2;
+    private static int COL_NUM_KODPRA = 3;
+    private static int COL_NUM_MNOZSTVI_ODVED = 4;
+    private static int COL_NUM_POZNAMKA = 5;
+    private static int COL_NUM_STAV_V = 6;
+    private static int COL_NUM_POZN_HL = 7;
+    private static int COL_NUM_ZC = 8;
+    private static int COL_NUM_CPOLZAK = 9;
+    private static int COL_NUM_CPOZZAK = 10;
 }

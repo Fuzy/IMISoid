@@ -5,12 +5,16 @@ import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -22,14 +26,15 @@ import imis.client.model.Block;
 import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.persistent.EmployeeManager;
+import imis.client.ui.fragments.PieChartFragment;
 import imis.client.ui.fragments.StackedBarFragment;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static imis.client.persistent.EventManager.EventQuery;
 import static imis.client.AppUtil.convertToTime;
 import static imis.client.AppUtil.formatAbbrDate;
+import static imis.client.persistent.EventManager.EventQuery;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,8 +50,8 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
     private List<Block> blockList;
     private final DataSetObservable mDataSetObservable = new DataSetObservable();
 
-    private static final int LOADER_ID = 0x03;
-    private static final int LOADER_ID2 = 0x04;
+    private static final int LOADER_EVENTS = 0x03;
+    private static final int LOADER_EMPLOYEES = 0x04;
 
     private String[] kody_po_values;
     private String[] kody_po_desc;
@@ -61,13 +66,15 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
     private ImageButton dateFromButton, dateToButton;
     private EditText dateFromEdit, dateToEdit;
 
+    private Fragment current = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
         setContentView(R.layout.events_chart);
-        getSupportLoaderManager().initLoader(LOADER_ID2, null, this);
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
+        getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
 
         spinner = (Spinner) findViewById(R.id.spinnerEmployee);
         spinner.setOnItemSelectedListener(this);
@@ -97,13 +104,13 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
             ft.commit();
         }*/
 
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             StackedBarFragment barFragment = new StackedBarFragment();
             ft.replace(R.id.displayChart, barFragment, "PieChartFragment");
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
-        }
+        }*/
 
         kody_po_values = getResources().getStringArray(R.array.kody_po_values);
         kody_po_desc = getResources().getStringArray(R.array.kody_po_desc);
@@ -115,16 +122,17 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
+        switchFragment();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader()");
         switch (i) {
-            case LOADER_ID:
+            case LOADER_EVENTS:
                 return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI,
                         EventQuery.PROJECTION_ALL, null, null, null);//TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
-            case LOADER_ID2:
+            case LOADER_EMPLOYEES:
                 return new CursorLoader(getApplicationContext(), EmployeeManager.DataQuery.CONTENT_URI,
                         EmployeeManager.DataQuery.PROJECTION_ALL,
                         null, null, null);
@@ -137,13 +145,13 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         Log.d(TAG, "onLoadFinished()"); //TODO pozor na pozici cursoru
         int id = cursorLoader.getId();
         switch (id) {
-            case LOADER_ID:
-                Log.d(TAG, "onLoadFinished() LOADER_ID");
+            case LOADER_EVENTS:
+                Log.d(TAG, "onLoadFinished() LOADER_EVENTS");
                 blockList = BlockProcessor.eventsToMapOfBlocks(cursor);
                 mDataSetObservable.notifyChanged();
                 break;
-            case LOADER_ID2:
-                Log.d(TAG, "onLoadFinished() LOADER_ID2");
+            case LOADER_EMPLOYEES:
+                Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
                 String[] from = new String[]{Employee.COL_KODPRA};
                 int[] to = new int[]{android.R.id.text1};
                 adapter = new SimpleCursorAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
@@ -234,6 +242,65 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.network_activity_menu, menu);
+        inflater.inflate(R.menu.switch_chart_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                refresh();
+                return true;
+            case R.id.switchFragment:
+                switchFragment();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void switchFragment() {
+        Log.d(TAG, "switchFragment()");
+        if (current == null || (current instanceof StackedBarFragment)) {
+            switchToPieChartFragment();
+        } else if (current instanceof PieChartFragment) {
+            switchToStackedBarFragment();
+        }  else {
+            Log.d(TAG, "switchFragment() else ");
+        }
+        getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
+    }
+
+    private void switchToStackedBarFragment() {
+        Log.d(TAG, "switchToStackedBarFragment()");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        StackedBarFragment barFragment = new StackedBarFragment();
+        current = barFragment;
+        ft.replace(R.id.displayChart, barFragment, "PieChartFragment");
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        ft.commit();
+    }
+
+    private void switchToPieChartFragment() {
+        Log.d(TAG, "switchToPieChartFragment()");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        PieChartFragment pieFragment = new PieChartFragment();
+        current = pieFragment;
+        ft.replace(R.id.displayChart, pieFragment, "PieChartFragment");
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        ft.commit();
+    }
+
+    private void refresh() {
+        Log.d(TAG, "refresh()");
+        //new GetEmployeesLastEvent(this).execute();
     }
 
 

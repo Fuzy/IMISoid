@@ -3,7 +3,6 @@ package imis.client.ui.activities;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.model.Record;
-import imis.client.ui.fragments.RecordListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +33,13 @@ public class RecordsChartActivity extends NetworkingActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.records_chart);
 
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             RecordListFragment listFragment = new RecordListFragment();
             ft.replace(R.id.displayChart, listFragment, "RecordListFragment");
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
-        }
+        }*/
     }
 
     @Override
@@ -49,7 +47,7 @@ public class RecordsChartActivity extends NetworkingActivity {
         Log.d(TAG, "onCreateOptionsMenu");
         // Ziska menu z XML zdroje
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.records_chart_menu, menu); //TODO refaktor pojmenovani
+        inflater.inflate(R.menu.network_activity_menu, menu); //TODO refaktor pojmenovani
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -58,7 +56,7 @@ public class RecordsChartActivity extends NetworkingActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
-            case R.id.recordsRefresh:
+            case R.id.refresh:
                 resfreshRecords();
                 return true;
             default:

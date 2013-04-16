@@ -99,8 +99,8 @@ public class EventManager {
         Log.d(TAG, "getAllEvents()");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL, null, null, null);
-        List<Event> events = new ArrayList<Event>();
-        Event event = null;
+        List<Event> events = new ArrayList<>();
+        Event event;
         while (cursor.moveToNext()) {
             event = Event.cursorToEvent(cursor);
             events.add(event);

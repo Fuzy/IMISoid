@@ -108,7 +108,7 @@
             name="login_activity_loginfail_text_usmissing">Zadej zkratku uživatele.
     </string>
     <string name="ui_activity_authenticating">Authentikace\u2026</string>
-    <string name="menu_records_resfresh">Aktualizovat</string>
+    <string name="menu_refresh">Aktualizovat</string>
     <string name="menu_records">Výkazy</string>
     <string name="ok">Ok</string>
     <string name="cancel">Zrušit</string>
@@ -134,6 +134,7 @@
     <string name="login_activity_loginfail_text_icpmissing">Chybí icp</string>
     <string name="spinnerEmployee_title">Zaměstnanec</string>
     <string name="menu_recordsChart">Graf výkazy</string>
+    <string name="menu_switch">Přepnout zobrazení</string>
 
 
 </resources>

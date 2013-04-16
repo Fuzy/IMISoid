@@ -37,7 +37,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // Table of records
     private static final String REC_COL_LOCAL_ID = Record.COL_ID; // client id
     private static final String REC_COL_POZN_UKOL = Record.COL_POZN_UKOL;
-    private static final String REC_SERVER_ID = Record.COL_SERVER_ID;
+    //private static final String REC_SERVER_ID = Record.COL_SERVER_ID;
     private static final String REC_COL_DATUM = Record.COL_DATUM;
     private static final String REC_COL_KODPRA = Record.COL_KODPRA;
     private static final String REC_COL_MNOZSTVI_ODVED = Record.COL_MNOZSTVI_ODVED;
@@ -78,7 +78,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             .concat("create table " + TABLE_RECORDS)
             .concat("(")
             .concat(REC_COL_LOCAL_ID + " integer primary key autoincrement, ")
-            .concat(REC_SERVER_ID + " integer not null, ")
+            /*.concat(REC_SERVER_ID + " integer not null, ")*/
             .concat(REC_COL_DATUM + " integer not null, ")
             .concat(REC_COL_KODPRA + " text not null, ")
             .concat(REC_COL_ZC + " text, ")

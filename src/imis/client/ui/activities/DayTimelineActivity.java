@@ -51,7 +51,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     private ObservableScrollView scroll;
     private List<Block> blockList;
     private EventsArrayAdapter adapter;
-    private long date = 0L;
+    private long date = 1364169600000L;
 
     private static final int LOADER_ID = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
@@ -59,8 +59,8 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate()");
-
+        //Log.d(TAG, "onCreate()");
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         // create account manager
         accountManager = AccountManager.get(this);
 
@@ -78,9 +78,10 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         blocks.setAdapter(adapter);
 
         // init today date and loader
-        changeDate(1364166000000L); //TODO toto je pro ladici ucely
+
+        //changeDate(1364169600000L); //TODO toto je pro ladici ucely
         Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+
 
 
         // EventManager.deleteAllEvents(getApplicationContext());
@@ -96,6 +97,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
     @Override
     protected void onStart() {
+
         super.onStart();
         _broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -216,6 +218,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
+        Log.d(TAG, "onCreateLoader() date " + date);
         return new CursorLoader(getApplicationContext(), EventManager.EventQuery.CONTENT_URI, EventManager.EventQuery.PROJECTION_ALL,
                 EventManager.EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)}, null);
     }
@@ -315,7 +318,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
                 if (resultCode == RESULT_OK) {
                     changeDate(data.getLongExtra(Event.KEY_DATE, -1));
                     Log.d("DayTimelineActivity", "onActivityResult() date: " + date);
-                    getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+
                 }
                 break;
         }
@@ -377,5 +380,6 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         Log.d(TAG, "changeDate() date " + AppUtil.formatDate(date));
         this.date = date;
         adapter.setDate(date);
+        getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 }

@@ -4,8 +4,8 @@ import android.util.Log;
 import imis.client.model.Record;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
+import imis.client.persistent.RecordManager;
 import imis.client.ui.activities.NetworkingActivity;
-import imis.client.ui.activities.RecordsChartActivity;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
@@ -66,16 +66,25 @@ public class GetListOfRecords extends NetworkingService<String, Void, Record[]> 
         Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
         super.onPostExecute(records);
         //TODO test data
-       records = new Record[2];
+        records = new Record[1];
+
         Record record = new Record();
         record.setZc("123");
-        Record record2 = new Record();
-        record2.setZc("456");
+        record.setKodpra("KDA");
+        record.setDatum(454);
+        record.setMnozstvi_odved(1111);
         records[0] = record;
-        records[1] = record2;
+
+       /* Record record2 = new Record();
+        record2.setZc("456");*/
+
+
+        //records[1] = record2;
         Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
 
-        RecordsChartActivity recordsActivity = (RecordsChartActivity) activity;
-        recordsActivity.setRecords(Arrays.asList(records)); //TODO pole nebo kolekce
+        RecordManager.addRecords(activity, Arrays.asList(records));
+        Log.d(TAG, "onPostExecute() getAllRecords " + RecordManager.getAllRecords(activity));
+        /*RecordsChartActivity recordsActivity = (RecordsChartActivity) activity;
+        recordsActivity.setRecords(Arrays.asList(records)); //TODO pole nebo kolekce*/
     }
 }

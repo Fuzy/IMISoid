@@ -99,12 +99,15 @@ public class MyContentProvider extends ContentProvider {
                 break;
             case EMPLOYEES:
                 id = sqlDB.insert(TABLE_EMPLOYEES, null, values);
+            case RECORDS:
+                Log.d(TAG, "insert() RECORDS");
+                id = sqlDB.insert(TABLE_RECORDS, null, values);
             default:
                 break;
         }
         // upozorni posluchace
         getContext().getContentResolver().notifyChange(uri, null);
-
+        Log.d(TAG, "insert()" + Uri.parse(uri + "/" + id));
         // vrati uri na pridanou radku
         return Uri.parse(uri + "/" + id);
     }

@@ -30,10 +30,16 @@ public class EmployeesAdapter extends CursorAdapter {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View employeeView = inflater.inflate(R.layout.employee_profile, null);
-        TextView textView = (TextView) employeeView.findViewById(R.id.grid_item_label);
         Employee employee = Employee.cursorToEmployee(cursor);
+
+        /*TextView kod_po = (TextView) employeeView.findViewById(R.id.emp_kod_po);
+        kod_po.setBackgroundColor(ColorUtil.getColorForType(employee.getKod_po()));*/
+
+        TextView textView = (TextView) employeeView.findViewById(R.id.emp_kodpral);
+
         String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
         textView.setText(name);
+
         return employeeView;
     }
 
