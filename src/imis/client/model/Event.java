@@ -279,23 +279,38 @@ public class Event {
         }
     }*/
 
-    public static final String[] KOD_PO_VALUES = {"00", "10", "01", "02", "03", "04"};
+    /*public static final String[] KOD_PO_VALUES = {"00", "01", "02", "03", "04", "05",
+            "06", "07", "08", "09", "10", "11"};*/
+
+    public static final String[] KOD_PO_VALUES = {"00", "01", "02", "03", "04", "10", "XX"};
 
     public static final String DRUH_ARRIVAL = "P";
     public static final String DRUH_LEAVE = "O";
     public static final String KOD_PO_ARRIVE_NORMAL = "00";
-    public static final String KOD_PO_ARRIVE_PRIVATE = "10";
     public static final String KOD_PO_LEAVE_SERVICE = "01";
     public static final String KOD_PO_LEAVE_LUNCH = "02";
     public static final String KOD_PO_LEAVE_SUPPER = "03";
     public static final String KOD_PO_LEAVE_MEDIC = "04";
+    public static final String KOD_PO_ARRIVE_PRIVATE = "10";
     public static final String KOD_PO_OTHERS = "XX";
 
-    public static final int IND_NORMAL = 0, IND_PRIVAT = 1, IND_SERVICE = 2,
-            IND_LUNCH = 3, IND_SUPPER = 4, IND_MEDIC = 5;
+   /* public static final String KOD_PO_LEAVE_ILL = "05";
+    public static final String KOD_PO_LEAVE_VAC = "06";
+    public static final String KOD_PO_LEAVE_TREAT = "07";
+    public static final String KOD_PO_LEAVE_STUDY = "08";
+    public static final String KOD_PO_LEAVE_REFUND = "09";
+    public static final String KOD_PO_ARRIVE_EMERGENCY = "11";*/
+
+    public static final int IND_NORMAL = 0, IND_SERVICE = 1,
+            IND_LUNCH = 2, IND_SUPPER = 3, IND_MEDIC = 4, IND_PRIVATE = 5, IND_OTHERS = 6;
+   /*
+    public static final int IND_NORMAL = 0, IND_SERVICE = 1,
+            IND_LUNCH = 2, IND_SUPPER = 3, IND_MEDIC = 4, IND_ILL = 5, IND_VAC = 6, IND_TREAT = 7,
+            IND_STUDY = 8, IND_REFUND = 9, IND_PRIVATE = 10, IND_EMERGENCY = 11;*/
 
     public static final String TYPE_ORIG = "O";
 
     public static final String KEY_DATE = "date";
+    public static final String OTHERS = "Ostatni";
 
 }

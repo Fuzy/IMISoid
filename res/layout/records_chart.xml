@@ -9,7 +9,7 @@
             android:id="@+id/displayChart"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@color/budgetColorGreenBackground">
+            android:background="@android:color/holo_purple">
     </FrameLayout>
 
 </LinearLayout>

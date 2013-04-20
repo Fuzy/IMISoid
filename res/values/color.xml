@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <color name="alertColor">#D9531E</color>
+  <!--  <color name="alertColor">#D9531E</color>
     <color name="black">#000</color>
     <color name="black_modal">#BF000000</color>
     
@@ -53,5 +53,5 @@
     <color name="splitsColor">#F16430</color>
     <color name="white">#FFF</color>
     <color name="white_transparent">#7FFFFFFF</color>
-	<color name="account_group_stroke">#717073</color>
+	<color name="account_group_stroke">#717073</color>-->
 </resources>

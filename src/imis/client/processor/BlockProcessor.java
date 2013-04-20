@@ -54,9 +54,11 @@ public class BlockProcessor {
                 block.setArriveId(startEvent.get_id());
                 block.setEndTime((endEvent == null) ? -1 : endEvent.getCas());
                 block.setLeaveId((endEvent == null) ? -1 : endEvent.get_id());
-                block.setKod_po(startEvent.getKod_po());
-                block.setIndexKod_po(Arrays.asList(Event.KOD_PO_VALUES).indexOf(startEvent.getKod_po()));
+                int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(startEvent.getKod_po());
+                if (index == -1) index = 6;
+                block.setKod_po(Event.KOD_PO_VALUES[index]);
                 block.setDirty(startEvent.isDirty() || endEvent.isDirty());
+                Log.d(TAG, "eventsToMapOfBlocks() block " + block);
                 blocks.add(block);
             }
         }
@@ -101,89 +103,58 @@ public class BlockProcessor {
             if (block.getDate() > chartData.getMaxDay()) chartData.setMaxDay(block.getDate());
             if (block.getDate() < chartData.getMinDay()) chartData.setMinDay(block.getDate());
         }
-        Log.d(TAG, "countStackedBarChartData() min " + chartData.getMinDay() + " max" + chartData.getMaxDay());
+
         final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / MS_IN_DAY) + 1;
         Log.d(TAG, "countStackedBarChartData() numOfDays " + numOfDays);
-        double[] normal = null, privat = null, service = null, lunch = null, supper = null, medic = null;
+
+        Map<String, double[]> map = new HashMap<>();
 
         for (Block block : blocks) {
             int index = (int) ((block.getDate() - chartData.getMinDay()) / MS_IN_DAY);
-            int indexKod_po = block.getIndexKod_po();
+            String kod_po = block.getKod_po();
             double amount = (double) ((block.getEndTime() - block.getStartTime()) / MS_IN_HOUR);
 
-            Log.d(TAG, "countStackedBarChartData() index " + index + " indexKod_po" + indexKod_po);
-
-            switch (indexKod_po) {
-                case Event.IND_NORMAL:
-                    if (normal == null) normal = new double[numOfDays];
-                    normal[index] += amount;
-                    if (normal[index] > chartData.getyMax()) chartData.setyMax(normal[index]);
-                    break;
-                case Event.IND_PRIVAT:
-                    if (privat == null) privat = new double[numOfDays];
-                    privat[index] += amount;
-                    break;
-                case Event.IND_SERVICE:
-                    if (service == null) service = new double[numOfDays];
-                    service[index] += amount;
-                    break;
-                case Event.IND_LUNCH:
-                    if (lunch == null) lunch = new double[numOfDays];
-                    lunch[index] += amount;
-                    break;
-                case Event.IND_SUPPER:
-                    if (supper == null) supper = new double[numOfDays];
-                    supper[index] += amount;
-                    break;
-                case Event.IND_MEDIC:
-                    if (medic == null) medic = new double[numOfDays];
-                    medic[index] += amount;
-                    break;
+            // If exists update
+            boolean contains =  map.containsKey(kod_po);
+            if (contains == false) {
+                double[] values = new double[numOfDays];
+                map.put(kod_po, values);
             }
+
+            // Update value
+            double[] vaDoubles = map.get(kod_po);
+            double oldValue = vaDoubles[index];
+            vaDoubles[index] += oldValue+amount;
+            if (vaDoubles[index] > chartData.getyMax()) chartData.setyMax(vaDoubles[index]);
+
         }
 
-        int distinct = 0, ind_titles = 0, ind_colors = 0;
-        if (normal != null) distinct++;
-        if (privat != null) distinct++;
-        if (service != null) distinct++;
-        if (lunch != null) distinct++;
-        if (supper != null) distinct++;
-        if (medic != null) distinct++;
+        int size =  map.size();
+        int ind = 0;
+        List<double[]> values = new ArrayList<>(size);
+        String[] titles = new String[size];
+        int[] colors = new int[size];
 
-        List<double[]> values = new ArrayList<>(distinct);
-        String[] titles = new String[distinct];
-        int[] colors = new int[distinct];
-        if (normal != null) {
-            titles[ind_titles++] = Event.KOD_PO_VALUES[Event.IND_NORMAL];
-            values.add(normal);
-            colors[ind_colors++] = ColorUtil.getColor(Event.KOD_PO_VALUES[Event.IND_NORMAL]);
-        }
-        if (service != null) {
-            titles[ind_titles++] = Event.KOD_PO_VALUES[Event.IND_SERVICE];
-            values.add(service);
-            colors[ind_colors++] = ColorUtil.getColor(Event.KOD_PO_VALUES[Event.IND_SERVICE]);
-        }
-        if (lunch != null) {
-            titles[ind_titles++] = Event.KOD_PO_VALUES[Event.IND_LUNCH];
-            values.add(lunch);
-            colors[ind_colors++] = ColorUtil.getColor(Event.KOD_PO_VALUES[Event.IND_LUNCH]);
+        for (Map.Entry<String, double[]> stringEntry : map.entrySet()) {
+            Log.d(TAG, "countStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
+            values.add(stringEntry.getValue());
+            titles[ind] = stringEntry.getKey();
+            colors[ind] =  ColorUtil.getColor(stringEntry.getKey());
+            ind++;
         }
 
-        Log.d(TAG, "countStackedBarChartData() normal " + Arrays.toString(normal));
-        Log.d(TAG, "countStackedBarChartData() lunch " + Arrays.toString(lunch));
-        Log.d(TAG, "countStackedBarChartData() service " + Arrays.toString(service));
         chartData.setValues(values);
         chartData.setTitles(titles);
         chartData.setColors(colors);
-        //TODO dokoncit pro ostatni typy
+
+        Log.d(TAG, "countStackedBarChartData() titles " + Arrays.toString(titles));
+        for (double[] value : values) {
+            Log.d(TAG, "countStackedBarChartData() value " + Arrays.toString(value));
+        }
+        Log.d(TAG, "countStackedBarChartData() min " + chartData.getMinDay() + " max" + chartData.getMaxDay());
         return chartData;
     }
 
-    public List<String> countEventsStatistics(List<Block> blocks) {
-
-
-        return null;
-    }
 
     private static Event getNextEvent(Cursor cursor, String druh) {
         int initPos = cursor.getPosition();

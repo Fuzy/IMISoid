@@ -100,6 +100,7 @@ public class PieChartFragment extends Fragment {
         Log.d(TAG, "prepareGraph()");
         List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
         for (PieChartSerie eventsGraphSerie : eventsGraphSeries) {
+            Log.d(TAG, "prepareGraph() eventsGraphSerie " + eventsGraphSerie);
             mSeries.add(mActivity.getLabelForCode(eventsGraphSerie.getLabel()), eventsGraphSerie.getAmount());
             addSeriesRenderer(eventsGraphSerie.getColor());
         }

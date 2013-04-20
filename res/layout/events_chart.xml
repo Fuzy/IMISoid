@@ -15,9 +15,11 @@
             <include layout="@layout/fragment_control"/>
     </FrameLayout>-->
     <LinearLayout android:id="@+id/displayControl"
+                  android:orientation="vertical"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content">
-        <include layout="@layout/fragment_control"/>>
+        <include layout="@layout/fragment_control"/>
+        <include layout="@layout/column_select"></include>
     </LinearLayout>
 
     <LinearLayout android:id="@+id/displayChart"

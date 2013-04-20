@@ -4,7 +4,8 @@
     <color name="COLOR_PRESENT_PRIVATE_DEFAULT">#ffdf1831</color>
     <color name="COLOR_PRESENT_OTHERS_DEFAULT">#ffDE596A</color>
     <color name="COLOR_ABSENCE_SERVICE_DEFAULT">#ff009939</color>
-    <color name="COLOR_ABSENCE_MEAL_DEFAULT">#fff7f038</color>
+    <color name="COLOR_ABSENCE_LUNCH_DEFAULT">#fff7f038</color>
+    <color name="COLOR_ABSENCE_SUPPER_DEFAULT">#ff11f787</color>
     <color name="COLOR_ABSENCE_MEDIC_DEFAULT">#ffd254f7</color>
 
     <color name="COLOR_RECORD_A">#ff0fabff</color>

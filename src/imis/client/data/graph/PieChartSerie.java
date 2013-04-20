@@ -57,4 +57,15 @@ public class PieChartSerie {
     public void setPercent(int percent) {
         this.percent = percent;
     }
+
+    @Override
+    public String toString() {
+        return "PieChartSerie{" +
+                "label='" + label + '\'' +
+                ", amount=" + amount +
+                ", time='" + time + '\'' +
+                ", percent=" + percent +
+                ", color=" + color +
+                '}';
+    }
 }

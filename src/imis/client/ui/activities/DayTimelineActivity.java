@@ -358,11 +358,25 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         ColorUtil.setColor(Event.KOD_PO_LEAVE_SERVICE, settings.getInt(Event.KOD_PO_LEAVE_SERVICE,
                 getResources().getColor(R.color.COLOR_ABSENCE_SERVICE_DEFAULT)));
         ColorUtil.setColor(Event.KOD_PO_LEAVE_LUNCH, settings.getInt(Event.KOD_PO_LEAVE_LUNCH,
-                getResources().getColor(R.color.COLOR_ABSENCE_MEAL_DEFAULT)));
+                getResources().getColor(R.color.COLOR_ABSENCE_LUNCH_DEFAULT)));
         ColorUtil.setColor(Event.KOD_PO_LEAVE_SUPPER, settings.getInt(Event.KOD_PO_LEAVE_SUPPER,
-                getResources().getColor(R.color.COLOR_ABSENCE_MEAL_DEFAULT)));
+                getResources().getColor(R.color.COLOR_ABSENCE_SUPPER_DEFAULT)));
         ColorUtil.setColor(Event.KOD_PO_LEAVE_MEDIC, settings.getInt(Event.KOD_PO_LEAVE_MEDIC,
                 getResources().getColor(R.color.COLOR_ABSENCE_MEDIC_DEFAULT)));
+
+       /* ColorUtil.setColor(Event.KOD_PO_LEAVE_ILL, settings.getInt(Event.KOD_PO_LEAVE_ILL,
+                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_LEAVE_VAC, settings.getInt(Event.KOD_PO_LEAVE_VAC,
+                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_LEAVE_TREAT, settings.getInt(Event.KOD_PO_LEAVE_TREAT,
+                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_LEAVE_STUDY, settings.getInt(Event.KOD_PO_LEAVE_STUDY,
+                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_LEAVE_REFUND, settings.getInt(Event.KOD_PO_LEAVE_REFUND,
+                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_ARRIVE_EMERGENCY, settings.getInt(Event.KOD_PO_ARRIVE_EMERGENCY,
+                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));*/
+
     }
 
     private void loadRecordColors(SharedPreferences settings) {

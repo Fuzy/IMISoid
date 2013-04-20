@@ -14,8 +14,7 @@ public class Block {
     private long endTime;
     private int arriveId;
     private int leaveId;
-    private String kod_po;//TODO smazat
-    private int indexKod_po;//TODO nastavit
+    private String kod_po;
     boolean dirty;
 
     public Block() {
@@ -77,20 +76,13 @@ public class Block {
         this.dirty = dirty;
     }
 
-    public int getIndexKod_po() {
-        return indexKod_po;
-    }
-
-    public void setIndexKod_po(int indexKod_po) {
-        this.indexKod_po = indexKod_po;
-    }
 
     @Override
     public String toString() {
         return "Block{" +
                 "date=" + date +
-                ", startTime=" +  formatTime(startTime) +
-                ", endTime=" +  formatTime(endTime) +
+                ", startTime=" + formatTime(startTime) +
+                ", endTime=" + formatTime(endTime) +
                 ", arriveId=" + arriveId +
                 ", leaveId=" + leaveId +
                 ", kod_po='" + kod_po + '\'' +

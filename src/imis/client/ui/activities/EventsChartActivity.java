@@ -12,20 +12,15 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.view.*;
+import android.widget.*;
 import imis.client.R;
-import imis.client.processor.BlockProcessor;
 import imis.client.model.Block;
 import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.persistent.EmployeeManager;
+import imis.client.processor.BlockProcessor;
+import imis.client.ui.ColorUtil;
 import imis.client.ui.fragments.PieChartFragment;
 import imis.client.ui.fragments.StackedBarFragment;
 import imis.client.ui.fragments.StatisticsFragment;
@@ -50,6 +45,7 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
 
     private List<Block> blockList;
     private final DataSetObservable mDataSetObservable = new DataSetObservable();
+    private final CheckBoxClickListener checkBoxClickListener = new CheckBoxClickListener();
 
     private static final int LOADER_EVENTS = 0x03;
     private static final int LOADER_EMPLOYEES = 0x04;
@@ -97,26 +93,34 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         });
 
 
-        /*if (savedInstanceState == null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            PieChartFragment pieFragment = new PieChartFragment();
-            ft.replace(R.id.displayChart, pieFragment, "PieChartFragment");
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-        }*/
-
-        /*if (savedInstanceState == null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            StackedBarFragment barFragment = new StackedBarFragment();
-            ft.replace(R.id.displayChart, barFragment, "PieChartFragment");
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-        }*/
-
         kody_po_values = getResources().getStringArray(R.array.kody_po_values);
         kody_po_desc = getResources().getStringArray(R.array.kody_po_desc);
 
+        for (String value : Event.KOD_PO_VALUES) {
+            addCheckBox(value);
+        }
 
+
+    }
+
+    private void addCheckBox(String kod_po) {
+        int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(kod_po);
+        final float scale = getApplication().getResources().getDisplayMetrics().density;
+        LinearLayout box = (LinearLayout) findViewById(R.id.checkBoxesBox);
+
+        CheckBox check = new CheckBox(getApplication());
+        check.setId(index);
+        check.setChecked(true);
+        box.addView(check);
+
+        TextView label = new TextView(getApplication());
+        label.setBackgroundColor(ColorUtil.getColor(kod_po));
+        label.setHeight((int) (15 * scale + 0.5f));
+        label.setWidth((int) (15 * scale + 0.5f));
+        label.setGravity(Gravity.CENTER);
+        box.addView(label);
+
+        check.setOnClickListener(checkBoxClickListener);
     }
 
     @Override
@@ -218,6 +222,7 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
     }
 
     public String getLabelForCode(String kod_po) {
+        if (kod_po.equals(Event.KOD_PO_OTHERS)) return Event.OTHERS;
         int index = Arrays.asList(kody_po_values).indexOf(kod_po);
         return kody_po_desc[index];
     }
@@ -314,5 +319,13 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         //new GetEmployeesLastEvent(this).execute();
     }
 
+    private class CheckBoxClickListener implements View.OnClickListener {
 
+        @Override
+        public void onClick(View view) {
+            CheckBox check = (CheckBox) view;
+            Log.d(TAG, "onClick() " + view.getId());
+            Log.d(TAG, "onClick() " + view.getId() + " is " + check.isChecked() + " kod " + Event.KOD_PO_VALUES[view.getId()]);
+        }
+    }
 }
