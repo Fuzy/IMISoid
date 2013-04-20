@@ -73,7 +73,6 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             leaveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_LEAVE));
             loadEvents(arriveId, leaveId);
         } else if (Intent.ACTION_INSERT.equals(action)) {
-            // Vkladani: nastavi stav a vytvori novy vstup ke zdroji dat.
             state = STATE_INSERT;
             arriveEvent = new Event();
         } else {
@@ -306,46 +305,19 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         finish();
     }
 
-   /* private void deleteEvent2() {
-        // TODO dialog
-        Log.d(TAG, "deleteEvent");
-        if (arriveEvent != null) {
-            spinnerKod_poArrive.setSelection(0);
-            spinnerKod_poLeave.setSelection(0);
-            textPoznamkaArrive.setText("");
-            textPoznamkaLeave.setText("");
-            if (state == STATE_EDIT || state == STATE_VIEWING) {
-                if (arriveEvent.isDirty()) {
-                    EventManager.deleteEvent(getApplicationContext(), arriveId);
-                } else {
-                    EventManager.markEventAsDeleted(getApplicationContext(), arriveId);
-                }
-                if (leaveId != -1) {
-                    if (arriveEvent.isDirty()) {
-                        EventManager.deleteEvent(getApplicationContext(), leaveId);
-                    } else {
-                        EventManager.markEventAsDeleted(getApplicationContext(), leaveId);
-                    }
-                }
-            }
-            //TODO oprava, otestovat
-            arriveEvent = null;
-            leaveEvent = null;
-        }
-        finish();
-    }*/
-
     private void saveEvent() {
         Log.d(TAG, "saveEvent()");
         saveArriveEvent();
-        saveLeaveeEvent();
+        saveLeaveEvent();
         finish();
     }
 
     private void saveArriveEvent() {
         if (arriveEvent != null) {
+            Log.d(TAG, "saveArriveEvent() arriveEvent != null");
             // Ulozi aktualizovane hodnoty
-            setImplicitEventValues(arriveEvent);
+            boolean hasICP = setImplicitEventValues(arriveEvent);
+            if (!hasICP) return;
             arriveEvent.setKod_po(kody_po_values[selectedArrive]);
             arriveEvent.setCas(getPickerCurrentTimeInMs(arriveTime));
             arriveEvent.setPoznamka(textPoznamkaArrive.getText().toString());
@@ -354,15 +326,17 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             } else if (state == STATE_INSERT) {
                 arriveEvent.setDruh(Event.DRUH_ARRIVAL);
                 arriveEvent.setDatum(date);
+                Log.d(TAG, "saveArriveEvent() insert " + arriveEvent);
                 arriveId = EventManager.addEvent(getApplicationContext(), arriveEvent);
             }
         }
     }
 
-    private void saveLeaveeEvent() {
+    private void saveLeaveEvent() {
         if (leaveEvent != null) {
             // Ulozi aktualizovane hodnoty
-            setImplicitEventValues(leaveEvent);
+            boolean hasICP = setImplicitEventValues(leaveEvent);
+            if (!hasICP) return;
             leaveEvent.setKod_po(kody_po_values[selectedLeave]);
             leaveEvent.setCas(getPickerCurrentTimeInMs(leaveTime));
             leaveEvent.setPoznamka(textPoznamkaLeave.getText().toString());
@@ -376,7 +350,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         }
     }
 
-    private void setImplicitEventValues(Event event) {
+    private boolean setImplicitEventValues(Event event) {
         event.setDirty(true);
         event.setDatum_zmeny(AppUtil.getTodayInLong());
         event.setTyp(Event.TYPE_ORIG);
@@ -385,9 +359,14 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         try {
             String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_KOD_PRA);
             event.setIcp(icp);
+            event.setIc_obs(icp);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.no_account_set, Toast.LENGTH_LONG);
+            toast.show();
+            return false;
         }
+        return true;
 
     }
 

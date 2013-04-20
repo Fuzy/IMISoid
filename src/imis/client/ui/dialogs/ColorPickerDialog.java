@@ -2,15 +2,19 @@ package imis.client.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.*;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import imis.client.R;
+import imis.client.ui.ColorUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,11 +24,16 @@ import imis.client.R;
  */
 public class ColorPickerDialog extends DialogFragment {
 
+    public ColorPickerDialog() {
+
+    }
+
     public interface OnColorChangedListener {
-        void colorChanged(int color);
+        void colorChanged();
     }
 
     private int initialColor;
+    private String type;
 
     private class ColorPickerView extends View {
         private Paint mPaint;
@@ -202,17 +211,23 @@ public class ColorPickerDialog extends DialogFragment {
     }
 
     private void endDialogOnSelectedColor(int color) {
+        ColorUtil.setColor(type, color);
+
         OnColorChangedListener activity = (OnColorChangedListener) getActivity();
-        activity.colorChanged(color);
+        activity.colorChanged();
         dismiss();
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Log.d("ColorPickerDialog", "onCreateDialog()");
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());//getActivity() , R.style.AppTheme
         builder.setTitle("Zvol barvu");
-        builder.setView(getColorPickerView());
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.color_picker_dialog, null);
+        FrameLayout frameLayout = (FrameLayout) layout.findViewById(R.id.color_picker_body);
+        frameLayout.addView(getColorPickerView());
+        builder.setView(layout);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
             }
@@ -225,7 +240,8 @@ public class ColorPickerDialog extends DialogFragment {
     }
 
 
-    public ColorPickerDialog(int color) {
-        initialColor = color;
+    public ColorPickerDialog(String type) {
+        initialColor = ColorUtil.getColor(type);
+        this.type = type;
     }
 }

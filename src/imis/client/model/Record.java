@@ -3,17 +3,14 @@ package imis.client.model;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class Record {
-    private String id;//BigDecimal
+    private String id;//TODO potrebuju to ? BigDecimal
     private long datum;
     private String kodpra;
     private String zc;
     private String stav_v;
-    private int cpolzak;
-    private int cpozzak;
+    private Integer cpolzak;
+    private Integer cpozzak;
     private long mnozstvi_odved;
     private String pozn_hl;
     private String pozn_ukol;
@@ -22,8 +19,8 @@ public class Record {
     public Record() {
     }
 
-    public Record(String id, long datum, String kodpra, String zc, String stav_v, int cpolzak,
-                  int cpozzak, long mnozstvi_odved, String pozn_hl, String pozn_ukol, String poznamka) {
+    public Record(String id, long datum, String kodpra, String zc, String stav_v, Integer cpolzak,
+                  Integer cpozzak, long mnozstvi_odved, String pozn_hl, String pozn_ukol, String poznamka) {
         super();
         this.id = id;
         this.datum = datum;
@@ -62,19 +59,19 @@ public class Record {
         this.stav_v = stav_v;
     }
 
-    public int getCpolzak() {
+    public Integer getCpolzak() {
         return cpolzak;
     }
 
-    public void setCpolzak(int cpolzak) {
+    public void setCpolzak(Integer cpolzak) {
         this.cpolzak = cpolzak;
     }
 
-    public int getCpozzak() {
+    public Integer getCpozzak() {
         return cpozzak;
     }
 
-    public void setCpozzak(int cpozzak) {
+    public void setCpozzak(Integer cpozzak) {
         this.cpozzak = cpozzak;
     }
 
@@ -126,26 +123,39 @@ public class Record {
         this.kodpra = kodpra;
     }
 
-    public static Record resultSetToRecord(ResultSet rsSet) throws SQLException {
+    public String recordType() {
+        return (getZc() == null) ? null : getZc().substring(0, 1);
+    }
+
+   /* public static Record resultSetToRecord(ResultSet rsSet) throws SQLException {
         Record record = new Record();
         //record.setId(rsSet.getString(COL_SERVER_ID));
         record.setDatum(rsSet.getLong(COL_DATUM));
         record.setMnozstvi_odved(rsSet.getLong(COL_MNOZSTVI_ODVED));
         record.setKodpra(rsSet.getString(COL_KODPRA));
         record.setZc(rsSet.getString(COL_ZC));//TODO ciselne typy jsou ok?
-        record.setCpolzak(rsSet.getInt(COL_CPOLZAK));
-        record.setCpozzak(rsSet.getInt(COL_CPOZZAK));
+        record.setCpolzak((Integer)rsSet.getObject(COL_CPOLZAK));
+        record.setCpozzak((Integer)rsSet.getObject(COL_CPOZZAK));
         record.setStav_v(rsSet.getString(COL_STAV_V));
         record.setPozn_hl(rsSet.getString(COL_POZN_HL));
         record.setPozn_ukol(rsSet.getString(COL_POZN_UKOL));
         record.setPoznamka(rsSet.getString(COL_POZNAMKA));
         return record;
-    }
+    }*/
 
     public static Record cursorToRecord(Cursor c) {
         Record record = new Record();
         record.setId(c.getString(COL_NUM_ID));
-        record.setZc(c.getString(1));
+        record.setDatum(c.getLong(COL_NUM_DATUM));
+        record.setKodpra(c.getString(COL_NUM_KODPRA));
+        record.setZc(c.getString(COL_NUM_ZC));
+        record.setStav_v(c.getString(COL_NUM_STAV_V));
+        record.setCpolzak(c.isNull(COL_NUM_CPOLZAK) ? null : c.getInt(COL_NUM_CPOLZAK));
+        record.setCpozzak(c.isNull(COL_NUM_CPOZZAK) ? null : c.getInt(COL_NUM_CPOZZAK));
+        record.setMnozstvi_odved(c.getLong(COL_NUM_MNOZSTVI_ODVED));
+        record.setPozn_hl(c.getString(COL_NUM_POZN_HL));
+        record.setPozn_ukol(c.getString(COL_NUM_POZN_UKOL));
+        record.setPoznamka(c.getString(COL_NUM_POZNAMKA));
         //TODO dokoncit
         return record;
     }
@@ -191,7 +201,7 @@ public class Record {
 
     public static final String COL_ID = "_id";
     public static final String COL_POZN_UKOL = "POZN_UKOL";
-   // public static final String COL_SERVER_ID = "ID";
+    // public static final String COL_SERVER_ID = "ID";
     public static final String COL_DATUM = "DATUM";
     public static final String COL_KODPRA = "KODPRA";
     public static final String COL_MNOZSTVI_ODVED = "MNOZSTVI_ODVED";
@@ -202,15 +212,25 @@ public class Record {
     public static final String COL_CPOLZAK = "CPOLZAK";
     public static final String COL_CPOZZAK = "CPOZZAK";
 
-    private static int COL_NUM_ID = 0;
-    private static int COL_NUM_POZN_UKOL = 1;
-    private static int COL_NUM_DATUM = 2;
-    private static int COL_NUM_KODPRA = 3;
-    private static int COL_NUM_MNOZSTVI_ODVED = 4;
-    private static int COL_NUM_POZNAMKA = 5;
-    private static int COL_NUM_STAV_V = 6;
-    private static int COL_NUM_POZN_HL = 7;
-    private static int COL_NUM_ZC = 8;
-    private static int COL_NUM_CPOLZAK = 9;
-    private static int COL_NUM_CPOZZAK = 10;
+    private static final int COL_NUM_ID = 0;
+    private static final int COL_NUM_DATUM = 1;
+    private static final int COL_NUM_KODPRA = 2;
+    private static final int COL_NUM_ZC = 3;
+    private static final int COL_NUM_STAV_V = 4;
+    private static final int COL_NUM_CPOLZAK = 5;
+    private static final int COL_NUM_CPOZZAK = 6;
+    private static final int COL_NUM_MNOZSTVI_ODVED = 7;
+    private static final int COL_NUM_POZN_HL = 8;
+    private static final int COL_NUM_POZN_UKOL = 9;
+    private static final int COL_NUM_POZNAMKA = 10;
+
+    public static final String TYPE_A = "A";
+    public static final String TYPE_I = "I";
+    public static final String TYPE_J = "J";
+    public static final String TYPE_K = "K";
+    public static final String TYPE_O = "O";
+    public static final String TYPE_R = "R";
+    public static final String TYPE_S = "S";
+    public static final String TYPE_V = "V";
+    public static final String TYPE_W = "W";
 }

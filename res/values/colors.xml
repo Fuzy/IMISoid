@@ -6,4 +6,14 @@
     <color name="COLOR_ABSENCE_SERVICE_DEFAULT">#ff009939</color>
     <color name="COLOR_ABSENCE_MEAL_DEFAULT">#fff7f038</color>
     <color name="COLOR_ABSENCE_MEDIC_DEFAULT">#ffd254f7</color>
+
+    <color name="COLOR_RECORD_A">#ff0fabff</color>
+    <color name="COLOR_RECORD_I">#ffdf1831</color>
+    <color name="COLOR_RECORD_J">#ffDE596A</color>
+    <color name="COLOR_RECORD_K">#ff009939</color>
+    <color name="COLOR_RECORD_O">#fff7f038</color>
+    <color name="COLOR_RECORD_R">#ffd254f7</color>
+    <color name="COLOR_RECORD_S">#ff59f889</color>
+    <color name="COLOR_RECORD_V">#fff88b1a</color>
+    <color name="COLOR_RECORD_W">#ff8cf8f5</color>
 </resources>

@@ -81,7 +81,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             /*.concat(REC_SERVER_ID + " integer not null, ")*/
             .concat(REC_COL_DATUM + " integer not null, ")
             .concat(REC_COL_KODPRA + " text not null, ")
-            .concat(REC_COL_ZC + " text, ")
+            .concat(REC_COL_ZC + " text, ") //TODO kontrola
             .concat(REC_COL_STAV_V + " text, ")
             .concat(REC_COL_CPOLZAK + " integer, ")
             .concat(REC_COL_CPOZZAK + " integer, ")

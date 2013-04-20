@@ -289,6 +289,7 @@ public class Event {
     public static final String KOD_PO_LEAVE_LUNCH = "02";
     public static final String KOD_PO_LEAVE_SUPPER = "03";
     public static final String KOD_PO_LEAVE_MEDIC = "04";
+    public static final String KOD_PO_OTHERS = "XX";
 
     public static final int IND_NORMAL = 0, IND_PRIVAT = 1, IND_SERVICE = 2,
             IND_LUNCH = 3, IND_SUPPER = 4, IND_MEDIC = 5;

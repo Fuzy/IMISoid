@@ -69,10 +69,19 @@ public class GetListOfRecords extends NetworkingService<String, Void, Record[]> 
         records = new Record[1];
 
         Record record = new Record();
-        record.setZc("123");
+        record.setZc("R-VV-2013");
+        record.setCpolzak(5);
+        record.setCpozzak(11);
         record.setKodpra("KDA");
         record.setDatum(454);
-        record.setMnozstvi_odved(1111);
+        record.setStav_v("V");
+        record.setMnozstvi_odved(11111111);
+        record.setPoznamka("bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " +
+                "3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké 3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " + "\n" +
+                "                \"3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké 3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " + "\n"
+        );
+        record.setPozn_hl("poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
+        record.setPozn_ukol("poznamka ukol poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
         records[0] = record;
 
        /* Record record2 = new Record();

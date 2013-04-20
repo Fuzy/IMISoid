@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import imis.client.R;
-import imis.client.controller.BlockProcessor;
+import imis.client.processor.BlockProcessor;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.ui.activities.EventsChartActivity;
 import org.achartengine.ChartFactory;
@@ -70,7 +70,7 @@ public class StackedBarFragment extends Fragment {
 
     private void displayGraph() {
         Log.d(TAG, "displayGraph()");
-        StackedBarChartData chartData = BlockProcessor.blocksToStackedBarChartData(mActivity.getBlockList());
+        StackedBarChartData chartData = BlockProcessor.countStackedBarChartData(mActivity.getBlockList());
         execute(chartData);
     }
 

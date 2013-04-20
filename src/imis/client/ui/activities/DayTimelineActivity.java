@@ -2,10 +2,10 @@ package imis.client.ui.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.DialogFragment;
 import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -20,13 +20,14 @@ import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.authentication.AuthenticationConsts;
-import imis.client.controller.BlockProcessor;
 import imis.client.model.Block;
 import imis.client.model.Event;
+import imis.client.model.Record;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
-import imis.client.asynctasks.GetListOfEmployees;
+import imis.client.processor.BlockProcessor;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
@@ -36,10 +37,12 @@ import imis.client.ui.dialogs.ColorPickerDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static imis.client.AppConsts.*;
 import static imis.client.authentication.AuthenticationConsts.ACCOUNT_TYPE;
 import static imis.client.authentication.AuthenticationConsts.AUTHORITY;
+import static imis.client.persistent.EventManager.EventQuery;
 
 public class DayTimelineActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {
@@ -51,7 +54,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     private ObservableScrollView scroll;
     private List<Block> blockList;
     private EventsArrayAdapter adapter;
-    private long date = 1364169600000L;
+    private long date = 1364166000000L;//1364169600000L;
 
     private static final int LOADER_ID = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
@@ -81,7 +84,6 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
         //changeDate(1364169600000L); //TODO toto je pro ladici ucely
         Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
-
 
 
         // EventManager.deleteAllEvents(getApplicationContext());
@@ -115,7 +117,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     @Override
     protected void onResume() {
         Log.d(TAG, "onResume()");
-
+        Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
         super.onResume();
 
         setDateTitle(date);
@@ -184,7 +186,6 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
 
-
     private void refreshListOfEmployees() {
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
         try {
@@ -217,10 +218,10 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader() date " + date);
-        return new CursorLoader(getApplicationContext(), EventManager.EventQuery.CONTENT_URI, EventManager.EventQuery.PROJECTION_ALL,
-                EventManager.EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)}, null);
+        return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL,
+                EventQuery.SELECTION_DAY_UNDELETED, new String[]{String.valueOf(date)}, null);
     }
 
     @Override
@@ -259,8 +260,8 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d("DayTimelineActivity", "onItemLongClick() position: " + position);
         BlockView block = (BlockView) view;
-        DialogFragment dialog = new ColorPickerDialog(ColorUtil.getColorForType(block.getType()));
-        dialog.show(getFragmentManager(), "ColorPickerDialog"); //TODO [rpc nejde support verze
+        DialogFragment dialog = new ColorPickerDialog(block.getType());
+        dialog.show(getSupportFragmentManager(), "ColorPickerDialog"); //TODO [rpc nejde support verze
         return true;
     }
 
@@ -326,8 +327,8 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
 
 
     @Override
-    public void colorChanged(int color) {
-        ColorUtil.setColor_present_normal(color);
+    public void colorChanged() {
+        //ColorUtil.setColor_present_normal(color);
         blocks.setVisibility(View.GONE);
         blocks.setVisibility(View.VISIBLE);
     }
@@ -341,40 +342,61 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
     }
 
     private void loadColorSharedPreferences() {
-        //Log.d("DayTimelineActivity", "loadColorSharedPreferences()");
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        int color_present_normal = settings.getInt(ColorUtil.KEY_COLOR_PRESENT_NORMAL,
-                getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT));
-        ColorUtil.setColor_present_normal(color_present_normal);
-        int color_present_private = settings.getInt(ColorUtil.KEY_COLOR_PRESENT_PRIVATE,
-                getResources().getColor(R.color.COLOR_PRESENT_PRIVATE_DEFAULT));
-        ColorUtil.setColor_present_private(color_present_private);
-        int color_present_others = settings.getInt(ColorUtil.KEY_COLOR_PRESENT_OTHERS,
-                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT));
-        ColorUtil.setColor_present_others(color_present_others);
-        int color_absence_service = settings.getInt(ColorUtil.KEY_COLOR_ABSENCE_SERVICE,
-                getResources().getColor(R.color.COLOR_ABSENCE_SERVICE_DEFAULT));
-        ColorUtil.setColor_absence_service(color_absence_service);
-        int color_absence_meal = settings.getInt(ColorUtil.KEY_COLOR_ABSENCE_MEAL,
-                getResources().getColor(R.color.COLOR_ABSENCE_MEAL_DEFAULT));
-        ColorUtil.setColor_absence_meal(color_absence_meal);
-        int color_absence_medic = settings.getInt(ColorUtil.KEY_COLOR_ABSENCE_MEDIC,
-                getResources().getColor(R.color.COLOR_ABSENCE_MEDIC_DEFAULT));
-        ColorUtil.setColor_absence_medic(color_absence_medic);
+        Log.d("DayTimelineActivity", "loadColorSharedPreferences()");
+        SharedPreferences settings = getSharedPreferences(PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
+        loadEventColors(settings);
+        loadRecordColors(settings);
+    }
+
+    private void loadEventColors(SharedPreferences settings) {
+        ColorUtil.setColor(Event.KOD_PO_ARRIVE_NORMAL, settings.getInt(Event.KOD_PO_ARRIVE_NORMAL,
+                getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_ARRIVE_PRIVATE, settings.getInt(Event.KOD_PO_ARRIVE_PRIVATE,
+                getResources().getColor(R.color.COLOR_PRESENT_PRIVATE_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_OTHERS, settings.getInt(Event.KOD_PO_OTHERS,
+                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_LEAVE_SERVICE, settings.getInt(Event.KOD_PO_LEAVE_SERVICE,
+                getResources().getColor(R.color.COLOR_ABSENCE_SERVICE_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_LEAVE_LUNCH, settings.getInt(Event.KOD_PO_LEAVE_LUNCH,
+                getResources().getColor(R.color.COLOR_ABSENCE_MEAL_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_LEAVE_SUPPER, settings.getInt(Event.KOD_PO_LEAVE_SUPPER,
+                getResources().getColor(R.color.COLOR_ABSENCE_MEAL_DEFAULT)));
+        ColorUtil.setColor(Event.KOD_PO_LEAVE_MEDIC, settings.getInt(Event.KOD_PO_LEAVE_MEDIC,
+                getResources().getColor(R.color.COLOR_ABSENCE_MEDIC_DEFAULT)));
+    }
+
+    private void loadRecordColors(SharedPreferences settings) {
+        ColorUtil.setColor(Record.TYPE_A, settings.getInt(Record.TYPE_A,
+                getResources().getColor(R.color.COLOR_RECORD_A)));
+        ColorUtil.setColor(Record.TYPE_I, settings.getInt(Record.TYPE_I,
+                getResources().getColor(R.color.COLOR_RECORD_I)));
+        ColorUtil.setColor(Record.TYPE_J, settings.getInt(Record.TYPE_J,
+                getResources().getColor(R.color.COLOR_RECORD_J)));
+        ColorUtil.setColor(Record.TYPE_K, settings.getInt(Record.TYPE_K,
+                getResources().getColor(R.color.COLOR_RECORD_K)));
+        ColorUtil.setColor(Record.TYPE_O, settings.getInt(Record.TYPE_O,
+                getResources().getColor(R.color.COLOR_RECORD_O)));
+        ColorUtil.setColor(Record.TYPE_R, settings.getInt(Record.TYPE_R,
+                getResources().getColor(R.color.COLOR_RECORD_R)));
+        ColorUtil.setColor(Record.TYPE_S, settings.getInt(Record.TYPE_S,
+                getResources().getColor(R.color.COLOR_RECORD_S)));
+        ColorUtil.setColor(Record.TYPE_V, settings.getInt(Record.TYPE_V,
+                getResources().getColor(R.color.COLOR_RECORD_V)));
+        ColorUtil.setColor(Record.TYPE_W, settings.getInt(Record.TYPE_W,
+                getResources().getColor(R.color.COLOR_RECORD_W)));
     }
 
     private void saveColorSharedPreferences() {
-        //Log.d("DayTimelineActivity", "saveColorSharedPreferences()");
-        SharedPreferences settings = getSharedPreferences(AppConsts.PREFS_NAME, Context.MODE_PRIVATE);
+        Log.d("DayTimelineActivity", "saveColorSharedPreferences()");
+        SharedPreferences settings = getSharedPreferences(PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putInt(ColorUtil.KEY_COLOR_PRESENT_NORMAL, ColorUtil.getColor_present_normal());
-        editor.putInt(ColorUtil.KEY_COLOR_PRESENT_PRIVATE, ColorUtil.getColor_present_private());
-        editor.putInt(ColorUtil.KEY_COLOR_PRESENT_OTHERS, ColorUtil.getColor_present_others());
-        editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_SERVICE, ColorUtil.getColor_absence_service());
-        editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_MEAL, ColorUtil.getColor_absence_meal());
-        editor.putInt(ColorUtil.KEY_COLOR_ABSENCE_MEDIC, ColorUtil.getColor_absence_medic());
+        Map<String, Integer> colorsEvents = ColorUtil.getColors();
+        for (Map.Entry<String, Integer> entry : colorsEvents.entrySet()) {
+            editor.putInt(entry.getKey(), entry.getValue().intValue());
+        }
         editor.commit();
     }
+
 
     private void changeDate(long date) {
         Log.d(TAG, "changeDate() date " + AppUtil.formatDate(date));

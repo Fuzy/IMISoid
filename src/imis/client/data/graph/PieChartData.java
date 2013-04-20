@@ -10,7 +10,8 @@ import java.util.List;
  * Time: 11:13
  */
 public class PieChartData {
-    List<PieChartSerie> eventsGraphSeries = new ArrayList<>();
+    private String total;
+    private List<PieChartSerie> eventsGraphSeries = new ArrayList<>();
 
     public void addSerie(PieChartSerie eventsGraphSerie) {
                eventsGraphSeries.add(eventsGraphSerie);
@@ -18,5 +19,13 @@ public class PieChartData {
 
     public List<PieChartSerie> getEventsGraphSeries() {
         return eventsGraphSeries;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
     }
 }

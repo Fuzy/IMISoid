@@ -59,7 +59,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             if (event.isDeleted()) {
                 // mazani
                 httpCode = EventsSync.deleteEvent(event.getServer_id());
-                if (httpCode == HttpStatus.SC_OK) {// lepsi kod OK
+                if (httpCode == HttpStatus.SC_OK) {
                     EventManager.deleteEvent(context, event.get_id());
                 } else {
                     // TODO neuspech

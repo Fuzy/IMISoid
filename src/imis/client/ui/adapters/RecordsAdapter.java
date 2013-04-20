@@ -32,7 +32,7 @@ public class RecordsAdapter extends ArrayAdapter<Record> {
 
         if (record != null) {
 
-            TextView tt = (TextView) view.findViewById(R.id.zc);
+            TextView tt = (TextView) view.findViewById(R.id.recordIdentification);
 
             if (tt != null) {
                 tt.setText(record.getZc());

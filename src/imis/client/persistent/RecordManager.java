@@ -39,7 +39,7 @@ public class RecordManager {
     public static List<Record> getAllRecords(Context context) {
         Log.d(TAG, "getAllEvents()");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL, null, null, null);
+        Cursor cursor = resolver.query(DataQuery.CONTENT_URI, null, null, null, null);//DataQuery.PROJECTION_ALL
         List<Record> records = new ArrayList<>();
         Record record;
         while (cursor.moveToNext()) {

@@ -61,7 +61,7 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.type = type;
         this.dirty = dirty;
 
-        int accentColor = ColorUtil.getColorForType(type);
+        int accentColor = ColorUtil.getColor(type);
         /*if (dirty) {
             Log.d("BlockView", "BlockView() dirty");
             accentColor = ColorUtil.getColor_present_normal();

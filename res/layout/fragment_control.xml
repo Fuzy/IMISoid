@@ -15,14 +15,10 @@
             android:capitalize="none"
             android:autoText="false" android:text=""/>
 
-    <ImageButton
-            android:id="@+id/dateFromButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_day" />
+
 
     <EditText
-            android:id="@+id/dateToEdit"
+            android:id="@+id/dateDayButton"
             android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,14 +28,20 @@
             android:autoText="false" android:text=""/>
 
     <ImageButton
-            android:id="@+id/dateToButton"
+            android:id="@+id/dateFromButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_menu_day" />
 
+    <ImageButton
+            android:id="@+id/dateMonthButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_month" />
+
 
     <Spinner
-            android:id="@+id/spinnerEmployee"
+            android:id="@+id/spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:prompt="@string/spinnerEmployee_title"

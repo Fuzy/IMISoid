@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+        <RelativeLayout android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
+
+            <LinearLayout android:orientation="vertical"
+                          android:layout_height="wrap_content"
+                          android:layout_width="wrap_content">
+
+
+                <TextView
+                        android:text="@string/record_detail_state"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginBottom="5dip"/>
+
+                <TextView
+                        android:id="@+id/record_detail_state"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dip"
+                        android:layout_marginBottom="5dip"/>
+
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/record_type"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="2dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/COLOR_PRESENT_NORMAL_DEFAULT"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+                android:text="@string/record_detail_identification"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginBottom="5dip"/>
+
+        <TextView android:id="@+id/recordIdentification"
+                  android:textSize="16sp"
+                  android:textStyle="bold"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dip"/>
+
+        <TextView
+                android:text="@string/record_detail_time"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginBottom="5dip"/>
+
+        <TextView android:id="@+id/time"
+                  android:textSize="16sp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentRight="true"
+                  android:layout_marginLeft="10dip"
+                  android:layout_marginRight="5dip"/>
+
+        <TextView
+                android:text="@string/record_detail_report"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginBottom="5dip"/>
+
+        <TextView
+                android:id="@+id/record_detail_report"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginBottom="5dip"/>
+
+        <TextView
+                android:text="@string/record_detail_task"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginBottom="5dip"/>
+
+        <TextView
+                android:id="@+id/record_detail_task"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginBottom="5dip"/>
+
+        <TextView
+                android:text="@string/record_detail_note"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginBottom="5dip"/>
+
+        <TextView android:id="@+id/note"
+                  android:textSize="16sp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="10dip"
+                  android:layout_marginLeft="10dip"/>
+
+    </LinearLayout>
+</ScrollView>

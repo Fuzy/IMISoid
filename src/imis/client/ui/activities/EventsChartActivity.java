@@ -21,13 +21,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import imis.client.R;
-import imis.client.controller.BlockProcessor;
+import imis.client.processor.BlockProcessor;
 import imis.client.model.Block;
 import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.persistent.EmployeeManager;
 import imis.client.ui.fragments.PieChartFragment;
 import imis.client.ui.fragments.StackedBarFragment;
+import imis.client.ui.fragments.StatisticsFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -76,10 +77,10 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
         getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
 
-        spinner = (Spinner) findViewById(R.id.spinnerEmployee);
+        spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         dateFromEdit = (EditText) findViewById(R.id.dateFromEdit);
-        dateToEdit = (EditText) findViewById(R.id.dateToEdit);
+        dateToEdit = (EditText) findViewById(R.id.dateDayButton);
         dateFromButton = (ImageButton) findViewById(R.id.dateFromButton);
         dateFromButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,11 +88,11 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
                 startCalendarActivity(convertToTime(dateFromEdit.getText().toString()), CALENDAR_ACTIVITY_FROM_CODE);
             }
         });
-        dateToButton = (ImageButton) findViewById(R.id.dateToButton);
+        dateToButton = (ImageButton) findViewById(R.id.dateMonthButton);
         dateToButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startCalendarActivity(convertToTime(dateToEdit.getText().toString()), CALENDAR_ACTIVITY_TO_CODE);
+                //startCalendarActivity(convertToTime(dateToEdit.getText().toString()), CALENDAR_ACTIVITY_TO_CODE);
             }
         });
 
@@ -268,12 +269,12 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
 
     private void switchFragment() {
         Log.d(TAG, "switchFragment()");
-        if (current == null || (current instanceof StackedBarFragment)) {
+        if (current == null || (current instanceof StatisticsFragment)) {
             switchToPieChartFragment();
         } else if (current instanceof PieChartFragment) {
             switchToStackedBarFragment();
-        }  else {
-            Log.d(TAG, "switchFragment() else ");
+        } else if (current instanceof StackedBarFragment) {
+            switchToStatisticsFragment();
         }
         getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
     }
@@ -294,6 +295,16 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         PieChartFragment pieFragment = new PieChartFragment();
         current = pieFragment;
         ft.replace(R.id.displayChart, pieFragment, "PieChartFragment");
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        ft.commit();
+    }
+
+    private void switchToStatisticsFragment() {
+        Log.d(TAG, "switchToPieChartFragment()");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        StatisticsFragment statsFragment = new StatisticsFragment();
+        current = statsFragment;
+        ft.replace(R.id.displayChart, statsFragment, "StatisticsFragment");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         ft.commit();
     }

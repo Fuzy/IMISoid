@@ -1,17 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/record_row"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <TextView android:id="@+id/zc"
-              android:textSize="16sp"
-              android:textStyle="bold"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"/>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView android:id="@+id/cpolzak"
+        <TextView android:id="@+id/recordIdentification"
+                  android:textSize="16sp"
+                  android:textStyle="bold"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dip"/>
+
+        <TextView
+                android:id="@+id/record_type"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/time"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="2dp"/>
+
+        <TextView android:id="@+id/time"
+                  android:textSize="16sp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentRight="true"
+                  android:layout_marginRight="10dip"/>
+
+    </RelativeLayout>
+
+    <TextView android:id="@+id/note"
               android:textSize="16sp"
+              android:ellipsize="end"
+              android:maxLines="1"
+              android:scrollHorizontally="true"
+              android:singleLine="true"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"/>
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:layout_marginLeft="10dip"/>
+
+
 </LinearLayout>

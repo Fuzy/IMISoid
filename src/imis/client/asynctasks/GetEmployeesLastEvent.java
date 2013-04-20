@@ -13,6 +13,7 @@ import imis.client.ui.activities.NetworkingActivity;
  */
 public class GetEmployeesLastEvent extends NetworkingService<Void, Void, Employee[]>{
 
+    //TODO asi zbytecny, jeden async task pro oboji
     public GetEmployeesLastEvent(NetworkingActivity context) {
         super(context);
     }

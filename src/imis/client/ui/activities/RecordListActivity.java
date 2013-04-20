@@ -2,6 +2,7 @@ package imis.client.ui.activities;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -12,11 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
+import imis.client.model.Record;
 import imis.client.ui.adapters.RecordsCursorAdapter;
+import imis.client.ui.dialogs.ColorPickerDialog;
+import imis.client.ui.fragments.RecordDetailFragment;
 import imis.client.ui.fragments.RecordListFragment;
 
 import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
-import static imis.client.persistent.RecordManager.DataQuery.PROJECTION_ALL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,11 +27,12 @@ import static imis.client.persistent.RecordManager.DataQuery.PROJECTION_ALL;
  * Date: 15.4.13
  * Time: 17:25
  */
-public class RecordListActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class RecordListActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = RecordListActivity.class.getSimpleName();
     private RecordsCursorAdapter adapter;
-    private RecordListFragment listFragment;
     private static final int LOADER_ID = 0x08;
+    private int position = -1;
 
 
     @Override
@@ -41,7 +45,7 @@ public class RecordListActivity extends NetworkingActivity implements LoaderMana
         //if (savedInstanceState == null) {
         //Log.d(TAG, "savedInstanceState()");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        listFragment = new RecordListFragment();
+        RecordListFragment listFragment = new RecordListFragment();
         ft.replace(R.id.recordsList, listFragment, "RecordListFragment");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
@@ -56,7 +60,7 @@ public class RecordListActivity extends NetworkingActivity implements LoaderMana
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader()");
         return new CursorLoader(getApplicationContext(), CONTENT_URI,
-                PROJECTION_ALL, null, null, null);
+                null, null, null, null);//PROJECTION_ALL
     }
 
     @Override
@@ -69,6 +73,7 @@ public class RecordListActivity extends NetworkingActivity implements LoaderMana
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,5 +104,38 @@ public class RecordListActivity extends NetworkingActivity implements LoaderMana
         String to = "26.03.08";
 
         new GetListOfRecords(this).execute(kodpra, from, to);
+    }
+
+
+    @Override
+    public void onDetailSelected(int position) {
+        this.position = position;
+        Record record = adapter.getItem(position);
+        createDetailFragment(record);
+    }
+
+    public void createDetailFragment(Record record) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        RecordDetailFragment detailFragment = new RecordDetailFragment();
+        detailFragment.setRecord(record);
+        ft.replace(R.id.recordsList, detailFragment, "RecordDetailFragment");
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    public void deleteDetailFragment() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("RecordDetailFragment");
+        if (fragment != null)  getSupportFragmentManager().popBackStack();
+    }
+
+
+    @Override
+    public void colorChanged() {
+        Log.d(TAG, "colorChanged()");
+        adapter.notifyDataSetChanged();
+        deleteDetailFragment();
+        createDetailFragment(adapter.getItem(position));
+
     }
 }

@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +15,11 @@ import java.util.Calendar;
 public class AppUtil {
     public static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
     public static final DateFormat dfAbbr = new SimpleDateFormat("d.M.yy");
-    public static final DateFormat dfTime = new SimpleDateFormat("HH:mm:ss");
+    public static final DateFormat dfUTCTime = new SimpleDateFormat("HH:mm");
+
+    static {
+        dfUTCTime.setTimeZone((TimeZone.getTimeZone("UTC")));
+    }
 
     public static long getTodayInLong() {
         Calendar cal = Calendar.getInstance();
@@ -33,13 +38,13 @@ public class AppUtil {
                 && now.get(Calendar.DAY_OF_YEAR) == theDate.get(Calendar.DAY_OF_YEAR);
     }
 
-    public static String formatDate(java.sql.Date date) {
+    /*public static String formatDate(java.sql.Date date) {
         String dateS = null;
         if (date != null) {
             dateS = df.format(date);
         }
         return dateS;
-    }
+    }*/
 
     public static long todayInLong() {
         Calendar cal = Calendar.getInstance();
@@ -52,19 +57,20 @@ public class AppUtil {
     public static String formatDate(long date) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
-        return  df.format(cal.getTime());
+        return df.format(cal.getTime());
     }
 
     public static String formatAbbrDate(long date) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
-        return  dfAbbr.format(cal.getTime());
+        return dfAbbr.format(cal.getTime());
     }
 
-    public static  String formatTime(long time) {
+    public static String formatTime(long time) {
         Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         cal.setTimeInMillis(time);
-        return  dfTime.format(cal.getTime());
+        return dfUTCTime.format(cal.getTime());
     }
 
     public static long convertToTime(String s) {

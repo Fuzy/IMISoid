@@ -9,6 +9,8 @@ package imis.client.data.graph;
 public class PieChartSerie {
     private String label;
     private Double amount;
+    private String time;
+    private int percent;
     private int color;
 
     public PieChartSerie(String label, Double amount) {
@@ -38,5 +40,21 @@ public class PieChartSerie {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public int getPercent() {
+        return percent;
+    }
+
+    public void setPercent(int percent) {
+        this.percent = percent;
     }
 }

@@ -164,6 +164,8 @@ public class EventManager {
         // vyber podle data
         public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
 
+        public static final String SELECTION_DAY_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED;
+
         public static final String SELECTION_ICP = Event.COL_ICP + "=?";
 
     }

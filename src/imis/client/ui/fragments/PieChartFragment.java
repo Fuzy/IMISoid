@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import imis.client.R;
-import imis.client.controller.BlockProcessor;
+import imis.client.processor.BlockProcessor;
 import imis.client.data.graph.PieChartSerie;
 import imis.client.data.graph.PieChartData;
 import imis.client.ui.activities.EventsChartActivity;
@@ -79,7 +79,7 @@ public class PieChartFragment extends Fragment {
 
     private void displayGraph() {
         Log.d(TAG, "displayGraph()");
-        PieChartData  pieChartData = BlockProcessor.countBlocksStatistics(mActivity.getBlockList());
+        PieChartData  pieChartData = BlockProcessor.countPieChartData(mActivity.getBlockList());
         clearGraph();
         prepareGraph(pieChartData);
     }
