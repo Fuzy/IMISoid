@@ -26,7 +26,21 @@ public class EmployeeManager {
         ContentValues values = employee.asContentValues();
         ContentResolver resolver = context.getContentResolver();
         Uri uri = resolver.insert(DataQuery.CONTENT_URI, values);
-        return Integer.valueOf(uri.getLastPathSegment());
+        int id = Integer.valueOf(uri.getLastPathSegment());
+        if (id == -1) {
+            updateEmployee(context, employee);
+        }
+        return id;
+    }
+
+    public static int updateEmployee(Context context, Employee employee) {
+        Log.d(TAG, "updateEmployee()");
+        ContentValues values = employee.asContentValues();
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(employee.getIcp()));
+        int updated = resolver.update(uri, values, null, null);
+        Log.d(TAG, "updateEmployee() updated " + updated);
+        return updated;
     }
 
     public static void addEmployees(Context context, Employee[] employees) {
@@ -40,7 +54,7 @@ public class EmployeeManager {
         Log.d(TAG, "getAllEmployees()");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(DataQuery.CONTENT_URI, DataQuery.PROJECTION_ALL, null, null, null);
-        List<Employee> employees = new ArrayList<Employee>();
+        List<Employee> employees = new ArrayList<>();
         Employee employee;
         while (cursor.moveToNext()) {
             employee = Employee.cursorToEmployee(cursor);
@@ -49,13 +63,6 @@ public class EmployeeManager {
         cursor.close();
         return employees;
     }
-
-    /*public static List<Employee> jsonToList(String json) {
-        Log.d(TAG, "jsonToList()");
-        Type type = new TypeToken<Collection<Employee>>() {
-        }.getType();
-        return gson.fromJson(json, type);
-    }*/
 
     final public static class DataQuery {
 

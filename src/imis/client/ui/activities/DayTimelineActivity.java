@@ -6,6 +6,7 @@ import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -44,7 +45,7 @@ import static imis.client.authentication.AuthenticationConsts.ACCOUNT_TYPE;
 import static imis.client.authentication.AuthenticationConsts.AUTHORITY;
 import static imis.client.persistent.EventManager.EventQuery;
 
-public class DayTimelineActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+public class DayTimelineActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {
 
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
@@ -193,7 +194,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
             Log.d(TAG, "refreshListOfEmployees() icp " + icp);
             new GetListOfEmployees(this).execute(icp);//1493913
         } catch (Exception e) {
-            e.printStackTrace();  //TODO ucet zatim neexituje
+            showAccountNotExistsError();
         }
     }
 
@@ -212,8 +213,7 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
         if (accounts.length > 0) {
             ContentResolver.requestSync(accounts[0], AUTHORITY, extras);
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.no_account_set, Toast.LENGTH_LONG);
-            toast.show();
+            showAccountNotExistsError();
         }
     }
 
@@ -323,6 +323,11 @@ public class DayTimelineActivity extends NetworkingActivity implements LoaderMan
                 }
                 break;
         }
+    }
+
+    private void showAccountNotExistsError() {
+        Toast toast = Toast.makeText(getApplicationContext(), R.string.no_account_set, Toast.LENGTH_LONG);
+        toast.show();
     }
 
 

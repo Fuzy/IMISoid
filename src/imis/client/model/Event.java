@@ -91,7 +91,7 @@ public class Event {
     }
 
     public boolean hasServer_id() {
-        if (server_id == null) return false;//TODO nebo prazdny retezec?
+        if (server_id == null) return false;
         else return true;
     }
 
@@ -167,7 +167,7 @@ public class Event {
         this.poznamka = poznamka;
     }
 
-    //TODO formatovat datum
+
     @Override
     public String toString() {
         return "Event [_id=" + _id + ", server_id=" + server_id + ", dirty=" + dirty + ", deleted="
@@ -197,7 +197,6 @@ public class Event {
     }
 
     public ContentValues asContentValues() {
-        //TODO asi tam dat jen to spolecne pro add a update
         ContentValues values = new ContentValues();
         values.put(COL_DIRTY, dirty);
         values.put(COL_DELETED, deleted);
@@ -261,27 +260,6 @@ public class Event {
     public static final String JSON_SYNC = "sy";
 
 
-    //TODO  EnumMap?
-    /*public enum Codes {
-        KOD_PO_ARRIVE_NORMAL("00", 0),
-        KOD_PO_ARRIVE_PRIVATE("10", 1),
-        KOD_PO_LEAVE_SERVICE("01", 2),
-        KOD_PO_LEAVE_LUNCH("02", 3),
-        KOD_PO_LEAVE_SUPPER("03", 4),
-        KOD_PO_LEAVE_MEDIC("04", 5);
-
-        private final String name;
-        private final int index;
-
-        private Codes(String s, int i) {
-            name = s;
-            index = i;
-        }
-    }*/
-
-    /*public static final String[] KOD_PO_VALUES = {"00", "01", "02", "03", "04", "05",
-            "06", "07", "08", "09", "10", "11"};*/
-
     public static final String[] KOD_PO_VALUES = {"00", "01", "02", "03", "04", "10", "XX"};
 
     public static final String DRUH_ARRIVAL = "P";
@@ -294,19 +272,6 @@ public class Event {
     public static final String KOD_PO_ARRIVE_PRIVATE = "10";
     public static final String KOD_PO_OTHERS = "XX";
 
-   /* public static final String KOD_PO_LEAVE_ILL = "05";
-    public static final String KOD_PO_LEAVE_VAC = "06";
-    public static final String KOD_PO_LEAVE_TREAT = "07";
-    public static final String KOD_PO_LEAVE_STUDY = "08";
-    public static final String KOD_PO_LEAVE_REFUND = "09";
-    public static final String KOD_PO_ARRIVE_EMERGENCY = "11";*/
-
-    public static final int IND_NORMAL = 0, IND_SERVICE = 1,
-            IND_LUNCH = 2, IND_SUPPER = 3, IND_MEDIC = 4, IND_PRIVATE = 5, IND_OTHERS = 6;
-   /*
-    public static final int IND_NORMAL = 0, IND_SERVICE = 1,
-            IND_LUNCH = 2, IND_SUPPER = 3, IND_MEDIC = 4, IND_ILL = 5, IND_VAC = 6, IND_TREAT = 7,
-            IND_STUDY = 8, IND_REFUND = 9, IND_PRIVATE = 10, IND_EMERGENCY = 11;*/
 
     public static final String TYPE_ORIG = "O";
 

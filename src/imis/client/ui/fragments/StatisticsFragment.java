@@ -60,7 +60,7 @@ public class StatisticsFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-        super.onAttach(activity);    //TODO sem kdyztak listener
+        super.onAttach(activity);
         mActivity = (EventsChartActivity) activity;
         mActivity.registerDataSetObserver(mObserver);
         Log.d(TAG, "onAttach() activity " + mActivity);
@@ -68,7 +68,7 @@ public class StatisticsFragment extends Fragment {
 
 
     private void displayStats() {
-        PieChartData pieChartData = BlockProcessor.countPieChartData(mActivity.getBlockList());
+        PieChartData pieChartData = BlockProcessor.countPieChartData(mActivity.getBlockList(), mActivity.getVisibleCodes());
         List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
         StringBuilder output = new StringBuilder();
         Resources res = mActivity.getResources();  //TODO hodilo null

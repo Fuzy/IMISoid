@@ -34,6 +34,7 @@ public class NetworkUtilities {
     public static String EVENTS_URL;
     public static String RECORDS_URL;
     public static String EMPLOYEES_URL;
+    public static String EMPLOYEES_EVENTS_URL;
     public static String AUTH_URL;
 
     public static final String DOMAIN_DEFAULT = "10.0.0.2";//        //10.0.0.1
@@ -122,6 +123,7 @@ public class NetworkUtilities {
         EVENTS_GET_URL = BASE_URL + EVENTS_GET_PATH;
         RECORDS_URL = BASE_URL + RECORDS_PATH;
         EMPLOYEES_URL = BASE_URL + EMPLOYEES_PATH;
+        EMPLOYEES_EVENTS_URL = BASE_URL + EMPLOYEES_EVENTS_PATH;
         AUTH_URL = BASE_URL + AUTH_PATH;
     }
 

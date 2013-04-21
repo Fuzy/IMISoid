@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +30,7 @@ import static imis.client.AppConsts.KEY_PORT;
  * Date: 12.3.13
  * Time: 11:05
  */
-public class NetworkSettingsActivity extends NetworkingActivity {
+public class NetworkSettingsActivity extends FragmentActivity {
     private static final String TAG = NetworkSettingsActivity.class.getSimpleName();
     private ImageView imageWebService, imageDatabase;
     private EditText editTextDomain, editTextPort;

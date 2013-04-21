@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -25,6 +25,7 @@ import imis.client.ui.fragments.PieChartFragment;
 import imis.client.ui.fragments.StackedBarFragment;
 import imis.client.ui.fragments.StatisticsFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,12 +39,15 @@ import static imis.client.persistent.EventManager.EventQuery;
  * Date: 7.4.13
  * Time: 14:43
  */
-public class EventsChartActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+public class EventsChartActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         AdapterView.OnItemSelectedListener {
     private static final String TAG = EventsChartActivity.class.getSimpleName();
+    private static final String FRAG_PIE = "PieChartFragment",
+            FRAG_STACK = "StackedBarFragment", FRAG_STATS = "StatisticsFragment";
     //private static final String LAB = "label", FROM = "from", TO = "to";
 
     private List<Block> blockList;
+    private List<CheckBox> checkBoxes = new ArrayList<>();
     private final DataSetObservable mDataSetObservable = new DataSetObservable();
     private final CheckBoxClickListener checkBoxClickListener = new CheckBoxClickListener();
 
@@ -63,7 +67,6 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
     private ImageButton dateFromButton, dateToButton;
     private EditText dateFromEdit, dateToEdit;
 
-    private Fragment current = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +115,7 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         check.setId(index);
         check.setChecked(true);
         box.addView(check);
+        checkBoxes.add(check);
 
         TextView label = new TextView(getApplication());
         label.setBackgroundColor(ColorUtil.getColor(kod_po));
@@ -239,6 +243,15 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         return blockList;
     }
 
+    public List<String> getVisibleCodes() {
+        List<String> codes = new ArrayList<>();
+        for (CheckBox checkBox : checkBoxes) {
+            if (checkBox.isChecked()) codes.add(Event.KOD_PO_VALUES[checkBox.getId()]);
+        }
+        Log.d(TAG, "getVisibleCodes() codes " + codes);
+        return codes;
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String selected = adapterView.getItemAtPosition(i).toString();
@@ -274,12 +287,14 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
 
     private void switchFragment() {
         Log.d(TAG, "switchFragment()");
-        if (current == null || (current instanceof StatisticsFragment)) {
+        if (getSupportFragmentManager().findFragmentByTag(FRAG_STATS) != null) {
             switchToPieChartFragment();
-        } else if (current instanceof PieChartFragment) {
+        } else if (getSupportFragmentManager().findFragmentByTag(FRAG_PIE) != null) {
             switchToStackedBarFragment();
-        } else if (current instanceof StackedBarFragment) {
+        } else if (getSupportFragmentManager().findFragmentByTag(FRAG_STACK) != null) {
             switchToStatisticsFragment();
+        } else {
+            switchToPieChartFragment();
         }
         getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
     }
@@ -288,8 +303,7 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         Log.d(TAG, "switchToStackedBarFragment()");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         StackedBarFragment barFragment = new StackedBarFragment();
-        current = barFragment;
-        ft.replace(R.id.displayChart, barFragment, "PieChartFragment");
+        ft.replace(R.id.displayChart, barFragment, FRAG_STACK);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         ft.commit();
     }
@@ -298,18 +312,16 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
         Log.d(TAG, "switchToPieChartFragment()");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         PieChartFragment pieFragment = new PieChartFragment();
-        current = pieFragment;
-        ft.replace(R.id.displayChart, pieFragment, "PieChartFragment");
+        ft.replace(R.id.displayChart, pieFragment, FRAG_PIE);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         ft.commit();
     }
 
     private void switchToStatisticsFragment() {
-        Log.d(TAG, "switchToPieChartFragment()");
+        Log.d(TAG, "switchToStatisticsFragment()");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         StatisticsFragment statsFragment = new StatisticsFragment();
-        current = statsFragment;
-        ft.replace(R.id.displayChart, statsFragment, "StatisticsFragment");
+        ft.replace(R.id.displayChart, statsFragment, FRAG_STATS);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         ft.commit();
     }
@@ -323,9 +335,15 @@ public class EventsChartActivity extends NetworkingActivity implements LoaderMan
 
         @Override
         public void onClick(View view) {
-            CheckBox check = (CheckBox) view;
-            Log.d(TAG, "onClick() " + view.getId());
-            Log.d(TAG, "onClick() " + view.getId() + " is " + check.isChecked() + " kod " + Event.KOD_PO_VALUES[view.getId()]);
+            CheckBox check = checkBoxes.get(view.getId());
+            Log.d(TAG, "onClick() " + view.getId() + " is " +
+                    check.isChecked() + " kod " + Event.KOD_PO_VALUES[view.getId()]);
+            refreshCurrentFragment();
         }
+    }
+
+    private void refreshCurrentFragment() {
+        Log.d(TAG, "refreshCurrentFragment()");
+        mDataSetObservable.notifyChanged();
     }
 }

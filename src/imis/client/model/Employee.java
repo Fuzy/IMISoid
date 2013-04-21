@@ -16,16 +16,19 @@ public class Employee {
     private boolean isSubordinate;
     private long lastEventTime;
     private String kod_po;
+    private String druh;
 
     public Employee() {
     }
 
-    public Employee(String icp, String kodpra, boolean subordinate, long lastEventTime, String kod_po) {
+    public Employee(int _id, String icp, String kodpra, boolean subordinate, long lastEventTime, String kod_po, String druh) {
+        this._id = _id;
         this.icp = icp;
         this.kodpra = kodpra;
         isSubordinate = subordinate;
         this.lastEventTime = lastEventTime;
         this.kod_po = kod_po;
+        this.druh = druh;
     }
 
     public int get_id() {
@@ -76,6 +79,14 @@ public class Employee {
         this.kod_po = kod_po;
     }
 
+    public String getDruh() {
+        return druh;
+    }
+
+    public void setDruh(String druh) {
+        this.druh = druh;
+    }
+
     public ContentValues asContentValues() {
         ContentValues values = new ContentValues();
         values.put(COL_ICP, icp);
@@ -109,6 +120,8 @@ public class Employee {
     public static final String COL_ICP = "ICP";
     public static final String COL_KODPRA = "KODPRA";
     public static final String COL_SUB = "SUB";
+    public static final String COL_DRUH = "DRUH";
+    public static final String COL_TIME = "TIME";
 
     public static final int IND_COL_ID = 0;
     public static final int IND_COL_ICP = 1;

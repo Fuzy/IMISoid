@@ -2,6 +2,7 @@ package imis.client.ui.activities;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -13,7 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import imis.client.R;
-import imis.client.asynctasks.GetEmployeesLastEvent;
+import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.ui.adapters.EmployeesAdapter;
 
 import static imis.client.persistent.EmployeeManager.DataQuery.CONTENT_URI;
@@ -25,7 +26,7 @@ import static imis.client.persistent.EmployeeManager.DataQuery.PROJECTION_ALL;
  * Date: 6.4.13
  * Time: 22:44
  */
-public class PresentEmployeesActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PresentEmployeesActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = PresentEmployeesActivity.class.getSimpleName();
     private EmployeesAdapter adapter;
     private GridView gridView;
@@ -63,8 +64,8 @@ public class PresentEmployeesActivity extends NetworkingActivity implements Load
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d(TAG, "onLoadFinished()");
         adapter.swapCursor(data);
-        gridView.setVisibility(View.GONE);
-        gridView.setVisibility(View.VISIBLE);
+        gridView.setAdapter(adapter);
+        gridView.invalidateViews();
     }
 
     @Override
@@ -93,6 +94,6 @@ public class PresentEmployeesActivity extends NetworkingActivity implements Load
     }
 
     private void refresh() {
-       new GetEmployeesLastEvent(this).execute();
+        new GetListOfEmployees(this).execute(null);
     }
 }

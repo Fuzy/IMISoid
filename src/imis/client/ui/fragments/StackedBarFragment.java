@@ -37,7 +37,6 @@ public class StackedBarFragment extends Fragment {
     private DataSetObserver mObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
-            //TODO change vs invalidate?
             Log.d(TAG, "onChanged()");
             displayGraph();
         }
@@ -46,7 +45,7 @@ public class StackedBarFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-        super.onAttach(activity);    //TODO sem kdyztak listener
+        super.onAttach(activity);
         mActivity = (EventsChartActivity) activity;
         mActivity.registerDataSetObserver(mObserver);
         Log.d(TAG, "onAttach() activity " + mActivity);
@@ -70,24 +69,23 @@ public class StackedBarFragment extends Fragment {
 
     private void displayGraph() {
         Log.d(TAG, "displayGraph()");
-        StackedBarChartData chartData = BlockProcessor.countStackedBarChartData(mActivity.getBlockList());
-        execute(chartData);
+        StackedBarChartData chartData = BlockProcessor.countStackedBarChartData(mActivity.getBlockList(),
+                mActivity.getVisibleCodes());
+        clearGraph();
+        prepareGraph(chartData);
     }
 
-    /**/
-    private void execute(StackedBarChartData chartData) {
+    private void prepareGraph(StackedBarChartData chartData) {
         String[] titles = mActivity.codesToTitles(chartData.getTitles());
+        Log.d(TAG, "prepareGraph() titles " + titles);
         XYMultipleSeriesRenderer renderer = buildBarRenderer(chartData.getColors());
         setChartSettings(renderer, "Události docházky pro daný den", "Den", "Čas", 0.5,
                 12.5, 0, (chartData.getyMax() * 1.1), Color.GRAY, Color.LTGRAY);
-        renderer.getSeriesRendererAt(0).setDisplayChartValues(true);
-        renderer.getSeriesRendererAt(1).setDisplayChartValues(true);
         renderer.setXLabels(12);
         renderer.setYLabels(10);
         renderer.setXLabelsAlign(Paint.Align.LEFT);
         renderer.setYLabelsAlign(Paint.Align.LEFT);
         renderer.setPanEnabled(true, false);
-        // renderer.setZoomEnabled(false);
         renderer.setZoomRate(1.1f);
         renderer.setBarSpacing(0.5f);
         mChartView = ChartFactory.getBarChartView(mActivity, buildBarDataset(titles, chartData.getValues()), renderer,
@@ -95,5 +93,11 @@ public class StackedBarFragment extends Fragment {
         LinearLayout layout = (LinearLayout) mChartContainerView;
         layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
+    }
+
+    private void clearGraph() {
+        Log.d(TAG, "clearGraph()");
+        LinearLayout layout = (LinearLayout) mChartContainerView;
+        layout.removeAllViews();
     }
 }

@@ -79,7 +79,7 @@ public class PieChartFragment extends Fragment {
 
     private void displayGraph() {
         Log.d(TAG, "displayGraph()");
-        PieChartData  pieChartData = BlockProcessor.countPieChartData(mActivity.getBlockList());
+        PieChartData pieChartData = BlockProcessor.countPieChartData(mActivity.getBlockList(), mActivity.getVisibleCodes());
         clearGraph();
         prepareGraph(pieChartData);
     }
@@ -96,11 +96,11 @@ public class PieChartFragment extends Fragment {
         mRenderer.setStartAngle(90);
     }
 
-    private void prepareGraph(PieChartData  pieChartData) {
+    private void prepareGraph(PieChartData pieChartData) {
         Log.d(TAG, "prepareGraph()");
         List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
         for (PieChartSerie eventsGraphSerie : eventsGraphSeries) {
-            Log.d(TAG, "prepareGraph() eventsGraphSerie " + eventsGraphSerie);
+            //Log.d(TAG, "prepareGraph() eventsGraphSerie " + eventsGraphSerie);
             mSeries.add(mActivity.getLabelForCode(eventsGraphSerie.getLabel()), eventsGraphSerie.getAmount());
             addSeriesRenderer(eventsGraphSerie.getColor());
         }
@@ -127,46 +127,4 @@ public class PieChartFragment extends Fragment {
         mRenderer = null;
         initRenderer();
     }
-/*
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart()");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause()");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop()");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(TAG, "onDestroyView()");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy()");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG, "onDetach()");
-    }*/
 }

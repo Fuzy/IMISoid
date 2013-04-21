@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
+import imis.client.model.Employee;
 import imis.client.model.Event;
 
 public class MyContentProvider extends ContentProvider {
@@ -99,6 +100,7 @@ public class MyContentProvider extends ContentProvider {
                 break;
             case EMPLOYEES:
                 id = sqlDB.insert(TABLE_EMPLOYEES, null, values);
+                break;
             case RECORDS:
                 Log.d(TAG, "insert() RECORDS");
                 id = sqlDB.insert(TABLE_RECORDS, null, values);
@@ -152,10 +154,11 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        Log.d(TAG, "update");
+        Log.d(TAG, "update uri " + uri);
         int rowsUpdated = 0;
 
         int uriType = sURIMatcher.match(uri);
+
         SQLiteDatabase sqlDB = database.getWritableDatabase();
 
         switch (uriType) {
@@ -164,6 +167,11 @@ public class MyContentProvider extends ContentProvider {
                 break;
             case RECORDS:
                 rowsUpdated = sqlDB.update(TABLE_RECORDS, values, selection, selectionArgs);
+                break;
+            case EMPLOYEE_ID:
+                String icp = uri.getLastPathSegment();
+                rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, Employee.COL_ICP + "=" + icp, null);
+                Log.d(TAG, "update() EMPLOYEES rowsUpdated " + rowsUpdated);
                 break;
             case EVENT_ID:
                 String id = uri.getLastPathSegment();

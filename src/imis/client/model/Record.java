@@ -156,12 +156,10 @@ public class Record {
         record.setPozn_hl(c.getString(COL_NUM_POZN_HL));
         record.setPozn_ukol(c.getString(COL_NUM_POZN_UKOL));
         record.setPoznamka(c.getString(COL_NUM_POZNAMKA));
-        //TODO dokoncit
         return record;
     }
 
     public ContentValues getAsContentValues() {
-        //TODO asi tam dat jen to spolecne pro add a update
         ContentValues values = new ContentValues();
         /*if (id != null) {
             values.put(COL_SERVER_ID, id);

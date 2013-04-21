@@ -3,6 +3,7 @@ package imis.client.ui.activities;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -27,7 +28,7 @@ import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
  * Date: 15.4.13
  * Time: 17:25
  */
-public class RecordListActivity extends NetworkingActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+public class RecordListActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = RecordListActivity.class.getSimpleName();
     private RecordsCursorAdapter adapter;
@@ -136,6 +137,5 @@ public class RecordListActivity extends NetworkingActivity implements LoaderMana
         adapter.notifyDataSetChanged();
         deleteDetailFragment();
         createDetailFragment(adapter.getItem(position));
-
     }
 }

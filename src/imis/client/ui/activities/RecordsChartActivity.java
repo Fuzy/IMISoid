@@ -3,6 +3,7 @@ package imis.client.ui.activities;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +21,7 @@ import java.util.List;
  * Date: 29.3.13
  * Time: 15:34
  */
-public class RecordsChartActivity extends NetworkingActivity {
+public class RecordsChartActivity extends FragmentActivity {
     private static final String TAG = RecordsChartActivity.class.getSimpleName();
 
     private final DataSetObservable mDataSetObservable = new DataSetObservable();

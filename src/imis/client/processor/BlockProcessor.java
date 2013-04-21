@@ -67,12 +67,13 @@ public class BlockProcessor {
         return blocks;
     }
 
-    public static PieChartData countPieChartData(List<Block> blocks) {
+    public static PieChartData countPieChartData(List<Block> blocks, List<String> codes) {
         PieChartData pieChartData = new PieChartData();
         long total = 0L;
 
         Map<String, Long> statistics = new HashMap<>();
         for (Block block : blocks) {
+            if (codes.contains(block.getKod_po()) == false) continue; // Exclude not checked in checkbox
             long amount = (block.getEndTime() - block.getStartTime());
             total += amount;
             long count = statistics.containsKey(block.getKod_po()) ? statistics.get(block.getKod_po()) : 0;
@@ -97,7 +98,7 @@ public class BlockProcessor {
         return pieChartData;
     }
 
-    public static StackedBarChartData countStackedBarChartData(List<Block> blocks) {
+    public static StackedBarChartData countStackedBarChartData(List<Block> blocks, List<String> codes) {
         StackedBarChartData chartData = new StackedBarChartData();
         for (Block block : blocks) {
             if (block.getDate() > chartData.getMaxDay()) chartData.setMaxDay(block.getDate());
@@ -110,12 +111,13 @@ public class BlockProcessor {
         Map<String, double[]> map = new HashMap<>();
 
         for (Block block : blocks) {
-            int index = (int) ((block.getDate() - chartData.getMinDay()) / MS_IN_DAY);
             String kod_po = block.getKod_po();
+            if (codes.contains(kod_po) == false) continue; // Exclude not checked in checkbox
+            int index = (int) ((block.getDate() - chartData.getMinDay()) / MS_IN_DAY);
             double amount = (double) ((block.getEndTime() - block.getStartTime()) / MS_IN_HOUR);
 
             // If exists update
-            boolean contains =  map.containsKey(kod_po);
+            boolean contains = map.containsKey(kod_po);
             if (contains == false) {
                 double[] values = new double[numOfDays];
                 map.put(kod_po, values);
@@ -124,12 +126,12 @@ public class BlockProcessor {
             // Update value
             double[] vaDoubles = map.get(kod_po);
             double oldValue = vaDoubles[index];
-            vaDoubles[index] += oldValue+amount;
+            vaDoubles[index] += oldValue + amount;
             if (vaDoubles[index] > chartData.getyMax()) chartData.setyMax(vaDoubles[index]);
 
         }
 
-        int size =  map.size();
+        int size = map.size();
         int ind = 0;
         List<double[]> values = new ArrayList<>(size);
         String[] titles = new String[size];
@@ -139,7 +141,7 @@ public class BlockProcessor {
             Log.d(TAG, "countStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
             values.add(stringEntry.getValue());
             titles[ind] = stringEntry.getKey();
-            colors[ind] =  ColorUtil.getColor(stringEntry.getKey());
+            colors[ind] = ColorUtil.getColor(stringEntry.getKey());
             ind++;
         }
 
