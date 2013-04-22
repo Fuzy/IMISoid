@@ -87,10 +87,30 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private void loadEvents(int arriveId, int leaveId) {
         Log.d(TAG, "onCreate arriveId: " + arriveId + " leaveId: " + leaveId);
-        // Ziska cursor pro pristup k ukolu
+        String arriveMsg = null, leaveMsg = null;
         arriveEvent = EventManager.getEvent(getApplicationContext(), arriveId);
+        if (arriveEvent.getMsg() != null) arriveMsg = arriveEvent.getMsg();
         if (leaveId != -1) {
             leaveEvent = EventManager.getEvent(getApplicationContext(), leaveId);
+            if (leaveEvent.getMsg() != null) leaveMsg = leaveEvent.getMsg();
+        }
+
+        showToastIfErrors(arriveMsg, leaveMsg);
+    }
+
+    private void showToastIfErrors(String arriveMsg, String leaveMsg) {
+        StringBuilder errMsg = new StringBuilder();
+        if (arriveMsg != null) {
+            errMsg.append(getResources().getString(R.string.title_arrive_err));
+            errMsg.append(arriveMsg);
+        }
+        if (leaveMsg != null) {
+            errMsg.append(getResources().getString(R.string.title_leave_err));
+            errMsg.append(leaveMsg);
+        }
+        if (errMsg.length() != 0) {
+            Toast toast = Toast.makeText(getApplication(), errMsg, Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 
@@ -357,9 +377,10 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
         try {
-            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_KOD_PRA);
+            String kod = accounts[0].name;
+            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
             event.setIcp(icp);
-            event.setIc_obs(icp);
+            event.setIc_obs(kod); //TODO testovaci chyba: "12345"
         } catch (Exception e) {
             //e.printStackTrace();
             Toast toast = Toast.makeText(getApplicationContext(), R.string.no_account_set, Toast.LENGTH_LONG);

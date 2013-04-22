@@ -28,10 +28,12 @@ public class BlockProcessor {
             {Event.KOD_PO_LEAVE_SERVICE, Event.KOD_PO_LEAVE_LUNCH, Event.KOD_PO_LEAVE_SUPPER};
 
     public static List<Block> eventsToMapOfBlocks(Cursor cursor) {
+        Log.d(TAG, "eventsToMapOfBlocks()");
         Event startEvent, endEvent = null;
         Block block;
         List<Block> blocks = new ArrayList<>();
 
+        //TODO odladit, nektere jsou tam dvakrat
         while (cursor.moveToNext()) {
             startEvent = Event.cursorToEvent(cursor);
 
@@ -58,10 +60,14 @@ public class BlockProcessor {
                 if (index == -1) index = 6;
                 block.setKod_po(Event.KOD_PO_VALUES[index]);
                 block.setDirty(startEvent.isDirty() || endEvent.isDirty());
+                block.setError(startEvent.isError() || endEvent.isError());
                 Log.d(TAG, "eventsToMapOfBlocks() block " + block);
                 blocks.add(block);
             }
         }
+        Log.d(TAG, "eventsToMapOfBlocks() blocks " + blocks );
+        /*Event last = blocks.get(blocks.size() - 1);
+        if ()*/
         cursor.moveToPosition(-1);
 
         return blocks;

@@ -34,6 +34,8 @@
 
     <string name="title_arrive">Příchod</string>
     <string name="title_leave">Odchod</string>
+    <string name="title_arrive_err">Příchod:\n</string>
+    <string name="title_leave_err">Odchod:\n</string>
     <string name="title_leave_btn">Zadej odchod</string>
     <string name="label_note">Poznámka</string>
 

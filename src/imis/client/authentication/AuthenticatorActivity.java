@@ -81,7 +81,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         Log.d(TAG, "finishLogin()");
         final Account account = new Account(username, ACCOUNT_TYPE);
         Bundle userdata= new Bundle();
-        userdata.putString(AuthenticationConsts.KEY_KOD_PRA, icp);
+        userdata.putString(AuthenticationConsts.KEY_ICP, icp);
         accountManager.addAccountExplicitly(account, password, userdata);
 
         // Povoli synchronizaci pro tento ucet

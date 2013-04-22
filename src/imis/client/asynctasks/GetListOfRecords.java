@@ -61,8 +61,9 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
     @Override
     protected void onPostExecute(Record[] records) {
         super.onPostExecute(null);
-        Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
-        super.onPostExecute(records);
+
+
+        /*Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
         //TODO test data
         records = new Record[1];
 
@@ -80,18 +81,16 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
         );
         record.setPozn_hl("poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
         record.setPozn_ukol("poznamka ukol poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
-        records[0] = record;
+        records[0] = record;*/
 
        /* Record record2 = new Record();
         record2.setZc("456");*/
 
 
         //records[1] = record2;
-        Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
+        Log.d(TAG, "onPostExecute() records size " + records.length);
 
         RecordManager.addRecords(activity, Arrays.asList(records));
         Log.d(TAG, "onPostExecute() getAllRecords " + RecordManager.getAllRecords(activity));
-        /*RecordsChartActivity recordsActivity = (RecordsChartActivity) activity;
-        recordsActivity.setRecords(Arrays.asList(records)); //TODO pole nebo kolekce*/
     }
 }

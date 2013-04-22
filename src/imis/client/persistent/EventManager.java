@@ -14,36 +14,7 @@ import java.util.List;
 public class EventManager {
     private static final String TAG = "EventManager";
 
-    //TODO serverEvents jako Event
-   /* private static long updateEvents(Context context, List<JsonObject> serverEvents,
-                                     long lastSyncMarker) {
-        Log.d(TAG, "updateEvents()");
-        long currentSyncMarker = lastSyncMarker;
 
-        for (JsonObject eventJson : serverEvents) {
-
-            JsonElement syncEl = eventJson.get(Event.JSON_SYNC);
-            long sync = (syncEl == null) ? -1 : syncEl.getAsLong();
-
-            if (sync > currentSyncMarker) {
-                // Pamatuje si cas nejnovejsi zmeny
-                currentSyncMarker = sync;
-            }
-
-            Event event = Event.jsonToEvent(eventJson);
-            event.setDirty(false);
-            addEvent(context, event);
-
-        }
-
-        return currentSyncMarker;
-    }*/
-
-    /**
-     * @param context
-     * @param event
-     * @return
-     */
     public static int addEvent(Context context, Event event) {
         Log.d(TAG, "addEvent()");
         ContentValues values = event.asContentValues();
@@ -80,7 +51,7 @@ public class EventManager {
         return event;
     }
 
-    //TODO test
+
     public static List<Event> getDirtyEvents(Context context) {
         Log.d(TAG, "getDirtyEvents()");
         ContentResolver resolver = context.getContentResolver();
@@ -119,18 +90,46 @@ public class EventManager {
         return resolver.update(uri, values, null, null);
     }
 
+    public static int markEventAsSynced(Context context, long id) {
+        Log.d(TAG, "markEventAsSynced() id: " + id);
+        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
+        ContentResolver resolver = context.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(Event.COL_DIRTY, false);
+        return resolver.update(uri, values, null, null);
+    }
+
+    public static int markEventAsNoError(Context context, long id) {
+        Log.d(TAG, "markEventAsNoError() id: " + id);
+        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
+        ContentResolver resolver = context.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(Event.COL_ERROR, false);
+        values.put(Event.COL_MSG, "");
+        return resolver.update(uri, values, null, null);
+    }
+
+    public static int markEventAsError(Context context, long id, String msg) {
+        Log.d(TAG, "markEventAsError() id: " + id);
+        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
+        ContentResolver resolver = context.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(Event.COL_ERROR, true);
+        values.put(Event.COL_MSG, msg);
+        return resolver.update(uri, values, null, null);
+    }
+
     public static int updateEvent(Context context, Event event) {
-        Log.d(TAG, "updateEvent()");
+        Log.d(TAG, "updateEvent() " + event);
         Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(event.get_id()));
         ContentResolver resolver = context.getContentResolver();
-        ContentValues values = event.asContentValues();// TODO pozor co vse
-        // aktual.
+        ContentValues values = event.asContentValues();
         values.put(Event.COL_DIRTY, true);
         return resolver.update(uri, values, null, null);
     }
 
     public static void updateEventServerId(Context context, long id, String rowid) {
-        Log.d(TAG, "updateEventServerId()");
+        Log.d(TAG, "updateEventServerId() id " + id + " rowid " + rowid);
         // Uri ukolu
         Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
         ContentResolver resolver = context.getContentResolver();
@@ -153,7 +152,7 @@ public class EventManager {
                 Event.COL_DIRTY, Event.COL_DELETED, Event.COL_ICP,
                 Event.COL_DATUM, Event.COL_KOD_PO, Event.COL_DRUH,
                 Event.COL_CAS, Event.COL_IC_OBS, Event.COL_TYP,
-                Event.COL_DATUM_ZMENY, Event.COL_POZNAMKA};
+                Event.COL_DATUM_ZMENY, Event.COL_POZNAMKA, Event.COL_ERROR, Event.COL_MSG};
 
         // vyber podle id ukolu
         public static final String SELECTION_ID = Event.COL_ID + "=?";

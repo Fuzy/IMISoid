@@ -60,6 +60,7 @@ public class RecordListActivity extends FragmentActivity implements LoaderManage
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader()");
+        //TODO filtrovani
         return new CursorLoader(getApplicationContext(), CONTENT_URI,
                 null, null, null, null);//PROJECTION_ALL
     }

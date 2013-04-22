@@ -13,16 +13,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.R;
-import imis.client.network.NetworkUtilities;
 import imis.client.asynctasks.TestConnection;
+import imis.client.network.NetworkUtilities;
 
 import java.net.HttpURLConnection;
 
 import static imis.client.AppConsts.KEY_DOMAIN;
 import static imis.client.AppConsts.KEY_PORT;
+import static imis.client.AppUtil.showNetworkAccessUnavailable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -91,7 +91,6 @@ public class NetworkSettingsActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu");
-        // Ziska menu z XML zdroje
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.network_options_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -134,8 +133,7 @@ public class NetworkSettingsActivity extends FragmentActivity {
         Log.d("NetworkSettingsActivity", "refreshState()");
         if (domain.length() != 0 && domain != null) {
             if (NetworkUtilities.isOnline(getApplicationContext()) == false) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.network_unavailable, Toast.LENGTH_LONG);
-                toast.show(); //TODO
+                showNetworkAccessUnavailable(getApplication()) ;
                 return;
             }
             new TestConnection(this).execute(null);
@@ -150,24 +148,6 @@ public class NetworkSettingsActivity extends FragmentActivity {
         imageView.setImageResource(R.drawable.ic_delete);
     }
 
-    /*private class CheckWebServiceAndDBAvailability extends AsyncTask<Void, Void, Integer> {
-
-        @Override
-        protected Integer doInBackground(Void... params) {
-            Log.d("NetworkSettingsActivity$CheckWSReachability", "doInBackground()");
-            return NetworkUtilities.testWebServiceAndDBAvailability();
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            Log.d("NetworkSettingsActivity$CheckWSReachability", "onPostExecute() result: " + result);
-            Toast toast = Toast.makeText(getApplicationContext(), "test: " + result, Toast.LENGTH_LONG);
-            toast.show();
-
-            setIconsOfAvailability(result);
-        }
-
-    }*/
 
     public void setIconsOfAvailability(int code) {
         switch (code) {

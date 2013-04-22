@@ -2,10 +2,12 @@ package imis.client.network;
 
 import android.util.Log;
 import imis.client.AppUtil;
+import imis.client.http.MyResponse;
 import imis.client.model.Event;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -74,7 +76,7 @@ public class EventsSync {
         return statusCode;
     }
 
-    public static int createEvent(Event event) {
+    public static MyResponse createEvent(Event event) {
         Log.d(TAG, "createEvent() event: " + event);
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -88,19 +90,26 @@ public class EventsSync {
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         int statusCode = -1;
+        String msg = null;
         try {
             ResponseEntity response = restTemplate.exchange(NetworkUtilities.EVENTS_URL, HttpMethod.POST, entity, null);
             URI location = response.getHeaders().getLocation();
             String path = location.getPath();
             event.setServer_id(path.substring(location.getPath().lastIndexOf('/') + 1));
             Log.d(TAG, "createEvent() event uri : " + event);
+            statusCode = response.getStatusCode().value();
         } catch (Exception e) {
             e.printStackTrace();
+            if (e instanceof HttpServerErrorException) {
+                HttpServerErrorException ex = (HttpServerErrorException) e;
+                msg = ex.getResponseBodyAsString();
+            }
         }
-        return statusCode;
+
+        return new MyResponse(statusCode, msg);
     }
 
-    public static int updateEvent(Event event) {
+    public static MyResponse updateEvent(Event event) {
         Log.d(TAG, "updateEvent() event: " + event);
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -114,91 +123,19 @@ public class EventsSync {
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         int statusCode = -1;
+        String msg = null;
         try {
             ResponseEntity response = restTemplate.exchange(NetworkUtilities.EVENTS_UPDATE_URL, HttpMethod.PUT,
                     entity, null, event.getServer_id());
-            URI location = response.getHeaders().getLocation();
-            String path = location.getPath();
-            event.setServer_id(path.substring(location.getPath().lastIndexOf('/') + 1));
-            Log.d(TAG, "createEvent() event uri : " + event);
+            statusCode = response.getStatusCode().value();
         } catch (Exception e) {
             e.printStackTrace();
+            if (e instanceof HttpServerErrorException) {
+                HttpServerErrorException ex = (HttpServerErrorException) e;
+                msg = ex.getResponseBodyAsString();
+            }
         }
-        return statusCode;
+        return new MyResponse(statusCode, msg);
     }
 
-   /* private static int sendHttpGetForUserEvents(String uri, String response) {
-        HttpClient httpclient = HttpClientFactory.getThreadSafeClient();
-        HttpGet httpget = new HttpGet(uri);
-        HttpResponse resp;
-        int code = -1;
-        // String respStr = null;
-        try {
-            resp = httpclient.execute(httpget);
-            HttpEntity entity = resp.getEntity();
-            code = resp.getStatusLine().getStatusCode();
-            response = EntityUtils.toString(entity);
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return code;
-    }*/
-
-    /*private static int sendHttpDelete(String uri) {
-        HttpClient httpClient = HttpClientFactory.getThreadSafeClient();
-        HttpDelete delete = new HttpDelete(uri);
-        HttpResponse resp;
-        int code = -1;
-        try {
-            resp = httpClient.execute(delete);
-            code = resp.getStatusLine().getStatusCode();
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Log.d(TAG, "sendDelete uri: " + uri + "code: " + code);
-        return code;
-    }*/
-
-    /*private static int sendHttpPost(String uri, Event event) {
-        HttpClient httpClient = HttpClientFactory.getThreadSafeClient();
-        HttpPost post = new HttpPost(uri);
-        HttpResponse resp;
-        int code = -1;
-        try {
-            StringEntity se = new StringEntity(Event.getAsJson(event));
-            post.setEntity(se);
-            post.setHeader("Accept", "application/json");
-            post.setHeader("Content-type", "application/json");
-            resp = httpClient.execute(post);
-            code = resp.getStatusLine().getStatusCode();
-            // TODO event doplni rowid
-            if (event.getServer_id() == null) {
-                String s = resp.getLastHeader("Location").getValue();//TODO vyjimka
-                URI location = URI.create(s);
-                String path = location.getPath();
-                event.setServer_id(path.substring(path.lastIndexOf('/') + 1));
-                Log.d(TAG, "sendHttpPost event: " + event);
-            }
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Log.d(TAG, "sendHttpPost uri: " + uri + "code: " + code);
-        return code;
-    }*/
 }

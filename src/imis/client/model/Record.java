@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 public class Record {
+    private int _id;
     private String id;//TODO potrebuju to ? BigDecimal
     private long datum;
     private String kodpra;
@@ -127,7 +128,15 @@ public class Record {
         return (getZc() == null) ? null : getZc().substring(0, 1);
     }
 
-   /* public static Record resultSetToRecord(ResultSet rsSet) throws SQLException {
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    /* public static Record resultSetToRecord(ResultSet rsSet) throws SQLException {
         Record record = new Record();
         //record.setId(rsSet.getString(COL_SERVER_ID));
         record.setDatum(rsSet.getLong(COL_DATUM));
@@ -145,7 +154,8 @@ public class Record {
 
     public static Record cursorToRecord(Cursor c) {
         Record record = new Record();
-        record.setId(c.getString(COL_NUM_ID));
+        record.set_id(c.getInt(COL_NUM_ID));
+        record.setId(c.getString(COL_NUM_SERVER_ID));
         record.setDatum(c.getLong(COL_NUM_DATUM));
         record.setKodpra(c.getString(COL_NUM_KODPRA));
         record.setZc(c.getString(COL_NUM_ZC));
@@ -161,9 +171,9 @@ public class Record {
 
     public ContentValues getAsContentValues() {
         ContentValues values = new ContentValues();
-        /*if (id != null) {
+        if (id != null) {
             values.put(COL_SERVER_ID, id);
-        }*/
+        }
         values.put(COL_DATUM, (datum));
         if (kodpra != null) {
             values.put(COL_KODPRA, kodpra);
@@ -199,7 +209,7 @@ public class Record {
 
     public static final String COL_ID = "_id";
     public static final String COL_POZN_UKOL = "POZN_UKOL";
-    // public static final String COL_SERVER_ID = "ID";
+    public static final String COL_SERVER_ID = "ID";
     public static final String COL_DATUM = "DATUM";
     public static final String COL_KODPRA = "KODPRA";
     public static final String COL_MNOZSTVI_ODVED = "MNOZSTVI_ODVED";
@@ -211,16 +221,17 @@ public class Record {
     public static final String COL_CPOZZAK = "CPOZZAK";
 
     private static final int COL_NUM_ID = 0;
-    private static final int COL_NUM_DATUM = 1;
-    private static final int COL_NUM_KODPRA = 2;
-    private static final int COL_NUM_ZC = 3;
-    private static final int COL_NUM_STAV_V = 4;
-    private static final int COL_NUM_CPOLZAK = 5;
-    private static final int COL_NUM_CPOZZAK = 6;
-    private static final int COL_NUM_MNOZSTVI_ODVED = 7;
-    private static final int COL_NUM_POZN_HL = 8;
-    private static final int COL_NUM_POZN_UKOL = 9;
-    private static final int COL_NUM_POZNAMKA = 10;
+    private static final int COL_NUM_SERVER_ID = 1;
+    private static final int COL_NUM_DATUM = 2;
+    private static final int COL_NUM_KODPRA = 3;
+    private static final int COL_NUM_ZC = 4;
+    private static final int COL_NUM_STAV_V = 5;
+    private static final int COL_NUM_CPOLZAK = 6;
+    private static final int COL_NUM_CPOZZAK = 7;
+    private static final int COL_NUM_MNOZSTVI_ODVED = 8;
+    private static final int COL_NUM_POZN_HL = 9;
+    private static final int COL_NUM_POZN_UKOL = 10;
+    private static final int COL_NUM_POZNAMKA = 11;
 
     public static final String TYPE_A = "A";
     public static final String TYPE_I = "I";

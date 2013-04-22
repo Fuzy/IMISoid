@@ -6,6 +6,6 @@ public class AuthenticationConsts {
     public static final String ACCOUNT_TYPE = "imisoid";
     public static final String AUTHTOKEN_TYPE = "imisoid";
     public static final String AUTHORITY = "imis.client.events.contentprovider";
-    public static final String KEY_KOD_PRA = "KEY_KOD_PRA";
+    public static final String KEY_ICP = "KEY_ICP";
 
 }

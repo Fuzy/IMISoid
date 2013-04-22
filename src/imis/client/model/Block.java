@@ -16,6 +16,7 @@ public class Block {
     private int leaveId;
     private String kod_po;
     boolean dirty;
+    boolean error;
 
     public Block() {
     }
@@ -76,6 +77,13 @@ public class Block {
         this.dirty = dirty;
     }
 
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
+    }
 
     @Override
     public String toString() {

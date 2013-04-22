@@ -4,10 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-import static imis.client.AppUtil.formatDate;
-import static imis.client.AppUtil.formatTime;
+import static imis.client.AppUtil.*;
 
 public class Event {
+    // private static final String TAG = Event.class.getSimpleName();
     // sync
     @JsonIgnore
     private int _id;
@@ -16,20 +16,39 @@ public class Event {
     private boolean dirty;
     @JsonIgnore
     private boolean deleted;
+    @JsonIgnore
+    private boolean error;
+    @JsonIgnore
+    private String msg;
     // data
     private String icp;
-    private long datum;//private Date datum;
+    private long datum;
     private String kod_po;
     private String druh;
     private long cas;
     private String ic_obs;
     private String typ;
-    private long datum_zmeny;//private Date datum_zmeny;
+    private long datum_zmeny;
     private String poznamka;
 
-    // private static final String TAG = Event.class.getSimpleName();
 
     public Event() {
+    }
+
+    public Event(boolean dirty, boolean deleted, String icp, long datum, String kod_po, String druh,
+                 long cas, String ic_obs, String typ, long datum_zmeny, String poznamka) {
+        super();
+        this.dirty = dirty;
+        this.deleted = deleted;
+        this.icp = icp;
+        this.datum = datum;
+        this.kod_po = kod_po;
+        this.druh = druh;
+        this.cas = cas;
+        this.ic_obs = ic_obs;
+        this.typ = typ;
+        this.datum_zmeny = datum_zmeny;
+        this.poznamka = poznamka;
     }
 
     public boolean isDirty() {
@@ -66,20 +85,20 @@ public class Event {
         return _id;
     }
 
-    public Event(boolean dirty, boolean deleted, String icp, long datum, String kod_po, String druh,
-                 long cas, String ic_obs, String typ, long datum_zmeny, String poznamka) {
-        super();
-        this.dirty = dirty;
-        this.deleted = deleted;
-        this.icp = icp;
-        this.datum = datum;
-        this.kod_po = kod_po;
-        this.druh = druh;
-        this.cas = cas;
-        this.ic_obs = ic_obs;
-        this.typ = typ;
-        this.datum_zmeny = datum_zmeny;
-        this.poznamka = poznamka;
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public String getServer_id() {
@@ -168,13 +187,34 @@ public class Event {
     }
 
 
-    @Override
+    /*@Override
     public String toString() {
         return "Event [_id=" + _id + ", server_id=" + server_id + ", dirty=" + dirty + ", deleted="
                 + deleted + ", icp=" + icp + ", datum=" + formatDate(datum) + ", datum=" + datum
                 + ", kod_po=" + kod_po
                 + ", druh=" + druh + ", cas=" + formatTime(cas) + ", ic_obs=" + ic_obs + ", typ=" + typ
                 + ", datum_zmeny=" + formatDate(datum_zmeny) + ", poznamka=" + poznamka + "]";
+    }*/
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "_id=" + _id +
+                ", server_id='" + server_id + '\'' +
+                ", dirty=" + dirty +
+                ", deleted=" + deleted +
+                ", icp='" + icp + '\'' +
+                ", datum=" + formatDate(datum) +
+                ", kod_po='" + kod_po + '\'' +
+                ", druh='" + druh + '\'' +
+                ", cas=" + formatTime(cas) +
+                ", ic_obs='" + ic_obs + '\'' +
+                ", typ='" + typ + '\'' +
+                ", datum_zmeny=" + formatDate(datum_zmeny) +
+                ", poznamka='" + poznamka + '\'' +
+                ", error=" + error +
+                ", msg='" + msg + '\'' +
+                '}';
     }
 
     // "dd.MM.yyyy"
@@ -193,6 +233,8 @@ public class Event {
         event.setTyp(c.getString(COL_NUM_TYP));
         event.setDatum_zmeny(c.getLong(COL_NUM_DATUM_ZMENY));
         event.setPoznamka(c.getString(COL_NUM_POZNAMKA));
+        event.setError(c.getInt(COL_NUM_ERROR) > 0);
+        event.setMsg(c.getString(COL_NUM_MSG));
         return event;
     }
 
@@ -224,6 +266,10 @@ public class Event {
         if (poznamka != null) {
             values.put(COL_POZNAMKA, poznamka);
         }
+        values.put(COL_ERROR, error);
+        if (msg != null) {
+            values.put(COL_MSG, msg);
+        }
         return values;
     }
 
@@ -240,6 +286,8 @@ public class Event {
     public static final String COL_TYP = "TYP";
     public static final String COL_DATUM_ZMENY = "DATUM_ZMENY";
     public static final String COL_POZNAMKA = "POZNAMKA";
+    public static final String COL_ERROR = "ERROR";
+    public static final String COL_MSG = "MSG";
 
     private static int COL_NUM_ID = 0;
     private static int COL_NUM_SERVER_ID = 1;
@@ -254,8 +302,10 @@ public class Event {
     private static int COL_NUM_TYP = 10;
     private static int COL_NUM_DATUM_ZMENY = 11;
     private static int COL_NUM_POZNAMKA = 12;
+    private static int COL_NUM_ERROR = 13;
+    private static int COL_NUM_MSG = 14;
 
-    public static final String JSON_SERVER_ID = "si";
+    public static final String JSON_SERVER_ID = "si";//TODO uspora dat
     public static final String JSON_DELETED = "de";
     public static final String JSON_SYNC = "sy";
 

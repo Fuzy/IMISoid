@@ -7,10 +7,10 @@ import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import imis.client.AppUtil;
 import imis.client.authentication.AuthenticationConsts;
+import imis.client.http.MyResponse;
 import imis.client.model.Event;
 import imis.client.network.EventsSync;
 import imis.client.network.NetworkUtilities;
@@ -42,6 +42,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync()");
 
+        MyResponse response;
         int httpCode = -1;
         httpCode = NetworkUtilities.testWebServiceAndDBAvailability();
         if (httpCode != HttpStatus.SC_OK) {
@@ -49,49 +50,50 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             return;
         }
 
-        String icp = accountManager.getUserData(account, AuthenticationConsts.KEY_KOD_PRA);
+        String icp = accountManager.getUserData(account, AuthenticationConsts.KEY_ICP);
         Log.d(TAG, "onPerformSync() icp " + icp);
         // long lastSyncMarker = getServerSyncMarker(account);
 
-        // ziska vsechny lokalni zmeny a odesle je
+        // get local changes
         List<Event> dirtyEvents = EventManager.getDirtyEvents(context);
         for (Event event : dirtyEvents) {
             if (event.isDeleted()) {
-                // mazani
+                // deleting
                 httpCode = EventsSync.deleteEvent(event.getServer_id());
-                if (httpCode == HttpStatus.SC_OK) {
-                    EventManager.deleteEvent(context, event.get_id());
-                } else {
-                    // TODO neuspech
-                }
+                if (httpCode == HttpStatus.SC_OK) EventManager.deleteEvent(context, event.get_id());
             } else if (event.hasServer_id()) {
-                // update
-                httpCode = EventsSync.updateEvent(event);
-                if (httpCode == HttpStatus.SC_ACCEPTED) {
-                    Log.d(TAG, "onPerformSync() update ok");
+                // updating
+                EventManager.markEventAsNoError(context, event.get_id());
+                response = EventsSync.updateEvent(event);
+                if (response.getCode() == HttpStatus.SC_ACCEPTED) {
+                    EventManager.markEventAsSynced(context, event.get_id());
                 } else {
-                    // TODO neuspech
+                    EventManager.markEventAsError(context, event.get_id(), response.getMsg());
                 }
             } else if (event.hasServer_id() == false) {
-                // pridani nove udalosti
-                httpCode = EventsSync.createEvent(event);
-                if (httpCode == HttpStatus.SC_CREATED) {
+                // creating
+                EventManager.markEventAsNoError(context, event.get_id());
+                response = EventsSync.createEvent(event);
+                if (response.getCode() == HttpStatus.SC_CREATED) {
+
                     EventManager.updateEventServerId(context, event.get_id(), event.getServer_id());
+                    EventManager.markEventAsSynced(context, event.get_id());
                 } else {
-                    // TODO neuspech
+                    EventManager.markEventAsError(context, event.get_id(), response.getMsg());
                 }
             }
         }
 
         //udela misto pro platne udaje
-        EventManager.deleteAllEvents(context);
-        //stahne vse ze serveru
+        //EventManager.deleteAllEvents(context);//TODO asi spatne
+
+        // download all user events from server
         List<Event> events = new ArrayList<>();
         //"/0000001?from=29.7.2004&to=29.7.2004"
-        long date = extras.getLong(Event.KEY_DATE,  AppUtil.getTodayInLong());
+        long date = extras.getLong(Event.KEY_DATE, AppUtil.getTodayInLong());
         EventsSync.getUserEvents(events, icp, date, date);//TODO jak obdobi spravne?
         for (Event event : events) {
-            EventManager.addEvent(context, event);
+            if (EventManager.updateEvent(context, event) == 0) EventManager.addEvent(context, event);
         }
         Log.d(TAG, "onPerformSync() events length: " + events.size());
         // Log.d(TAG, "onPerformSync() dirtyEvents: " + dirtyEvents);
@@ -99,31 +101,5 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     }
 
-    /**
-     * This helper function fetches the last known high-water-mark we received
-     * from the server - or 0 if we've never synced.
-     *
-     * @param account the account we're syncing
-     * @return the change high-water-mark
-     */
-    private long getServerSyncMarker(Account account) {
-        Log.d(TAG, "getServerSyncMarker()");
-        String markerString = accountManager.getUserData(account, SYNC_MARKER_KEY);
-        if (!TextUtils.isEmpty(markerString)) {
-            return Long.parseLong(markerString);
-        }
-        return 0;
-    }
-
-    /**
-     * Save off the high-water-mark we receive back from the server.
-     *
-     * @param account The account we're syncing
-     * @param marker  The high-water-mark we want to save.
-     */
-    private void setServerSyncMarker(Account account, long marker) {
-        Log.d(TAG, "setServerSyncMarker()");
-        accountManager.setUserData(account, SYNC_MARKER_KEY, Long.toString(marker));
-    }
 
 }

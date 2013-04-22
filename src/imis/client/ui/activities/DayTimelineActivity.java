@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
@@ -41,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 
 import static imis.client.AppConsts.*;
+import static imis.client.AppUtil.showAccountNotExistsError;
+import static imis.client.AppUtil.showNetworkAccessUnavailable;
 import static imis.client.authentication.AuthenticationConsts.ACCOUNT_TYPE;
 import static imis.client.authentication.AuthenticationConsts.AUTHORITY;
 import static imis.client.persistent.EventManager.EventQuery;
@@ -190,11 +191,11 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
     private void refreshListOfEmployees() {
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
         try {
-            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_KOD_PRA);
+            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
             Log.d(TAG, "refreshListOfEmployees() icp " + icp);
             new GetListOfEmployees(this).execute(icp);//1493913
         } catch (Exception e) {
-            showAccountNotExistsError();
+            showAccountNotExistsError(getApplication());
         }
     }
 
@@ -211,9 +212,11 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
         Bundle extras = new Bundle();
         extras.putLong(Event.KEY_DATE, date);
         if (accounts.length > 0) {
+            Log.d(TAG, "performSync()");
+            if (!NetworkUtilities.isOnline(getApplication())) showNetworkAccessUnavailable(getApplication());
             ContentResolver.requestSync(accounts[0], AUTHORITY, extras);
         } else {
-            showAccountNotExistsError();
+            showAccountNotExistsError(getApplication());
         }
     }
 
@@ -325,10 +328,10 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
         }
     }
 
-    private void showAccountNotExistsError() {
-        Toast toast = Toast.makeText(getApplicationContext(), R.string.no_account_set, Toast.LENGTH_LONG);
+    /*private void showAccountNotExistsError(Context context) {
+        Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_LONG);
         toast.show();
-    }
+    }*/
 
 
     @Override

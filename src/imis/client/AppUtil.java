@@ -1,5 +1,8 @@
 package imis.client;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +22,16 @@ public class AppUtil {
 
     static {
         dfUTCTime.setTimeZone((TimeZone.getTimeZone("UTC")));
+    }
+
+    public static void showAccountNotExistsError(Context context) {
+        Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    public static void showNetworkAccessUnavailable(Context context) {
+        Toast toast = Toast.makeText(context, R.string.network_unavailable, Toast.LENGTH_LONG);
+        toast.show();
     }
 
     public static long getTodayInLong() {

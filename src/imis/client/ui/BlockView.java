@@ -29,12 +29,7 @@ import imis.client.R;
  */
 public class BlockView extends View {// TODO je nutne aby to byl button?Button
     private static final String TAG = BlockView.class.getSimpleName();
-    /*private static final int TIME_STRING_FLAGS = DateUtils.FORMAT_SHOW_DATE
-            | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY
-            | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;// TODO co to
-    // je?*/
 
-    // private String blockId;
     private int arriveId;
     private int leaveId;
     private long startTime;
@@ -42,15 +37,13 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
     private String type;
 
     private boolean dirty;
-    LayerDrawable buttonDrawable;
+    private boolean error;
 
-    // TODO dalsi atributy
 
-    public BlockView(Context context) {
-        this(context, -1, -1, 0, 0, "", false);
-    }
 
-    public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime, String type, boolean dirty) {
+
+    public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime,
+                     String type, boolean dirty, boolean error) {
         super(context);
         // Log.d(TAG, "BlockView()");
 
@@ -60,40 +53,27 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.endTime = endTime;
         this.type = type;
         this.dirty = dirty;
+        this.error = error;
 
         int accentColor = ColorUtil.getColor(type);
-        /*if (dirty) {
-            Log.d("BlockView", "BlockView() dirty");
-            accentColor = ColorUtil.getColor_present_normal();
-            accentColor |= 0x80000000;
-            accentColor = 0;
-        } else {
-            accentColor = ColorUtil.getColor_present_normal();//getResources().getColor(R.color.block_column_2);
-        }*/
-        //TODO barva podle typu
         LayerDrawable buttonDrawable;
 
-        //TODO nesync rozlisit
-        if (dirty) {
+        if (error) {
+            buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
+                    R.drawable.btn_block_error);
+        }
+        else if (dirty) {
             buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
                     R.drawable.btn_block_dirty);
-        }  else {
+        } else {
             buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
                     R.drawable.btn_block_not_dirty);
         }
         buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
-        // setTextColor(textColor);
         setBackground(buttonDrawable);
-        //setBackgroundColor(accentColor);
     }
 
 
-    /*public void setAsDeleted() {
-        int accentColor = getResources().getColor(R.color.block_column_2_del);
-        buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
-        // setTextColor(textColor);
-        setBackgroundDrawable(buttonDrawable);
-    }*/
 
     public int getArriveId() {
         return arriveId;
@@ -103,9 +83,9 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.arriveId = arriveId;
     }
 
-    public boolean isDirty() {
+   /* public boolean isDirty() {
         return dirty;
-    }
+    }*/
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
@@ -119,10 +99,6 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
         this.leaveId = leaveId;
     }
 
-    /*public String getBlockTimeString() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Etc/GMT-2"));
-        return DateUtils.formatDateTime(getContext(), startTime, TIME_STRING_FLAGS);
-    }*/
 
     public long getStartTime() {
         return startTime;
@@ -155,7 +131,9 @@ public class BlockView extends View {// TODO je nutne aby to byl button?Button
                 ", leaveId=" + leaveId +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
+                ", type='" + type + '\'' +
                 ", dirty=" + dirty +
+                ", error=" + error +
                 '}';
     }
 }
