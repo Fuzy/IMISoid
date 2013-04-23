@@ -8,6 +8,7 @@ import imis.client.data.graph.PieChartSerie;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
 import imis.client.model.Event;
+import imis.client.model.Record;
 import imis.client.ui.ColorUtil;
 
 import java.util.*;
@@ -18,8 +19,8 @@ import java.util.*;
  * Date: 10.4.13
  * Time: 14:15
  */
-public class BlockProcessor {
-    private static final String TAG = BlockProcessor.class.getSimpleName();
+public class DataProcessor {
+    private static final String TAG = DataProcessor.class.getSimpleName();
     private static final long MS_IN_HOUR = 60L * 60L * 1000L;
     private static final long MS_IN_MIN = 60L * 1000L;
     private static final long MS_IN_DAY = MS_IN_HOUR * 24L;
@@ -73,7 +74,8 @@ public class BlockProcessor {
         return blocks;
     }
 
-    public static PieChartData countPieChartData(List<Block> blocks, List<String> codes) {
+
+    public static PieChartData countEventsPieChartData(List<Block> blocks, List<String> codes, Map<String, String> kody_po) {
         PieChartData pieChartData = new PieChartData();
         long total = 0L;
 
@@ -87,13 +89,15 @@ public class BlockProcessor {
             Log.d(TAG, "countPieChartData() count + amount " + (count + amount));
         }
 
+
         long value;
         PieChartSerie serie;
         for (Map.Entry<String, Long> entry : statistics.entrySet()) {
             value = entry.getValue();
             Log.d(TAG, "countPieChartData() value " + value);
 
-            serie = new PieChartSerie(entry.getKey(), (double) (value / MS_IN_HOUR));
+
+            serie = new PieChartSerie(kody_po.get(entry.getKey()), (double) (value / MS_IN_HOUR));
             serie.setColor(ColorUtil.getColor(entry.getKey()));
             serie.setTime(AppUtil.formatTime(value));
             serie.setPercent((int) (((double) value / (double) total) * 100));
@@ -104,7 +108,39 @@ public class BlockProcessor {
         return pieChartData;
     }
 
-    public static StackedBarChartData countStackedBarChartData(List<Block> blocks, List<String> codes) {
+    public static PieChartData countRecordsPieChartData(List<Record> records, List<String> codes) {
+        Log.d(TAG, "countRecordsPieChartData()");
+        //TODO // Exclude not checked in checkbox
+        PieChartData pieChartData = new PieChartData();
+        long total = 0L;
+
+        Map<String, Long> statistics = new HashMap<>();
+        for (Record record : records) {
+            if (codes.contains(record.recordType()) == false) continue; // Exclude not checked in checkbox
+            long amount = record.getMnozstvi_odved();
+            total += amount;
+            long count = statistics.containsKey(record.recordType()) ? statistics.get(record.recordType()) : 0;
+            statistics.put(record.recordType(), count + amount);
+        }
+
+        long value;
+        PieChartSerie serie;
+        for (Map.Entry<String, Long> entry : statistics.entrySet()) {
+            value = entry.getValue();
+            serie = new PieChartSerie(entry.getKey(), (double) (value / MS_IN_HOUR));//TODO
+            serie.setColor(ColorUtil.getColor(entry.getKey()));
+            serie.setTime(AppUtil.formatTime(value));
+            serie.setPercent((int) (((double) value / (double) total) * 100));
+            pieChartData.addSerie(serie);
+        }
+
+        pieChartData.setTotal(AppUtil.formatTime(total));
+        Log.d(TAG, "countRecordsPieChartData() pieChartData " + pieChartData);
+        return pieChartData;
+    }
+
+    public static StackedBarChartData countEventsStackedBarChartData(List<Block> blocks, List<String> codes,
+                                                                     Map<String, String> kody_po) {
         StackedBarChartData chartData = new StackedBarChartData();
         for (Block block : blocks) {
             if (block.getDate() > chartData.getMaxDay()) chartData.setMaxDay(block.getDate());
@@ -112,7 +148,7 @@ public class BlockProcessor {
         }
 
         final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / MS_IN_DAY) + 1;
-        Log.d(TAG, "countStackedBarChartData() numOfDays " + numOfDays);
+        Log.d(TAG, "countEventsStackedBarChartData() numOfDays " + numOfDays);
 
         Map<String, double[]> map = new HashMap<>();
 
@@ -144,9 +180,9 @@ public class BlockProcessor {
         int[] colors = new int[size];
 
         for (Map.Entry<String, double[]> stringEntry : map.entrySet()) {
-            Log.d(TAG, "countStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
+            Log.d(TAG, "countEventsStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
             values.add(stringEntry.getValue());
-            titles[ind] = stringEntry.getKey();
+            titles[ind] = kody_po.get(stringEntry.getKey());
             colors[ind] = ColorUtil.getColor(stringEntry.getKey());
             ind++;
         }
@@ -155,11 +191,20 @@ public class BlockProcessor {
         chartData.setTitles(titles);
         chartData.setColors(colors);
 
-        Log.d(TAG, "countStackedBarChartData() titles " + Arrays.toString(titles));
-        for (double[] value : values) {
-            Log.d(TAG, "countStackedBarChartData() value " + Arrays.toString(value));
+        // order titles correctly
+        /*String[] titles = new String[kody_po.size()];
+        for (int i = 0; i < titles.length; i++) {
+            titlesStr[i] = kody_po.get(titles[i]);
         }
-        Log.d(TAG, "countStackedBarChartData() min " + chartData.getMinDay() + " max" + chartData.getMaxDay());
+        chartData.setKody_po(kody_po);
+        Log.d(TAG, "prepareGraph() titles " + titles);
+        Log.d(TAG, "prepareGraph() titlesStr " + titlesStr);*/
+
+        Log.d(TAG, "countEventsStackedBarChartData() titles " + Arrays.toString(titles));
+        for (double[] value : values) {
+            Log.d(TAG, "countEventsStackedBarChartData() value " + Arrays.toString(value));
+        }
+        Log.d(TAG, "countEventsStackedBarChartData() min " + chartData.getMinDay() + " max" + chartData.getMaxDay());
         return chartData;
     }
 

@@ -11,10 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import imis.client.R;
-import imis.client.processor.BlockProcessor;
-import imis.client.data.graph.PieChartSerie;
 import imis.client.data.graph.PieChartData;
-import imis.client.ui.activities.EventsChartActivity;
+import imis.client.data.graph.PieChartSerie;
+import imis.client.ui.activities.ChartActivity;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.model.CategorySeries;
@@ -36,11 +35,10 @@ public class PieChartFragment extends Fragment {
     private DefaultRenderer mRenderer;
     private View mChartContainerView;
     private GraphicalView mChartView;
-    private EventsChartActivity mActivity;
+    private ChartActivity mActivity;
     private DataSetObserver mObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
-            //TODO change vs invalidate?
             Log.d(TAG, "onChanged()");
             displayGraph();
         }
@@ -50,7 +48,7 @@ public class PieChartFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);    //TODO sem kdyztak listener
-        mActivity = (EventsChartActivity) activity;
+        mActivity = (ChartActivity) activity;
         mActivity.registerDataSetObserver(mObserver);
         Log.d(TAG, "onAttach() activity " + mActivity);
     }
@@ -79,7 +77,7 @@ public class PieChartFragment extends Fragment {
 
     private void displayGraph() {
         Log.d(TAG, "displayGraph()");
-        PieChartData pieChartData = BlockProcessor.countPieChartData(mActivity.getBlockList(), mActivity.getVisibleCodes());
+        PieChartData pieChartData = mActivity.getPieChartData();
         clearGraph();
         prepareGraph(pieChartData);
     }
@@ -100,8 +98,8 @@ public class PieChartFragment extends Fragment {
         Log.d(TAG, "prepareGraph()");
         List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
         for (PieChartSerie eventsGraphSerie : eventsGraphSeries) {
-            //Log.d(TAG, "prepareGraph() eventsGraphSerie " + eventsGraphSerie);
-            mSeries.add(mActivity.getLabelForCode(eventsGraphSerie.getLabel()), eventsGraphSerie.getAmount());
+            Log.d(TAG, "prepareGraph() eventsGraphSerie " + eventsGraphSerie);
+            mSeries.add(eventsGraphSerie.getLabel(), eventsGraphSerie.getAmount());
             addSeriesRenderer(eventsGraphSerie.getColor());
         }
         LinearLayout layout = (LinearLayout) mChartContainerView;

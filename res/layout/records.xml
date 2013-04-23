@@ -5,10 +5,17 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout android:id="@+id/displayControl"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+        <include layout="@layout/fragment_control"/>
+    </LinearLayout>
+
+    <LinearLayout
             android:id="@+id/recordsList"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             >              <!--android:background="@android:color/holo_orange_light"-->
-    </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

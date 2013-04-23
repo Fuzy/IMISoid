@@ -27,7 +27,7 @@ import imis.client.model.Event;
 import imis.client.model.Record;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
-import imis.client.processor.BlockProcessor;
+import imis.client.processor.DataProcessor;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
@@ -242,7 +242,7 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
     private void resfreshAdaptersDataList(Cursor cursor) {
         adapter.clear();
         blockList = null;
-        blockList = BlockProcessor.eventsToMapOfBlocks(cursor);
+        blockList = DataProcessor.eventsToMapOfBlocks(cursor);
         adapter.addAll(blockList);
         adapter.notifyDataSetChanged();
         blocks.setVisibility(View.GONE);

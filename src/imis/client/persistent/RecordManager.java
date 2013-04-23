@@ -50,19 +50,14 @@ public class RecordManager {
         return records;
     }
 
-    /*public static List<Record> jsonToList(String json) {
-        Log.d(TAG, "jsonToList()");
-        Type type = new TypeToken<Collection<Record>>() {
-        }.getType();
-        return gson.fromJson(json, type);
-    }*/
-
     final public static class DataQuery {
 
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
                 + MyDatabaseHelper.TABLE_RECORDS);
 
         public static final String[] PROJECTION_ALL = {Record.COL_ID, Record.COL_ZC};
+
+        public static final String SELECTION_ZC = Record.COL_ZC + " LIKE ? || '%'";
 
     }
 }

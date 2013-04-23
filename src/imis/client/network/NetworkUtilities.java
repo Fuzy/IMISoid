@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 public class NetworkUtilities {
     private static final String TAG = "NetworkUtilities";
     private static final String SCHEME = "http://";
-    private static final String BASE_PATH = "/Imisoid_WS/test/"; //TODO test server
+    private static final String BASE_PATH = "/Imisoid_WS/test/"; //TODO test server  test/
     private static final String EVENTS_PATH = BASE_PATH + "events";
     private static final String EVENTS_DELETE_PATH = BASE_PATH + "events/{rowid}";
     private static final String EVENTS_UPDATE_PATH = BASE_PATH + "events/{rowid}";

@@ -242,4 +242,6 @@ public class Record {
     public static final String TYPE_S = "S";
     public static final String TYPE_V = "V";
     public static final String TYPE_W = "W";
+
+    public static final String[] TYPE_VALUES = {TYPE_A, TYPE_I, TYPE_J, TYPE_K, TYPE_O, TYPE_R, TYPE_S, TYPE_V, TYPE_W};
 }

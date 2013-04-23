@@ -12,9 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import imis.client.R;
-import imis.client.processor.BlockProcessor;
 import imis.client.data.graph.StackedBarChartData;
-import imis.client.ui.activities.EventsChartActivity;
+import imis.client.ui.activities.ChartActivity;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart;
@@ -33,7 +32,7 @@ public class StackedBarFragment extends Fragment {
 
     private View mChartContainerView;
     private GraphicalView mChartView;
-    private EventsChartActivity mActivity;
+    private ChartActivity mActivity;
     private DataSetObserver mObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
@@ -46,7 +45,7 @@ public class StackedBarFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mActivity = (EventsChartActivity) activity;
+        mActivity = (ChartActivity) activity;
         mActivity.registerDataSetObserver(mObserver);
         Log.d(TAG, "onAttach() activity " + mActivity);
     }
@@ -69,16 +68,13 @@ public class StackedBarFragment extends Fragment {
 
     private void displayGraph() {
         Log.d(TAG, "displayGraph()");
-        StackedBarChartData chartData = BlockProcessor.countStackedBarChartData(mActivity.getBlockList(),
-                mActivity.getVisibleCodes());
+        StackedBarChartData chartData = mActivity.getStackedBarChartData();
         clearGraph();
         prepareGraph(chartData);
     }
 
     private void prepareGraph(StackedBarChartData chartData) {
-        String[] titles = mActivity.codesToTitles(chartData.getTitles());
-        Log.d(TAG, "prepareGraph() titles " + titles);
-        XYMultipleSeriesRenderer renderer = buildBarRenderer(chartData.getColors());
+        XYMultipleSeriesRenderer renderer = buildBarRenderer(chartData.getColors());  //TODO
         setChartSettings(renderer, "Události docházky pro daný den", "Den", "Čas", 0.5,
                 12.5, 0, (chartData.getyMax() * 1.1), Color.GRAY, Color.LTGRAY);
         renderer.setXLabels(12);
@@ -88,7 +84,8 @@ public class StackedBarFragment extends Fragment {
         renderer.setPanEnabled(true, false);
         renderer.setZoomRate(1.1f);
         renderer.setBarSpacing(0.5f);
-        mChartView = ChartFactory.getBarChartView(mActivity, buildBarDataset(titles, chartData.getValues()), renderer,
+        mChartView = ChartFactory.getBarChartView(mActivity, buildBarDataset(chartData.getTitles(),
+                chartData.getValues()), renderer,
                 BarChart.Type.STACKED);
         LinearLayout layout = (LinearLayout) mChartContainerView;
         layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,

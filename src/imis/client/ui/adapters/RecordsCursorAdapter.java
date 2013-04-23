@@ -32,6 +32,17 @@ public class RecordsCursorAdapter extends CursorAdapter {
         Log.d(TAG, "newView()");
         LayoutInflater vi = LayoutInflater.from(context);
         View view = vi.inflate(R.layout.record_row, null);
+        return view;
+    }
+
+    @Override
+    public Record getItem(int position) {
+        return Record.cursorToRecord((Cursor) super.getItem(position));
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        Log.d(TAG, "bindView()");
         Record record = Record.cursorToRecord(cursor);
 
         String zc = (record.getZc() == null) ? "" : record.getZc();
@@ -49,16 +60,5 @@ public class RecordsCursorAdapter extends CursorAdapter {
         tt.setText(poznamka);
         tt = (TextView) view.findViewById(R.id.record_type);
         tt.setBackgroundColor(ColorUtil.getColor(record.recordType()));
-
-        return view;
-    }
-
-    @Override
-    public Record getItem(int position) {
-        return Record.cursorToRecord((Cursor) super.getItem(position));
-    }
-
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
     }
 }

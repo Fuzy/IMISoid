@@ -13,7 +13,6 @@ import android.widget.TextView;
 import imis.client.R;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.PieChartSerie;
-import imis.client.processor.BlockProcessor;
 import imis.client.ui.activities.EventsChartActivity;
 
 import java.util.List;
@@ -51,7 +50,6 @@ public class StatisticsFragment extends Fragment {
     private DataSetObserver mObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
-            //TODO change vs invalidate?
             Log.d(TAG, "onChanged()");
             displayStats();
         }
@@ -68,7 +66,7 @@ public class StatisticsFragment extends Fragment {
 
 
     private void displayStats() {
-        PieChartData pieChartData = BlockProcessor.countPieChartData(mActivity.getBlockList(), mActivity.getVisibleCodes());
+        PieChartData pieChartData = mActivity.getPieChartData();
         List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
         StringBuilder output = new StringBuilder();
         Resources res = mActivity.getResources();  //TODO hodilo null
@@ -76,7 +74,7 @@ public class StatisticsFragment extends Fragment {
         output.append(total + "\n");
 
         for (PieChartSerie serie : eventsGraphSeries) {
-            output.append(mActivity.getLabelForCode(serie.getLabel()) + ": "
+            output.append(serie.getLabel() + ": "
                     + serie.getTime() + " (" + serie.getPercent() + "%)" + "\n");
         }
 

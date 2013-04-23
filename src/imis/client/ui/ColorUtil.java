@@ -3,9 +3,11 @@ package imis.client.ui;
 import android.graphics.Color;
 import android.util.Log;
 import imis.client.model.Event;
+import imis.client.model.Record;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,13 +27,17 @@ public class ColorUtil {
     }
 
     public static void setColor(String key, int value) {
-        if (Arrays.asList(Event.KOD_PO_VALUES).indexOf(key) == -1) key = Event.KOD_PO_OTHERS;
+        List<String> eventCodes = Arrays.asList(Event.KOD_PO_VALUES);
+        List<String> recordCodes =  Arrays.asList(Record.TYPE_VALUES);
+        if (eventCodes.indexOf(key) == -1 && recordCodes.indexOf(key) == -1) key = Event.KOD_PO_OTHERS;
         Log.d(TAG, "getColor() key " + key);
         colors.put(key, value);
     }
 
     public static int getColor(String key) {
-        if (Arrays.asList(Event.KOD_PO_VALUES).indexOf(key) == -1) key = Event.KOD_PO_OTHERS;
+        List<String> eventCodes = Arrays.asList(Event.KOD_PO_VALUES);
+        List<String> recordCodes =  Arrays.asList(Record.TYPE_VALUES);
+        if (eventCodes.indexOf(key) == -1 && recordCodes.indexOf(key) == -1) key = Event.KOD_PO_OTHERS;
         Log.d(TAG, "getColor() key " + key);
         Integer color = colors.get(key);
         return color == null ? Color.GRAY : color;

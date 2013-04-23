@@ -18,6 +18,7 @@ public class StackedBarChartData {
     private List<double[]> values;
     private String[] titles;
     private int[] colors;
+    //private Map<String, String> kody_po;
 
     public StackedBarChartData() {
         minDay = Long.MAX_VALUE;
@@ -96,4 +97,12 @@ public class StackedBarChartData {
     public void setyMax(double yMax) {
         this.yMax = yMax;
     }
+
+   /* public Map<String, String> getKody_po() {
+        return kody_po;
+    }
+
+    public void setKody_po(Map<String, String> kody_po) {
+        this.kody_po = kody_po;
+    }*/
 }

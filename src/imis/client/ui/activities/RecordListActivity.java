@@ -1,5 +1,6 @@
 package imis.client.ui.activities;
 
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.model.Record;
@@ -21,6 +26,7 @@ import imis.client.ui.fragments.RecordDetailFragment;
 import imis.client.ui.fragments.RecordListFragment;
 
 import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
+import static imis.client.persistent.RecordManager.DataQuery.SELECTION_ZC;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,11 +35,13 @@ import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
  * Time: 17:25
  */
 public class RecordListActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener {
+        RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener, AdapterView.OnItemSelectedListener {
     private static final String TAG = RecordListActivity.class.getSimpleName();
     private RecordsCursorAdapter adapter;
     private static final int LOADER_ID = 0x08;
     private int position = -1;
+    private int typesPos = 0;
+    private String[] typesArray;
 
 
     @Override
@@ -42,6 +50,13 @@ public class RecordListActivity extends FragmentActivity implements LoaderManage
         Log.d(TAG, "onCreate()");
         setContentView(R.layout.records);
 
+        Resources r = getResources();
+        typesArray = r.getStringArray(R.array.typ_zakazky);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Log.d(TAG, "onCreate() spinner " + spinner);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typesArray);
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setOnItemSelectedListener(this);
 
         //if (savedInstanceState == null) {
         //Log.d(TAG, "savedInstanceState()");
@@ -61,19 +76,36 @@ public class RecordListActivity extends FragmentActivity implements LoaderManage
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader()");
         //TODO filtrovani
+        String selection;
+        String[] selectArgs;
+        if (typesPos == 0) {
+            selection= null;
+            selectArgs = null;
+        } else {
+            selection = SELECTION_ZC;
+            selectArgs = new String[]{typesArray[typesPos]};
+        }
+
+        if (selectArgs != null)Log.d(TAG, "onCreateLoader() selection " + selection + " selectionArgs " + selectArgs[0]);
+        else Log.d(TAG, "onCreateLoader() selection " + selection + " selectionArgs " + selectArgs);
+
         return new CursorLoader(getApplicationContext(), CONTENT_URI,
-                null, null, null, null);//PROJECTION_ALL
+                null, selection, selectArgs, null);//PROJECTION_ALL
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished() size " + cursor.getCount());
+       /* int pos = cursor.getPosition();
+        while (cursor.moveToNext()) Log.d(TAG, "onLoadFinished() record " + Record.cursorToRecord(cursor) );
+        cursor.moveToPosition(pos);*/
         adapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
+        Log.d(TAG, "onLoaderReset()");
+        adapter.swapCursor(null);
     }
 
 
@@ -128,7 +160,7 @@ public class RecordListActivity extends FragmentActivity implements LoaderManage
 
     public void deleteDetailFragment() {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("RecordDetailFragment");
-        if (fragment != null)  getSupportFragmentManager().popBackStack();
+        if (fragment != null) getSupportFragmentManager().popBackStack();
     }
 
 
@@ -138,5 +170,17 @@ public class RecordListActivity extends FragmentActivity implements LoaderManage
         adapter.notifyDataSetChanged();
         deleteDetailFragment();
         createDetailFragment(adapter.getItem(position));
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+        Log.d(TAG, "onItemSelected() " + typesArray[pos]);
+        typesPos = pos;
+        getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

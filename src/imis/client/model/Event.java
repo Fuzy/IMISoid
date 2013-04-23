@@ -20,6 +20,7 @@ public class Event {
     private boolean error;
     @JsonIgnore
     private String msg;
+
     // data
     private String icp;
     private long datum;
@@ -311,7 +312,7 @@ public class Event {
 
 
     public static final String[] KOD_PO_VALUES = {"00", "01", "02", "03", "04", "10", "XX"};
-
+    //TODO refaktor
     public static final String DRUH_ARRIVAL = "P";
     public static final String DRUH_LEAVE = "O";
     public static final String KOD_PO_ARRIVE_NORMAL = "00";

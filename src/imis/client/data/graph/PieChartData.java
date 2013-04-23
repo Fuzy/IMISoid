@@ -28,4 +28,12 @@ public class PieChartData {
     public void setTotal(String total) {
         this.total = total;
     }
+
+    @Override
+    public String toString() {
+        return "PieChartData{" +
+                "total='" + total + '\'' +
+                ", eventsGraphSeries=" + eventsGraphSeries +
+                '}';
+    }
 }

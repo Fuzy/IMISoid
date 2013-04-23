@@ -2,32 +2,25 @@ package imis.client.ui.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DataSetObservable;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.*;
 import imis.client.R;
+import imis.client.data.graph.PieChartData;
+import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
 import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.persistent.EmployeeManager;
-import imis.client.processor.BlockProcessor;
+import imis.client.processor.DataProcessor;
 import imis.client.ui.ColorUtil;
-import imis.client.ui.fragments.PieChartFragment;
-import imis.client.ui.fragments.StackedBarFragment;
-import imis.client.ui.fragments.StatisticsFragment;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static imis.client.AppUtil.convertToTime;
 import static imis.client.AppUtil.formatAbbrDate;
@@ -39,24 +32,19 @@ import static imis.client.persistent.EventManager.EventQuery;
  * Date: 7.4.13
  * Time: 14:43
  */
-public class EventsChartActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemSelectedListener {
+public class EventsChartActivity extends ChartActivity {
     private static final String TAG = EventsChartActivity.class.getSimpleName();
-    private static final String FRAG_PIE = "PieChartFragment",
-            FRAG_STACK = "StackedBarFragment", FRAG_STATS = "StatisticsFragment";
     //private static final String LAB = "label", FROM = "from", TO = "to";
 
-    private List<Block> blockList;
-    private List<CheckBox> checkBoxes = new ArrayList<>();
-    private final DataSetObservable mDataSetObservable = new DataSetObservable();
     private final CheckBoxClickListener checkBoxClickListener = new CheckBoxClickListener();
+    private List<Block> blockList;
 
     private static final int LOADER_EVENTS = 0x03;
     private static final int LOADER_EMPLOYEES = 0x04;
 
-    private String[] kody_po_values;
-    private String[] kody_po_desc;
+    private final Map<String, String> kody_po = new HashMap<>();
 
+    //TODO spolecne
     private static final int CALENDAR_ACTIVITY_FROM_CODE = 1;
     private static final int CALENDAR_ACTIVITY_TO_CODE = 2;
 
@@ -95,15 +83,19 @@ public class EventsChartActivity extends FragmentActivity implements LoaderManag
             }
         });
 
-
-        kody_po_values = getResources().getStringArray(R.array.kody_po_values);
-        kody_po_desc = getResources().getStringArray(R.array.kody_po_desc);
+        initEventCodesAndDesc();
 
         for (String value : Event.KOD_PO_VALUES) {
             addCheckBox(value);
         }
+    }
 
-
+    private void initEventCodesAndDesc() {
+        String[] kody_po_values = getResources().getStringArray(R.array.kody_po_values);
+        String[] kody_po_desc = getResources().getStringArray(R.array.kody_po_desc);
+        for (int i = 0; i < kody_po_values.length; i++) {
+            kody_po.put(kody_po_values[i], kody_po_desc[i]);
+        }
     }
 
     private void addCheckBox(String kod_po) {
@@ -128,13 +120,6 @@ public class EventsChartActivity extends FragmentActivity implements LoaderManag
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-        switchFragment();
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader()");
         switch (i) {
@@ -156,7 +141,7 @@ public class EventsChartActivity extends FragmentActivity implements LoaderManag
         switch (id) {
             case LOADER_EVENTS:
                 Log.d(TAG, "onLoadFinished() LOADER_EVENTS");
-                blockList = BlockProcessor.eventsToMapOfBlocks(cursor);
+                blockList = DataProcessor.eventsToMapOfBlocks(cursor);
                 mDataSetObservable.notifyChanged();
                 break;
             case LOADER_EMPLOYEES:
@@ -205,42 +190,12 @@ public class EventsChartActivity extends FragmentActivity implements LoaderManag
     protected void onRestoreInstanceState(Bundle savedState) {
         Log.d(TAG, "onRestoreInstanceState()");
         super.onRestoreInstanceState(savedState);
-        /*mSeries = (CategorySeries) savedState.getSerializable("current_series");
-        mRenderer = (DefaultRenderer) savedState.getSerializable("current_renderer");*/
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState()");
-       /* outState.putSerializable("current_series", mSeries);
-        outState.putSerializable("current_renderer", mRenderer);*/
-    }
-
-    public void registerDataSetObserver(DataSetObserver observer) {
-        mDataSetObservable.registerObserver(observer);
-    }
-
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-        mDataSetObservable.unregisterObserver(observer);
-    }
-
-    public String getLabelForCode(String kod_po) {
-        if (kod_po.equals(Event.KOD_PO_OTHERS)) return Event.OTHERS;
-        int index = Arrays.asList(kody_po_values).indexOf(kod_po);
-        return kody_po_desc[index];
-    }
-
-    public String[] codesToTitles(String[] kod_po) {
-        String[] titles = new String[kod_po.length];
-        for (int i = 0; i < kod_po.length; i++) {
-            titles[i] = getLabelForCode(kod_po[i]);
-        }
-        return titles;
-    }
-
-    public List<Block> getBlockList() {
-        return blockList;
     }
 
     public List<String> getVisibleCodes() {
@@ -264,71 +219,28 @@ public class EventsChartActivity extends FragmentActivity implements LoaderManag
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.network_activity_menu, menu);
-        inflater.inflate(R.menu.switch_chart_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    protected void refresh() {
+        Log.d(TAG, "refresh()");
+        //new GetEmployeesLastEvent(this).execute();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh:
-                refresh();
-                return true;
-            case R.id.switchFragment:
-                switchFragment();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void switchFragment() {
-        Log.d(TAG, "switchFragment()");
-        if (getSupportFragmentManager().findFragmentByTag(FRAG_STATS) != null) {
-            switchToPieChartFragment();
-        } else if (getSupportFragmentManager().findFragmentByTag(FRAG_PIE) != null) {
-            switchToStackedBarFragment();
-        } else if (getSupportFragmentManager().findFragmentByTag(FRAG_STACK) != null) {
-            switchToStatisticsFragment();
-        } else {
-            switchToPieChartFragment();
-        }
+    protected void restartLoaders() {
         getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
     }
 
-    private void switchToStackedBarFragment() {
-        Log.d(TAG, "switchToStackedBarFragment()");
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        StackedBarFragment barFragment = new StackedBarFragment();
-        ft.replace(R.id.displayChart, barFragment, FRAG_STACK);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        ft.commit();
+    @Override
+    public PieChartData getPieChartData() {
+        Log.d(TAG, "getPieChartData()");
+        PieChartData data = DataProcessor.countEventsPieChartData(blockList, getVisibleCodes(), kody_po);
+        return data;
     }
 
-    private void switchToPieChartFragment() {
-        Log.d(TAG, "switchToPieChartFragment()");
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        PieChartFragment pieFragment = new PieChartFragment();
-        ft.replace(R.id.displayChart, pieFragment, FRAG_PIE);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        ft.commit();
-    }
-
-    private void switchToStatisticsFragment() {
-        Log.d(TAG, "switchToStatisticsFragment()");
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        StatisticsFragment statsFragment = new StatisticsFragment();
-        ft.replace(R.id.displayChart, statsFragment, FRAG_STATS);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        ft.commit();
-    }
-
-    private void refresh() {
-        Log.d(TAG, "refresh()");
-        //new GetEmployeesLastEvent(this).execute();
+    @Override
+    public StackedBarChartData getStackedBarChartData() {
+        Log.d(TAG, "getStackedBarChartData()");
+        StackedBarChartData data =  DataProcessor.countEventsStackedBarChartData(blockList, getVisibleCodes(), kody_po);
+        return data;
     }
 
     private class CheckBoxClickListener implements View.OnClickListener {
@@ -342,8 +254,4 @@ public class EventsChartActivity extends FragmentActivity implements LoaderManag
         }
     }
 
-    private void refreshCurrentFragment() {
-        Log.d(TAG, "refreshCurrentFragment()");
-        mDataSetObservable.notifyChanged();
-    }
 }
