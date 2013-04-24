@@ -1,10 +1,7 @@
 package imis.client.ui.fragments;
 
-import android.app.Activity;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +10,6 @@ import android.widget.LinearLayout;
 import imis.client.R;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.PieChartSerie;
-import imis.client.ui.activities.ChartActivity;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.model.CategorySeries;
@@ -28,36 +24,12 @@ import java.util.List;
  * Date: 10.4.13
  * Time: 22:54
  */
-public class PieChartFragment extends Fragment {
+public class PieChartFragment extends ChartFragment {
     private static final String TAG = "PieChartFragment";
 
     private CategorySeries mSeries = new CategorySeries("");
     private DefaultRenderer mRenderer;
-    private View mChartContainerView;
-    private GraphicalView mChartView;
-    private ChartActivity mActivity;
-    private DataSetObserver mObserver = new DataSetObserver() {
-        @Override
-        public void onChanged() {
-            Log.d(TAG, "onChanged()");
-            displayGraph();
-        }
-    };
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);    //TODO sem kdyztak listener
-        mActivity = (ChartActivity) activity;
-        mActivity.registerDataSetObserver(mObserver);
-        Log.d(TAG, "onAttach() activity " + mActivity);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate()");
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,8 +47,8 @@ public class PieChartFragment extends Fragment {
         Log.d(TAG, "onActivityCreated()");
     }
 
-    private void displayGraph() {
-        Log.d(TAG, "displayGraph()");
+    protected void displayContent() {
+        Log.d(TAG, "displayContent()");
         PieChartData pieChartData = mActivity.getPieChartData();
         clearGraph();
         prepareGraph(pieChartData);
@@ -95,25 +67,23 @@ public class PieChartFragment extends Fragment {
     }
 
     private void prepareGraph(PieChartData pieChartData) {
-        Log.d(TAG, "prepareGraph()");
+        Log.d(TAG, "prepareGraph() pieChartData " + pieChartData);
         List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
         for (PieChartSerie eventsGraphSerie : eventsGraphSeries) {
-            Log.d(TAG, "prepareGraph() eventsGraphSerie " + eventsGraphSerie);
             mSeries.add(eventsGraphSerie.getLabel(), eventsGraphSerie.getAmount());
             addSeriesRenderer(eventsGraphSerie.getColor());
         }
-        LinearLayout layout = (LinearLayout) mChartContainerView;
-        if (mChartView == null) {
-            mChartView = ChartFactory.getPieChartView(getActivity(), mSeries, mRenderer);
 
-            layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT));
-        } else {
-            mChartView.repaint();
-        }
+        LinearLayout layout = (LinearLayout) mChartContainerView;
+        layout.removeAllViews();
+        GraphicalView mChartView = ChartFactory.getPieChartView(getActivity(), mSeries, mRenderer);
+
+        layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
     }
 
     private void addSeriesRenderer(int color) {
+        Log.d(TAG, "addSeriesRenderer() color " + color);
         SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
         renderer.setColor(color);
         mRenderer.addSeriesRenderer(renderer);

@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.data.graph.PieChartData;
@@ -34,7 +31,6 @@ import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
 public class RecordsChartActivity extends ChartActivity {
     private static final String TAG = RecordsChartActivity.class.getSimpleName();
 
-    private final CheckBoxClickListener checkBoxClickListener = new CheckBoxClickListener();
     private static final int LOADER_RECORDS = 0x03;
     private List<Record> records = new ArrayList<>();
 
@@ -45,32 +41,16 @@ public class RecordsChartActivity extends ChartActivity {
         setContentView(R.layout.events_chart);
         getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
 
-        for (String value : Record.TYPE_VALUES) {
-            addCheckBox(value);
-        }
 
     }
 
-    private void addCheckBox(String kod_po) {
+    protected void addCheckBox(String kod_po) {
         int index = Arrays.asList(Record.TYPE_VALUES).indexOf(kod_po);
-        final float scale = getApplication().getResources().getDisplayMetrics().density;
-        LinearLayout box = (LinearLayout) findViewById(R.id.checkBoxesBox);
+        int color = ColorUtil.getColor(kod_po);
+        addCheckBox(index, color);
 
-        CheckBox check = new CheckBox(getApplication());
-        check.setId(index);
-        check.setChecked(true);
-        box.addView(check);
-        checkBoxes.add(check);
-
-        TextView label = new TextView(getApplication());
-        label.setBackgroundColor(ColorUtil.getColor(kod_po));
-        label.setHeight((int) (15 * scale + 0.5f));
-        label.setWidth((int) (15 * scale + 0.5f));
-        label.setGravity(Gravity.CENTER);
-        box.addView(label);
-
-        check.setOnClickListener(checkBoxClickListener);
     }
+
 
     @Override
     protected void refresh() {
@@ -84,7 +64,7 @@ public class RecordsChartActivity extends ChartActivity {
 
     @Override
     protected void restartLoaders() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
     }
 
     @Override
@@ -95,27 +75,10 @@ public class RecordsChartActivity extends ChartActivity {
 
     @Override
     public StackedBarChartData getStackedBarChartData() {
-        //TODO
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        StackedBarChartData data = DataProcessor.countRecordsStackedBarChartData(records, getVisibleCodes());
+        return data;
     }
 
-/*
-    public void registerDataSetObserver(DataSetObserver observer) {
-        mDataSetObservable.registerObserver(observer);
-    }
-
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-        mDataSetObservable.unregisterObserver(observer);
-    }*/
-
-    /*public List<Record> getRecords() {
-        return records;
-    }
-
-    public void setRecords(List<Record> records) {
-        this.records = records;
-        mDataSetObservable.notifyChanged();
-    }*/
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -141,6 +104,8 @@ public class RecordsChartActivity extends ChartActivity {
                     Record record = Record.cursorToRecord(cursor);
                     records.add(record);
                 }
+                String[] values = DataProcessor.recordsCodesInRecords(records);
+                initCheckBoxes(values);
                 mDataSetObservable.notifyChanged();
                 break;
         }
@@ -168,17 +133,6 @@ public class RecordsChartActivity extends ChartActivity {
         }
         Log.d(TAG, "getVisibleCodes() codes " + codes);
         return codes;
-    }
-
-    private class CheckBoxClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            CheckBox check = checkBoxes.get(view.getId());
-            Log.d(TAG, "onClick() " + view.getId() + " is " +
-                    check.isChecked() + " kod " + Record.TYPE_VALUES[view.getId()]);
-            refreshCurrentFragment();
-        }
     }
 
 }

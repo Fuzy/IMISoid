@@ -28,6 +28,22 @@ public class DataProcessor {
     public static final String[] VALUES = new String[]
             {Event.KOD_PO_LEAVE_SERVICE, Event.KOD_PO_LEAVE_LUNCH, Event.KOD_PO_LEAVE_SUPPER};
 
+    public static String[] eventsCodesInBlocks(List<Block> blocks) {
+        Set<String> codes = new HashSet<>();
+        for (Block block : blocks) {
+            codes.add(block.getKod_po());
+        }
+        return codes.toArray(new String[]{});
+    }
+
+    public static String[] recordsCodesInRecords(List<Record> records) {
+        Set<String> codes = new HashSet<>();
+        for (Record record : records) {
+            codes.add(record.recordType());
+        }
+        return codes.toArray(new String[]{});
+    }
+
     public static List<Block> eventsToMapOfBlocks(Cursor cursor) {
         Log.d(TAG, "eventsToMapOfBlocks()");
         Event startEvent, endEvent = null;
@@ -110,7 +126,6 @@ public class DataProcessor {
 
     public static PieChartData countRecordsPieChartData(List<Record> records, List<String> codes) {
         Log.d(TAG, "countRecordsPieChartData()");
-        //TODO // Exclude not checked in checkbox
         PieChartData pieChartData = new PieChartData();
         long total = 0L;
 
@@ -142,6 +157,7 @@ public class DataProcessor {
     public static StackedBarChartData countEventsStackedBarChartData(List<Block> blocks, List<String> codes,
                                                                      Map<String, String> kody_po) {
         StackedBarChartData chartData = new StackedBarChartData();
+        // count mix/ max
         for (Block block : blocks) {
             if (block.getDate() > chartData.getMaxDay()) chartData.setMaxDay(block.getDate());
             if (block.getDate() < chartData.getMinDay()) chartData.setMinDay(block.getDate());
@@ -158,7 +174,7 @@ public class DataProcessor {
             int index = (int) ((block.getDate() - chartData.getMinDay()) / MS_IN_DAY);
             double amount = (double) ((block.getEndTime() - block.getStartTime()) / MS_IN_HOUR);
 
-            // If exists update
+            // If not exists yet, create new array
             boolean contains = map.containsKey(kod_po);
             if (contains == false) {
                 double[] values = new double[numOfDays];
@@ -191,20 +207,72 @@ public class DataProcessor {
         chartData.setTitles(titles);
         chartData.setColors(colors);
 
-        // order titles correctly
-        /*String[] titles = new String[kody_po.size()];
-        for (int i = 0; i < titles.length; i++) {
-            titlesStr[i] = kody_po.get(titles[i]);
-        }
-        chartData.setKody_po(kody_po);
-        Log.d(TAG, "prepareGraph() titles " + titles);
-        Log.d(TAG, "prepareGraph() titlesStr " + titlesStr);*/
-
         Log.d(TAG, "countEventsStackedBarChartData() titles " + Arrays.toString(titles));
         for (double[] value : values) {
             Log.d(TAG, "countEventsStackedBarChartData() value " + Arrays.toString(value));
         }
         Log.d(TAG, "countEventsStackedBarChartData() min " + chartData.getMinDay() + " max" + chartData.getMaxDay());
+        return chartData;
+    }
+
+    public static StackedBarChartData countRecordsStackedBarChartData(List<Record> records, List<String> codes) {
+        StackedBarChartData chartData = new StackedBarChartData();
+        // count mix/ max
+
+        for (Record record : records) {
+           if (record.getDatum() < chartData.getMinDay()) chartData.setMinDay(record.getDatum());
+           if (record.getDatum() > chartData.getMaxDay()) chartData.setMaxDay(record.getDatum());
+        }
+
+        final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / MS_IN_DAY) + 1;
+        Log.d(TAG, "countRecordsStackedBarChartData() numOfDays " + numOfDays);
+
+        Map<String, double[]> map = new HashMap<>();
+        String type;
+        for (Record record : records) {
+            type =  record.recordType();
+            if (codes.contains(type) == false) continue; // Exclude not checked in checkbox
+            int index = (int) ((record.getDatum() - chartData.getMinDay()) / MS_IN_DAY);
+            double amount =  (double) (record.getMnozstvi_odved() / MS_IN_HOUR);
+
+            // If not exists yet, create new array
+            boolean contains = map.containsKey(type);
+            if (contains == false) {
+                double[] values = new double[numOfDays];
+                map.put(type, values);
+            }
+
+            // Update value
+            double[] vaDoubles = map.get(type);
+            double oldValue = vaDoubles[index];
+            vaDoubles[index] += oldValue + amount;
+            if (vaDoubles[index] > chartData.getyMax()) chartData.setyMax(vaDoubles[index]);
+        }
+
+        int size = map.size();
+        int ind = 0;
+        List<double[]> values = new ArrayList<>(size);
+        String[] titles = new String[size];
+        int[] colors = new int[size];
+
+        for (Map.Entry<String, double[]> stringEntry : map.entrySet()) {
+            Log.d(TAG, "countEventsStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
+            values.add(stringEntry.getValue());
+            titles[ind] = stringEntry.getKey();
+            colors[ind] = ColorUtil.getColor(stringEntry.getKey());
+            ind++;
+        }
+
+        chartData.setValues(values);
+        chartData.setTitles(titles);
+        chartData.setColors(colors);
+
+        Log.d(TAG, "countRecordsStackedBarChartData() titles " + Arrays.toString(titles));
+        for (double[] value : values) {
+            Log.d(TAG, "countRecordsStackedBarChartData() value " + Arrays.toString(value));
+        }
+        Log.d(TAG, "countRecordsStackedBarChartData() min " + chartData.getMinDay() + " max" + chartData.getMaxDay());
+
         return chartData;
     }
 

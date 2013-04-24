@@ -1,10 +1,7 @@
 package imis.client.ui.fragments;
 
-import android.app.Activity;
 import android.content.res.Resources;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +10,6 @@ import android.widget.TextView;
 import imis.client.R;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.PieChartSerie;
-import imis.client.ui.activities.EventsChartActivity;
 
 import java.util.List;
 
@@ -23,11 +19,9 @@ import java.util.List;
  * Date: 15.4.13
  * Time: 17:32
  */
-public class StatisticsFragment extends Fragment {
+public class StatisticsFragment extends ChartFragment {
     private static final String TAG = "StatisticsFragment";
 
-    private View mStatsContainerView;
-    private EventsChartActivity mActivity;
     private TextView statsTextView;
 
     @Override
@@ -36,9 +30,9 @@ public class StatisticsFragment extends Fragment {
         if (container == null) {
             return null;
         }
-        mStatsContainerView = inflater.inflate(R.layout.statistics, container, false);
+        mChartContainerView = inflater.inflate(R.layout.statistics, container, false);
 
-        return mStatsContainerView;
+        return mChartContainerView;
     }
 
     @Override
@@ -47,25 +41,7 @@ public class StatisticsFragment extends Fragment {
         statsTextView = (TextView) getView().findViewById(R.id.statsContent);
     }
 
-    private DataSetObserver mObserver = new DataSetObserver() {
-        @Override
-        public void onChanged() {
-            Log.d(TAG, "onChanged()");
-            displayStats();
-        }
-    };
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = (EventsChartActivity) activity;
-        mActivity.registerDataSetObserver(mObserver);
-        Log.d(TAG, "onAttach() activity " + mActivity);
-    }
-
-
-    private void displayStats() {
+    protected void displayContent() {
         PieChartData pieChartData = mActivity.getPieChartData();
         List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
         StringBuilder output = new StringBuilder();

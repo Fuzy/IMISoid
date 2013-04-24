@@ -45,6 +45,7 @@ public class EmployeesAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        //TODO spravne
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

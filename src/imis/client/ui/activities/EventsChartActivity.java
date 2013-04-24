@@ -7,7 +7,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.*;
 import imis.client.R;
@@ -34,9 +33,7 @@ import static imis.client.persistent.EventManager.EventQuery;
  */
 public class EventsChartActivity extends ChartActivity {
     private static final String TAG = EventsChartActivity.class.getSimpleName();
-    //private static final String LAB = "label", FROM = "from", TO = "to";
 
-    private final CheckBoxClickListener checkBoxClickListener = new CheckBoxClickListener();
     private List<Block> blockList;
 
     private static final int LOADER_EVENTS = 0x03;
@@ -85,9 +82,6 @@ public class EventsChartActivity extends ChartActivity {
 
         initEventCodesAndDesc();
 
-        for (String value : Event.KOD_PO_VALUES) {
-            addCheckBox(value);
-        }
     }
 
     private void initEventCodesAndDesc() {
@@ -98,26 +92,13 @@ public class EventsChartActivity extends ChartActivity {
         }
     }
 
-    private void addCheckBox(String kod_po) {
+    protected void addCheckBox(String kod_po) {
         int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(kod_po);
-        final float scale = getApplication().getResources().getDisplayMetrics().density;
-        LinearLayout box = (LinearLayout) findViewById(R.id.checkBoxesBox);
+        int color = ColorUtil.getColor(kod_po);
+        addCheckBox(index, color);
 
-        CheckBox check = new CheckBox(getApplication());
-        check.setId(index);
-        check.setChecked(true);
-        box.addView(check);
-        checkBoxes.add(check);
-
-        TextView label = new TextView(getApplication());
-        label.setBackgroundColor(ColorUtil.getColor(kod_po));
-        label.setHeight((int) (15 * scale + 0.5f));
-        label.setWidth((int) (15 * scale + 0.5f));
-        label.setGravity(Gravity.CENTER);
-        box.addView(label);
-
-        check.setOnClickListener(checkBoxClickListener);
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -142,6 +123,8 @@ public class EventsChartActivity extends ChartActivity {
             case LOADER_EVENTS:
                 Log.d(TAG, "onLoadFinished() LOADER_EVENTS");
                 blockList = DataProcessor.eventsToMapOfBlocks(cursor);
+                String[] values = DataProcessor.eventsCodesInBlocks(blockList);
+                initCheckBoxes(values);
                 mDataSetObservable.notifyChanged();
                 break;
             case LOADER_EMPLOYEES:
@@ -156,6 +139,7 @@ public class EventsChartActivity extends ChartActivity {
         }
 
     }
+
 
     private void startCalendarActivity(long actual, int code) {
         Intent intent = new Intent(this, CalendarActivity.class);
@@ -243,15 +227,5 @@ public class EventsChartActivity extends ChartActivity {
         return data;
     }
 
-    private class CheckBoxClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            CheckBox check = checkBoxes.get(view.getId());
-            Log.d(TAG, "onClick() " + view.getId() + " is " +
-                    check.isChecked() + " kod " + Event.KOD_PO_VALUES[view.getId()]);
-            refreshCurrentFragment();
-        }
-    }
 
 }
