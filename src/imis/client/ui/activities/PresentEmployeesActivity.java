@@ -15,10 +15,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
+import imis.client.asynctasks.NetworkingAsyncTask;
+import imis.client.persistent.EmployeeManager;
 import imis.client.ui.adapters.EmployeesAdapter;
 
 import static imis.client.persistent.EmployeeManager.DataQuery.CONTENT_URI;
-import static imis.client.persistent.EmployeeManager.DataQuery.PROJECTION_ALL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,18 +27,19 @@ import static imis.client.persistent.EmployeeManager.DataQuery.PROJECTION_ALL;
  * Date: 6.4.13
  * Time: 22:44
  */
-public class PresentEmployeesActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PresentEmployeesActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        NetworkingAsyncTask.OnAsyncActionCompletedListener {
     private static final String TAG = PresentEmployeesActivity.class.getSimpleName();
     private EmployeesAdapter adapter;
     private GridView gridView;
-    private static final int LOADER_ID = 0x02;
+    private static final int LOADER_EMPLOYEES = 0x02;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employees_present);
-
+        // create account manager
 
         gridView = (GridView) findViewById(R.id.gridEmployees);
 
@@ -50,14 +52,15 @@ public class PresentEmployeesActivity extends FragmentActivity implements Loader
             }
         });
 
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
+
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader()");
         return new CursorLoader(getApplicationContext(), CONTENT_URI,
-                PROJECTION_ALL, null, null, null);
+                null, null, null, null);
     }
 
     @Override
@@ -66,6 +69,7 @@ public class PresentEmployeesActivity extends FragmentActivity implements Loader
         adapter.swapCursor(data);
         gridView.setAdapter(adapter);
         gridView.invalidateViews();
+        Log.d(TAG, "onLoadFinished() " + EmployeeManager.getAllEmployees(getApplication()));
     }
 
     @Override
@@ -95,5 +99,12 @@ public class PresentEmployeesActivity extends FragmentActivity implements Loader
 
     private void refresh() {
         new GetListOfEmployees(this).execute(null);
+
+    }
+
+    @Override
+    public void asyncActionCompleted() {
+        Log.d(TAG, "asyncActionCompleted()");
+        getSupportLoaderManager().restartLoader(LOADER_EMPLOYEES, null, this);
     }
 }

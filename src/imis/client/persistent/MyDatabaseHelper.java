@@ -57,6 +57,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String EMP_COL_SUB = Employee.COL_SUB;
     public static final String EMP_COL_DRUH = Employee.COL_DRUH;
     public static final String EMP_COL_TIME = Employee.COL_TIME;
+    public static final String EMP_COL_KOD_PO = Employee.COL_KOD_PO;
 
 
     private static final String CREATE_EVENTS_TABLE = new String()
@@ -102,15 +103,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             .concat("create table " + TABLE_EMPLOYEES)
             .concat("(")
             .concat(EMP_COL_LOCAL_ID + " integer primary key autoincrement, ")
-            .concat(EMP_COL_ICP + " text not null unique, ")//TODO unique?
+            .concat(EMP_COL_ICP + " text not null unique, ")
             .concat(EMP_COL_KODPRA + " text unique, ")
             .concat(EMP_COL_SUB + " integer not null,")
             .concat(EMP_COL_DRUH + " text,")
-            .concat(EMP_COL_TIME + " integer")
+            .concat(EMP_COL_TIME + " integer,")
+            .concat(EMP_COL_KOD_PO + " text")
             .concat(");");
 
 
-    //TODO datum jako YYYY-MM-DD HH:MM:SS ne long
     public MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

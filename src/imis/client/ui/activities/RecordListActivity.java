@@ -4,9 +4,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -34,8 +32,8 @@ import static imis.client.persistent.RecordManager.DataQuery.SELECTION_ZC;
  * Date: 15.4.13
  * Time: 17:25
  */
-public class RecordListActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener, AdapterView.OnItemSelectedListener {
+public class RecordListActivity extends ControlActivity implements
+        RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = RecordListActivity.class.getSimpleName();
     private RecordsCursorAdapter adapter;
     private static final int LOADER_ID = 0x08;
@@ -181,6 +179,11 @@ public class RecordListActivity extends FragmentActivity implements LoaderManage
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void asyncActionCompleted() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

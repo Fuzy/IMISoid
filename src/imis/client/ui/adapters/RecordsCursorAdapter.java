@@ -21,18 +21,18 @@ import imis.client.ui.ColorUtil;
  */
 public class RecordsCursorAdapter extends CursorAdapter {
     private static final String TAG = "RecordsCursorAdapter";
+    private LayoutInflater inflater;
 
     public RecordsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         Log.d(TAG, "newView()");
-        LayoutInflater vi = LayoutInflater.from(context);
-        View view = vi.inflate(R.layout.record_row, null);
-        return view;
+        return inflater.inflate(R.layout.record_row, null);
     }
 
     @Override

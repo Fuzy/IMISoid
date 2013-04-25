@@ -41,14 +41,13 @@ public class RecordsChartActivity extends ChartActivity {
         setContentView(R.layout.events_chart);
         getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
 
-
+        initControlPanel();
     }
 
     protected void addCheckBox(String kod_po) {
         int index = Arrays.asList(Record.TYPE_VALUES).indexOf(kod_po);
         int color = ColorUtil.getColor(kod_po);
         addCheckBox(index, color);
-
     }
 
 
@@ -118,6 +117,11 @@ public class RecordsChartActivity extends ChartActivity {
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void asyncActionCompleted() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

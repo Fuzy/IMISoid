@@ -5,6 +5,10 @@
               android:layout_width="wrap_content"
               android:layout_height="match_parent">
 
+    <LinearLayout
+            android:focusable="true" android:focusableInTouchMode="true"
+            android:layout_width="0px" android:layout_height="0px"/>
+
     <EditText
             android:id="@+id/dateFromEdit"
             android:singleLine="true"
@@ -18,7 +22,7 @@
 
 
     <EditText
-            android:id="@+id/dateDayButton"
+            android:id="@+id/dateToEdit"
             android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +32,7 @@
             android:autoText="false" android:text=""/>
 
     <ImageButton
-            android:id="@+id/dateFromButton"
+            android:id="@+id/dateDayButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_menu_day" />

@@ -17,10 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
+import imis.client.asynctasks.NetworkingAsyncTask;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Block;
 import imis.client.model.Event;
@@ -47,7 +49,8 @@ import static imis.client.authentication.AuthenticationConsts.AUTHORITY;
 import static imis.client.persistent.EventManager.EventQuery;
 
 public class DayTimelineActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {
+        OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener,
+        NetworkingAsyncTask.OnAsyncActionCompletedListener{
 
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
     BroadcastReceiver _broadcastReceiver;
@@ -230,7 +233,6 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         Log.d(TAG, "onLoaderReset()");
-        //getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Override
@@ -425,5 +427,11 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
         this.date = date;
         adapter.setDate(date);
         getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+    }
+
+    @Override
+    public void asyncActionCompleted() {
+        Toast toast = Toast.makeText(this, "Aktualizovano", Toast.LENGTH_LONG);
+        toast.show();
     }
 }

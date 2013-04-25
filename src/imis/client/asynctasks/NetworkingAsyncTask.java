@@ -44,4 +44,8 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
         Log.d(TAG, "onPostExecute()");
         dialog.dismiss();
     }
+
+    public interface OnAsyncActionCompletedListener {
+        void asyncActionCompleted();
+    }
 }

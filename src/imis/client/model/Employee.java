@@ -21,8 +21,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int _id, String icp, String kodpra, boolean subordinate, long lastEventTime, String kod_po, String druh) {
-        this._id = _id;
+    public Employee(String icp, String kodpra, boolean subordinate, long lastEventTime, String kod_po, String druh) {
         this.icp = icp;
         this.kodpra = kodpra;
         isSubordinate = subordinate;
@@ -92,6 +91,9 @@ public class Employee {
         values.put(COL_ICP, icp);
         values.put(COL_KODPRA, kodpra);
         values.put(COL_SUB, isSubordinate);
+        values.put(COL_TIME, lastEventTime);
+        values.put(COL_KOD_PO, kod_po);
+        values.put(COL_DRUH, druh);
         return values;
     }
 
@@ -101,6 +103,9 @@ public class Employee {
         employee.setIcp(c.getString(IND_COL_ICP));
         employee.setKodpra(c.getString(IND_COL_KODPRA));
         employee.setSubordinate(c.getInt(IND_COL_SUB) > 0);
+        employee.setKod_po(c.getString(IND_COL_KOD_PO));
+        employee.setLastEventTime(c.getLong(IND_COL_TIME));
+        employee.setDruh(c.getString(IND_COL_DRUH));
         return employee;
     }
 
@@ -113,6 +118,7 @@ public class Employee {
                 ", isSubordinate=" + isSubordinate +
                 ", lastEventTime=" + lastEventTime +
                 ", kod_po='" + kod_po + '\'' +
+                ", druh='" + druh + '\'' +
                 '}';
     }
 
@@ -122,11 +128,15 @@ public class Employee {
     public static final String COL_SUB = "SUB";
     public static final String COL_DRUH = "DRUH";
     public static final String COL_TIME = "TIME";
+    public static final String COL_KOD_PO = "KOD";
 
     public static final int IND_COL_ID = 0;
     public static final int IND_COL_ICP = 1;
     public static final int IND_COL_KODPRA = 2;
-    public static final int IND_COL_SUB = 3;
+    public static final int IND_COL_DRUH = 3;
+    public static final int IND_COL_SUB = 4;
+    public static final int IND_COL_TIME = 5;
+    public static final int IND_COL_KOD_PO = 6;
 
 
 }

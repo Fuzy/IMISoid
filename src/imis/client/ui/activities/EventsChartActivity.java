@@ -1,14 +1,13 @@
 package imis.client.ui.activities;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
-import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
 import imis.client.R;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
@@ -21,8 +20,6 @@ import imis.client.ui.ColorUtil;
 
 import java.util.*;
 
-import static imis.client.AppUtil.convertToTime;
-import static imis.client.AppUtil.formatAbbrDate;
 import static imis.client.persistent.EventManager.EventQuery;
 
 /**
@@ -41,45 +38,20 @@ public class EventsChartActivity extends ChartActivity {
 
     private final Map<String, String> kody_po = new HashMap<>();
 
-    //TODO spolecne
-    private static final int CALENDAR_ACTIVITY_FROM_CODE = 1;
-    private static final int CALENDAR_ACTIVITY_TO_CODE = 2;
 
     private SimpleCursorAdapter adapter;
-
-    //TODO spolecny predek grafovych aktivit
-    private Spinner spinner;
-    private ImageButton dateFromButton, dateToButton;
-    private EditText dateFromEdit, dateToEdit;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
         setContentView(R.layout.events_chart);
         getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
         getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
 
-        spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(this);
-        dateFromEdit = (EditText) findViewById(R.id.dateFromEdit);
-        dateToEdit = (EditText) findViewById(R.id.dateDayButton);
-        dateFromButton = (ImageButton) findViewById(R.id.dateFromButton);
-        dateFromButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startCalendarActivity(convertToTime(dateFromEdit.getText().toString()), CALENDAR_ACTIVITY_FROM_CODE);
-            }
-        });
-        dateToButton = (ImageButton) findViewById(R.id.dateMonthButton);
-        dateToButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //startCalendarActivity(convertToTime(dateToEdit.getText().toString()), CALENDAR_ACTIVITY_TO_CODE);
-            }
-        });
-
+        initControlPanel();
         initEventCodesAndDesc();
 
     }
@@ -109,8 +81,7 @@ public class EventsChartActivity extends ChartActivity {
                         EventQuery.PROJECTION_ALL, null, null, null);//TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
             case LOADER_EMPLOYEES:
                 return new CursorLoader(getApplicationContext(), EmployeeManager.DataQuery.CONTENT_URI,
-                        EmployeeManager.DataQuery.PROJECTION_ALL,
-                        null, null, null);
+                        null, null, null, null);
         }
         return null;
     }
@@ -134,35 +105,10 @@ public class EventsChartActivity extends ChartActivity {
                 adapter = new SimpleCursorAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
                         cursor, from, to, 0);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter);
+                spinnerEmp.setAdapter(adapter);
                 break;
         }
 
-    }
-
-
-    private void startCalendarActivity(long actual, int code) {
-        Intent intent = new Intent(this, CalendarActivity.class);
-        intent.putExtra(Event.KEY_DATE, actual);
-        startActivityForResult(intent, code);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case CALENDAR_ACTIVITY_FROM_CODE:
-                if (resultCode == RESULT_OK) {
-                    long date = data.getLongExtra(Event.KEY_DATE, -1);
-                    dateFromEdit.setText(formatAbbrDate(date));
-                }
-                break;
-            case CALENDAR_ACTIVITY_TO_CODE:
-                if (resultCode == RESULT_OK) {
-                    long date = data.getLongExtra(Event.KEY_DATE, -1);
-                    dateToEdit.setText(formatAbbrDate(date));
-                }
-                break;
-        }
     }
 
     @Override
@@ -192,12 +138,6 @@ public class EventsChartActivity extends ChartActivity {
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selected = adapterView.getItemAtPosition(i).toString();
-        Log.d(TAG, "onItemSelected() selected " + selected + " l" + l);
-    }
-
-    @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -223,9 +163,13 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     public StackedBarChartData getStackedBarChartData() {
         Log.d(TAG, "getStackedBarChartData()");
-        StackedBarChartData data =  DataProcessor.countEventsStackedBarChartData(blockList, getVisibleCodes(), kody_po);
+        StackedBarChartData data = DataProcessor.countEventsStackedBarChartData(blockList, getVisibleCodes(), kody_po);
         return data;
     }
 
 
+    @Override
+    public void asyncActionCompleted() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

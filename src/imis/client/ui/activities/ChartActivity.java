@@ -1,15 +1,11 @@
 package imis.client.ui.activities;
 
-import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import android.view.*;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,8 +25,7 @@ import java.util.List;
  * Date: 23.4.13
  * Time: 17:51
  */
-public abstract class ChartActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemSelectedListener {
+public abstract class ChartActivity extends ControlActivity  {
     protected static final String FRAG_PIE = "PieChartFragment",
             FRAG_STACK = "StackedBarFragment", FRAG_STATS = "StatisticsFragment";
     private static final String TAG = ChartActivity.class.getSimpleName();
@@ -135,6 +130,7 @@ public abstract class ChartActivity extends FragmentActivity implements LoaderMa
     }
 
     protected abstract void addCheckBox(String code);
+
     public abstract List<String> getVisibleCodes();
 
     protected void addCheckBox(int index, int color) {

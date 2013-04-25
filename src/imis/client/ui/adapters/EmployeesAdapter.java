@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Employee;
+import imis.client.ui.ColorUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,33 +21,26 @@ import imis.client.model.Employee;
  */
 public class EmployeesAdapter extends CursorAdapter {
     private static final String TAG = EmployeesAdapter.class.getSimpleName();
+    private LayoutInflater inflater;
 
     public EmployeesAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         Log.d(TAG, "newView()");
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View employeeView = inflater.inflate(R.layout.employee_profile, null);
-        Employee employee = Employee.cursorToEmployee(cursor);
-
-        /*TextView kod_po = (TextView) employeeView.findViewById(R.id.emp_kod_po);
-        kod_po.setBackgroundColor(ColorUtil.getColorForType(employee.getKod_po()));*/
-
-        TextView textView = (TextView) employeeView.findViewById(R.id.emp_kodpral);
-
-        String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
-        textView.setText(name);
-
-        return employeeView;
+        return inflater.inflate(R.layout.employee_profile, null);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        //TODO spravne
-        //To change body of implemented methods use File | Settings | File Templates.
+        Employee employee = Employee.cursorToEmployee(cursor);
+
+        String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
+        ((TextView) view.findViewById(R.id.emp_kodpral)).setText(name);
+        ((TextView) view.findViewById(R.id.emp_time)).setText(AppUtil.formatEmpDate(employee.getLastEventTime()));
+        view.findViewById(R.id.emp_kod_po).setBackgroundColor(ColorUtil.getColor(employee.getKod_po()));
     }
 }

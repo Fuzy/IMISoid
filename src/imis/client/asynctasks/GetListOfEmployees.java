@@ -49,6 +49,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
+            Log.d(TAG, "doInBackground() url " + url + " icp " + icp);
             ResponseEntity<Employee[]> response = restTemplate.exchange(url, HttpMethod.GET, entity,
                     Employee[].class, icp); //TODO test dvoji
             Employee[] body = response.getBody();
@@ -64,15 +65,14 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
     protected void onPostExecute(Employee[] employees) {
         super.onPostExecute(null);
         // dialog.dismiss();
+        /*Employee emp = new Employee("234", "BCD", false, 1360000000000L, "02", "O");
+        employees = new Employee[]{emp}; //TODO smazat*/
         Log.d(TAG, "onPostExecute()");
         if (employees != null) {
             EmployeeManager.addEmployees(activity, employees);
-
         }
-        //Log.i(TAG, "employees: " + EmployeeManager.getAllEmployees(activity));
-         /* Employee employee = new Employee("123", "KDA", false, 1364169600000L, Event.KOD_PO_ARRIVE_NORMAL);
-        EmployeeManager.addEmployee(activity, employee);
-        Employee employee2 = new Employee("124", "JSS", false, 1364169650000L, Event.KOD_PO_LEAVE_LUNCH);
-        EmployeeManager.addEmployee(activity, employee2);*/
+
+        OnAsyncActionCompletedListener myActivity = (OnAsyncActionCompletedListener) activity;
+        myActivity.asyncActionCompleted();
     }
 }
