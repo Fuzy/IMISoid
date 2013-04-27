@@ -1,6 +1,5 @@
 package imis.client.asynctasks;
 
-import android.app.Activity;
 import android.util.Log;
 import imis.client.model.Event;
 import imis.client.network.HttpClientFactory;
@@ -22,13 +21,12 @@ import java.util.Collections;
 public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]>{
     private static final String TAG = GetListOfRecords.class.getSimpleName();
 
-    public GetListOfEvents(Activity context) {
-        super(context);
+    public GetListOfEvents(String... params) {
+        super(params);
     }
 
     @Override
     protected Event[] doInBackground(String... params) {
-        //changeProgress(RUNNING, "working");
         String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -57,8 +55,10 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]>{
 
     @Override
     protected void onPostExecute(Event[] events) {
-        super.onPostExecute(null);
+
         Log.d(TAG, "onPostExecute() events " + Arrays.toString(events));
 
+
+        super.onPostExecute(null);
     }
 }

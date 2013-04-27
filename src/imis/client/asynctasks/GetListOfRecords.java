@@ -1,11 +1,9 @@
 package imis.client.asynctasks;
 
-import android.app.Activity;
 import android.util.Log;
 import imis.client.model.Record;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
-import imis.client.persistent.RecordManager;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
@@ -23,8 +21,8 @@ import java.util.Collections;
 public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]> {
     private static final String TAG = GetListOfRecords.class.getSimpleName();
 
-    public GetListOfRecords(Activity context) {
-        super(context);
+    public GetListOfRecords(String... params) {
+        super(params);
     }
 
     @Override
@@ -60,14 +58,15 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
 
     @Override
     protected void onPostExecute(Record[] records) {
-        super.onPostExecute(null);
 
 
-        /*Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
+
+        Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
         //TODO test data
-        records = new Record[1];
+        records = new Record[2];
 
         Record record = new Record();
+        record.setId("123");
         record.setZc("R-VV-2013");
         record.setCpolzak(5);
         record.setCpozzak(11);
@@ -81,16 +80,30 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
         );
         record.setPozn_hl("poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
         record.setPozn_ukol("poznamka ukol poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
-        records[0] = record;*/
+        records[0] = record;
 
-       /* Record record2 = new Record();
-        record2.setZc("456");*/
+        Record record2 = new Record();
+        record2.setId("124");
+        record2.setZc("A-VV-2013");
+        record2.setCpolzak(5);
+        record2.setCpozzak(11);
+        record2.setKodpra("KDA");
+        record2.setDatum(454);
+        record2.setStav_v("V");
+        record2.setMnozstvi_odved(11111111);
+        record2.setPoznamka("bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " +
+                "3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké 3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " + "\n" +
+                "                \"3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké 3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " + "\n"
+        );
+        record2.setPozn_hl("poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
+        record2.setPozn_ukol("poznamka ukol poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
+        records[1] = record2;
 
 
-        //records[1] = record2;
         Log.d(TAG, "onPostExecute() records size " + records.length);
 
-        RecordManager.addRecords(activity, Arrays.asList(records));
-        Log.d(TAG, "onPostExecute() getAllRecords " + RecordManager.getAllRecords(activity));
+       /* RecordManager.addRecords(activity, Arrays.asList(records));
+        Log.d(TAG, "onPostExecute() getAllRecords " + RecordManager.getAllRecords(activity));*/
+        super.onPostExecute(null);
     }
 }

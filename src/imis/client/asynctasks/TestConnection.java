@@ -1,8 +1,8 @@
 package imis.client.asynctasks;
 
-import android.app.Activity;
+import android.util.Log;
+import imis.client.asynctasks.result.TestConnectionResultData;
 import imis.client.network.NetworkUtilities;
-import imis.client.ui.activities.NetworkSettingsActivity;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,20 +13,19 @@ import imis.client.ui.activities.NetworkSettingsActivity;
 public class TestConnection extends NetworkingAsyncTask<Void, Void, Integer> {
     private static final String TAG = "TestConnection";
 
-    public TestConnection(Activity context) {
-        super(context);
-    }
-
     @Override
-    protected Integer doInBackground(Void... voids) {
+    protected Integer doInBackground(Void... objects) {
         int statusCode = NetworkUtilities.testWebServiceAndDBAvailability();
         return statusCode;
     }
 
     @Override
     protected void onPostExecute(Integer integer) {
+        Log.d(TAG, "onPostExecute()");
+        TestConnectionResultData result = new TestConnectionResultData();
+        result.setCode(integer);
+        resultData = result;
+
         super.onPostExecute(null);
-        NetworkSettingsActivity netSettingsActivity = (NetworkSettingsActivity) activity;
-        netSettingsActivity.setIconsOfAvailability(integer);
     }
 }

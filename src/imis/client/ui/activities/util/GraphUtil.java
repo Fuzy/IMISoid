@@ -1,4 +1,4 @@
-package imis.client.ui.activities;
+package imis.client.ui.activities.util;
 
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;

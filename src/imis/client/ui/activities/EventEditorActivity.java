@@ -20,6 +20,7 @@ import imis.client.R;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
+import imis.client.ui.activities.util.ActivityConsts;
 import imis.client.ui.dialogs.DeleteEventDialog;
 
 import java.util.Arrays;

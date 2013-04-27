@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,13 +15,14 @@ import android.widget.ImageView;
 import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.TestConnection;
+import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.TestConnectionResultData;
 import imis.client.network.NetworkUtilities;
 
 import java.net.HttpURLConnection;
 
 import static imis.client.AppConsts.KEY_DOMAIN;
 import static imis.client.AppConsts.KEY_PORT;
-import static imis.client.AppUtil.showNetworkAccessUnavailable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +30,7 @@ import static imis.client.AppUtil.showNetworkAccessUnavailable;
  * Date: 12.3.13
  * Time: 11:05
  */
-public class NetworkSettingsActivity extends FragmentActivity {
+public class NetworkSettingsActivity extends AsyncActivity {
     private static final String TAG = NetworkSettingsActivity.class.getSimpleName();
     private ImageView imageWebService, imageDatabase;
     private EditText editTextDomain, editTextPort;
@@ -132,11 +132,11 @@ public class NetworkSettingsActivity extends FragmentActivity {
     private void refreshState() {
         Log.d("NetworkSettingsActivity", "refreshState()");
         if (domain.length() != 0 && domain != null) {
-            if (NetworkUtilities.isOnline(getApplicationContext()) == false) {
-                showNetworkAccessUnavailable(getApplication()) ;
+            /*if (NetworkUtilities.isOnline(getApplicationContext()) == false) {
+                showNetworkAccessUnavailable(getApplication());
                 return;
-            }
-            new TestConnection(this).execute(null);
+            }*/
+            createTaskFragment(new TestConnection());
         }
     }
 
@@ -149,7 +149,7 @@ public class NetworkSettingsActivity extends FragmentActivity {
     }
 
 
-    public void setIconsOfAvailability(int code) {
+    private void setIconsOfAvailability(int code) {
         switch (code) {
             case -1:
                 setImageAsUnreachable(imageWebService);
@@ -166,6 +166,14 @@ public class NetworkSettingsActivity extends FragmentActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onTaskFinished(ResultData result) {
+        Log.d(TAG, "onTaskFinished() result " + result);
+        int testResult = ((TestConnectionResultData) result).getCode();
+        Log.d(TAG, "onTaskFinished() testResult " + testResult);
+        setIconsOfAvailability(testResult);
     }
 }
 

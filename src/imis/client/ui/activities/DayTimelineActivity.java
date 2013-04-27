@@ -6,7 +6,6 @@ import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -17,12 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
-import imis.client.asynctasks.NetworkingAsyncTask;
+import imis.client.asynctasks.result.ResultData;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Block;
 import imis.client.model.Event;
@@ -34,6 +32,7 @@ import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
 import imis.client.ui.ObservableScrollView;
+import imis.client.ui.activities.util.ActivityConsts;
 import imis.client.ui.adapters.EventsArrayAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
 
@@ -48,9 +47,8 @@ import static imis.client.authentication.AuthenticationConsts.ACCOUNT_TYPE;
 import static imis.client.authentication.AuthenticationConsts.AUTHORITY;
 import static imis.client.persistent.EventManager.EventQuery;
 
-public class DayTimelineActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener,
-        NetworkingAsyncTask.OnAsyncActionCompletedListener{
+public class DayTimelineActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {
 
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
     BroadcastReceiver _broadcastReceiver;
@@ -196,7 +194,7 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
         try {
             String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
             Log.d(TAG, "refreshListOfEmployees() icp " + icp);
-            new GetListOfEmployees(this).execute(icp);//1493913
+            createTaskFragment(new GetListOfEmployees(icp));
         } catch (Exception e) {
             showAccountNotExistsError(getApplication());
         }
@@ -338,7 +336,6 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
 
     @Override
     public void colorChanged() {
-        //ColorUtil.setColor_present_normal(color);
         blocks.setVisibility(View.GONE);
         blocks.setVisibility(View.VISIBLE);
     }
@@ -373,20 +370,6 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
                 getResources().getColor(R.color.COLOR_ABSENCE_SUPPER_DEFAULT)));
         ColorUtil.setColor(Event.KOD_PO_LEAVE_MEDIC, settings.getInt(Event.KOD_PO_LEAVE_MEDIC,
                 getResources().getColor(R.color.COLOR_ABSENCE_MEDIC_DEFAULT)));
-
-       /* ColorUtil.setColor(Event.KOD_PO_LEAVE_ILL, settings.getInt(Event.KOD_PO_LEAVE_ILL,
-                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_LEAVE_VAC, settings.getInt(Event.KOD_PO_LEAVE_VAC,
-                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_LEAVE_TREAT, settings.getInt(Event.KOD_PO_LEAVE_TREAT,
-                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_LEAVE_STUDY, settings.getInt(Event.KOD_PO_LEAVE_STUDY,
-                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_LEAVE_REFUND, settings.getInt(Event.KOD_PO_LEAVE_REFUND,
-                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_ARRIVE_EMERGENCY, settings.getInt(Event.KOD_PO_ARRIVE_EMERGENCY,
-                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));*/
-
     }
 
     private void loadRecordColors(SharedPreferences settings) {
@@ -430,8 +413,13 @@ public class DayTimelineActivity extends FragmentActivity implements LoaderManag
     }
 
     @Override
+    public void onTaskFinished(ResultData result) {
+        Log.d(TAG, "onTaskFinished()");
+    }
+
+    /*@Override
     public void asyncActionCompleted() {
         Toast toast = Toast.makeText(this, "Aktualizovano", Toast.LENGTH_LONG);
         toast.show();
-    }
+    }*/
 }

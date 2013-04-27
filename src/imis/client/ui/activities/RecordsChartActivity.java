@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
+import imis.client.asynctasks.result.ResultData;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Record;
@@ -58,7 +59,8 @@ public class RecordsChartActivity extends ChartActivity {
         String from = "26.03.08";//TODO pryc
         String to = "26.03.08";
 
-        new GetListOfRecords(this).execute(kodpra, from, to);
+        createTaskFragment(new GetListOfRecords(kodpra, from, to));
+        //new GetListOfRecords(this).execute(kodpra, from, to);
     }
 
     @Override
@@ -112,22 +114,14 @@ public class RecordsChartActivity extends ChartActivity {
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void asyncActionCompleted() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public List<String> getVisibleCodes() {
@@ -139,4 +133,8 @@ public class RecordsChartActivity extends ChartActivity {
         return codes;
     }
 
+    @Override
+    public void onTaskFinished(ResultData result) {
+        Log.d(TAG, "onTaskFinished()");
+    }
 }

@@ -2,7 +2,6 @@ package imis.client.ui.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.text.InputType;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import imis.client.AppUtil;
 import imis.client.R;
-import imis.client.asynctasks.NetworkingAsyncTask;
 import imis.client.model.Event;
 
 import static imis.client.AppUtil.convertToTime;
@@ -25,14 +23,19 @@ import static imis.client.AppUtil.formatAbbrDate;
  * Date: 25.4.13
  * Time: 20:44
  */
-public abstract class ControlActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        NetworkingAsyncTask.OnAsyncActionCompletedListener, AdapterView.OnItemSelectedListener {
+public abstract class ControlActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        AdapterView.OnItemSelectedListener {
 
     private static final int CALENDAR_ACTIVITY_DAY_CODE = 1;
     private static final int CALENDAR_ACTIVITY_MONTH_CODE = 2;
+
     private static final String TAG = ControlActivity.class.getSimpleName();
 
     private final MyOnFocusChangeListener focusListener = new MyOnFocusChangeListener();
+
+
+    /*// Tag so we can find the task fragment again, in another instance of this fragment after rotation.
+    static final String TASK_FRAGMENT_TAG = "task";*/
 
     protected Spinner spinnerEmp;
     protected ImageButton dateDayButton, dateMonthButton;
@@ -40,11 +43,6 @@ public abstract class ControlActivity extends FragmentActivity implements Loader
 
     private int selectedId = -1;
 
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-    }*/
 
     protected void initControlPanel() {
         spinnerEmp = (Spinner) findViewById(R.id.spinner);
@@ -83,7 +81,7 @@ public abstract class ControlActivity extends FragmentActivity implements Loader
             case CALENDAR_ACTIVITY_DAY_CODE:
                 if (resultCode == RESULT_OK) {
                     long date = data.getLongExtra(Event.KEY_DATE, -1);
-                    EditText selected =  (EditText)findViewById(selectedId);
+                    EditText selected = (EditText) findViewById(selectedId);
                     if (selected != null) {
                         selected.setText(formatAbbrDate(date));
                     }
@@ -105,8 +103,21 @@ public abstract class ControlActivity extends FragmentActivity implements Loader
         Log.d(TAG, "onItemSelected() selected " + selected + " l" + l);
     }
 
-    @Override
-    public abstract void asyncActionCompleted();
+    /*protected void createTaskFragment(NetworkingAsyncTask task, String... params) {
+        Log.d(TAG, "createTaskFragment()");
+
+        // We will create a new TaskFragment.
+        TaskFragment taskFragment = new TaskFragment();
+        taskFragment.setTask(task);
+        taskFragment.setTaskParameters(params);
+
+        // Show the fragment.
+        taskFragment.show(getSupportFragmentManager(), TASK_FRAGMENT_TAG);
+    }*/
+
+
+   /* @Override
+    public abstract void onTaskFinished();*/
 
     private class MyOnFocusChangeListener implements View.OnFocusChangeListener {
 
@@ -115,5 +126,6 @@ public abstract class ControlActivity extends FragmentActivity implements Loader
             selectedId = view.getId();
             Log.d(TAG, "onFocusChange() view " + view + " b " + b);
         }
+
     }
 }

@@ -2,7 +2,6 @@ package imis.client.ui.activities;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -15,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
-import imis.client.asynctasks.NetworkingAsyncTask;
+import imis.client.asynctasks.result.ResultData;
 import imis.client.persistent.EmployeeManager;
 import imis.client.ui.adapters.EmployeesAdapter;
 
@@ -27,8 +26,7 @@ import static imis.client.persistent.EmployeeManager.DataQuery.CONTENT_URI;
  * Date: 6.4.13
  * Time: 22:44
  */
-public class PresentEmployeesActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        NetworkingAsyncTask.OnAsyncActionCompletedListener {
+public class PresentEmployeesActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = PresentEmployeesActivity.class.getSimpleName();
     private EmployeesAdapter adapter;
     private GridView gridView;
@@ -98,13 +96,13 @@ public class PresentEmployeesActivity extends FragmentActivity implements Loader
     }
 
     private void refresh() {
-        new GetListOfEmployees(this).execute(null);
-
+        Log.d(TAG, "refresh()");
+        createTaskFragment(new GetListOfEmployees());
     }
 
+
     @Override
-    public void asyncActionCompleted() {
-        Log.d(TAG, "asyncActionCompleted()");
-        getSupportLoaderManager().restartLoader(LOADER_EMPLOYEES, null, this);
+    public void onTaskFinished(ResultData result) {
+        Log.d(TAG, "onTaskFinished()");
     }
 }

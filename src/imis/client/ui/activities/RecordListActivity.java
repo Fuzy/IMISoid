@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
+import imis.client.asynctasks.result.ResultData;
 import imis.client.model.Record;
 import imis.client.ui.adapters.RecordsCursorAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
@@ -77,14 +78,15 @@ public class RecordListActivity extends ControlActivity implements
         String selection;
         String[] selectArgs;
         if (typesPos == 0) {
-            selection= null;
+            selection = null;
             selectArgs = null;
         } else {
             selection = SELECTION_ZC;
             selectArgs = new String[]{typesArray[typesPos]};
         }
 
-        if (selectArgs != null)Log.d(TAG, "onCreateLoader() selection " + selection + " selectionArgs " + selectArgs[0]);
+        if (selectArgs != null)
+            Log.d(TAG, "onCreateLoader() selection " + selection + " selectionArgs " + selectArgs[0]);
         else Log.d(TAG, "onCreateLoader() selection " + selection + " selectionArgs " + selectArgs);
 
         return new CursorLoader(getApplicationContext(), CONTENT_URI,
@@ -135,7 +137,8 @@ public class RecordListActivity extends ControlActivity implements
         String from = "26.03.08";//TODO pryc
         String to = "26.03.08";
 
-        new GetListOfRecords(this).execute(kodpra, from, to);
+        createTaskFragment(new GetListOfRecords(kodpra, from, to));
+        //new GetListOfRecords(this).execute(kodpra, from, to);
     }
 
 
@@ -179,11 +182,10 @@ public class RecordListActivity extends ControlActivity implements
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public void asyncActionCompleted() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void onTaskFinished(ResultData result) {
+        Log.d(TAG, "onTaskFinished()");
     }
 }

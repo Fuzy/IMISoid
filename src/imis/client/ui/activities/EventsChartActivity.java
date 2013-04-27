@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import imis.client.R;
+import imis.client.asynctasks.GetListOfEvents;
+import imis.client.asynctasks.result.ResultData;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
@@ -139,13 +141,16 @@ public class EventsChartActivity extends ChartActivity {
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     protected void refresh() {
         Log.d(TAG, "refresh()");
+        String kodpra = "JEL";
+        String from = "26.03.08";//TODO pryc
+        String to = "26.03.08";
         //new GetEmployeesLastEvent(this).execute();
+        createTaskFragment(new GetListOfEvents(kodpra, from, to));
     }
 
     @Override
@@ -169,7 +174,7 @@ public class EventsChartActivity extends ChartActivity {
 
 
     @Override
-    public void asyncActionCompleted() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void onTaskFinished(ResultData result) {
+
     }
 }

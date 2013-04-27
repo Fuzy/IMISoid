@@ -17,14 +17,10 @@
             android:capitalize="none"
             android:autoText="false" android:text=""/>
 
-    <ImageButton
-            android:id="@+id/dateFromButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_day" />
+
 
     <EditText
-            android:id="@+id/dateDayButton"
+            android:id="@+id/dateToEdit"
             android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,6 +28,12 @@
             android:scrollHorizontally="true"
             android:capitalize="none"
             android:autoText="false" android:text=""/>
+
+    <ImageButton
+            android:id="@+id/dateDayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_day" />
 
     <ImageButton
             android:id="@+id/dateMonthButton"

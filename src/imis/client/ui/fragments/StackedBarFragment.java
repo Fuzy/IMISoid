@@ -15,7 +15,7 @@ import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
-import static imis.client.ui.activities.GraphUtil.*;
+import static imis.client.ui.activities.util.GraphUtil.*;
 
 /**
  * Created with IntelliJ IDEA.

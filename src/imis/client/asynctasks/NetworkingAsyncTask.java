@@ -1,51 +1,44 @@
 package imis.client.asynctasks;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
-import imis.client.R;
+import imis.client.asynctasks.result.ResultData;
+import imis.client.ui.fragments.TaskFragment;
 
 import java.io.Serializable;
 
 public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> implements Serializable {
     private static final String TAG = NetworkingAsyncTask.class.getSimpleName();
-    private ProgressDialog dialog = null;
-    protected Activity activity;
+    protected TaskFragment mFragment;
+    protected ResultData resultData;
+    protected T[] params;
 
-	public NetworkingAsyncTask(Activity context) {
-		this.activity = context;
-	}
+    protected NetworkingAsyncTask(T... params) {
+        this.params = params;
+    }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        Log.d(TAG, "onPreExecute()");
-        dialog = new ProgressDialog(activity);
-        String cancel = activity.getResources().getString(R.string.cancel);
-        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "onCancel()");
-                cancel(true);
-            }
-        });
-        String message = activity.getResources().getString(R.string.working);
-        dialog.setMessage(message);
-        dialog.setCancelable(true);
-        dialog.setIndeterminate(true);
-        dialog.show();
+
+    public void setFragment(TaskFragment fragment) {
+        mFragment = fragment;
+    }
+
+    public void execute() {
+        Log.d(TAG, "execute() params: " + params);
+        this.execute(params);
     }
 
     @Override
     protected void onPostExecute(V v) {
-        super.onPostExecute(v);
+
         Log.d(TAG, "onPostExecute()");
-        dialog.dismiss();
+
+        if (mFragment != null) {
+            Log.d(TAG, "onPostExecute() resultData " + resultData);
+            mFragment.taskFinished(resultData);
+        }
+
+        super.onPostExecute(null);
     }
 
-    public interface OnAsyncActionCompletedListener {
-        void asyncActionCompleted();
-    }
+
 }
