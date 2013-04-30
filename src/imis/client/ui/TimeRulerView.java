@@ -16,8 +16,6 @@
 
 package imis.client.ui;
 
-import imis.client.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -28,8 +26,8 @@ import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.text.format.Time;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+import imis.client.R;
 
 /**
  * Custom view that draws a vertical time "ruler" representing the chronological
@@ -89,8 +87,8 @@ public class TimeRulerView extends View {
     // TimeZone.getTimeZone("Etc/GMT-2").getID()
     Time time = new Time();
     time.set(timeMillis);
-    Log.d(TAG, "timeMillis: " + timeMillis + " time.hour: " + time.hour + " time.minute: "
-        + time.minute);
+    /*Log.d(TAG, "timeMillis: " + timeMillis + " time.hour: " + time.hour + " time.minute: "
+        + time.minute);*/
 
     final int minutes = ((time.hour - mStartHour) * 60) + time.minute;
     return (minutes * mHourHeight) / 60;

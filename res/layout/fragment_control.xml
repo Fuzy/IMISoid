@@ -38,6 +38,12 @@
             android:src="@drawable/ic_menu_day" />
 
     <ImageButton
+            android:id="@+id/dateTodayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_today" />
+
+    <ImageButton
             android:id="@+id/dateMonthButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -159,6 +159,7 @@
     <string name="record_detail_task">Úkol</string>
     <string name="record_detail_note">Poznámka</string>
     <string name="statistics">Statistiky</string>
+    <string name="error_perriod_set">Špatně zadané období</string>
 
 
 </resources>

@@ -6,6 +6,7 @@ import imis.client.asynctasks.result.ResultData;
 import imis.client.ui.fragments.TaskFragment;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> implements Serializable {
     private static final String TAG = NetworkingAsyncTask.class.getSimpleName();
@@ -23,7 +24,7 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
     }
 
     public void execute() {
-        Log.d(TAG, "execute() params: " + params);
+        Log.d(TAG, "execute() params: " + Arrays.toString(params));
         this.execute(params);
     }
 

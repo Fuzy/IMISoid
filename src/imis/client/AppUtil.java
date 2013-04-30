@@ -1,6 +1,7 @@
 package imis.client;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -25,8 +26,15 @@ public class AppUtil {
         dfUTCTime.setTimeZone((TimeZone.getTimeZone("UTC")));
     }
 
+    private static final String TAG = AppUtil.class.getSimpleName();
+
     public static void showAccountNotExistsError(Context context) {
         Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    public static void showPeriodInputError(Context context) {
+        Toast toast = Toast.makeText(context, R.string.error_perriod_set, Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -41,7 +49,7 @@ public class AppUtil {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis(); //TODO test
+        return cal.getTimeInMillis(); //TODO metoda 1
     }
 
     public static boolean belongsNowToDate(long date) {
@@ -57,7 +65,7 @@ public class AppUtil {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis();
+        return cal.getTimeInMillis();//TODO metoda 2
     }
 
     public static String formatDate(long date) {
@@ -85,13 +93,19 @@ public class AppUtil {
         return dfUTCTime.format(cal.getTime());
     }
 
+    public static void validateDate(String date) throws ParseException {
+        dfAbbr.parse(date);
+    }
+
     public static long convertToTime(String s) {
         long date;
         try {
             date = dfAbbr.parse(s).getTime();
+            Log.d(TAG, "convertToTime() date " + date);
         } catch (ParseException e) {
             return todayInLong();
         }
+        Log.d(TAG, "convertToTime() date " + date);
         return date;
     }
 
@@ -107,6 +121,14 @@ public class AppUtil {
         cal.setTimeInMillis(time);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         return formatAbbrDate(cal.getTimeInMillis());
+    }
+
+    public static String todayInString() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return dfAbbr.format(cal.getTime());
     }
 
 }

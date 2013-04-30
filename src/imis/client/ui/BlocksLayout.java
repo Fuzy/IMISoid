@@ -167,8 +167,8 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
                 left = headerWidth;
                 right = left + columnWidth;
                 blockView.layout(left, top, right, bottom);
-                Log.d(TAG, "left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom
-                        + " ruler height: " + mRulerView.getHeight());
+                /*Log.d(TAG, "left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom
+                        + " ruler height: " + mRulerView.getHeight());*/
             }
         }
 
@@ -321,7 +321,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     private void printAllChilds() {//TODO debug metoda
         for (int index = 0; index < getChildCount(); index++) {
             View child = getChildAt(index);
-            Log.d("BlocksLayout", "child i=" + index + " " + child.toString() + " id: " + child.getId());
+            //Log.d("BlocksLayout", "child i=" + index + " " + child.toString() + " id: " + child.getId());
         }
     }
 /*

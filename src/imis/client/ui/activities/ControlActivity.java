@@ -14,6 +14,8 @@ import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Event;
 
+import java.text.ParseException;
+
 import static imis.client.AppUtil.convertToTime;
 import static imis.client.AppUtil.formatAbbrDate;
 
@@ -33,12 +35,8 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     private final MyOnFocusChangeListener focusListener = new MyOnFocusChangeListener();
 
-
-    /*// Tag so we can find the task fragment again, in another instance of this fragment after rotation.
-    static final String TASK_FRAGMENT_TAG = "task";*/
-
     protected Spinner spinnerEmp;
-    protected ImageButton dateDayButton, dateMonthButton;
+    protected ImageButton dateDayButton, dateMonthButton, dateTodayButton;
     protected EditText dateFromEdit, dateToEdit;
 
     private int selectedId = -1;
@@ -58,6 +56,13 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             @Override
             public void onClick(View view) {
                 startCalendarActivity(convertToTime(dateFromEdit.getText().toString()), CALENDAR_ACTIVITY_DAY_CODE);
+            }
+        });
+        dateTodayButton = (ImageButton) findViewById(R.id.dateTodayButton);
+        dateTodayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              setTodayDate();
             }
         });
         dateMonthButton = (ImageButton) findViewById(R.id.dateMonthButton);
@@ -103,21 +108,22 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         Log.d(TAG, "onItemSelected() selected " + selected + " l" + l);
     }
 
-    /*protected void createTaskFragment(NetworkingAsyncTask task, String... params) {
-        Log.d(TAG, "createTaskFragment()");
+    protected String getDateFrom() throws ParseException {
+        String date = dateFromEdit.getText().toString();
+        AppUtil.validateDate(date);
+        return date;
+    }
 
-        // We will create a new TaskFragment.
-        TaskFragment taskFragment = new TaskFragment();
-        taskFragment.setTask(task);
-        taskFragment.setTaskParameters(params);
+    protected String getDateTo() throws ParseException {
+        String date = dateToEdit.getText().toString();
+        AppUtil.validateDate(date);
+        return date;
+    }
 
-        // Show the fragment.
-        taskFragment.show(getSupportFragmentManager(), TASK_FRAGMENT_TAG);
-    }*/
-
-
-   /* @Override
-    public abstract void onTaskFinished();*/
+    protected void setTodayDate() {
+        dateFromEdit.setText(AppUtil.todayInString());
+        dateToEdit.setText(AppUtil.todayInString());
+    }
 
     private class MyOnFocusChangeListener implements View.OnFocusChangeListener {
 

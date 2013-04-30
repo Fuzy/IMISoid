@@ -1,5 +1,7 @@
 package imis.client.ui.activities;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
@@ -11,6 +13,7 @@ import android.widget.CheckBox;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEvents;
 import imis.client.asynctasks.result.ResultData;
+import imis.client.authentication.AuthenticationConsts;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
@@ -20,8 +23,11 @@ import imis.client.persistent.EmployeeManager;
 import imis.client.processor.DataProcessor;
 import imis.client.ui.ColorUtil;
 
+import java.text.ParseException;
 import java.util.*;
 
+import static imis.client.AppUtil.showAccountNotExistsError;
+import static imis.client.AppUtil.showPeriodInputError;
 import static imis.client.persistent.EventManager.EventQuery;
 
 /**
@@ -40,7 +46,7 @@ public class EventsChartActivity extends ChartActivity {
 
     private final Map<String, String> kody_po = new HashMap<>();
 
-
+    private AccountManager accountManager;
     private SimpleCursorAdapter adapter;
 
 
@@ -52,6 +58,9 @@ public class EventsChartActivity extends ChartActivity {
         setContentView(R.layout.events_chart);
         getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
         getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
+
+        // create account manager
+        accountManager = AccountManager.get(this);
 
         initControlPanel();
         initEventCodesAndDesc();
@@ -146,11 +155,21 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     protected void refresh() {
         Log.d(TAG, "refresh()");
-        String kodpra = "JEL";
-        String from = "26.03.08";//TODO pryc
-        String to = "26.03.08";
-        //new GetEmployeesLastEvent(this).execute();
-        createTaskFragment(new GetListOfEvents(kodpra, from, to));
+        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
+
+        try {
+            String kodpra = accounts[0].name;
+            String from = getDateFrom();
+            String to = getDateTo();
+            createTaskFragment(new GetListOfEvents(kodpra, from, to));
+        } catch (ParseException e) {
+            Log.d(TAG, "resfreshRecords() " + e.getMessage());
+            showPeriodInputError(this);
+        } catch (Exception e) {
+            showAccountNotExistsError(this);
+        }
+
+
     }
 
     @Override

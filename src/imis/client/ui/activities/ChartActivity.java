@@ -2,6 +2,7 @@ package imis.client.ui.activities;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -25,10 +26,12 @@ import java.util.List;
  * Date: 23.4.13
  * Time: 17:51
  */
-public abstract class ChartActivity extends ControlActivity  {
+public abstract class ChartActivity extends ControlActivity {
     protected static final String FRAG_PIE = "PieChartFragment",
             FRAG_STACK = "StackedBarFragment", FRAG_STATS = "StatisticsFragment";
     private static final String TAG = ChartActivity.class.getSimpleName();
+    private static final String FRAG_TAG = "fragment";
+    private String currentFragment;
 
     protected final List<CheckBox> checkBoxes = new ArrayList<>();
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
@@ -38,7 +41,23 @@ public abstract class ChartActivity extends ControlActivity  {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-        switchFragment();
+        initFragment();
+        restartLoaders();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(FRAG_TAG, currentFragment);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        currentFragment = savedInstanceState.getString(FRAG_TAG);
+        Log.d(TAG, "onRestoreInstanceState() currentFragment " + currentFragment);
     }
 
     @Override
@@ -76,10 +95,25 @@ public abstract class ChartActivity extends ControlActivity  {
         } else if (getSupportFragmentManager().findFragmentByTag(FRAG_STACK) != null) {
             removeFragment(FRAG_STACK);
             switchToStatisticsFragment();
-        } else {
-            switchToPieChartFragment();
         }
+
         restartLoaders();
+    }
+
+    private void initFragment() {
+        Log.d(TAG, "initFragment() current " + currentFragment);
+        if (currentFragment == null) {
+            switchToPieChartFragment();
+            return;
+        }
+
+        if (currentFragment.equals(FRAG_STATS)) {
+            switchToStatisticsFragment();
+        } else if (currentFragment.equals(FRAG_PIE)) {
+            switchToPieChartFragment();
+        } else if (currentFragment.equals(FRAG_STACK)) {
+            switchToStackedBarFragment();
+        }
     }
 
     protected abstract void restartLoaders();
@@ -95,6 +129,7 @@ public abstract class ChartActivity extends ControlActivity  {
 
     protected void switchToStackedBarFragment() {
         Log.d(TAG, "switchToStackedBarFragment()");
+        currentFragment = FRAG_STACK;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         StackedBarFragment barFragment = new StackedBarFragment();
         ft.replace(R.id.displayChart, barFragment, FRAG_STACK);
@@ -104,6 +139,7 @@ public abstract class ChartActivity extends ControlActivity  {
 
     protected void switchToPieChartFragment() {
         Log.d(TAG, "switchToPieChartFragment()");
+        currentFragment = FRAG_PIE;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         PieChartFragment pieFragment = new PieChartFragment();
         ft.replace(R.id.displayChart, pieFragment, FRAG_PIE);
@@ -113,6 +149,7 @@ public abstract class ChartActivity extends ControlActivity  {
 
     protected void switchToStatisticsFragment() {
         Log.d(TAG, "switchToStatisticsFragment()");
+        currentFragment = FRAG_STATS;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         StatisticsFragment statsFragment = new StatisticsFragment();
         ft.replace(R.id.displayChart, statsFragment, FRAG_STATS);

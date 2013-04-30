@@ -1,5 +1,7 @@
 package imis.client.ui.activities;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -18,12 +20,17 @@ import android.widget.Spinner;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.ResultData;
+import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Record;
 import imis.client.ui.adapters.RecordsCursorAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
 import imis.client.ui.fragments.RecordDetailFragment;
 import imis.client.ui.fragments.RecordListFragment;
 
+import java.text.ParseException;
+
+import static imis.client.AppUtil.showAccountNotExistsError;
+import static imis.client.AppUtil.showPeriodInputError;
 import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
 import static imis.client.persistent.RecordManager.DataQuery.SELECTION_ZC;
 
@@ -42,6 +49,8 @@ public class RecordListActivity extends ControlActivity implements
     private int typesPos = 0;
     private String[] typesArray;
 
+    private AccountManager accountManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,9 @@ public class RecordListActivity extends ControlActivity implements
         spinner.setAdapter(spinnerArrayAdapter);
         spinner.setOnItemSelectedListener(this);
 
+        // create account manager
+        accountManager = AccountManager.get(this);
+
         //if (savedInstanceState == null) {
         //Log.d(TAG, "savedInstanceState()");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -69,6 +81,8 @@ public class RecordListActivity extends ControlActivity implements
         adapter = new RecordsCursorAdapter(getApplicationContext(), null, -1);
         listFragment.setListAdapter(adapter);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+
+        initControlPanel();
     }
 
     @Override
@@ -133,12 +147,31 @@ public class RecordListActivity extends ControlActivity implements
 
     private void resfreshRecords() {
         Log.d(TAG, "resfreshRecords()");
-        String kodpra = "JEL";
-        String from = "26.03.08";//TODO pryc
-        String to = "26.03.08";
+        /*//String kodpra = "JEL";
+        //String from = "26.03.08";//TODO pryc
+        //String to = "26.03.08";
 
-        createTaskFragment(new GetListOfRecords(kodpra, from, to));
-        //new GetListOfRecords(this).execute(kodpra, from, to);
+        try {
+            String from = getDateFrom();
+            String to = getDateTo();
+            createTaskFragment(new GetListOfRecords(kodpra, from, to));
+        } catch (ParseException e) {
+            Log.d(TAG, "resfreshRecords() " + e.getMessage());
+        }*/
+
+        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
+
+        try {
+            String kodpra = accounts[0].name;
+            String from = getDateFrom();
+            String to = getDateTo();
+            createTaskFragment(new GetListOfRecords(kodpra, from, to));
+        } catch (ParseException e) {
+            Log.d(TAG, "resfreshRecords() " + e.getMessage());
+            showPeriodInputError(this);
+        } catch (Exception e) {
+            showAccountNotExistsError(this);
+        }
     }
 
 
