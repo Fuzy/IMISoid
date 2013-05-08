@@ -92,7 +92,7 @@ public class NetworkSettingsActivity extends AsyncActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.network_options_menu, menu);
+        inflater.inflate(R.menu.save_options_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -100,7 +100,7 @@ public class NetworkSettingsActivity extends AsyncActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
-            case R.id.networkSave:
+            case R.id.save:
                 saveDomainAndPortAndFinish();
                 return true;
             default:

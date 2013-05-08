@@ -1,10 +1,12 @@
 package imis.client.asynctasks;
 
+import android.app.Activity;
 import android.util.Log;
 import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
+import imis.client.persistent.EmployeeManager;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
@@ -21,8 +23,11 @@ import java.util.Collections;
 public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employee[]> {
     private static final String TAG = GetListOfEmployees.class.getSimpleName();
 
-    public GetListOfEmployees(String... params) {
+    private Activity activity;
+
+    public GetListOfEmployees(Activity activity, String... params) {
         super(params);
+        this.activity = activity;
     }
 
     @Override
@@ -63,14 +68,30 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
     @Override
     protected void onPostExecute(Employee[] employees) {
 
-        Employee employee = new Employee("123", "KDA", false, 1364169600000L, Event.KOD_PO_ARRIVE_NORMAL, "P");
-        Employee employee2 = new Employee("124", "JSS", false, 1364169650000L, Event.KOD_PO_LEAVE_LUNCH, "O");
+        Employee employee = new Employee();
+        employee.setIcp("123");
+        employee.setKodpra("KDA");
+        //employee.setSubordinate(false);
+        employee.setLastEventTime(1364169600000L);
+        employee.setKod_po(Event.KOD_PO_ARRIVE_NORMAL);
+        employee.setDruh("P");
+        //employee.setWidgetId(-1);
+
+        Employee employee2 = new Employee();
+        employee2.setIcp("124");
+        employee2.setKodpra("JSK");
+        //employee2.setSubordinate(false);
+        employee2.setLastEventTime(1364169650000L);
+        employee2.setKod_po(Event.KOD_PO_LEAVE_LUNCH);
+        employee2.setDruh("O");
+        //employee2.setWidgetId(-1);
+
         employees = new Employee[]{employee, employee2};  //TODO pouze pro test
         Log.d(TAG, "onPostExecute()");
         if (employees != null) {
-            //EmployeeManager.addEmployees(activity, employees);
+            EmployeeManager.addEmployees(activity, employees);
         }
-
+        Log.d(TAG, "onPostExecute() " + EmployeeManager.getAllEmployees(activity));
         super.onPostExecute(null);
     }
 }

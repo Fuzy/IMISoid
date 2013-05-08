@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.util.Log;
 import imis.client.model.Employee;
 import imis.client.model.Event;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.Arrays;
 
 public class MyContentProvider extends ContentProvider {
     private static final String TAG = "MyContentProvider";
@@ -37,7 +40,6 @@ public class MyContentProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, TABLE_RECORDS + "/#", RECORD_ID);
         sURIMatcher.addURI(AUTHORITY, TABLE_EMPLOYEES + "/#", EMPLOYEE_ID);
     }
-    //TODO vykazy zapis,  dotaz
 
     @Override
     public boolean onCreate() {
@@ -48,6 +50,7 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+        Log.d(TAG, "delete() uri " + uri);
         int uriType = sURIMatcher.match(uri);
         int rowsDeleted = 0;
 
@@ -55,21 +58,18 @@ public class MyContentProvider extends ContentProvider {
 
         switch (uriType) {
             case EVENTS:
-                // smaze vice polozek podle WHERE
                 rowsDeleted = sqlDB.delete(TABLE_EVENTS, selection, selectionArgs);
                 break;
             case RECORDS:
-                // smaze vice polozek podle WHERE
                 rowsDeleted = sqlDB.delete(TABLE_RECORDS, selection, selectionArgs);
                 break;
             case EMPLOYEES:
-                // smaze vice polozek podle WHERE
                 rowsDeleted = sqlDB.delete(TABLE_EMPLOYEES, selection, selectionArgs);
                 break;
             case EVENT_ID:
                 // smaze jednu polozku
                 String id = uri.getLastPathSegment();
-                rowsDeleted = sqlDB.delete(TABLE_EVENTS, MyDatabaseHelper.EV_COL_LOCAL_ID + "=" + id, null);
+                rowsDeleted = sqlDB.delete(TABLE_EVENTS, EventManager.EventQuery.SELECTION_ID, new String[]{id});
                 break;
             default:
                 break;
@@ -87,6 +87,7 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        Log.d(TAG, "insert()" + "uri = [" + uri + "], values = [" + values + "]");
         int uriType = sURIMatcher.match(uri);
 
         long id = 0;
@@ -102,24 +103,29 @@ public class MyContentProvider extends ContentProvider {
                 id = sqlDB.insert(TABLE_EMPLOYEES, null, values);
                 break;
             case RECORDS:
-                Log.d(TAG, "insert() RECORDS");
                 id = sqlDB.insert(TABLE_RECORDS, null, values);
             default:
                 break;
         }
-        // upozorni posluchace
+
+        uri = Uri.withAppendedPath(uri, String.valueOf(id));
         getContext().getContentResolver().notifyChange(uri, null);
-        Log.d(TAG, "insert()" + Uri.parse(uri + "/" + id));
-        // vrati uri na pridanou radku
-        return Uri.parse(uri + "/" + id);
+        Log.d(TAG, "insert() uri " + uri);
+        return uri;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
+        Log.d(TAG, "uri = [" + uri + "], projection = [" + projection + "], " +
+                "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "], " +
+                "sortOrder = [" + sortOrder + "]");
+        Log.d(TAG, "query() uri " + uri);
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
+
         int uriType = sURIMatcher.match(uri);
+        Log.d(TAG, "query() uriType " + uriType);
         switch (uriType) {
             case EVENTS:
                 // vsechny radky tabulky
@@ -129,10 +135,6 @@ public class MyContentProvider extends ContentProvider {
                 // vsechny radky tabulky
                 queryBuilder.setTables(TABLE_RECORDS);
                 break;
-            case EVENT_ID:
-                // nastavi WHERE sekci dotazu
-                queryBuilder.appendWhere(Event.COL_ID + "=" + uri.getLastPathSegment());
-                break;
             case EMPLOYEES:
                 queryBuilder.setTables(TABLE_EMPLOYEES);
                 break;
@@ -140,13 +142,12 @@ public class MyContentProvider extends ContentProvider {
                 break;
         }
 
-        // ziska odkaz na databazi
         SQLiteDatabase db = database.getWritableDatabase();
-        // provede dotaz k databazi
+
         Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null,
                 sortOrder);
+        Log.d(TAG, "query() cursor size " + cursor.getCount());
 
-        // upozorni posluchace
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
@@ -156,6 +157,7 @@ public class MyContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         Log.d(TAG, "update uri " + uri);
         int rowsUpdated = 0;
+
 
         int uriType = sURIMatcher.match(uri);
 
@@ -169,12 +171,18 @@ public class MyContentProvider extends ContentProvider {
                 rowsUpdated = sqlDB.update(TABLE_RECORDS, values, selection, selectionArgs);
                 break;
             case EMPLOYEE_ID:
-                String icp = uri.getLastPathSegment();
-                rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, Employee.COL_ICP + "=" + icp, null);
-                Log.d(TAG, "update() EMPLOYEES rowsUpdated " + rowsUpdated);
-                break;
-            case EVENT_ID:
                 String id = uri.getLastPathSegment();
+                rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, Employee.COL_ID + "=" + id, null);
+                Log.d(TAG, "update() EMPLOYEE_ID rowsUpdated " + rowsUpdated);
+                break;
+            case EMPLOYEES:
+                /*rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, selection, selectionArgs);
+                if (rowsUpdated > 0) uri = Uri.withAppendedPath(uri, selectionArgs[0]);
+                Log.d(TAG, "update() EMPLOYEES rowsUpdated " + rowsUpdated);*/
+                throw new NotImplementedException();
+                //break;
+            case EVENT_ID:
+                id = uri.getLastPathSegment();
                 Log.d(TAG, "update EVENT_ID id: " + id);
                 rowsUpdated = sqlDB.update(TABLE_EVENTS, values, Event.COL_ID + "=" + id, null);
                 break;

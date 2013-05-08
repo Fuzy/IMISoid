@@ -27,15 +27,24 @@ import java.util.List;
  * Time: 17:51
  */
 public abstract class ChartActivity extends ControlActivity {
+    private static final String TAG = ChartActivity.class.getSimpleName();
+
     protected static final String FRAG_PIE = "PieChartFragment",
             FRAG_STACK = "StackedBarFragment", FRAG_STATS = "StatisticsFragment";
-    private static final String TAG = ChartActivity.class.getSimpleName();
+
     private static final String FRAG_TAG = "fragment";
     private String currentFragment;
 
     protected final List<CheckBox> checkBoxes = new ArrayList<>();
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
     protected final CheckBoxClickListener checkBoxClickListener = new CheckBoxClickListener();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.chart_layout);
+        initControlPanel();
+    }
 
     @Override
     protected void onResume() {

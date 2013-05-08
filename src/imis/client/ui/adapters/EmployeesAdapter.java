@@ -39,7 +39,7 @@ public class EmployeesAdapter extends CursorAdapter {
         Employee employee = Employee.cursorToEmployee(cursor);
 
         String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
-        ((TextView) view.findViewById(R.id.emp_kodpral)).setText(name);
+        ((TextView) view.findViewById(R.id.emp_kodpra)).setText(name);
         ((TextView) view.findViewById(R.id.emp_time)).setText(AppUtil.formatEmpDate(employee.getLastEventTime()));
         view.findViewById(R.id.emp_kod_po).setBackgroundColor(ColorUtil.getColor(employee.getKod_po()));
     }

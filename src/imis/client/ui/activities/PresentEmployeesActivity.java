@@ -18,7 +18,7 @@ import imis.client.asynctasks.result.ResultData;
 import imis.client.persistent.EmployeeManager;
 import imis.client.ui.adapters.EmployeesAdapter;
 
-import static imis.client.persistent.EmployeeManager.DataQuery.CONTENT_URI;
+import static imis.client.persistent.EmployeeManager.EmployeeQuery.CONTENT_URI;
 
 /**
  * Created with IntelliJ IDEA.
@@ -96,7 +96,7 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
 
     private void refresh() {
         Log.d(TAG, "refresh()");
-        createTaskFragment(new GetListOfEmployees());
+        createTaskFragment(new GetListOfEmployees(this));
     }
 
 

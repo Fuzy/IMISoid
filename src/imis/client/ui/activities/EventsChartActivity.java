@@ -1,25 +1,18 @@
 package imis.client.ui.activities;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEvents;
 import imis.client.asynctasks.result.ResultData;
-import imis.client.authentication.AuthenticationConsts;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
-import imis.client.model.Employee;
 import imis.client.model.Event;
-import imis.client.persistent.EmployeeManager;
 import imis.client.processor.DataProcessor;
 import imis.client.ui.ColorUtil;
 
@@ -42,12 +35,9 @@ public class EventsChartActivity extends ChartActivity {
     private List<Block> blockList;
 
     private static final int LOADER_EVENTS = 0x03;
-    private static final int LOADER_EMPLOYEES = 0x04;
 
     private final Map<String, String> kody_po = new HashMap<>();
 
-    private AccountManager accountManager;
-    private SimpleCursorAdapter adapter;
 
 
     @Override
@@ -55,14 +45,8 @@ public class EventsChartActivity extends ChartActivity {
 
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
-        setContentView(R.layout.events_chart);
-        getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
         getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
 
-        // create account manager
-        accountManager = AccountManager.get(this);
-
-        initControlPanel();
         initEventCodesAndDesc();
 
     }
@@ -89,12 +73,10 @@ public class EventsChartActivity extends ChartActivity {
         switch (i) {
             case LOADER_EVENTS:
                 return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI,
-                        EventQuery.PROJECTION_ALL, null, null, null);//TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
-            case LOADER_EMPLOYEES:
-                return new CursorLoader(getApplicationContext(), EmployeeManager.DataQuery.CONTENT_URI,
-                        null, null, null, null);
+                        null, null, null, null);//TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
+            default:
+                return super.onCreateLoader(i, bundle);
         }
-        return null;
     }
 
     @Override
@@ -109,14 +91,8 @@ public class EventsChartActivity extends ChartActivity {
                 initCheckBoxes(values);
                 mDataSetObservable.notifyChanged();
                 break;
-            case LOADER_EMPLOYEES:
-                Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
-                String[] from = new String[]{Employee.COL_KODPRA};
-                int[] to = new int[]{android.R.id.text1};
-                adapter = new SimpleCursorAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,
-                        cursor, from, to, 0);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerEmp.setAdapter(adapter);
+            default:
+                super.onLoadFinished(cursorLoader, cursor);
                 break;
         }
 
@@ -148,17 +124,13 @@ public class EventsChartActivity extends ChartActivity {
         return codes;
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-    }
 
     @Override
     protected void refresh() {
         Log.d(TAG, "refresh()");
-        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
 
         try {
-            String kodpra = accounts[0].name;
+            String kodpra = getSelectedUser();
             String from = getDateFrom();
             String to = getDateTo();
             createTaskFragment(new GetListOfEvents(kodpra, from, to));

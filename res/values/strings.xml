@@ -160,6 +160,8 @@
     <string name="record_detail_note">Poznámka</string>
     <string name="statistics">Statistiky</string>
     <string name="error_perriod_set">Špatně zadané období</string>
+    <string name="spinnerRecordType_title">Typ zakázky</string>
+    <string name="selectEmp">Vyber zaměstnance</string>
 
 
 </resources>

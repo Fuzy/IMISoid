@@ -116,6 +116,22 @@
         <activity android:name=".ui.activities.PresentEmployeesActivity"></activity>
         <activity android:name=".ui.activities.EventsChartActivity"></activity>
         <activity android:name=".ui.activities.RecordListActivity"></activity>
+
+
+        <!-- Widget -->
+        <receiver android:name=".widget.WidgetProvider">
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/appwidget_provider" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".widget.WidgetConfigure">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

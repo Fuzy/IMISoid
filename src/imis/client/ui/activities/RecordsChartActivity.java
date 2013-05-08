@@ -1,19 +1,13 @@
 package imis.client.ui.activities;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
-import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.ResultData;
-import imis.client.authentication.AuthenticationConsts;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Record;
@@ -40,19 +34,12 @@ public class RecordsChartActivity extends ChartActivity {
 
     private static final int LOADER_RECORDS = 0x03;
     private List<Record> records = new ArrayList<>();
-    private AccountManager accountManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("RecordsChartActivity", "onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.events_chart);
         getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
-
-        // create account manager
-        accountManager = AccountManager.get(this);
-
-        initControlPanel();
     }
 
     protected void addCheckBox(String kod_po) {
@@ -66,10 +53,8 @@ public class RecordsChartActivity extends ChartActivity {
     protected void refresh() {
         Log.d("RecordsChartActivity", "resfreshRecords()");
 
-        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
-
         try {
-            String kodpra = accounts[0].name;
+            String kodpra = getSelectedUser();
             String from = getDateFrom();
             String to = getDateTo();
             createTaskFragment(new GetListOfRecords(kodpra, from, to));
@@ -107,9 +92,9 @@ public class RecordsChartActivity extends ChartActivity {
                 return new CursorLoader(getApplicationContext(), CONTENT_URI,
                         null, null, null, null);
             //TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
-
+            default:
+                return super.onCreateLoader(i, bundle);
         }
-        return null;
     }
 
     @Override
@@ -127,6 +112,9 @@ public class RecordsChartActivity extends ChartActivity {
                 initCheckBoxes(values);
                 mDataSetObservable.notifyChanged();
                 break;
+            default:
+                super.onLoadFinished(cursorLoader, cursor);
+                break;
         }
     }
 
@@ -134,13 +122,8 @@ public class RecordsChartActivity extends ChartActivity {
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-    }
+
 
     public List<String> getVisibleCodes() {
         List<String> codes = new ArrayList<>();

@@ -2,8 +2,11 @@ package imis.client.ui.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.appwidget.AppWidgetManager;
 import android.content.*;
+import android.database.ContentObserver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
@@ -23,9 +26,11 @@ import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.asynctasks.result.ResultData;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Block;
+import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.model.Record;
 import imis.client.network.NetworkUtilities;
+import imis.client.persistent.EmployeeManager;
 import imis.client.persistent.EventManager;
 import imis.client.processor.DataProcessor;
 import imis.client.ui.BlockView;
@@ -35,6 +40,7 @@ import imis.client.ui.ObservableScrollView;
 import imis.client.ui.activities.util.ActivityConsts;
 import imis.client.ui.adapters.EventsArrayAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
+import imis.client.widget.WidgetProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +67,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private static final int LOADER_ID = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
+    private final List<Long> employeesUpdated = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +90,10 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         adapter = new EventsArrayAdapter(getApplicationContext(), -1, blockList);
         blocks.setAdapter(adapter);
 
+        // register content resolver for employees widget change
+        Uri uri = EmployeeManager.EmployeeQuery.CONTENT_URI;//.buildUpon().appendPath("/#").build();
+        Log.d(TAG, "refreshListOfEmployees() uri " + uri);
+        getContentResolver().registerContentObserver(uri, true, mObserver);
         // init today date and loader
 
         //changeDate(1364169600000L); //TODO toto je pro ladici ucely
@@ -190,14 +201,30 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
 
     private void refreshListOfEmployees() {
+        //Register content observer for specific row in database
+       /* Uri uri = EmployeeManager.EmployeeQuery.CONTENT_URI;//.buildUpon().appendPath("/#").build();
+        Log.d(TAG, "refreshListOfEmployees() uri " + uri);*/
+
+       /* ContentObserver mObserver = new ContentObserver(null) {
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                Log.d(TAG, "onChange() uri " + uri);
+            }
+        };*/
+
+        /*getContentResolver().registerContentObserver(uri, true, mObserver);*/
+
+
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
         try {
             String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
             Log.d(TAG, "refreshListOfEmployees() icp " + icp);
-            createTaskFragment(new GetListOfEmployees(icp));
+            createTaskFragment(new GetListOfEmployees(this, icp));
+            //TODO register content observer
         } catch (Exception e) {
             showAccountNotExistsError(getApplication());
         }
+        Log.d(TAG, "refreshListOfEmployees()");
     }
 
     private void startInsertActivity() {
@@ -224,7 +251,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader() date " + date);
-        return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL,
+        //TODO id
+        return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI, null,
                 EventQuery.SELECTION_DAY_UNDELETED, new String[]{String.valueOf(date)}, null);
     }
 
@@ -415,6 +443,20 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     @Override
     public void onTaskFinished(ResultData result) {
         Log.d(TAG, "onTaskFinished()");
+        refreshEmployeesWidgets();
+
+    }
+
+    private void refreshEmployeesWidgets() {
+        Log.d(TAG, "onTaskFinished() employeesUpdated " + employeesUpdated);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        for (Long id : employeesUpdated) {
+            Employee employee = EmployeeManager.getEmployee(getApplicationContext(), id);
+            Log.d(TAG, "refreshEmployeesWidgets() employee " + employee);
+            if (employee.getWidgetId() != null)
+                WidgetProvider.updateAppWidget(this, appWidgetManager, employee.getWidgetId());
+        }
+        employeesUpdated.clear();
     }
 
     /*@Override
@@ -422,4 +464,18 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         Toast toast = Toast.makeText(this, "Aktualizovano", Toast.LENGTH_LONG);
         toast.show();
     }*/
+
+    private final ContentObserver mObserver = new ContentObserver(null) {
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            Log.d(TAG, "onChange() uri " + uri);
+
+            long id = ContentUris.parseId(uri);
+            employeesUpdated.add(id);
+
+
+            /*Employee employee = EmployeeManager.getEmployee(getApplicationContext(), icp);
+            Log.d(TAG, "onChange() employee " + employee);*/
+        }
+    };
 }

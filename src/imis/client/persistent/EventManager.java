@@ -39,14 +39,14 @@ public class EventManager {
     }
 
     public static Event getEvent(Context context, long id) {
-        Log.d(TAG, "getEvent()");
+        Log.d(TAG, "getEvent()" + "context = [" + context + "], id = [" + id + "]");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL,
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
                 EventQuery.SELECTION_ID, new String[]{String.valueOf(id)}, null);
         Event event = null;
         while (cursor.moveToNext()) {
             event = Event.cursorToEvent(cursor);
-        }
+        }      //TODO jinde bez cyklu
         cursor.close();
         return event;
     }
@@ -55,7 +55,7 @@ public class EventManager {
     public static List<Event> getDirtyEvents(Context context) {
         Log.d(TAG, "getDirtyEvents()");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL, EventQuery.SELECTION_DIRTY, null, null);
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null, EventQuery.SELECTION_DIRTY, null, null);
         List<Event> events = new ArrayList<>();
         Event event;
         while (cursor.moveToNext()) {
@@ -69,7 +69,7 @@ public class EventManager {
     public static List<Event> getAllEvents(Context context) {
         Log.d(TAG, "getAllEvents()");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, EventQuery.PROJECTION_ALL, null, null, null);
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null, null, null, null);
         List<Event> events = new ArrayList<>();
         Event event;
         while (cursor.moveToNext()) {
@@ -148,11 +148,11 @@ public class EventManager {
 
         //TODO refaktor
         // vybere vsechny sloupce
-        public static final String[] PROJECTION_ALL = {Event.COL_ID, Event.COL_SERVER_ID,
+        /*public static final String[] PROJECTION_ALL = {Event.COL_ID, Event.COL_SERVER_ID,
                 Event.COL_DIRTY, Event.COL_DELETED, Event.COL_ICP,
                 Event.COL_DATUM, Event.COL_KOD_PO, Event.COL_DRUH,
                 Event.COL_CAS, Event.COL_IC_OBS, Event.COL_TYP,
-                Event.COL_DATUM_ZMENY, Event.COL_POZNAMKA, Event.COL_ERROR, Event.COL_MSG};
+                Event.COL_DATUM_ZMENY, Event.COL_POZNAMKA, Event.COL_ERROR, Event.COL_MSG};*/
 
         // vyber podle id ukolu
         public static final String SELECTION_ID = Event.COL_ID + "=?";

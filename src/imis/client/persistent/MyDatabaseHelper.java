@@ -58,6 +58,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String EMP_COL_DRUH = Employee.COL_DRUH;
     public static final String EMP_COL_TIME = Employee.COL_TIME;
     public static final String EMP_COL_KOD_PO = Employee.COL_KOD_PO;
+    public static final String EMP_COL_WIDGET_ID = Employee.COL_WIDGET_ID;
 
 
     private static final String CREATE_EVENTS_TABLE = new String()
@@ -108,7 +109,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             .concat(EMP_COL_SUB + " integer not null,")
             .concat(EMP_COL_DRUH + " text,")
             .concat(EMP_COL_TIME + " integer,")
-            .concat(EMP_COL_KOD_PO + " text")
+            .concat(EMP_COL_KOD_PO + " text,")
+            .concat(EMP_COL_WIDGET_ID + " integer")
             .concat(");");
 
 
