@@ -9,6 +9,7 @@ import android.util.Log;
 import imis.client.model.Employee;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,8 +21,7 @@ import java.util.List;
 public class EmployeeManager {
     private static final String TAG = "EmployeeManager";
 
-
-    public static int addEmployee(Context context, Employee employee) {
+    private static int addEmployee(Context context, Employee employee) {
         Log.d(TAG, "addEmployee() " + employee);
         ContentValues values = employee.asContentValues();
         ContentResolver resolver = context.getContentResolver();
@@ -29,52 +29,36 @@ public class EmployeeManager {
         return Integer.valueOf(uri.getLastPathSegment());
     }
 
-   /* public static int updateEmployee(Context context, Employee employee) {
-        Log.d(TAG, "updateEmployee()");
-        ContentValues values = employee.asContentValues();
+    private static int updateEmployee(Context context, ContentValues values, long id) {
+        Log.d(TAG, "updateEmployee()" + "values = [" + values + "], id = [" + id + "]");
+        Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(id));
         ContentResolver resolver = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(employee.get_id()));
         int updated = resolver.update(uri, values, null, null);
         Log.d(TAG, "updateEmployee() updated " + updated);
         return updated;
-    }*/
+    }
 
     public static int updateEmployeeOnIcp(Context context, Employee employee) {
-        Log.d(TAG, "updateEmployeeOnIcp()" + "context = [" + context + "], employee = [" + employee + "]");
-        ContentValues values = employee.asContentValues();
-        ContentResolver resolver = context.getContentResolver();
-        //TODO nejdriv query a ulozit id
+        Log.d(TAG, "updateEmployeeOnIcp()" + "employee = [" + employee + "]");
         Employee employee1 = EmployeeManager.getEmployee(context, employee.getIcp());
         if (employee1 == null) return 0;
-        long id = employee1.get_id();
-        Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(id));
-        int updated = resolver.update(uri, values, null, null);
-        Log.d(TAG, "updateEmployee() updated " + updated);
-        return updated;
+        ContentValues values = employee.asContentValues();
+        return updateEmployee(context, values, employee1.get_id());
     }
 
     public static int updateEmployeeWidgetId(Context context, int empId, int widgetId) {
-        Log.d(TAG, "updateEmployeeWidgetId()" +
-                "context = [" + context + "], empId = [" + empId + "], widgetId = [" + widgetId + "]");
-        Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(empId));
-        ContentResolver resolver = context.getContentResolver();
+        Log.d(TAG, "updateEmployeeWidgetId()" + "empId = [" + empId + "], widgetId = [" + widgetId + "]");
         ContentValues values = new ContentValues();
         values.put(Employee.COL_WIDGET_ID, widgetId);
-
-        int updated = resolver.update(uri, values, null, null);
-        return updated;
+        return updateEmployee(context, values, empId);
     }
 
     public static int resetEmployeeWidgetId(Context context, int widgetId) {
-        Log.d(TAG, "resetEmployeeWidgetId()" + "context = [" + context + "], widgetId = [" + widgetId + "]");
+        Log.d(TAG, "resetEmployeeWidgetId()" + "widgetId = [" + widgetId + "]");
         long id = (EmployeeManager.getEmployee(context, widgetId)).get_id();
-        ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Employee.COL_WIDGET_ID, (Integer) null);
-
-        Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(id));
-        int updated = resolver.update(uri, values, null, null);
-        return updated;
+        return updateEmployee(context, values, id);
     }
 
     public static void addEmployees(Context context, Employee[] employees) {
@@ -86,35 +70,26 @@ public class EmployeeManager {
         }
     }
 
-    public static Employee getEmployee(Context context, String icp) {      //TODO spolecnou metodu
-        Log.d(TAG, "getEmployee()" + "context = [" + context + "], id = [" + icp + "]");
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EmployeeQuery.CONTENT_URI, null,
-                EmployeeQuery.SELECTION_ICP, new String[]{String.valueOf(icp)}, null);
-        Employee employee = null;
-        while (cursor.moveToNext()) {
-            employee = Employee.cursorToEmployee(cursor);
-        }
-        return employee;
+    public static Employee getEmployee(Context context, String icp) {
+        Log.d(TAG, "getEmployee()" + "icp = [" + icp + "]");
+        return getEmployee(context, EmployeeQuery.SELECTION_ICP, new String[]{String.valueOf(icp)});
     }
 
-    public static Employee getEmployee(Context context, int widgetId) {  //TODO spolecnou metodu
-        Log.d(TAG, "getEmployee()" + "context = [" + context + "], widgetId = [" + widgetId + "]");
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EmployeeQuery.CONTENT_URI, null,
-                EmployeeQuery.SELECTION_WIDGET_ID, new String[]{String.valueOf(widgetId)}, null);
-        Employee employee = null;
-        while (cursor.moveToNext()) {
-            employee = Employee.cursorToEmployee(cursor);
-        }
-        return employee;
+    public static Employee getEmployee(Context context, int widgetId) {
+        Log.d(TAG, "getEmployee()" + "widgetId = [" + widgetId + "]");
+        return getEmployee(context, EmployeeQuery.SELECTION_WIDGET_ID, new String[]{String.valueOf(widgetId)});
     }
 
-    public static Employee getEmployee(Context context, long id) { //TODO spolecnou metodu
-        Log.d(TAG, "getEmployee()" + "context = [" + context + "], id = [" + id + "]");
+    public static Employee getEmployee(Context context, long id) {
+        Log.d(TAG, "getEmployee()" + "id = [" + id + "]");
+        return getEmployee(context, EmployeeQuery.SELECTION_ID, new String[]{String.valueOf(id)});
+    }
+
+    private static Employee getEmployee(Context context, String selection, String[] selectionArgs) {
+        Log.d(TAG, "getEmployee()" + "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EmployeeQuery.CONTENT_URI, null,
-                EmployeeQuery.SELECTION_ID, new String[]{String.valueOf(id)}, null);
+                selection, selectionArgs, null);
         Employee employee = null;
         while (cursor.moveToNext()) {
             employee = Employee.cursorToEmployee(cursor);
@@ -141,11 +116,7 @@ public class EmployeeManager {
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
                 + MyDatabaseHelper.TABLE_EMPLOYEES);
 
-        /*public static final String[] PROJECTION_ALL = {Employee.COL_ID, Employee.COL_ICP,
-                Employee.COL_KODPRA, Employee.COL_SUB};*/
-
         public static final String SELECTION_ICP = Employee.COL_ICP + "=?";
-
         public static final String SELECTION_ID = Employee.COL_ID + "=?";
         public static final String SELECTION_WIDGET_ID = Employee.COL_WIDGET_ID + "=?";
 

@@ -16,7 +16,6 @@ public class EventManager {
 
 
     public static int addEvent(Context context, Event event) {
-        Log.d(TAG, "addEvent()");
         ContentValues values = event.asContentValues();
         ContentResolver resolver = context.getContentResolver();
         Uri uri = resolver.insert(EventQuery.CONTENT_URI, values);
@@ -25,7 +24,7 @@ public class EventManager {
     }
 
     public static int deleteEvent(Context context, long id) {
-        Log.d(TAG, "deleteEvent()");
+        Log.d(TAG, "deleteEvent()" + "id = [" + id + "]");
         Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
         ContentResolver resolver = context.getContentResolver();
         return resolver.delete(uri, null, null);
@@ -39,14 +38,14 @@ public class EventManager {
     }
 
     public static Event getEvent(Context context, long id) {
-        Log.d(TAG, "getEvent()" + "context = [" + context + "], id = [" + id + "]");
+        Log.d(TAG, "getEvent()" + "id = [" + id + "]");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
                 EventQuery.SELECTION_ID, new String[]{String.valueOf(id)}, null);
         Event event = null;
         while (cursor.moveToNext()) {
             event = Event.cursorToEvent(cursor);
-        }      //TODO jinde bez cyklu
+        }
         cursor.close();
         return event;
     }
@@ -54,22 +53,18 @@ public class EventManager {
 
     public static List<Event> getDirtyEvents(Context context) {
         Log.d(TAG, "getDirtyEvents()");
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null, EventQuery.SELECTION_DIRTY, null, null);
-        List<Event> events = new ArrayList<>();
-        Event event;
-        while (cursor.moveToNext()) {
-            event = Event.cursorToEvent(cursor);
-            events.add(event);
-        }
-        cursor.close();
-        return events;
+        return getEvents(context, EventQuery.SELECTION_DIRTY);
     }
 
     public static List<Event> getAllEvents(Context context) {
         Log.d(TAG, "getAllEvents()");
+        return getEvents(context, null);
+    }
+
+    private static List<Event> getEvents(Context context, String selection) {
+        Log.d(TAG, "getEvents()" + "selection = [" + selection + "]");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null, null, null, null);
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null, selection, null, null);
         List<Event> events = new ArrayList<>();
         Event event;
         while (cursor.moveToNext()) {
@@ -77,95 +72,73 @@ public class EventManager {
             events.add(event);
         }
         cursor.close();
+        Log.d(TAG, "getEvents() size " + events.size());
         return events;
+    }
+
+    private static int updateEvent(Context context, ContentValues values, long id) {
+        Log.d(TAG, "updateEvent()" + "values = [" + values + "], id = [" + id + "]");
+        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
+        ContentResolver resolver = context.getContentResolver();
+        return resolver.update(uri, values, null, null);
     }
 
     public static int markEventAsDeleted(Context context, long id) {
         Log.d(TAG, "markEventAsDeleted() id: " + id);
-        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
-        ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Event.COL_DELETED, true);
         values.put(Event.COL_DIRTY, true);
-        return resolver.update(uri, values, null, null);
+        return updateEvent(context, values, id);
     }
 
     public static int markEventAsSynced(Context context, long id) {
         Log.d(TAG, "markEventAsSynced() id: " + id);
-        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
-        ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Event.COL_DIRTY, false);
-        return resolver.update(uri, values, null, null);
+        return updateEvent(context, values, id);
     }
 
     public static int markEventAsNoError(Context context, long id) {
         Log.d(TAG, "markEventAsNoError() id: " + id);
-        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
-        ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Event.COL_ERROR, false);
         values.put(Event.COL_MSG, "");
-        return resolver.update(uri, values, null, null);
+        return updateEvent(context, values, id);
     }
 
     public static int markEventAsError(Context context, long id, String msg) {
         Log.d(TAG, "markEventAsError() id: " + id);
-        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
-        ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Event.COL_ERROR, true);
         values.put(Event.COL_MSG, msg);
-        return resolver.update(uri, values, null, null);
+        return updateEvent(context, values, id);
     }
 
     public static int updateEvent(Context context, Event event) {
         Log.d(TAG, "updateEvent() " + event);
-        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(event.get_id()));
-        ContentResolver resolver = context.getContentResolver();
         ContentValues values = event.asContentValues();
         values.put(Event.COL_DIRTY, true);
-        return resolver.update(uri, values, null, null);
+        return updateEvent(context, values, event.get_id());
     }
 
-    public static void updateEventServerId(Context context, long id, String rowid) {
+    public static int updateEventServerId(Context context, long id, String rowid) {
         Log.d(TAG, "updateEventServerId() id " + id + " rowid " + rowid);
-        // Uri ukolu
-        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
-        ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Event.COL_SERVER_ID, rowid);
-
-        // Updatuje ukol - deleted = true
-        resolver.update(uri, values, null, null);
+        return updateEvent(context, values, id);
     }
 
     final public static class EventQuery {
 
-        // uri zdroje dat
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
                 + MyDatabaseHelper.TABLE_EVENTS);
 
-        //TODO refaktor
-        // vybere vsechny sloupce
-        /*public static final String[] PROJECTION_ALL = {Event.COL_ID, Event.COL_SERVER_ID,
-                Event.COL_DIRTY, Event.COL_DELETED, Event.COL_ICP,
-                Event.COL_DATUM, Event.COL_KOD_PO, Event.COL_DRUH,
-                Event.COL_CAS, Event.COL_IC_OBS, Event.COL_TYP,
-                Event.COL_DATUM_ZMENY, Event.COL_POZNAMKA, Event.COL_ERROR, Event.COL_MSG};*/
-
-        // vyber podle id ukolu
         public static final String SELECTION_ID = Event.COL_ID + "=?";
-        // vyber urcenych k sync
         public static final String SELECTION_DIRTY = Event.COL_DIRTY + "=1";
-        // vyber nesmazanych
         public static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
-        // vyber podle data
         public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
-
         public static final String SELECTION_DAY_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED;
-
-        public static final String SELECTION_ICP = Event.COL_ICP + "=?";
+        //public static final String SELECTION_ICP = Event.COL_ICP + "=?";
 
     }
 

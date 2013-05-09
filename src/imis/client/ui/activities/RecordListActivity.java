@@ -157,7 +157,7 @@ public class RecordListActivity extends ControlActivity implements
             String kodpra = getSelectedUser();
             String from = getDateFrom();
             String to = getDateTo();
-            createTaskFragment(new GetListOfRecords(kodpra, from, to));
+            createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
         } catch (ParseException e) {
             Log.d(TAG, "resfreshRecords() " + e.getMessage());
             showPeriodInputError(this);

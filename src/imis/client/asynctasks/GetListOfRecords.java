@@ -1,9 +1,11 @@
 package imis.client.asynctasks;
 
+import android.app.Activity;
 import android.util.Log;
 import imis.client.model.Record;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
+import imis.client.persistent.RecordManager;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
@@ -21,13 +23,15 @@ import java.util.Collections;
 public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]> {
     private static final String TAG = GetListOfRecords.class.getSimpleName();
 
-    public GetListOfRecords(String... params) {
+    private Activity activity;
+
+    public GetListOfRecords(Activity activity, String... params) {
         super(params);
+        this.activity = activity;
     }
 
     @Override
     protected Record[] doInBackground(String... params) {
-        //changeProgress(RUNNING, "working");
         String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -49,16 +53,13 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
             return body;
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage(), e);
-        } /*finally {
-            changeProgress(DONE, null);
-        }*/
+        }
 
         return new Record[]{};
     }
 
     @Override
     protected void onPostExecute(Record[] records) {
-
 
 
         Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
@@ -102,8 +103,9 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
 
         Log.d(TAG, "onPostExecute() records size " + records.length);
 
-       /* RecordManager.addRecords(activity, Arrays.asList(records));
-        Log.d(TAG, "onPostExecute() getAllRecords " + RecordManager.getAllRecords(activity));*/
+
+        RecordManager.addRecords(activity, Arrays.asList(records));
+        Log.d(TAG, "onPostExecute() getAllRecords " + RecordManager.getAllRecords(activity));
         super.onPostExecute(null);
     }
 }
