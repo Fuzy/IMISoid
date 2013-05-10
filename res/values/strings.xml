@@ -150,7 +150,7 @@
     <string name="spinnerEmployee_title">Zaměstnanec</string>
     <string name="menu_recordsChart">Graf výkazy</string>
     <string name="menu_switch">Přepnout zobrazení</string>
-    <string name="stats_event_tot">Celkem: </string>
+    <string name="stats_event_tot">Celkem:</string>
     <string name="record_detail_state">Stav</string>
     <string name="record_detail_identification">Zakázka</string>
     <string name="record_detail_time">Odvedené množství</string>
@@ -162,6 +162,9 @@
     <string name="error_perriod_set">Špatně zadané období</string>
     <string name="spinnerRecordType_title">Typ zakázky</string>
     <string name="selectEmp">Vyber zaměstnance</string>
-
+    <string name="menu_color_info">Nápověda</string>
+    <string name="eventsType">Události docházky</string>
+    <string name="recordsType">Zakázky</string>
+    <string name="eventTypeOthers">Ostatní</string>
 
 </resources>

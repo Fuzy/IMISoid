@@ -14,6 +14,7 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
     protected ResultData resultData;
     protected T[] params;
 
+    @SuppressWarnings({"unchecked", "varargs"})
     protected NetworkingAsyncTask(T... params) {
         this.params = params;
     }

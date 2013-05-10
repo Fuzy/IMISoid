@@ -17,7 +17,7 @@ import android.widget.Spinner;
 import imis.client.R;
 import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
-import imis.client.ui.adapters.EmployeeCursorAdapter;
+import imis.client.ui.adapters.EmployeeResourceCursorAdapter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,7 +33,7 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     protected Spinner spinnerEmp;
-    private EmployeeCursorAdapter adapter;
+    private EmployeeResourceCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
             finish();
         }
 
-        adapter = new EmployeeCursorAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, null, -1);
+        adapter = new EmployeeResourceCursorAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, null, -1);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEmp.setAdapter(adapter);
         Log.d(TAG, "onCreate() mAppWidgetId " + mAppWidgetId);

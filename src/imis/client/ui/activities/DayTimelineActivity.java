@@ -194,6 +194,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             case R.id.menu_recordsChart:
                 startRecordsChartActivity();
                 return true;
+            case R.id.info_color:
+                startColorInfoActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -339,6 +342,11 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private void startEventsChartActivity() {
         Intent intent = new Intent(this, EventsChartActivity.class);
         Log.d("DayTimelineActivity", "startEventsChartActivity() intent " + intent);
+        startActivity(intent);
+    }
+
+    private void startColorInfoActivity() {
+        Intent intent = new Intent(this, InfoColorActivity.class);
         startActivity(intent);
     }
 

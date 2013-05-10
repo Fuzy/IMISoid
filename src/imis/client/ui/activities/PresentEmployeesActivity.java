@@ -16,7 +16,7 @@ import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.asynctasks.result.ResultData;
 import imis.client.persistent.EmployeeManager;
-import imis.client.ui.adapters.EmployeesAdapter;
+import imis.client.ui.adapters.EmployeesCursorAdapter;
 
 import static imis.client.persistent.EmployeeManager.EmployeeQuery.CONTENT_URI;
 
@@ -28,7 +28,7 @@ import static imis.client.persistent.EmployeeManager.EmployeeQuery.CONTENT_URI;
  */
 public class PresentEmployeesActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = PresentEmployeesActivity.class.getSimpleName();
-    private EmployeesAdapter adapter;
+    private EmployeesCursorAdapter adapter;
     private GridView gridView;
     private static final int LOADER_EMPLOYEES = 0x02;
 
@@ -41,7 +41,7 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
 
         gridView = (GridView) findViewById(R.id.gridEmployees);
 
-        adapter = new EmployeesAdapter(getApplicationContext(), null, -1);
+        adapter = new EmployeesCursorAdapter(getApplicationContext(), null, -1);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

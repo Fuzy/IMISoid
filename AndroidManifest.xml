@@ -116,6 +116,7 @@
         <activity android:name=".ui.activities.PresentEmployeesActivity"></activity>
         <activity android:name=".ui.activities.EventsChartActivity"></activity>
         <activity android:name=".ui.activities.RecordListActivity"></activity>
+        <activity android:name=".ui.activities.InfoColorActivity"></activity>
 
 
         <!-- Widget -->

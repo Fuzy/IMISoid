@@ -40,7 +40,6 @@ public class ColorUtil {
         //Log.d(TAG, "getColor() key " + key);
         Integer color = colors.get(key);
         return color == null ? Color.GRAY : color;
-
     }
 
 

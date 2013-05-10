@@ -19,11 +19,11 @@ import imis.client.ui.ColorUtil;
  * Date: 6.4.13
  * Time: 23:05
  */
-public class EmployeesAdapter extends CursorAdapter {
-    private static final String TAG = EmployeesAdapter.class.getSimpleName();
+public class EmployeesCursorAdapter extends CursorAdapter {
+    private static final String TAG = EmployeesCursorAdapter.class.getSimpleName();
     private LayoutInflater inflater;
 
-    public EmployeesAdapter(Context context, Cursor c, int flags) {
+    public EmployeesCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

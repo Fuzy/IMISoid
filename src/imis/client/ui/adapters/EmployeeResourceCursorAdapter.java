@@ -13,9 +13,9 @@ import imis.client.model.Employee;
  * Date: 8.5.13
  * Time: 17:09
  */
-public class EmployeeCursorAdapter extends ResourceCursorAdapter {
+public class EmployeeResourceCursorAdapter extends ResourceCursorAdapter {
 
-    public EmployeeCursorAdapter(Context context, int layout, Cursor c, int flags) {
+    public EmployeeResourceCursorAdapter(Context context, int layout, Cursor c, int flags) {
         super(context, layout, c, flags);
     }
 
