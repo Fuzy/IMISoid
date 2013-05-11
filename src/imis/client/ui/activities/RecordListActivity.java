@@ -19,17 +19,17 @@ import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.ResultData;
 import imis.client.model.Record;
+import imis.client.persistent.RecordManager;
 import imis.client.ui.adapters.RecordsCursorAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
 import imis.client.ui.fragments.RecordDetailFragment;
 import imis.client.ui.fragments.RecordListFragment;
 
 import java.text.ParseException;
+import java.util.Arrays;
 
 import static imis.client.AppUtil.showAccountNotExistsError;
 import static imis.client.AppUtil.showPeriodInputError;
-import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
-import static imis.client.persistent.RecordManager.DataQuery.SELECTION_ZC;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,25 +44,29 @@ public class RecordListActivity extends ControlActivity implements
     private RecordsCursorAdapter adapter;
     private static final int LOADER_RECORDS = 0x08;
     private int position = -1;
-    private int typesPos = 0;
-    private String[] typesArray;
+    //private int typesPos = 0;
 
+    private String[] typesArray;
+    protected Spinner spinnerType;
+    private String[] selectionArgs = new String[]{"",""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         setContentView(R.layout.records);
+        initControlPanel();
 
         Resources r = getResources();
         typesArray = r.getStringArray(R.array.typ_zakazky);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerRecords);
-        Log.d(TAG, "onCreate() spinner " + spinner);
+        spinnerType = (Spinner) findViewById(R.id.spinnerRecords);
+        Log.d(TAG, "onCreate() spinner " + spinnerType);
         ArrayAdapter<String> spinnerArrayAdapter
                 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typesArray);
-        spinner.setAdapter(spinnerArrayAdapter);
-        spinner.setOnItemSelectedListener(this);
+        spinnerType.setAdapter(spinnerArrayAdapter);
+        spinnerType.setOnItemSelectedListener(this);
+        spinnerEmp.setOnItemSelectedListener(this);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         RecordListFragment listFragment = new RecordListFragment();
@@ -72,9 +76,9 @@ public class RecordListActivity extends ControlActivity implements
 
         adapter = new RecordsCursorAdapter(getApplicationContext(), null, -1);
         listFragment.setListAdapter(adapter);
+
         getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
 
-        initControlPanel();
     }
 
     @Override
@@ -83,22 +87,10 @@ public class RecordListActivity extends ControlActivity implements
         Log.d(TAG, "onCreateLoader()");
         switch (i) {
             case LOADER_RECORDS:
-                String selection;
-                String[] selectArgs;
-                if (typesPos == 0) {
-                    selection = null;
-                    selectArgs = null;
-                } else {
-                    selection = SELECTION_ZC;
-                    selectArgs = new String[]{typesArray[typesPos]};
-                }
-
-                if (selectArgs != null)
-                    Log.d(TAG, "onCreateLoader() selection " + selection + " selectionArgs " + selectArgs[0]);
-                else Log.d(TAG, "onCreateLoader() selection " + selection + " selectionArgs " + selectArgs);
-
-                return new CursorLoader(getApplicationContext(), CONTENT_URI,
-                        null, selection, selectArgs, null);//PROJECTION_ALL
+                Log.d(TAG, "onCreateLoader() RecordManager.DataQuery.SELECTION " + RecordManager.DataQuery.SELECTION);
+                Log.d(TAG,"onCreateLoader() selectionArgs " + Arrays.toString(selectionArgs));
+                return new CursorLoader(this, RecordManager.DataQuery.CONTENT_URI,
+                        null, RecordManager.DataQuery.SELECTION, selectionArgs, null);
             default:
                 return super.onCreateLoader(i, bundle);
         }
@@ -115,10 +107,6 @@ public class RecordListActivity extends ControlActivity implements
             default:
                 super.onLoadFinished(cursorLoader, cursor);
         }
-       /* int pos = cursor.getPosition();
-        while (cursor.moveToNext()) Log.d(TAG, "onLoadFinished() record " + Record.cursorToRecord(cursor) );
-        cursor.moveToPosition(pos);*/
-
     }
 
     @Override
@@ -200,17 +188,16 @@ public class RecordListActivity extends ControlActivity implements
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+        selectionArgs[0] = getSelectedType();
+        selectionArgs[1] = getSelectedUser();
+        getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
+    }
 
-        int id = adapterView.getId();
-        switch (id) {
-            case R.id.spinnerRecords:
-                Log.d(TAG, "onItemSelected() " + typesArray[pos]);
-                typesPos = pos;
-                getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
-                break;
-        }
-
-
+    private String getSelectedType() {
+        String type = (String) spinnerType.getSelectedItem();
+        if (type.equals("-")) type = "";
+        Log.d(TAG, "getSelectedType() type " + type);
+        return type;
     }
 
     @Override

@@ -7,9 +7,9 @@
     <!--android:id="@+id/displayControl"-->
 
     <LinearLayout
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <include layout="@layout/control_period"/>
 
         <LinearLayout android:layout_height="wrap_content"

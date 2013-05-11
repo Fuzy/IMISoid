@@ -21,10 +21,16 @@
     <jackson-version>1.9.8</jackson-version>
 </properties>
 <dependencies>
-    <dependency>
+    <!--<dependency>
         <groupId>com.google.android</groupId>
         <artifactId>android</artifactId>
         <version>${android-version}</version>
+        <scope>provided</scope>
+    </dependency>-->
+    <dependency>
+        <groupId>com.google.android</groupId>
+        <artifactId>android</artifactId>
+        <version>17</version>
         <scope>provided</scope>
     </dependency>
     <dependency>
@@ -171,5 +177,6 @@
         <name>Public AChartEngine repository</name>
         <url>https://repository-achartengine.forge.cloudbees.com/snapshot/</url>
     </repository>
+
 </repositories>
 </project>

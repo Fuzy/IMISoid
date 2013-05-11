@@ -220,18 +220,18 @@ public class Record {
     public static final String COL_CPOLZAK = "CPOLZAK";
     public static final String COL_CPOZZAK = "CPOZZAK";
 
-    private static final int COL_NUM_ID = 0;
-    private static final int COL_NUM_SERVER_ID = 1;
-    private static final int COL_NUM_DATUM = 2;
-    private static final int COL_NUM_KODPRA = 3;
-    private static final int COL_NUM_ZC = 4;
-    private static final int COL_NUM_STAV_V = 5;
-    private static final int COL_NUM_CPOLZAK = 6;
-    private static final int COL_NUM_CPOZZAK = 7;
-    private static final int COL_NUM_MNOZSTVI_ODVED = 8;
-    private static final int COL_NUM_POZN_HL = 9;
-    private static final int COL_NUM_POZN_UKOL = 10;
-    private static final int COL_NUM_POZNAMKA = 11;
+    public static final int COL_NUM_ID = 0;
+    public static final int COL_NUM_SERVER_ID = 1;
+    public static final int COL_NUM_DATUM = 2;
+    public static final int COL_NUM_KODPRA = 3;
+    public static final int COL_NUM_ZC = 4;
+    public static final int COL_NUM_STAV_V = 5;
+    public static final int COL_NUM_CPOLZAK = 6;
+    public static final int COL_NUM_CPOZZAK = 7;
+    public static final int COL_NUM_MNOZSTVI_ODVED = 8;
+    public static final int COL_NUM_POZN_HL = 9;
+    public static final int COL_NUM_POZN_UKOL = 10;
+    public static final int COL_NUM_POZNAMKA = 11;
 
     public static final String TYPE_A = "A";
     public static final String TYPE_I = "I";

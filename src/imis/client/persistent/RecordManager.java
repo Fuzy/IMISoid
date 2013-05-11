@@ -55,7 +55,11 @@ public class RecordManager {
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
                 + MyDatabaseHelper.TABLE_RECORDS);
 
-        public static final String SELECTION_ZC = Record.COL_ZC + " LIKE ? || '%'";
+
+
+        public static final String SELECTION_ZC = Record.COL_ZC + " LIKE ? || '%' ";
+        public static final String SELECTION_KODPRA = Record.COL_KODPRA + " LIKE ? || '%' ";
+        public static final String SELECTION = SELECTION_ZC + " and " + SELECTION_KODPRA;
 
     }
 }

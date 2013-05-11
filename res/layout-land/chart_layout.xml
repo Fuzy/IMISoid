@@ -12,7 +12,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:background="@android:color/holo_red_dark">
-        <include layout="@layout/control"/>
+        <include layout="@layout/control_period"/>
+        <include layout="@layout/control_spinners"/>
         <include layout="@layout/row_select"></include>
     </FrameLayout>
 

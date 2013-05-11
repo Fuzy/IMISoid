@@ -166,5 +166,6 @@
     <string name="eventsType">Události docházky</string>
     <string name="recordsType">Zakázky</string>
     <string name="eventTypeOthers">Ostatní</string>
+    <string name="no_item_set">Není vybráno pole období</string>
 
 </resources>

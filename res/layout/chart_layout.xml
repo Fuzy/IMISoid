@@ -9,8 +9,15 @@
                   android:orientation="vertical"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content">
-        <include layout="@layout/control"/>
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:orientation="horizontal">
+            <include layout="@layout/control_period"/>
+            <include layout="@layout/control_spinners"/>
+        </LinearLayout>
+
         <include layout="@layout/row_select"></include>
+
     </LinearLayout>
 
     <LinearLayout android:id="@+id/displayChart"

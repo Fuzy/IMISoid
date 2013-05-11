@@ -18,7 +18,7 @@ import java.util.Calendar;
  */
 public class CalendarActivity extends Activity {
     private static final String TAG = CalendarActivity.class.getSimpleName();
-    private long initialTime;
+    private int initYear, initMonth, initDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,15 @@ public class CalendarActivity extends Activity {
         setContentView(R.layout.calendar);
 
         CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
-        initialTime = getIntent().getLongExtra(Event.KEY_DATE, System.currentTimeMillis());
-        calendarView.setDate(initialTime);
+        long initialTime = getIntent().getLongExtra(Event.KEY_DATE, System.currentTimeMillis());
+        Calendar initCal = Calendar.getInstance();
+        initCal.setTimeInMillis(initialTime);
+        calendarView.setDate(initCal.getTimeInMillis());
         calendarView.setOnDateChangeListener(new CalendarDateChangeListener(calendarView));
+
+        initYear = initCal.get(Calendar.YEAR);
+        initMonth = initCal.get(Calendar.MONTH);
+        initDay = initCal.get(Calendar.DAY_OF_MONTH);
     }
 
     class CalendarDateChangeListener implements CalendarView.OnDateChangeListener {
@@ -42,14 +48,14 @@ public class CalendarActivity extends Activity {
         @Override
         public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
             Calendar cal = Calendar.getInstance();
+            //cal.setTimeZone(TimeZone.getTimeZone("UTC")); //TODO zimni vs letni cas?
             cal.setTimeInMillis(0);
             cal.set(year, month, dayOfMonth);
 
-            Log.d("CalendarActivity", "onSelectedDayChange() year: " + year + " month: " + month +
-                    " dayOfMonth: " + dayOfMonth);//+ " cal: " + cal.toString()
-            if (calendarView.getDate() != initialTime) {
-                Log.d("CalendarActivity$CalendarDateChangeListener", "onSelectedDayChange() finish");
+            if (year != initYear || month != initMonth || dayOfMonth != initDay) {
                 Intent resIntent = getIntentWithDateSet(cal.getTimeInMillis());
+                Log.d(TAG, "onSelectedDayChange() cal " + cal.getTimeInMillis() + " year: " + year + " month: " + month +
+                        " dayOfMonth: " + dayOfMonth);
                 setResult(RESULT_OK, resIntent);
                 finish();
             }
