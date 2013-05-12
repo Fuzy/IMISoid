@@ -44,6 +44,7 @@ public class RecordsCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         Log.d(TAG, "bindView()");
         Record record = Record.cursorToRecord(cursor);
+        Log.d(TAG, "bindView() record " + record);
 
         String zc = (record.getZc() == null) ? "" : record.getZc();
         String cpolzak = (record.getCpolzak() == null) ? "" : "" + record.getCpolzak().intValue();

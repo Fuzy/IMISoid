@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.util.Log;
 import imis.client.model.Employee;
 import imis.client.model.Event;
+import imis.client.model.Record;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Arrays;
@@ -160,7 +161,7 @@ public class MyContentProvider extends ContentProvider {
 
 
         int uriType = sURIMatcher.match(uri);
-
+        String id;
         SQLiteDatabase sqlDB = database.getWritableDatabase();
 
         switch (uriType) {
@@ -170,8 +171,13 @@ public class MyContentProvider extends ContentProvider {
             case RECORDS:
                 rowsUpdated = sqlDB.update(TABLE_RECORDS, values, selection, selectionArgs);
                 break;
+            case RECORD_ID:
+                id = uri.getLastPathSegment();
+                rowsUpdated = sqlDB.update(TABLE_RECORDS, values, Record.COL_ID + "=" + id, null);
+                Log.d(TAG, "update() RECORDS_ID rowsUpdated " + rowsUpdated);
+                break;
             case EMPLOYEE_ID:
-                String id = uri.getLastPathSegment();
+                id = uri.getLastPathSegment();
                 rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, Employee.COL_ID + "=" + id, null);
                 Log.d(TAG, "update() EMPLOYEE_ID rowsUpdated " + rowsUpdated);
                 break;

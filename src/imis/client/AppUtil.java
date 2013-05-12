@@ -43,13 +43,13 @@ public class AppUtil {
         toast.show();
     }
 
-    public static long getTodayInLong() {
+    public static long todayInLong() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis(); //TODO metoda 1
+        return cal.getTimeInMillis();
     }
 
     public static boolean belongsNowToDate(long date) {
@@ -58,14 +58,6 @@ public class AppUtil {
         theDate.setTimeInMillis(date);
         return now.get(Calendar.YEAR) == theDate.get(Calendar.YEAR)
                 && now.get(Calendar.DAY_OF_YEAR) == theDate.get(Calendar.DAY_OF_YEAR);
-    }
-
-    public static long todayInLong() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis();//TODO metoda 2
     }
 
     public static String formatDate(long date) {
@@ -97,38 +89,32 @@ public class AppUtil {
         dfAbbr.parse(date);
     }
 
-    public static long convertToTime(String s) {
+    /*public static long convertToTime(String s) {
         long date;
         try {
             date = dfAbbr.parse(s).getTime();
             Log.d(TAG, "convertToTime() date " + date);
         } catch (ParseException e) {
-            return todayInLong();
+            return todayInLong();//TODO je to dobrz napad?
         }
         Log.d(TAG, "convertToTime() date " + date);
         return date;
-    }
+    }*/
 
-    public static String getFirstDateOfCurrentMonth(long time) {
+    public static long getFirstDateOfMonth(long time) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(time);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-        return formatAbbrDate(cal.getTimeInMillis());
+        Log.d(TAG, "getFirstDateOfMonth() cal.getTimeInMillis() " + cal.getTimeInMillis());
+        return cal.getTimeInMillis();
     }
 
-    public static String getLastDateOfCurrentMonth(long time) {
+    public static long getLastDateOfMonth(long time) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(time);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return formatAbbrDate(cal.getTimeInMillis());
-    }
-
-    public static String todayInString() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return dfAbbr.format(cal.getTime());
+        Log.d(TAG, "getLastDateOfMonth() cal.getTimeInMillis() " + cal.getTimeInMillis());
+        return cal.getTimeInMillis();
     }
 
 }

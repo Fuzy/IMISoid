@@ -90,7 +90,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // download all user events from server
         List<Event> events = new ArrayList<>();
         //"/0000001?from=29.7.2004&to=29.7.2004"
-        long date = extras.getLong(Event.KEY_DATE, AppUtil.getTodayInLong());
+        long date = extras.getLong(Event.KEY_DATE, AppUtil.todayInLong());
         EventsSync.getUserEvents(events, icp, date, date);//TODO jak obdobi spravne?
         for (Event event : events) {
             if (EventManager.updateEvent(context, event) == 0) EventManager.addEvent(context, event);

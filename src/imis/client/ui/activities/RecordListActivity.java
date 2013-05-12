@@ -38,17 +38,15 @@ import static imis.client.AppUtil.showPeriodInputError;
  * Time: 17:25
  */
 public class RecordListActivity extends ControlActivity implements
-        RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener,
-        AdapterView.OnItemSelectedListener {
+        RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = RecordListActivity.class.getSimpleName();
     private RecordsCursorAdapter adapter;
     private static final int LOADER_RECORDS = 0x08;
     private int position = -1;
-    //private int typesPos = 0;
 
     private String[] typesArray;
     protected Spinner spinnerType;
-    private String[] selectionArgs = new String[]{"",""};
+    private final String PAR_TYPE = "TYPE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,20 +75,22 @@ public class RecordListActivity extends ControlActivity implements
         adapter = new RecordsCursorAdapter(getApplicationContext(), null, -1);
         listFragment.setListAdapter(adapter);
 
-        getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
+        initSelectionValues();
+    }
 
+
+    private void initSelectionValues() {
+        selectionArgs.put(PAR_TYPE, "");
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
         Log.d(TAG, "onCreateLoader()");
         switch (i) {
             case LOADER_RECORDS:
-                Log.d(TAG, "onCreateLoader() RecordManager.DataQuery.SELECTION " + RecordManager.DataQuery.SELECTION);
-                Log.d(TAG,"onCreateLoader() selectionArgs " + Arrays.toString(selectionArgs));
+                Log.d(TAG, "onCreateLoader() SELECTION " + RecordManager.DataQuery.SELECTION);
                 return new CursorLoader(this, RecordManager.DataQuery.CONTENT_URI,
-                        null, RecordManager.DataQuery.SELECTION, selectionArgs, null);
+                        null, RecordManager.DataQuery.SELECTION, getSelectionArgs(), null);
             default:
                 return super.onCreateLoader(i, bundle);
         }
@@ -99,8 +99,12 @@ public class RecordListActivity extends ControlActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished() size " + cursor.getCount());
-        int id = cursorLoader.getId();
-        switch (id) {
+        switch (cursorLoader.getId()) {
+            case LOADER_EMPLOYEES:
+                Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
+                super.onLoadFinished(cursorLoader, cursor);
+                getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
+                break;
             case LOADER_RECORDS:
                 adapter.swapCursor(cursor);
                 break;
@@ -108,6 +112,7 @@ public class RecordListActivity extends ControlActivity implements
                 super.onLoadFinished(cursorLoader, cursor);
         }
     }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
@@ -119,7 +124,7 @@ public class RecordListActivity extends ControlActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu");
-        // Ziska menu z XML zdroje
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.network_activity_menu, menu); //TODO refaktor pojmenovani
 
@@ -143,8 +148,8 @@ public class RecordListActivity extends ControlActivity implements
 
         try {
             String kodpra = getSelectedUser();
-            String from = getDateFrom();
-            String to = getDateTo();
+            String from = getStringDateFrom();
+            String to = getStringDateTo();
             createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
         } catch (ParseException e) {
             Log.d(TAG, "resfreshRecords() " + e.getMessage());
@@ -188,20 +193,41 @@ public class RecordListActivity extends ControlActivity implements
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-        selectionArgs[0] = getSelectedType();
-        selectionArgs[1] = getSelectedUser();
+
+        switch (adapterView.getId()) {
+            case R.id.spinnerRecords:
+                Log.d(TAG, "onItemSelected() spinnerRecords");
+                selectionArgs.put(PAR_TYPE, getSelectedType());
+                resfreshQuery(); //TODO co s tim?
+                break;
+            default:
+                super.onItemSelected(adapterView, view, pos, l);
+        }
+
+    }
+
+    @Override
+    protected String[] getSelectionArgs() {
+        String[] args = new String[4];
+        args[2] = selectionArgs.get(PAR_FROM);
+        args[3] = selectionArgs.get(PAR_TO);
+        args[1] = selectionArgs.get(PAR_EMP);
+        args[0] = selectionArgs.get(PAR_TYPE);
+        Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
+        return args;
+    }
+
+    @Override
+    protected void resfreshQuery() {
+        Log.d(TAG, "resfreshQuery()");
         getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
     }
 
     private String getSelectedType() {
         String type = (String) spinnerType.getSelectedItem();
-        if (type.equals("-")) type = "";
+        if (type == null || type.equals("-")) type = "";
         Log.d(TAG, "getSelectedType() type " + type);
         return type;
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
     @Override

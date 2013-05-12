@@ -55,8 +55,8 @@ public class RecordsChartActivity extends ChartActivity {
 
         try {
             String kodpra = getSelectedUser();
-            String from = getDateFrom();
-            String to = getDateTo();
+            String from = getStringDateFrom();
+            String to = getStringDateTo();
             createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
         } catch (ParseException e) {
             Log.d(TAG, "resfreshRecords() " + e.getMessage());
@@ -119,10 +119,19 @@ public class RecordsChartActivity extends ChartActivity {
     }
 
     @Override
+    protected String[] getSelectionArgs() {
+        return new String[0];
+    }
+
+    @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
     }
 
 
+    @Override
+    protected void resfreshQuery() {
+        Log.d(TAG, "resfreshQuery()");
+    }
 
 
     public List<String> getVisibleCodes() {

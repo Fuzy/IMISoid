@@ -99,6 +99,11 @@ public class EventsChartActivity extends ChartActivity {
     }
 
     @Override
+    protected String[] getSelectionArgs() {
+        return new String[0];
+    }
+
+    @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         Log.d(TAG, "onLoaderReset()");
     }
@@ -131,8 +136,8 @@ public class EventsChartActivity extends ChartActivity {
 
         try {
             String kodpra = getSelectedUser();
-            String from = getDateFrom();
-            String to = getDateTo();
+            String from = getStringDateFrom();
+            String to = getStringDateTo();
             createTaskFragment(new GetListOfEvents(kodpra, from, to));
         } catch (ParseException e) {
             Log.d(TAG, "resfreshRecords() " + e.getMessage());
@@ -142,6 +147,11 @@ public class EventsChartActivity extends ChartActivity {
         }
 
 
+    }
+
+    @Override
+    protected void resfreshQuery() {
+        Log.d(TAG, "resfreshQuery()");
     }
 
     @Override

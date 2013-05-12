@@ -68,11 +68,11 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
 
         Record record = new Record();
         record.setId("123");
-        record.setZc("R-VV-2013");
+        record.setZc("I-VV-2013");
         record.setCpolzak(5);
         record.setCpozzak(11);
         record.setKodpra("KDA");
-        record.setDatum(454);
+        record.setDatum(1364169600000L);
         record.setStav_v("V");
         record.setMnozstvi_odved(11111111);
         record.setPoznamka("bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " +
@@ -89,7 +89,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
         record2.setCpolzak(5);
         record2.setCpozzak(11);
         record2.setKodpra("KDA");
-        record2.setDatum(454);
+        record2.setDatum(1364169600000L);
         record2.setStav_v("V");
         record2.setMnozstvi_odved(11111111);
         record2.setPoznamka("bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " +

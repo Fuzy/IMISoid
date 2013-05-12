@@ -160,7 +160,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database
                 .execSQL("insert into "
                         + TABLE_EVENTS
-                        + " values (4,null,0,0,'700510',1364169600000,'01','O','68400000','KDA','O',1364169600000,null, 0, null)");//68400000
+                        + " values (4,null,0,0,'700510',1364169600000L,'01','O','68400000','KDA','O',1364169600000,null, 0, null)");//68400000
         database
                 .execSQL("insert into "
                         + TABLE_EVENTS

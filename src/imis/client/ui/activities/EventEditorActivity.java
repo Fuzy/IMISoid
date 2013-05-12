@@ -373,7 +373,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private boolean setImplicitEventValues(Event event) {
         event.setDirty(true);
-        event.setDatum_zmeny(AppUtil.getTodayInLong());
+        event.setDatum_zmeny(AppUtil.todayInLong());
         event.setTyp(Event.TYPE_ORIG);
 
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
