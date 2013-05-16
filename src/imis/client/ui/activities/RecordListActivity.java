@@ -1,9 +1,9 @@
 package imis.client.ui.activities;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -21,8 +21,6 @@ import imis.client.asynctasks.result.ResultData;
 import imis.client.model.Record;
 import imis.client.persistent.RecordManager;
 import imis.client.ui.adapters.RecordsCursorAdapter;
-import imis.client.ui.dialogs.ColorPickerDialog;
-import imis.client.ui.fragments.RecordDetailFragment;
 import imis.client.ui.fragments.RecordListFragment;
 
 import java.text.ParseException;
@@ -38,10 +36,11 @@ import static imis.client.AppUtil.showPeriodInputError;
  * Time: 17:25
  */
 public class RecordListActivity extends ControlActivity implements
-        RecordListFragment.OnDetailSelectedListener, ColorPickerDialog.OnColorChangedListener {
+        RecordListFragment.OnDetailSelectedListener {
     private static final String TAG = RecordListActivity.class.getSimpleName();
     private RecordsCursorAdapter adapter;
     private static final int LOADER_RECORDS = 0x08;
+    private static final int DETAIL_ACTIVITY_CODE = 1;
     private int position = -1;
 
     private String[] typesArray;
@@ -66,6 +65,12 @@ public class RecordListActivity extends ControlActivity implements
         spinnerType.setOnItemSelectedListener(this);
         spinnerEmp.setOnItemSelectedListener(this);
 
+        addListFragment();
+
+        initSelectionValues();
+    }
+
+    private void addListFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         RecordListFragment listFragment = new RecordListFragment();
         ft.replace(R.id.recordsList, listFragment, "RecordListFragment");
@@ -74,8 +79,6 @@ public class RecordListActivity extends ControlActivity implements
 
         adapter = new RecordsCursorAdapter(getApplicationContext(), null, -1);
         listFragment.setListAdapter(adapter);
-
-        initSelectionValues();
     }
 
 
@@ -126,7 +129,7 @@ public class RecordListActivity extends ControlActivity implements
         Log.d(TAG, "onCreateOptionsMenu");
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.network_activity_menu, menu); //TODO refaktor pojmenovani
+        inflater.inflate(R.menu.record_list_activity_menu, menu); //TODO refaktor pojmenovani
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -136,15 +139,15 @@ public class RecordListActivity extends ControlActivity implements
         Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.refresh:
-                resfreshRecords();
+                refreshRecords();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void resfreshRecords() {
-        Log.d(TAG, "resfreshRecords()");
+    private void refreshRecords() {
+        Log.d(TAG, "refreshRecords()");
 
         try {
             String kodpra = getSelectedUser();
@@ -152,7 +155,7 @@ public class RecordListActivity extends ControlActivity implements
             String to = getStringDateTo();
             createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
         } catch (ParseException e) {
-            Log.d(TAG, "resfreshRecords() " + e.getMessage());
+            Log.d(TAG, "refreshRecords() " + e.getMessage());
             showPeriodInputError(this);
         } catch (Exception e) {
             showAccountNotExistsError(this);
@@ -164,31 +167,24 @@ public class RecordListActivity extends ControlActivity implements
     public void onDetailSelected(int position) {
         this.position = position;
         Record record = adapter.getItem(position);
-        createDetailFragment(record);
+        long id = record.get_id();
+        createDetailFragment(id);
     }
 
-    public void createDetailFragment(Record record) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        RecordDetailFragment detailFragment = new RecordDetailFragment();
-        detailFragment.setRecord(record);
-        ft.replace(R.id.recordsList, detailFragment, "RecordDetailFragment");
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.addToBackStack(null);
-        ft.commit();
+    public void createDetailFragment(long id) {
+        Intent intent = new Intent(this, RecordDetailActivity.class);
+        intent.putExtra(Record.COL_ID, id);
+        startActivityForResult(intent, DETAIL_ACTIVITY_CODE);
     }
-
-    public void deleteDetailFragment() {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("RecordDetailFragment");
-        if (fragment != null) getSupportFragmentManager().popBackStack();
-    }
-
 
     @Override
-    public void colorChanged() {
-        Log.d(TAG, "colorChanged()");
-        adapter.notifyDataSetChanged();
-        deleteDetailFragment();
-        createDetailFragment(adapter.getItem(position));
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case DETAIL_ACTIVITY_CODE:
+                adapter.notifyDataSetChanged();
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -234,4 +230,5 @@ public class RecordListActivity extends ControlActivity implements
     public void onTaskFinished(ResultData result) {
         Log.d(TAG, "onTaskFinished()");
     }
+
 }

@@ -56,6 +56,12 @@ public class RecordManager {
 
     }
 
+    public static Record getRecord(Context context, long id) {
+        Log.d(TAG, "getRecord()" + "id = [" + id + "]");
+        return getRecord(context, DataQuery.SELECTION_ID, new String[]{String.valueOf(id)});
+
+    }
+
     private static Record getRecord(Context context, String selection, String[] selectionArgs) {
         Log.d(TAG, "getRecord()" + "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
@@ -87,6 +93,7 @@ public class RecordManager {
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
                 + MyDatabaseHelper.TABLE_RECORDS);
 
+        public static final String SELECTION_ID = Record.COL_ID + "=?";
         public static final String SELECTION_SERVER_ID = Record.COL_SERVER_ID + " LIKE ? || '%' ";
         public static final String SELECTION_ZC = Record.COL_ZC + " LIKE ? || '%' ";
         public static final String SELECTION_KODPRA = Record.COL_KODPRA + " LIKE ? || '%' ";

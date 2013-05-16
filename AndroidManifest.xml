@@ -117,6 +117,7 @@
         <activity android:name=".ui.activities.EventsChartActivity"></activity>
         <activity android:name=".ui.activities.RecordListActivity"></activity>
         <activity android:name=".ui.activities.InfoColorActivity"></activity>
+        <activity android:name=".ui.activities.RecordDetailActivity"></activity>
 
 
         <!-- Widget -->

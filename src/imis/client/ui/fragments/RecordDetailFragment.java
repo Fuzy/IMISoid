@@ -43,7 +43,9 @@ public class RecordDetailFragment extends Fragment {
         if (container == null) {
             return null;
         }
+        Log.d(TAG, "onCreateView() container " + container);
         detail = inflater.inflate(R.layout.record_detail, container, false);
+        //detail.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         return detail;
     }
 

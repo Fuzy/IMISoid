@@ -79,7 +79,7 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.network_activity_menu, menu);
+        inflater.inflate(R.menu.record_list_activity_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -51,9 +51,10 @@ public class StackedBarFragment extends ChartFragment {
         renderer.setYLabels(10);
         renderer.setXLabelsAlign(Paint.Align.LEFT);
         renderer.setYLabelsAlign(Paint.Align.LEFT);
-        renderer.setPanEnabled(true, false);
+        renderer.setPanEnabled(false, false);
         renderer.setZoomRate(1.1f);
         renderer.setBarSpacing(0.5f);
+        Log.d(TAG, "prepareGraph() renderer minX " + renderer.getXAxisMin());
         GraphicalView mChartView = ChartFactory.getBarChartView(mActivity, buildBarDataset(chartData.getTitles(),
                 chartData.getValues()), renderer,
                 BarChart.Type.STACKED);
