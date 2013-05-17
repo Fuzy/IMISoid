@@ -41,7 +41,6 @@ public class RecordListActivity extends ControlActivity implements
     private RecordsCursorAdapter adapter;
     private static final int LOADER_RECORDS = 0x08;
     private static final int DETAIL_ACTIVITY_CODE = 1;
-    private int position = -1;
 
     private String[] typesArray;
     protected Spinner spinnerType;
@@ -165,13 +164,12 @@ public class RecordListActivity extends ControlActivity implements
 
     @Override
     public void onDetailSelected(int position) {
-        this.position = position;
         Record record = adapter.getItem(position);
         long id = record.get_id();
-        createDetailFragment(id);
+        startDetailActivity(id);
     }
 
-    public void createDetailFragment(long id) {
+    public void startDetailActivity(long id) {
         Intent intent = new Intent(this, RecordDetailActivity.class);
         intent.putExtra(Record.COL_ID, id);
         startActivityForResult(intent, DETAIL_ACTIVITY_CODE);

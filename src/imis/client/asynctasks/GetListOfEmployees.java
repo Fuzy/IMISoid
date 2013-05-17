@@ -3,7 +3,6 @@ package imis.client.asynctasks;
 import android.app.Activity;
 import android.util.Log;
 import imis.client.model.Employee;
-import imis.client.model.Event;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EmployeeManager;
@@ -68,6 +67,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
     @Override
     protected void onPostExecute(Employee[] employees) {
 
+/*
         Employee employee = new Employee();
         employee.setIcp("123");
         employee.setKodpra("KDA");
@@ -76,7 +76,9 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
         employee.setKod_po(Event.KOD_PO_ARRIVE_NORMAL);
         employee.setDruh("P");
         //employee.setWidgetId(-1);
+*/
 
+/*
         Employee employee2 = new Employee();
         employee2.setIcp("124");
         employee2.setKodpra("JSK");
@@ -85,8 +87,9 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
         employee2.setKod_po(Event.KOD_PO_LEAVE_LUNCH);
         employee2.setDruh("O");
         //employee2.setWidgetId(-1);
+*/
 
-        employees = new Employee[]{employee, employee2};  //TODO pouze pro test
+        //employees = new Employee[]{employee, employee2};  //TODO pouze pro test
         Log.d(TAG, "onPostExecute()");
         if (employees != null) {
             EmployeeManager.addEmployees(activity, employees);

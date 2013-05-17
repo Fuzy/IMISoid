@@ -1,6 +1,8 @@
 package imis.client.ui.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -15,10 +17,12 @@ import android.widget.GridView;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.asynctasks.result.ResultData;
+import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
 import imis.client.ui.adapters.EmployeesCursorAdapter;
 
 import static imis.client.persistent.EmployeeManager.EmployeeQuery.CONTENT_URI;
+import static imis.client.persistent.EmployeeManager.EmployeeQuery.ORDER_BY;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,7 +41,6 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employees_present);
-        // create account manager
 
         gridView = (GridView) findViewById(R.id.gridEmployees);
 
@@ -46,7 +49,10 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, "onItemClick() i " + i);
+                CursorWrapper wrapper = (CursorWrapper)  adapter.getItem(i);
+                long id = wrapper.getLong(Employee.IND_COL_ID);
+                Log.d(TAG, "onItemClick() id " + id);
+                startDetailActivity(id);
             }
         });
 
@@ -58,7 +64,7 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader()");
         return new CursorLoader(getApplicationContext(), CONTENT_URI,
-                null, null, null, null);
+                null, null, null, ORDER_BY); //TODO razeni
     }
 
     @Override
@@ -97,6 +103,12 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
     private void refresh() {
         Log.d(TAG, "refresh()");
         createTaskFragment(new GetListOfEmployees(this));
+    }
+
+    public void startDetailActivity(long id) {
+        Intent intent = new Intent(this, EmployeeDetailActivity.class);
+        intent.putExtra(Employee.COL_ID, id);
+        startActivity(intent);
     }
 
 

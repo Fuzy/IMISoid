@@ -41,7 +41,7 @@ public class WidgetProvider extends AppWidgetProvider {
         Employee employee = EmployeeManager.getEmployee(context, appWidgetId);
         if (employee != null) {
             Log.d(TAG, "updateAppWidget() employee " + employee);
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.employee_profile);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.employee_preview);
             String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
             views.setTextViewText(R.id.emp_kodpra, name);
             Long time = employee.getLastEventTime();

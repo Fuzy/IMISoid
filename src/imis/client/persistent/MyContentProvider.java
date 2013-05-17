@@ -11,7 +11,6 @@ import android.util.Log;
 import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.model.Record;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Arrays;
 
@@ -180,12 +179,12 @@ public class MyContentProvider extends ContentProvider {
                 id = uri.getLastPathSegment();
                 rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, Employee.COL_ID + "=" + id, null);
                 Log.d(TAG, "update() EMPLOYEE_ID rowsUpdated " + rowsUpdated);
-                break;
+                break;/*
             case EMPLOYEES:
-                /*rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, selection, selectionArgs);
+                *//*rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, selection, selectionArgs);
                 if (rowsUpdated > 0) uri = Uri.withAppendedPath(uri, selectionArgs[0]);
-                Log.d(TAG, "update() EMPLOYEES rowsUpdated " + rowsUpdated);*/
-                throw new NotImplementedException();
+                Log.d(TAG, "update() EMPLOYEES rowsUpdated " + rowsUpdated);*//*
+                throw new NotImplementedException();*/
                 //break;
             case EVENT_ID:
                 id = uri.getLastPathSegment();

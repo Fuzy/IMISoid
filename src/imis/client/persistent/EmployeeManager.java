@@ -53,6 +53,13 @@ public class EmployeeManager {
         return updateEmployee(context, values, empId);
     }
 
+    public static int updateEmployeeIsFav(Context context, int empId, boolean isfav) {
+        Log.d(TAG, "updateEmployeeIsFav()" + "empId = [" + empId + "], isfav = [" + isfav + "]");
+        ContentValues values = new ContentValues();
+        values.put(Employee.COL_FAV, isfav);
+        return updateEmployee(context, values, empId);
+    }
+
     public static int resetEmployeeWidgetId(Context context, int widgetId) {
         Log.d(TAG, "resetEmployeeWidgetId()" + "widgetId = [" + widgetId + "]");
         long id = (EmployeeManager.getEmployee(context, widgetId)).get_id();
@@ -119,6 +126,12 @@ public class EmployeeManager {
         public static final String SELECTION_ICP = Employee.COL_ICP + "=?";
         public static final String SELECTION_ID = Employee.COL_ID + "=?";
         public static final String SELECTION_WIDGET_ID = Employee.COL_WIDGET_ID + "=?";
+
+
+        public static final String ORDER_BY_PRESENT = Employee.COL_DRUH + "='P' DESC";
+        public static final String ORDER_BY_FAV = Employee.COL_FAV + "=1 DESC";
+        public static final String ORDER_BY_KOD = Employee.COL_KODPRA + " ASC";
+        public static final String ORDER_BY = ORDER_BY_PRESENT + "," + ORDER_BY_FAV + "," + ORDER_BY_KOD;
 
     }
 }

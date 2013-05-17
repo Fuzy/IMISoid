@@ -31,7 +31,7 @@ public class EmployeesCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         Log.d(TAG, "newView()");
-        return inflater.inflate(R.layout.employee_profile, null);
+        return inflater.inflate(R.layout.employee_preview, null);
     }
 
     @Override
