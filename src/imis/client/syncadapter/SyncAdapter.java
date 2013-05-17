@@ -9,22 +9,20 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 import imis.client.AppUtil;
+import imis.client.asynctasks.result.Result;
+import imis.client.asynctasks.result.ResultData;
 import imis.client.authentication.AuthenticationConsts;
-import imis.client.http.MyResponse;
 import imis.client.model.Event;
-import imis.client.network.EventsSync;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import org.apache.http.HttpStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
-    private static final String TAG = "SyncAdapter";
-    private static final String SYNC_MARKER_KEY = "mkz.sync.app.marker";
-    private static final String AUTH_TOKEN = "qwerty";
-    private String text = "Synchronizace nebyla provedena";
+    private static final String TAG = SyncAdapter.class.getSimpleName();
+    /*private static final String SYNC_MARKER_KEY = "mkz.sync.app.marker";
+    private static final String AUTH_TOKEN = "qwerty";*/
 
     private final AccountManager accountManager;
 
@@ -42,10 +40,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync()");
 
-        MyResponse response;
-        int httpCode = -1;
-        httpCode = NetworkUtilities.testWebServiceAndDBAvailability();
-        if (httpCode != HttpStatus.SC_OK) {
+        Result testResult = NetworkUtilities.testWebServiceAndDBAvailability();
+        if (testResult.getStatusCode().value() != HttpStatus.SC_OK) {
             Log.d(TAG, "onPerformSync() connection unavailable");
             return;
         }
@@ -57,46 +53,50 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // get local changes
         List<Event> dirtyEvents = EventManager.getDirtyEvents(context);
         for (Event event : dirtyEvents) {
+
             if (event.isDeleted()) {
                 // deleting
-                httpCode = EventsSync.deleteEvent(event.getServer_id());
-                if (httpCode == HttpStatus.SC_OK) EventManager.deleteEvent(context, event.get_id());
+                Result deleteResult = EventsSync.deleteEvent(event.getServer_id());
+                if (deleteResult.getStatusCode().value() == HttpStatus.SC_OK) {
+                    EventManager.deleteEvent(context, event.get_id());
+                }
+
             } else if (event.hasServer_id()) {
                 // updating
                 EventManager.markEventAsNoError(context, event.get_id());
-                response = EventsSync.updateEvent(event);
-                if (response.getCode() == HttpStatus.SC_ACCEPTED) {
+                Result updateResult = EventsSync.updateEvent(event);
+                if (updateResult.getStatusCode().value() == HttpStatus.SC_ACCEPTED) {
                     EventManager.markEventAsSynced(context, event.get_id());
                 } else {
-                    EventManager.markEventAsError(context, event.get_id(), response.getMsg());
+                    EventManager.markEventAsError(context, event.get_id(), updateResult.getMsg());
                 }
+
             } else if (event.hasServer_id() == false) {
                 // creating
                 EventManager.markEventAsNoError(context, event.get_id());
-                response = EventsSync.createEvent(event);
-                if (response.getCode() == HttpStatus.SC_CREATED) {
+                Result createResult = EventsSync.createEvent(event);
+                if (createResult.getStatusCode().value() == HttpStatus.SC_CREATED) {
 
                     EventManager.updateEventServerId(context, event.get_id(), event.getServer_id());
                     EventManager.markEventAsSynced(context, event.get_id());
                 } else {
-                    EventManager.markEventAsError(context, event.get_id(), response.getMsg());
+                    EventManager.markEventAsError(context, event.get_id(), createResult.getMsg());
                 }
             }
+
         }
 
-        //udela misto pro platne udaje
-        //EventManager.deleteAllEvents(context);//TODO asi spatne
-
-        // download all user events from server
-        List<Event> events = new ArrayList<>();
-        //"/0000001?from=29.7.2004&to=29.7.2004"
         long date = extras.getLong(Event.KEY_DATE, AppUtil.todayInLong());
-        EventsSync.getUserEvents(events, icp, date, date);//TODO jak obdobi spravne?
-        for (Event event : events) {
-            if (EventManager.updateEvent(context, event) == 0) EventManager.addEvent(context, event);
+        ResultData getResult = EventsSync.getUserEvents(icp, date, date);
+        if (!getResult.isErr()) {
+            Log.d(TAG, "onPerformSync() GetEventsResult is OK");
+            for (Event event : (Event[]) getResult.getArray()) {
+                if (EventManager.updateEvent(context, event) == 0) EventManager.addEvent(context, event);
+            }
+            Log.d(TAG, "onPerformSync() events length: " + getResult.getArray().length);
+        } else {
+            Log.d(TAG, "onPerformSync() GetEventsResult isErr");
         }
-        Log.d(TAG, "onPerformSync() events length: " + events.size());
-        // Log.d(TAG, "onPerformSync() dirtyEvents: " + dirtyEvents);
         Log.d(TAG, "onPerformSync() end");
 
     }

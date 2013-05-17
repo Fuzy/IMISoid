@@ -41,7 +41,6 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]>{
 
         try {
             Log.d(TAG, "doInBackground()");
-            //TODO uri variables
             ResponseEntity<Event[]> response = restTemplate.exchange(NetworkUtilities.EVENTS_GET_URL, HttpMethod.GET, entity,
                     Event[].class, kodpra, from, to);
             Event[] body = response.getBody();

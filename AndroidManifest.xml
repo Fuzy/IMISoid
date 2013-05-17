@@ -36,7 +36,7 @@
         <!-- Vlastni poskytovatel obsahu -->
         <provider
                 android:name=".persistent.MyContentProvider"
-                android:authorities="imis.client.events.contentprovider"
+                android:authorities="imisoid.contentprovider"
                 android:exported="false">
         </provider>
 

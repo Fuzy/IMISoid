@@ -38,7 +38,7 @@ public class TimeRulerView extends View {
   private static final String TAG = TimeRulerView.class.getSimpleName();
 
   private int mHeaderWidth = 70;
-  private int mHourHeight = 60;//90  //TODO nejak dynamicky vypocitat
+  private int mHourHeight = 60;
   private boolean mHorizontalDivider = true;
   private int mLabelTextSize = 20;
   private int mLabelPaddingLeft = 8;

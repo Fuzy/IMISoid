@@ -54,14 +54,14 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
         try {
             Log.d(TAG, "doInBackground() url " + url + " icp " + icp);
             ResponseEntity<Employee[]> response = restTemplate.exchange(url, HttpMethod.GET, entity,
-                    Employee[].class, icp); //TODO test dvoji
+                    Employee[].class, icp);
             Employee[] body = response.getBody();
+            Log.d(TAG, "doInBackground() body " + body);
             return body;
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage(), e);
+            return new Employee[]{};
         }
-
-        return new Employee[]{};
     }
 
     @Override

@@ -43,6 +43,16 @@ public class AppUtil {
         toast.show();
     }
 
+    public static void showError(Context context, String msg) {
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    public static void showInfo(Context context, String msg) {
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     public static long todayInLong() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);

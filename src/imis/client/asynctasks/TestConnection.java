@@ -1,7 +1,7 @@
 package imis.client.asynctasks;
 
 import android.util.Log;
-import imis.client.asynctasks.result.TestConnectionResultData;
+import imis.client.asynctasks.result.Result;
 import imis.client.network.NetworkUtilities;
 
 /**
@@ -10,22 +10,17 @@ import imis.client.network.NetworkUtilities;
  * Date: 10.4.13
  * Time: 0:13
  */
-public class TestConnection extends NetworkingAsyncTask<Void, Void, Integer> {
+public class TestConnection extends NetworkingAsyncTask<Void, Void, Result> {
     private static final String TAG = "TestConnection";
 
     @Override
-    protected Integer doInBackground(Void... objects) {
-        int statusCode = NetworkUtilities.testWebServiceAndDBAvailability();
-        return statusCode;
+    protected Result doInBackground(Void... objects) {
+        return NetworkUtilities.testWebServiceAndDBAvailability();
     }
 
     @Override
-    protected void onPostExecute(Integer integer) {
+    protected void onPostExecute(Result test) {
         Log.d(TAG, "onPostExecute()");
-        TestConnectionResultData result = new TestConnectionResultData();
-        result.setCode(integer);
-        resultData = result;
-
-        super.onPostExecute(null);
+        super.onPostExecute(test);
     }
 }

@@ -27,7 +27,7 @@ import imis.client.R;
  * title and time span that it occupies. Usually organized automatically by
  * {@link BlocksLayout} to match up against a {@link TimeRulerView} instance.
  */
-public class BlockView extends View {// TODO je nutne aby to byl button?Button
+public class BlockView extends View {
     private static final String TAG = BlockView.class.getSimpleName();
 
     private int arriveId;

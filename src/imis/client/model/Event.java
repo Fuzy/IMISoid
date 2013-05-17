@@ -312,7 +312,6 @@ public class Event {
 
 
     public static final String[] KOD_PO_VALUES = {"00", "01", "02", "03", "04", "10", "XX"};
-    //TODO refaktor
     public static final String DRUH_ARRIVAL = "P";
     public static final String DRUH_LEAVE = "O";
     public static final String KOD_PO_ARRIVE_NORMAL = "00";
@@ -327,6 +326,5 @@ public class Event {
     public static final String TYPE_ORIG = "O";
 
     public static final String KEY_DATE = "date";
-    public static final String OTHERS = "Ostatni";
 
 }

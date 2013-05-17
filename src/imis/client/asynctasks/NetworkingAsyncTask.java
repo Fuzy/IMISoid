@@ -11,7 +11,6 @@ import java.util.Arrays;
 public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> implements Serializable {
     private static final String TAG = NetworkingAsyncTask.class.getSimpleName();
     protected TaskFragment mFragment;
-    protected ResultData resultData;
     protected T[] params;
 
     @SuppressWarnings({"unchecked", "varargs"})
@@ -35,8 +34,8 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
         Log.d(TAG, "onPostExecute()");
 
         if (mFragment != null) {
-            Log.d(TAG, "onPostExecute() resultData " + resultData);
-            mFragment.taskFinished(resultData);
+            Log.d(TAG, "onPostExecute() resultData " + v);
+            mFragment.taskFinished((ResultData)v);
         }
 
         super.onPostExecute(null);

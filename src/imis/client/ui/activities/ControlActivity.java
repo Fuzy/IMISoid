@@ -155,7 +155,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         switch (i) {
             case LOADER_EMPLOYEES:
                 return new CursorLoader(getApplicationContext(), EmployeeManager.EmployeeQuery.CONTENT_URI,
-                        null, null, null, null);
+                        null, null, null, null);//TODO razeni na prvnim miste sebe
             default:
                 return null;
         }

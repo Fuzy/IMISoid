@@ -30,7 +30,7 @@ public class RecordManager {
         return Integer.valueOf(uri.getLastPathSegment());
     }
 
-    public static void addRecords(Context context, List<Record> records) {
+    public static void addRecords(Context context, Record[] records) {
         Log.d(TAG, "addRecords()");
         for (Record record : records) {
             if (updateRecordOnServerId(context, record) == 0)

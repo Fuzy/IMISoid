@@ -2,6 +2,9 @@ package imis.client.asynctasks;
 
 import android.app.Activity;
 import android.util.Log;
+import imis.client.AppUtil;
+import imis.client.R;
+import imis.client.asynctasks.result.ResultData;
 import imis.client.model.Record;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
@@ -11,7 +14,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -20,7 +22,7 @@ import java.util.Collections;
  * Date: 13.4.13
  * Time: 19:36
  */
-public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]> {
+public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultData<Record>> {
     private static final String TAG = GetListOfRecords.class.getSimpleName();
 
     private Activity activity;
@@ -31,7 +33,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
     }
 
     @Override
-    protected Record[] doInBackground(String... params) {
+    protected ResultData<Record> doInBackground(String... params) {
         String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -45,24 +47,22 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            Log.d(TAG, "doInBackground()");
-            //TODO uri variables
             ResponseEntity<Record[]> response = restTemplate.exchange(NetworkUtilities.RECORDS_URL, HttpMethod.GET, entity,
                     Record[].class, kodpra, from, to);
             Record[] body = response.getBody();
-            return body;
-        } catch (Exception e) {
-            Log.e(TAG, e.getLocalizedMessage(), e);
+            Log.d(TAG, "doInBackground() ok " + body);
+            return new ResultData(response.getStatusCode(), body);
+        } catch (Exception e) { //ResourceAccessException
+            Log.d(TAG, e.getLocalizedMessage(), e);
+            return new ResultData(null, activity.getString(R.string.service_unavailable));
         }
-
-        return new Record[]{};
     }
 
     @Override
-    protected void onPostExecute(Record[] records) {
+    protected void onPostExecute(ResultData<Record> resultData) {
 
 
-        Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
+        /*Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
         //TODO test data
         records = new Record[2];
 
@@ -98,14 +98,23 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, Record[]
         );
         record2.setPozn_hl("poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
         record2.setPozn_ukol("poznamka ukol poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
-        records[1] = record2;
+        records[1] = record2;*/
 
 
-        Log.d(TAG, "onPostExecute() records size " + records.length);
+        if (resultData.isErr()) {
+            Log.d(TAG, "onPostExecute() isErr");
+            AppUtil.showError(activity, resultData.getMsg());
+        } else {
+            Record[] records = resultData.getArray();
+            if (records != null) {
+                RecordManager.addRecords(activity, records);
+                Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(activity));
+            } else {
+                Log.d(TAG, "onPostExecute() empty");
+                AppUtil.showInfo(activity, activity.getString(R.string.no_records));
+            }
+        }
 
-
-        RecordManager.addRecords(activity, Arrays.asList(records));
-        Log.d(TAG, "onPostExecute() getAllRecords " + RecordManager.getAllRecords(activity));
         super.onPostExecute(null);
     }
 }

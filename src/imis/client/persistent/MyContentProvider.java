@@ -16,7 +16,6 @@ import java.util.Arrays;
 
 public class MyContentProvider extends ContentProvider {
     private static final String TAG = "MyContentProvider";
-    // TODO pouzivat ContentProviderClient?
 
     private MyDatabaseHelper database;
     private static final int EVENTS = 1;
@@ -26,7 +25,7 @@ public class MyContentProvider extends ContentProvider {
     private static final int EMPLOYEES = 5;
     private static final int EMPLOYEE_ID = 6;
 
-    private static final String AUTHORITY = Consts.AUTHORITY;//TODO prejmenovat
+    private static final String AUTHORITY = Consts.AUTHORITY;
     private static final String TABLE_EVENTS = MyDatabaseHelper.TABLE_EVENTS;
     private static final String TABLE_RECORDS = MyDatabaseHelper.TABLE_RECORDS;
     private static final String TABLE_EMPLOYEES = MyDatabaseHelper.TABLE_EMPLOYEES;
@@ -81,7 +80,6 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        // TODO Auto-generated method stub
         return null;
     }
 

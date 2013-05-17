@@ -142,7 +142,7 @@ public class DataProcessor {
         PieChartSerie serie;
         for (Map.Entry<String, Long> entry : statistics.entrySet()) {
             value = entry.getValue();
-            serie = new PieChartSerie(entry.getKey(), (double) (value / MS_IN_HOUR));//TODO
+            serie = new PieChartSerie(entry.getKey(), (double) (value / MS_IN_HOUR));
             serie.setColor(ColorUtil.getColor(entry.getKey()));
             serie.setTime(AppUtil.formatTime(value));
             serie.setPercent((int) (((double) value / (double) total) * 100));

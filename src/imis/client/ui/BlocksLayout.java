@@ -136,7 +136,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
 
 
                 Log.d(TAG, "onLayout() new id: " + blockView.getArriveId());
-                blockView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));//TODO staci 1
+                blockView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
                 blockView.setId(blockView.getArriveId());
                 addViewInLayout(blockView, -1, blockView.getLayoutParams(), true);
                 bringChildToFront(mRulerView);
@@ -318,7 +318,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
         return INVALID_INDEX;
     }
 
-    private void printAllChilds() {//TODO debug metoda
+    private void printAllChilds() {
         for (int index = 0; index < getChildCount(); index++) {
             View child = getChildAt(index);
             //Log.d("BlocksLayout", "child i=" + index + " " + child.toString() + " id: " + child.getId());

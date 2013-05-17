@@ -6,7 +6,7 @@ import imis.client.AppUtil;
 
 public class Record {
     private int _id;
-    private String id;//TODO potrebuju to ? BigDecimal
+    private String id;
     private long datum;
     private String kodpra;
     private String zc;
@@ -136,22 +136,6 @@ public class Record {
     public void set_id(int _id) {
         this._id = _id;
     }
-
-    /* public static Record resultSetToRecord(ResultSet rsSet) throws SQLException {
-        Record record = new Record();
-        //record.setId(rsSet.getString(COL_SERVER_ID));
-        record.setDatum(rsSet.getLong(COL_DATUM));
-        record.setMnozstvi_odved(rsSet.getLong(COL_MNOZSTVI_ODVED));
-        record.setKodpra(rsSet.getString(COL_KODPRA));
-        record.setZc(rsSet.getString(COL_ZC));//TODO ciselne typy jsou ok?
-        record.setCpolzak((Integer)rsSet.getObject(COL_CPOLZAK));
-        record.setCpozzak((Integer)rsSet.getObject(COL_CPOZZAK));
-        record.setStav_v(rsSet.getString(COL_STAV_V));
-        record.setPozn_hl(rsSet.getString(COL_POZN_HL));
-        record.setPozn_ukol(rsSet.getString(COL_POZN_UKOL));
-        record.setPoznamka(rsSet.getString(COL_POZNAMKA));
-        return record;
-    }*/
 
     public static Record cursorToRecord(Cursor c) {
         Record record = new Record();

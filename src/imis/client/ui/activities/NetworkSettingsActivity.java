@@ -16,7 +16,6 @@ import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.TestConnection;
 import imis.client.asynctasks.result.ResultData;
-import imis.client.asynctasks.result.TestConnectionResultData;
 import imis.client.network.NetworkUtilities;
 
 import java.net.HttpURLConnection;
@@ -170,10 +169,12 @@ public class NetworkSettingsActivity extends AsyncActivity {
 
     @Override
     public void onTaskFinished(ResultData result) {
-        Log.d(TAG, "onTaskFinished() result " + result);
-        int testResult = ((TestConnectionResultData) result).getCode();
-        Log.d(TAG, "onTaskFinished() testResult " + testResult);
-        setIconsOfAvailability(testResult);
+        int code = -1;
+        if (result.getStatusCode() != null) {
+            code = result.getStatusCode().value();
+        }
+        Log.d(TAG, "onTaskFinished() code " + code);
+        setIconsOfAvailability(code);
     }
 }
 

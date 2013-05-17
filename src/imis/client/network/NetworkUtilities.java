@@ -4,9 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import imis.client.asynctasks.result.Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.HttpServerErrorException;
@@ -62,7 +62,6 @@ public class NetworkUtilities {
             resp = httpClient.execute(post);
             code = resp.getStatusLine().getStatusCode();
             Log.d("NetworkUtilities", "authenticate() code: " + code);
-            // TODO event doplni rowid
         } catch (ClientProtocolException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (UnsupportedEncodingException e) {
@@ -73,7 +72,7 @@ public class NetworkUtilities {
         return "qwertyxx";
     }*/
 
-    public static int testWebServiceAndDBAvailability() {
+    public static Result testWebServiceAndDBAvailability() {
         HttpHeaders requestHeaders = new HttpHeaders();
         //requestHeaders.setAuthorization(authHeader);//TODO auth
         org.springframework.http.HttpEntity<Object> entity = new org.springframework.http.HttpEntity<>(requestHeaders);
@@ -81,21 +80,17 @@ public class NetworkUtilities {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
 
-        int statusCode = -1;
         try {
             ResponseEntity response = restTemplate.exchange(EVENTS_URL, HttpMethod.GET, entity,
                     null);
-            statusCode = response.getStatusCode().value();
-
+            return new Result(response.getStatusCode());
         } catch (Exception e) {
             if (e instanceof HttpServerErrorException) {
-                HttpServerErrorException httpException = (HttpServerErrorException) e;
-                if (HttpStatus.INTERNAL_SERVER_ERROR.equals(httpException.getStatusCode())) {
-                    return httpException.getStatusCode().value();
-                }
+                HttpServerErrorException exp = (HttpServerErrorException) e;
+                return new Result(exp.getStatusCode(), exp.getStatusText());
             }
+            return new Result(null);
         }
-        return statusCode;
     }
 
     public static boolean isOnline(Context context) {
