@@ -2,6 +2,8 @@ package imis.client.asynctasks.result;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.Arrays;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Martin Kadlec
@@ -16,6 +18,10 @@ public class ResultData<T> extends Result {
         this.array = array;
     }
 
+    public ResultData(String msg) {
+        super(msg);
+    }
+
     public ResultData(HttpStatus statusCode, String msg) {
         super(statusCode, msg);
     }
@@ -24,5 +30,17 @@ public class ResultData<T> extends Result {
         return array;
     }
 
+    public boolean isEmpty() {
+        return array == null;
+    }
 
+    @Override
+    public String toString() {
+        return "ResultData{" +
+                "statusCode=" + statusCode +
+                ", msg='" + msg + '\'' +
+                ", unknownErr=" + unknownErr +
+                ", array=" + Arrays.toString(array) +
+                '}';
+    }
 }

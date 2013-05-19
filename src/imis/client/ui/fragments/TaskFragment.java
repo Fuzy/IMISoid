@@ -9,7 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import imis.client.R;
 import imis.client.asynctasks.NetworkingAsyncTask;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.Result;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,12 +26,12 @@ public class TaskFragment extends DialogFragment {
     private OnAsyncActionCompletedListener mCallbacks = sDummyCallbacks;
 
     private static OnAsyncActionCompletedListener sDummyCallbacks = new OnAsyncActionCompletedListener() {
-        public void onTaskFinished(ResultData result) {
+        public void onTaskFinished(Result result) {
         }
     };
 
     public interface OnAsyncActionCompletedListener {
-        public void onTaskFinished(ResultData result);
+        public void onTaskFinished(Result result);
     }
 
     public void setTask(NetworkingAsyncTask task) {
@@ -127,7 +127,7 @@ public class TaskFragment extends DialogFragment {
     }
 
     // This is also called by the AsyncTask.
-    public void taskFinished(ResultData result) {
+    public void taskFinished(Result result) {
         Log.d(TAG, "taskFinished() result " + result);
         // Make sure we check if it is resumed because we will crash if trying to dismiss the dialog
         // after the user has switched to another app.

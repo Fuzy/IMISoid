@@ -16,7 +16,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.Result;
 import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
 import imis.client.ui.adapters.EmployeesCursorAdapter;
@@ -113,7 +113,7 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
 
 
     @Override
-    public void onTaskFinished(ResultData result) {
+    public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
     }
 }

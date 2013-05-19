@@ -23,7 +23,7 @@ import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.Result;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Block;
 import imis.client.model.Employee;
@@ -97,9 +97,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         // init today date and loader
 
         //changeDate(1364169600000L); //TODO toto je pro ladici ucely
+
+        changeDate(AppUtil.todayInLong());
         Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
-
-
         // EventManager.deleteAllEvents(getApplicationContext());
         //Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
 
@@ -449,7 +449,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     @Override
-    public void onTaskFinished(ResultData result) {
+    public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
         refreshEmployeesWidgets();
 

@@ -10,7 +10,7 @@ public class Event {
     // private static final String TAG = Event.class.getSimpleName();
     // sync
     @JsonIgnore
-    private int _id;
+    private int _id;//TODO long?
     private String server_id;
     @JsonIgnore
     private boolean dirty;

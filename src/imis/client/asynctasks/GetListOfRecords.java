@@ -101,8 +101,8 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
         records[1] = record2;*/
 
 
-        if (resultData.isErr()) {
-            Log.d(TAG, "onPostExecute() isErr");
+        if (resultData.isUnknownErr()) {
+            Log.d(TAG, "onPostExecute() isUnknownErr");
             AppUtil.showError(activity, resultData.getMsg());
         } else {
             Record[] records = resultData.getArray();

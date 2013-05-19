@@ -7,7 +7,7 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.CheckBox;
 import imis.client.asynctasks.GetListOfRecords;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Record;
@@ -144,7 +144,7 @@ public class RecordsChartActivity extends ChartActivity {
     }
 
     @Override
-    public void onTaskFinished(ResultData result) {
+    public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
     }
 }

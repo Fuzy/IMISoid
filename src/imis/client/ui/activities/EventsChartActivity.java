@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.CheckBox;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEvents;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
@@ -175,7 +175,7 @@ public class EventsChartActivity extends ChartActivity {
 
 
     @Override
-    public void onTaskFinished(ResultData result) {
+    public void onTaskFinished(Result result) {
 
     }
 }

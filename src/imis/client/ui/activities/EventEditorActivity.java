@@ -100,6 +100,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     }
 
     private void showToastIfErrors(String arriveMsg, String leaveMsg) {
+        //TODO ukazovat pouze pri chybe
         StringBuilder errMsg = new StringBuilder();
         if (arriveMsg != null) {
             errMsg.append(getResources().getString(R.string.title_arrive_err));
@@ -431,8 +432,6 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

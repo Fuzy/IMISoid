@@ -17,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.Result;
 import imis.client.model.Record;
 import imis.client.persistent.RecordManager;
 import imis.client.ui.adapters.RecordsCursorAdapter;
@@ -225,7 +225,7 @@ public class RecordListActivity extends ControlActivity implements
     }
 
     @Override
-    public void onTaskFinished(ResultData result) {
+    public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
     }
 

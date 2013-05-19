@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.TestConnection;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.Result;
 import imis.client.network.NetworkUtilities;
 
 import java.net.HttpURLConnection;
@@ -168,7 +168,7 @@ public class NetworkSettingsActivity extends AsyncActivity {
     }
 
     @Override
-    public void onTaskFinished(ResultData result) {
+    public void onTaskFinished(Result result) {
         int code = -1;
         if (result.getStatusCode() != null) {
             code = result.getStatusCode().value();

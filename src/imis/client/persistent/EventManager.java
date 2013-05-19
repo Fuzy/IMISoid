@@ -37,11 +37,24 @@ public class EventManager {
         return resolver.delete(uri, null, null);
     }
 
-    public static Event getEvent(Context context, long id) {
+    public static Event getEvent(Context context, long id) {//TODO refaktor
         Log.d(TAG, "getEvent()" + "id = [" + id + "]");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
                 EventQuery.SELECTION_ID, new String[]{String.valueOf(id)}, null);
+        Event event = null;
+        while (cursor.moveToNext()) {
+            event = Event.cursorToEvent(cursor);
+        }
+        cursor.close();
+        return event;
+    }
+
+    public static Event getEvent(Context context, String rowid) {//TODO refaktor
+        Log.d(TAG, "getEvent()" + "context = [" + context + "], rowid = [" + rowid + "]");
+        ContentResolver resolver = context.getContentResolver();
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
+                EventQuery.SELECTION_SERVER_ID, new String[]{String.valueOf(rowid)}, null);
         Event event = null;
         while (cursor.moveToNext()) {
             event = Event.cursorToEvent(cursor);
@@ -121,6 +134,14 @@ public class EventManager {
         return updateEvent(context, values, event.get_id());
     }
 
+    public static int updateEventOnServerId(Context context, Event event) {
+        Log.d(TAG, "updateEventOnServerId()" + "event = [" + event + "]");
+        Event event1 = getEvent(context, event.getServer_id());
+        if (event1 == null) return 0;
+        ContentValues values = event.asContentValues();
+        return updateEvent(context, values, event1.get_id());
+    }
+
     public static int updateEventServerId(Context context, long id, String rowid) {
         Log.d(TAG, "updateEventServerId() id " + id + " rowid " + rowid);
         ContentValues values = new ContentValues();
@@ -138,7 +159,7 @@ public class EventManager {
         public static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
         public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
         public static final String SELECTION_DAY_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED;
-        //public static final String SELECTION_ICP = Event.COL_ICP + "=?";
+        public static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
 
     }
 

@@ -10,6 +10,7 @@ import imis.client.network.NetworkUtilities;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -41,14 +42,14 @@ public class EventsSync {
             return new Result(response.getStatusCode());
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(null, e.getLocalizedMessage());
+            return new Result(e.getLocalizedMessage());
         }
     }
 
     public static ResultData<Event> getUserEvents(final String icp, final long from, final long to) {
         String strFrom = AppUtil.formatDate(from);
         String strTo = AppUtil.formatDate(to);
-        Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo:" + strTo);
+        Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo: " + strTo);
 
         HttpHeaders requestHeaders = new HttpHeaders();
         //requestHeaders.setAuthorization(authHeader);
@@ -63,11 +64,12 @@ public class EventsSync {
             ResponseEntity<Event[]> response = restTemplate.exchange(NetworkUtilities.EVENTS_GET_URL,
                     HttpMethod.GET, entity, Event[].class, icp, strFrom, strTo);
             Event[] events = response.getBody();
-            Log.d(TAG, "getUserEvents() events.length " + events.length);
-            return new ResultData(response.getStatusCode(), events);
+            Log.d(TAG, "getUserEvents() events " + events);
+            return new ResultData<Event>(response.getStatusCode(), events);
         } catch (Exception e) {
+            Log.d(TAG, "getUserEvents() e " + e);
             e.printStackTrace();
-            return new ResultData(null, e.getLocalizedMessage());
+            return new ResultData<Event>(e.getLocalizedMessage());
         }
     }
 
@@ -89,16 +91,19 @@ public class EventsSync {
             URI location = response.getHeaders().getLocation();
             String path = location.getPath();
             event.setServer_id(path.substring(location.getPath().lastIndexOf('/') + 1));
-            Log.d(TAG, "createEvent() event uri : " + event);
+            Log.d(TAG, "createEvent() event uri : " + location.getPath());
             return new Result(response.getStatusCode());
+        } catch (HttpServerErrorException e) {
+            Log.d(TAG, "createEvent() HttpServerErrorException");
+            return new Result(e.getStatusCode(), e.getResponseBodyAsString());
+        } catch (HttpClientErrorException e) {
+            Log.d(TAG, "createEvent() HttpClientErrorException");
+            return new Result(e.getStatusCode(), e.getResponseBodyAsString());
         } catch (Exception e) {
             e.printStackTrace();
-            if (e instanceof HttpServerErrorException) {
-                HttpServerErrorException ex = (HttpServerErrorException) e;
-                return new Result(null, ex.getResponseBodyAsString());
-            }
-            return new Result(null, null);
+            return new Result();
         }
+
     }
 
     public static Result updateEvent(Event event) {
@@ -123,9 +128,9 @@ public class EventsSync {
             e.printStackTrace();
             if (e instanceof HttpServerErrorException) {
                 HttpServerErrorException ex = (HttpServerErrorException) e;
-                return new Result(null, ex.getResponseBodyAsString());
+                return new Result(ex.getResponseBodyAsString());
             }
-            return new Result(null, null);
+            return new Result();
         }
     }
 

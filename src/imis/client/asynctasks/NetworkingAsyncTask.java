@@ -2,7 +2,7 @@ package imis.client.asynctasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.Result;
 import imis.client.ui.fragments.TaskFragment;
 
 import java.io.Serializable;
@@ -35,7 +35,7 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
 
         if (mFragment != null) {
             Log.d(TAG, "onPostExecute() resultData " + v);
-            mFragment.taskFinished((ResultData)v);
+            mFragment.taskFinished((Result)v);
         }
 
         super.onPostExecute(null);

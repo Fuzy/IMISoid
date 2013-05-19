@@ -89,7 +89,7 @@ public class NetworkUtilities {
                 HttpServerErrorException exp = (HttpServerErrorException) e;
                 return new Result(exp.getStatusCode(), exp.getStatusText());
             }
-            return new Result(null);
+            return new Result();
         }
     }
 
