@@ -15,5 +15,5 @@
   -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/btn_block_mask" />
-    <!--<item android:drawable="@drawable/list_selector_background_selected" />-->
+    <item android:drawable="@drawable/btn_block_border_error" />
 </layer-list>

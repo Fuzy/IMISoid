@@ -34,12 +34,12 @@ public class ColorUtil {
     }
 
     public static int getColor(String key) {
+        if (key == null) return Color.GRAY;
         List<String> eventCodes = Arrays.asList(Event.KOD_PO_VALUES);
         List<String> recordCodes =  Arrays.asList(Record.TYPE_VALUES);
         if (eventCodes.indexOf(key) == -1 && recordCodes.indexOf(key) == -1) key = Event.KOD_PO_OTHERS;
         //Log.d(TAG, "getColor() key " + key);
-        Integer color = colors.get(key);
-        return color == null ? Color.GRAY : color;
+        return colors.get(key);
     }
 
 

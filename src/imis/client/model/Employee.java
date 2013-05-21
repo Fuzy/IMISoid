@@ -23,8 +23,17 @@ public class Employee {
     private String druh;
     private Integer widgetId;
     private Boolean isFav;
+    private Boolean isUser;
 
     public Employee() {
+    }
+
+    public Employee(String icp, String kodpra, Boolean subordinate, Boolean fav, Boolean user) {
+        this.icp = icp;
+        this.kodpra = kodpra;
+        isSubordinate = subordinate;
+        isFav = fav;
+        isUser = user;
     }
 
     public int get_id() {
@@ -107,6 +116,14 @@ public class Employee {
         isFav = fav;
     }
 
+    public Boolean getUser() {
+        return isUser;
+    }
+
+    public void setUser(Boolean user) {
+        isUser = user;
+    }
+
     public ContentValues asContentValues() {
         ContentValues values = new ContentValues();
         values.put(COL_ICP, icp);
@@ -133,6 +150,10 @@ public class Employee {
             setFav(false);
         }
         values.put(COL_FAV, isFav);
+        if (isUser == null) {
+            setUser(false);
+        }
+        values.put(COL_USER, isUser);
 
         Log.d(TAG, "asContentValues() values " + values);
         return values;
@@ -151,9 +172,27 @@ public class Employee {
         if (!c.isNull(IND_COL_DRUH)) employee.setDruh(c.getString(IND_COL_DRUH));
         if (!c.isNull(IND_COL_WIDGET_ID)) employee.setWidgetId(c.getInt(IND_COL_WIDGET_ID));
         employee.setFav(c.getInt(IND_COL_FAV) > 0);
+        employee.setUser(c.getInt(IND_COL_USER) > 0);
 
         Log.d(TAG, "cursorToEmployee() employee " + employee);
         return employee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Employee employee = (Employee) o;
+
+        if (!icp.equals(employee.icp)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return icp.hashCode();
     }
 
     @Override
@@ -169,6 +208,7 @@ public class Employee {
                 ", druh='" + druh + '\'' +
                 ", widgetId=" + widgetId +
                 ", isFav=" + isFav +
+                ", isUser=" + isUser +
                 '}';
     }
 
@@ -182,6 +222,7 @@ public class Employee {
     public static final String COL_KOD_PO = "KOD";
     public static final String COL_WIDGET_ID = "WIDGET_ID";
     public static final String COL_FAV = "FAV";
+    public static final String COL_USER = "USER";
 
     public static final int IND_COL_ID = 0;
     public static final int IND_COL_ICP = 1;
@@ -193,6 +234,7 @@ public class Employee {
     public static final int IND_COL_KOD_PO = 7;
     public static final int IND_COL_WIDGET_ID = 8;
     public static final int IND_COL_FAV = 9;
+    public static final int IND_COL_USER = 10;
 
 
 }

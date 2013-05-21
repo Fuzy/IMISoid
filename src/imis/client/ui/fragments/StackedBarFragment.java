@@ -51,7 +51,7 @@ public class StackedBarFragment extends ChartFragment {
         renderer.setYLabels(10);
         renderer.setXLabelsAlign(Paint.Align.LEFT);
         renderer.setYLabelsAlign(Paint.Align.LEFT);
-        renderer.setPanEnabled(false, false);
+        renderer.setPanEnabled(true, false);
         renderer.setZoomRate(1.1f);
         renderer.setBarSpacing(0.5f);
         Log.d(TAG, "prepareGraph() renderer minX " + renderer.getXAxisMin());

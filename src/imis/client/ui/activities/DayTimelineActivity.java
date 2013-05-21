@@ -461,17 +461,14 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         for (Long id : employeesUpdated) {
             Employee employee = EmployeeManager.getEmployee(getApplicationContext(), id);
             Log.d(TAG, "refreshEmployeesWidgets() employee " + employee);
-            if (employee.getWidgetId() != null)
+            if (employee == null) {
+                 //TODO smazat widget pro neexistujiciho zamestnance
+            }
+            else if (employee.getWidgetId() != null)
                 WidgetProvider.updateAppWidget(this, appWidgetManager, employee.getWidgetId());
         }
         employeesUpdated.clear();
     }
-
-    /*@Override
-    public void asyncActionCompleted() {
-        Toast toast = Toast.makeText(this, "Aktualizovano", Toast.LENGTH_LONG);
-        toast.show();
-    }*/
 
     private final ContentObserver mObserver = new ContentObserver(null) {
         @Override

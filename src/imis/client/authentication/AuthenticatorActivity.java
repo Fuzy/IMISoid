@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import imis.client.R;
+import imis.client.model.Employee;
+import imis.client.persistent.EmployeeManager;
 
 public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private static final String TAG = "AuthenticatorActivity";
@@ -83,6 +85,11 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         Bundle userdata= new Bundle();
         userdata.putString(AuthenticationConsts.KEY_ICP, icp);
         accountManager.addAccountExplicitly(account, password, userdata);
+        //TODO pridat uzivatele do tabulky
+
+        // add employee as a user
+        Employee user = new Employee(icp, username, false, false, true);
+        EmployeeManager.addEmployee(this, user);
 
         // Povoli synchronizaci pro tento ucet
         ContentResolver.setSyncAutomatically(account, AUTHORITY, true);

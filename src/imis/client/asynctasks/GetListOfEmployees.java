@@ -11,6 +11,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -66,7 +67,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
 
     @Override
     protected void onPostExecute(Employee[] employees) {
-
+        Log.d(TAG,"onPostExecute() employees " + Arrays.toString(employees));
 /*
         Employee employee = new Employee();
         employee.setIcp("123");
@@ -92,7 +93,8 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
         //employees = new Employee[]{employee, employee2};  //TODO pouze pro test
         Log.d(TAG, "onPostExecute()");
         if (employees != null) {
-            EmployeeManager.addEmployees(activity, employees);
+            EmployeeManager.syncEmployees(activity, employees);
+            //TODO synchronize list of employees
         }
         Log.d(TAG, "onPostExecute() " + EmployeeManager.getAllEmployees(activity));
         super.onPostExecute(null);

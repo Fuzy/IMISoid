@@ -52,7 +52,7 @@ public class MyContentProvider extends ContentProvider {
         Log.d(TAG, "delete() uri " + uri);
         int uriType = sURIMatcher.match(uri);
         int rowsDeleted = 0;
-
+        String id;
         SQLiteDatabase sqlDB = database.getWritableDatabase();
 
         switch (uriType) {
@@ -66,15 +66,18 @@ public class MyContentProvider extends ContentProvider {
                 rowsDeleted = sqlDB.delete(TABLE_EMPLOYEES, selection, selectionArgs);
                 break;
             case EVENT_ID:
-                // smaze jednu polozku
-                String id = uri.getLastPathSegment();
+                id = uri.getLastPathSegment();
                 rowsDeleted = sqlDB.delete(TABLE_EVENTS, EventManager.EventQuery.SELECTION_ID, new String[]{id});
+                break;
+            case EMPLOYEE_ID:
+                id = uri.getLastPathSegment();
+                rowsDeleted = sqlDB.delete(TABLE_EMPLOYEES, EventManager.EventQuery.SELECTION_ID, new String[]{id});
                 break;
             default:
                 break;
         }
         getContext().getContentResolver().notifyChange(uri, null);
-
+        Log.d(TAG, "delete() rowsDeleted " + rowsDeleted);
         return rowsDeleted;
     }
 
@@ -183,7 +186,7 @@ public class MyContentProvider extends ContentProvider {
                 if (rowsUpdated > 0) uri = Uri.withAppendedPath(uri, selectionArgs[0]);
                 Log.d(TAG, "update() EMPLOYEES rowsUpdated " + rowsUpdated);*//*
                 throw new NotImplementedException();*/
-                //break;
+            //break;
             case EVENT_ID:
                 id = uri.getLastPathSegment();
                 Log.d(TAG, "update EVENT_ID id: " + id);

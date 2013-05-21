@@ -1,11 +1,14 @@
 package imis.client.persistent;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Employee;
 
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ import java.util.List;
 public class EmployeeManager {
     private static final String TAG = "EmployeeManager";
 
-    private static int addEmployee(Context context, Employee employee) {
+    public static int addEmployee(Context context, Employee employee) {
         Log.d(TAG, "addEmployee() " + employee);
         ContentValues values = employee.asContentValues();
         ContentResolver resolver = context.getContentResolver();
@@ -68,13 +71,36 @@ public class EmployeeManager {
         return updateEmployee(context, values, id);
     }
 
-    public static void addEmployees(Context context, Employee[] employees) {
-        Log.d(TAG, "addEmployees()");
+    public static void syncEmployees(Context context, Employee[] employees) {
+        Log.d(TAG,"syncEmployees() employees " + Arrays.toString(employees));
+        List<Employee> currentList = getAllEmployees(context);
+        Log.d(TAG, "syncEmployees() currentList " + currentList.size());
+        AccountManager accountManager = AccountManager.get(context);
+        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
+        try {
+            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
+            Employee user = new Employee();
+            user.setIcp(icp);
+            currentList.remove(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "syncEmployees() currentList " + currentList.size());
+
+
         for (Employee employee : employees) {
-            Log.d(TAG, "addEmployees() employee " + employee);
+            Log.d(TAG, "syncEmployees() employee " + employee);
             if (EmployeeManager.updateEmployeeOnIcp(context, employee) == 0)
                 EmployeeManager.addEmployee(context, employee);
+
+            currentList.remove(employee);
         }
+        Log.d(TAG, "syncEmployees() currentList " + currentList.size());
+        // delete all which has not been actualised
+        for (Employee employee : currentList) {
+            deleteEvent(context, employee.get_id());
+        }//TODO test
     }
 
     public static Employee getEmployee(Context context, String icp) {
@@ -118,6 +144,13 @@ public class EmployeeManager {
         return employees;
     }
 
+    public static int deleteEvent(Context context, long id) {
+        Log.d(TAG, "deleteEvent()" + "id = [" + id + "]");
+        Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(id));
+        ContentResolver resolver = context.getContentResolver();
+        return resolver.delete(uri, null, null);
+    }
+
     final public static class EmployeeQuery {
 
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
@@ -127,11 +160,12 @@ public class EmployeeManager {
         public static final String SELECTION_ID = Employee.COL_ID + "=?";
         public static final String SELECTION_WIDGET_ID = Employee.COL_WIDGET_ID + "=?";
 
-
+        public static final String ORDER_BY_USER = Employee.COL_USER + "=1 DESC";
         public static final String ORDER_BY_PRESENT = Employee.COL_DRUH + "='P' DESC";
         public static final String ORDER_BY_FAV = Employee.COL_FAV + "=1 DESC";
         public static final String ORDER_BY_KOD = Employee.COL_KODPRA + " ASC";
-        public static final String ORDER_BY = ORDER_BY_PRESENT + "," + ORDER_BY_FAV + "," + ORDER_BY_KOD;
+        public static final String ORDER_BY = ORDER_BY_USER + "," + ORDER_BY_PRESENT +
+                "," + ORDER_BY_FAV + "," + ORDER_BY_KOD;
 
     }
 }
