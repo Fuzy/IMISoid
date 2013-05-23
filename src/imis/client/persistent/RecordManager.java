@@ -40,7 +40,7 @@ public class RecordManager {
 
     private static int updateRecordOnServerId(Context context, Record record) {
         Record record1 = getRecord(context, record.getId());
-        Log.d(TAG, "updateRecordOnServerId() record1 " + record1.get_id());
+        Log.d(TAG, "updateRecordOnServerId() record1 " + ((record1 != null) ? record1.get_id() : null));
         if (record1 == null) return 0;
         Uri uri = Uri.withAppendedPath(DataQuery.CONTENT_URI, String.valueOf(record1.get_id()));
         ContentResolver resolver = context.getContentResolver();
@@ -97,10 +97,10 @@ public class RecordManager {
         public static final String SELECTION_SERVER_ID = Record.COL_SERVER_ID + " LIKE ? || '%' ";
         public static final String SELECTION_ZC = Record.COL_ZC + " LIKE ? || '%' ";
         public static final String SELECTION_KODPRA = Record.COL_KODPRA + " LIKE ? || '%' ";
-        //public static final String SELECTION_PERIOD = " ? <= " + Record.COL_DATUM +  " <= ? ";
         public static final String SELECTION_PERIOD = " ? <= " + Record.COL_DATUM + " and " + Record.COL_DATUM + " <= ? ";
         //TODO posledni den +1 den
-        public static final String SELECTION = SELECTION_ZC + " and " + SELECTION_KODPRA + " and " + SELECTION_PERIOD;
+        public static final String SELECTION_LIST = SELECTION_ZC + " and " + SELECTION_KODPRA + " and " + SELECTION_PERIOD;
+        public static final String SELECTION_CHART = SELECTION_KODPRA + " and " + SELECTION_PERIOD;
 
     }
 }

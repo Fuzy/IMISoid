@@ -12,21 +12,27 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+
 public class NetworkUtilities {
     private static final String TAG = "NetworkUtilities";
     private static final String SCHEME = "http://";
-    private static final String BASE_PATH = "/Imisoid_WS/test/"; //TODO test server  test/
-    private static final String EVENTS_PATH = BASE_PATH + "events";
-    private static final String EVENTS_DELETE_PATH = BASE_PATH + "events/{rowid}";
-    private static final String EVENTS_UPDATE_PATH = BASE_PATH + "events/{rowid}";
-    private static final String EVENTS_GET_PATH = BASE_PATH + "events/{icp}?from={from}&to={to}";
-    private static final String RECORDS_PATH = BASE_PATH + "records/{kodpra}?from={from}&to={to}";
-    private static final String AUTH_PATH = BASE_PATH + "authentication";
-    private static final String EMPLOYEES_PATH = BASE_PATH + "employees/{icp}";
-    private static final String EMPLOYEES_EVENTS_PATH = BASE_PATH + "employees";
+    private static final String BASE_PATH = "/Imisoid_WS/";
+    private static final String EVENTS_PATH = "events";
+    private static final String EVENTS_DELETE_PATH = "events/{rowid}";
+    private static final String EVENTS_UPDATE_PATH = "events/{rowid}";
+    private static final String EVENTS_GET_PATH = "events/{icp}?from={from}&to={to}";
+    private static final String RECORDS_PATH = "records/{kodpra}?from={from}&to={to}";
+    private static final String AUTH_PATH = "authentication";
+    private static final String EMPLOYEES_PATH = "employees/{icp}";
+    private static final String EMPLOYEES_EVENTS_PATH = "employees";
+    private static final String TEST_PATH = "test/";
+    private static final String TEST_MODE = "test";
+    private static final String TEST_CONN = "testconnection";
 
     private static String DOMAIN = null;
     private static int PORT = -1;
+    private static boolean isTest = false;
     public static String BASE_URL;
     public static String EVENTS_DELETE_URL;
     public static String EVENTS_UPDATE_URL;
@@ -36,14 +42,15 @@ public class NetworkUtilities {
     public static String EMPLOYEES_URL;
     public static String EMPLOYEES_EVENTS_URL;
     public static String AUTH_URL;
+    public static String TEST_CONN_URL;
 
     public static final String DOMAIN_DEFAULT = "10.0.0.2";//        //10.0.0.1
     public static final int PORT_DEFAULT = 8081;
 
-    private static final String PARAM_USERNAME = "username";
-    private static final String PARAM_PASSWORD = "password";
+    /*private static final String PARAM_USERNAME = "username";
+    private static final String PARAM_PASSWORD = "password";*/
 
-   /* public static String authenticate(String username, String password) {
+   /* public static String authenticate(String username, String password) {  //TODO predelat
         Log.d("NetworkUtilities", "authenticate() username: " + username + " password: " + password);
         HttpClient httpClient = HttpClientFactory.getThreadSafeClient();
         HttpPost post = new HttpPost(AUTH_URL);
@@ -74,14 +81,13 @@ public class NetworkUtilities {
 
     public static Result testWebServiceAndDBAvailability() {
         HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setAuthorization(authHeader);//TODO auth
         org.springframework.http.HttpEntity<Object> entity = new org.springframework.http.HttpEntity<>(requestHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
 
         try {
-            ResponseEntity response = restTemplate.exchange(EVENTS_URL, HttpMethod.GET, entity,
+            ResponseEntity response = restTemplate.exchange(TEST_CONN_URL, HttpMethod.GET, entity,
                     null);
             return new Result(response.getStatusCode());
         } catch (Exception e) {
@@ -109,9 +115,8 @@ public class NetworkUtilities {
 
     public static void resetDomainAndPort(String domain, int port) {
         Log.d("NetworkUtilities", "resetDomainAndPort()");
-        DOMAIN = domain;
-        PORT = port;
-        BASE_URL = SCHEME + DOMAIN + ":" + PORT;// 10.0.2.2
+        BASE_URL = parseBaseURL(domain, port);
+        Log.d(TAG, "resetDomainAndPort() BASE_URL " + BASE_URL);
         EVENTS_URL = BASE_URL + EVENTS_PATH;
         EVENTS_DELETE_URL = BASE_URL + EVENTS_DELETE_PATH;
         EVENTS_UPDATE_URL = BASE_URL + EVENTS_UPDATE_PATH;
@@ -120,14 +125,33 @@ public class NetworkUtilities {
         EMPLOYEES_URL = BASE_URL + EMPLOYEES_PATH;
         EMPLOYEES_EVENTS_URL = BASE_URL + EMPLOYEES_EVENTS_PATH;
         AUTH_URL = BASE_URL + AUTH_PATH;
+        TEST_CONN_URL = BASE_URL + TEST_CONN;
+        Log.d(TAG, "resetDomainAndPort() TEST_CONN_URL " + TEST_CONN_URL);
     }
+
+    private static String parseBaseURL(String domain, int port) {
+        String[] splits = domain.split("/");
+        Log.d(TAG,"parseBaseURL() splits " + Arrays.toString(splits));
+        DOMAIN = splits[0];
+        PORT = port;
+
+        isTest = false;
+        if (splits.length > 1 && splits[1].equals(TEST_MODE)) isTest = true;
+
+        StringBuilder baseURL = new StringBuilder(SCHEME + DOMAIN + ":" + PORT + BASE_PATH);
+        if (isTest) baseURL.append(TEST_PATH);
+        return baseURL.toString();
+    }
+
 
     private static String getPortAsString(int port) {
         return String.valueOf(port);
     }
 
     public static String getDomainOrDefault() {
-        return (DOMAIN == null) ? DOMAIN_DEFAULT : DOMAIN;
+        StringBuilder s = new StringBuilder((DOMAIN == null) ? DOMAIN_DEFAULT : DOMAIN);
+        if (isTest) s.append("/" + TEST_MODE);
+        return s.toString();
     }
 
     public static String getPortOrDefault() {

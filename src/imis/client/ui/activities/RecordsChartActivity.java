@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static imis.client.AppUtil.showAccountNotExistsError;
+import static imis.client.AppUtil.showAccountNotExistsError; //TODO staticke importy
 import static imis.client.AppUtil.showPeriodInputError;
 import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
+import static imis.client.persistent.RecordManager.DataQuery.SELECTION_CHART;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +40,7 @@ public class RecordsChartActivity extends ChartActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("RecordsChartActivity", "onCreate()");
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
+//        getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
     }
 
     protected void addCheckBox(String kod_po) {
@@ -68,18 +69,19 @@ public class RecordsChartActivity extends ChartActivity {
 
     @Override
     protected void restartLoaders() {
+        Log.d(TAG, "restartLoaders()");
         getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
     }
 
     @Override
     public PieChartData getPieChartData() {
-        PieChartData data = DataProcessor.countRecordsPieChartData(records, getVisibleCodes());
+        PieChartData data = DataProcessor.countRecordsPieChartData(records, getCheckedCodes());
         return data;
     }
 
     @Override
     public StackedBarChartData getStackedBarChartData() {
-        StackedBarChartData data = DataProcessor.countRecordsStackedBarChartData(records, getVisibleCodes());
+        StackedBarChartData data = DataProcessor.countRecordsStackedBarChartData(records, getCheckedCodes(), selectionArgs);
         return data;
     }
 
@@ -89,9 +91,8 @@ public class RecordsChartActivity extends ChartActivity {
         Log.d(TAG, "onCreateLoader()");
         switch (i) {
             case LOADER_RECORDS:
-                return new CursorLoader(getApplicationContext(), CONTENT_URI,
-                        null, null, null, null);
-            //TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
+                Log.d(TAG, "onCreateLoader() SELECTION_CHART " + SELECTION_CHART);
+                return new CursorLoader(this, CONTENT_URI, null, SELECTION_CHART, getSelectionArgs(), null);
             default:
                 return super.onCreateLoader(i, bundle);
         }
@@ -100,8 +101,12 @@ public class RecordsChartActivity extends ChartActivity {
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished()");
-        int id = cursorLoader.getId();
-        switch (id) {
+        switch (cursorLoader.getId()) {
+            case LOADER_EMPLOYEES:
+                Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
+                super.onLoadFinished(cursorLoader, cursor);
+                getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
+                break;
             case LOADER_RECORDS:
                 records.clear();
                 while (cursor.moveToNext()) {
@@ -114,14 +119,18 @@ public class RecordsChartActivity extends ChartActivity {
                 break;
             default:
                 super.onLoadFinished(cursorLoader, cursor);
-                break;
         }
     }
 
-    @Override
+    /*@Override
     protected String[] getSelectionArgs() {
-        return new String[0];
-    }
+        String[] args = new String[3];
+        args[0] = selectionArgs.get(PAR_EMP);
+        args[1] = selectionArgs.get(PAR_FROM);
+        args[2] = selectionArgs.get(PAR_TO);
+        Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
+        return args;
+    }*/
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
@@ -133,13 +142,13 @@ public class RecordsChartActivity extends ChartActivity {
         Log.d(TAG, "resfreshQuery()");
     }
 
-
-    public List<String> getVisibleCodes() {
+    @Override
+    public List<String> getCheckedCodes() {
         List<String> codes = new ArrayList<>();
         for (CheckBox checkBox : checkBoxes) {
             if (checkBox.isChecked()) codes.add(Record.TYPE_VALUES[checkBox.getId()]);
         }
-        Log.d(TAG, "getVisibleCodes() codes " + codes);
+        Log.d(TAG, "getCheckedCodes() codes " + codes);
         return codes;
     }
 

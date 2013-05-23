@@ -45,7 +45,7 @@ public class EventsChartActivity extends ChartActivity {
 
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
-        getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
+//        getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
 
         initEventCodesAndDesc();
 
@@ -72,8 +72,8 @@ public class EventsChartActivity extends ChartActivity {
         Log.d(TAG, "onCreateLoader()");
         switch (i) {
             case LOADER_EVENTS:
-                return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI,
-                        null, null, null, null);//TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
+                return new CursorLoader(this, EventQuery.CONTENT_URI,
+                        null, EventQuery.SELECTION_CHART, getSelectionArgs(), null);//TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
             default:
                 return super.onCreateLoader(i, bundle);
         }
@@ -81,9 +81,13 @@ public class EventsChartActivity extends ChartActivity {
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        Log.d(TAG, "onLoadFinished()"); //TODO pozor na pozici cursoru
-        int id = cursorLoader.getId();
-        switch (id) {
+        Log.d(TAG, "onLoadFinished()");
+        switch (cursorLoader.getId()) {
+            case LOADER_EMPLOYEES:
+                Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
+                super.onLoadFinished(cursorLoader, cursor);
+                getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
+                break;
             case LOADER_EVENTS:
                 Log.d(TAG, "onLoadFinished() LOADER_EVENTS");
                 blockList = DataProcessor.eventsToMapOfBlocks(cursor);
@@ -100,7 +104,9 @@ public class EventsChartActivity extends ChartActivity {
 
     @Override
     protected String[] getSelectionArgs() {
-        return new String[0];
+        String[] args = super.getSelectionArgs();
+        //TODO prevod kodpra->icp
+        return args;
     }
 
     @Override
@@ -120,12 +126,13 @@ public class EventsChartActivity extends ChartActivity {
         Log.d(TAG, "onSaveInstanceState()");
     }
 
-    public List<String> getVisibleCodes() {
+    @Override
+    public List<String> getCheckedCodes() {
         List<String> codes = new ArrayList<>();
         for (CheckBox checkBox : checkBoxes) {
             if (checkBox.isChecked()) codes.add(Event.KOD_PO_VALUES[checkBox.getId()]);
         }
-        Log.d(TAG, "getVisibleCodes() codes " + codes);
+        Log.d(TAG, "getCheckedCodes() codes " + codes);
         return codes;
     }
 
@@ -162,14 +169,14 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     public PieChartData getPieChartData() {
         Log.d(TAG, "getPieChartData()");
-        PieChartData data = DataProcessor.countEventsPieChartData(blockList, getVisibleCodes(), kody_po);
+        PieChartData data = DataProcessor.countEventsPieChartData(blockList, getCheckedCodes(), kody_po);
         return data;
     }
 
     @Override
     public StackedBarChartData getStackedBarChartData() {
         Log.d(TAG, "getStackedBarChartData()");
-        StackedBarChartData data = DataProcessor.countEventsStackedBarChartData(blockList, getVisibleCodes(), kody_po);
+        StackedBarChartData data = DataProcessor.countEventsStackedBarChartData(blockList, getCheckedCodes(), kody_po, selectionArgs);
         return data;
     }
 

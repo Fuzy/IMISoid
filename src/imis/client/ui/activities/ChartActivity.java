@@ -18,6 +18,7 @@ import imis.client.ui.fragments.StackedBarFragment;
 import imis.client.ui.fragments.StatisticsFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public abstract class ChartActivity extends ControlActivity {
         super.onResume();
         Log.d(TAG, "onResume()");
         initFragment();
-        restartLoaders();
+//        restartLoaders();
     }
 
     @Override
@@ -177,7 +178,7 @@ public abstract class ChartActivity extends ControlActivity {
 
     protected abstract void addCheckBox(String code);
 
-    public abstract List<String> getVisibleCodes();
+    public abstract List<String> getCheckedCodes();
 
     protected void addCheckBox(int index, int color) {
         final float scale = getApplication().getResources().getDisplayMetrics().density;
@@ -227,4 +228,13 @@ public abstract class ChartActivity extends ControlActivity {
 
     public abstract StackedBarChartData getStackedBarChartData();
 
+    @Override
+    protected String[] getSelectionArgs() {
+        String[] args = new String[3];
+        args[0] = selectionArgs.get(PAR_EMP);
+        args[1] = selectionArgs.get(PAR_FROM);
+        args[2] = selectionArgs.get(PAR_TO);
+        Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
+        return args;
+    }
 }

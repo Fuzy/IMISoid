@@ -1,7 +1,6 @@
 package imis.client.ui.activities;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.database.ContentObserver;
@@ -49,8 +48,6 @@ import java.util.Map;
 import static imis.client.AppConsts.*;
 import static imis.client.AppUtil.showAccountNotExistsError;
 import static imis.client.AppUtil.showNetworkAccessUnavailable;
-import static imis.client.authentication.AuthenticationConsts.ACCOUNT_TYPE;
-import static imis.client.authentication.AuthenticationConsts.AUTHORITY;
 import static imis.client.persistent.EventManager.EventQuery;
 
 public class DayTimelineActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -58,7 +55,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
     BroadcastReceiver _broadcastReceiver;
-    private AccountManager accountManager;
     private BlocksLayout blocks;
     private ObservableScrollView scroll;
     private List<Block> blockList;
@@ -74,8 +70,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         //Log.d(TAG, "onCreate()");
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
-        // create account manager
-        accountManager = AccountManager.get(this);
 
         // init UI
         setContentView(R.layout.blocks_content);
@@ -204,30 +198,15 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
 
     private void refreshListOfEmployees() {
-        //Register content observer for specific row in database
-       /* Uri uri = EmployeeManager.EmployeeQuery.CONTENT_URI;//.buildUpon().appendPath("/#").build();
-        Log.d(TAG, "refreshListOfEmployees() uri " + uri);*/
-
-       /* ContentObserver mObserver = new ContentObserver(null) {
-            @Override
-            public void onChange(boolean selfChange, Uri uri) {
-                Log.d(TAG, "onChange() uri " + uri);
-            }
-        };*/
-
-        /*getContentResolver().registerContentObserver(uri, true, mObserver);*/
-
-
-        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
+        Log.d(TAG, "refreshListOfEmployees()");
         try {
-            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
+            String icp = AppUtil.getUserICP(this);
             Log.d(TAG, "refreshListOfEmployees() icp " + icp);
             createTaskFragment(new GetListOfEmployees(this, icp));
-            //TODO register content observer
         } catch (Exception e) {
+            //TODO err msg
             showAccountNotExistsError(getApplication());
         }
-        Log.d(TAG, "refreshListOfEmployees()");
     }
 
     private void startInsertActivity() {
@@ -239,15 +218,19 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private void performSync() {
         Log.d(TAG, "onOptionsItemSelected sync request");
-        Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
+
+        if (!NetworkUtilities.isOnline(getApplication())) {
+            showNetworkAccessUnavailable(getApplication());
+            return;
+        }
         Bundle extras = new Bundle();
         extras.putLong(Event.KEY_DATE, date);
-        if (accounts.length > 0) {
-            Log.d(TAG, "performSync()");
-            if (!NetworkUtilities.isOnline(getApplication())) showNetworkAccessUnavailable(getApplication());
-            ContentResolver.requestSync(accounts[0], AUTHORITY, extras);
-        } else {
-            showAccountNotExistsError(getApplication());
+        try {
+            Account account = AppUtil.getUserAccount(this);
+            ContentResolver.requestSync(account, AuthenticationConsts.AUTHORITY, extras);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAccountNotExistsError(getApplication());//TODO err msg
         }
     }
 
@@ -462,9 +445,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             Employee employee = EmployeeManager.getEmployee(getApplicationContext(), id);
             Log.d(TAG, "refreshEmployeesWidgets() employee " + employee);
             if (employee == null) {
-                 //TODO smazat widget pro neexistujiciho zamestnance
-            }
-            else if (employee.getWidgetId() != null)
+                //TODO smazat widget pro neexistujiciho zamestnance
+            } else if (employee.getWidgetId() != null)
                 WidgetProvider.updateAppWidget(this, appWidgetManager, employee.getWidgetId());
         }
         employeesUpdated.clear();

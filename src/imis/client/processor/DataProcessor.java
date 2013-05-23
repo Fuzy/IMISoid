@@ -10,6 +10,7 @@ import imis.client.model.Block;
 import imis.client.model.Event;
 import imis.client.model.Record;
 import imis.client.ui.ColorUtil;
+import imis.client.ui.activities.ControlActivity;
 
 import java.util.*;
 
@@ -82,7 +83,7 @@ public class DataProcessor {
                 blocks.add(block);
             }
         }
-        Log.d(TAG, "eventsToMapOfBlocks() blocks " + blocks );
+        Log.d(TAG, "eventsToMapOfBlocks() blocks " + blocks);
         /*Event last = blocks.get(blocks.size() - 1);
         if ()*/
         cursor.moveToPosition(-1);
@@ -155,12 +156,14 @@ public class DataProcessor {
     }
 
     public static StackedBarChartData countEventsStackedBarChartData(List<Block> blocks, List<String> codes,
-                                                                     Map<String, String> kody_po) {
+                                                                     Map<String, String> kody_po, Map<String, String> selectionArgs) {
         StackedBarChartData chartData = new StackedBarChartData();
         // count mix/ max
-        for (Block block : blocks) {
-            if (block.getDate() > chartData.getMaxDay()) chartData.setMaxDay(block.getDate());
-            if (block.getDate() < chartData.getMinDay()) chartData.setMinDay(block.getDate());
+        for (Block block : blocks) {//TODO min max datum z parametru dotazu
+           /* if (block.getDate() > chartData.getMaxDay()) chartData.setMaxDay(block.getDate());
+            if (block.getDate() < chartData.getMinDay()) chartData.setMinDay(block.getDate());*/
+            chartData.setMinDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_FROM)));
+            chartData.setMaxDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_TO)));
         }
 
         final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / MS_IN_DAY) + 1;
@@ -211,17 +214,20 @@ public class DataProcessor {
         for (double[] value : values) {
             Log.d(TAG, "countEventsStackedBarChartData() value " + Arrays.toString(value));
         }
-        Log.d(TAG, "countEventsStackedBarChartData() min " + chartData.getMinDay() + " max" + chartData.getMaxDay());
+        Log.d(TAG, "countEventsStackedBarChartData() min "
+                + AppUtil.formatAbbrDate(chartData.getMinDay()) + " max" + AppUtil.formatAbbrDate(chartData.getMaxDay()));
         return chartData;
     }
 
-    public static StackedBarChartData countRecordsStackedBarChartData(List<Record> records, List<String> codes) {
+    public static StackedBarChartData countRecordsStackedBarChartData(List<Record> records, List<String> codes, Map<String, String> selectionArgs) {
         StackedBarChartData chartData = new StackedBarChartData();
         // count mix/ max
 
-        for (Record record : records) {
-           if (record.getDatum() < chartData.getMinDay()) chartData.setMinDay(record.getDatum());
-           if (record.getDatum() > chartData.getMaxDay()) chartData.setMaxDay(record.getDatum());
+        for (Record record : records) {//TODO min max datum z parametru dotazu
+           /* if (record.getDatum() < chartData.getMinDay()) chartData.setMinDay(record.getDatum());
+            if (record.getDatum() > chartData.getMaxDay()) chartData.setMaxDay(record.getDatum());*/
+            chartData.setMinDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_FROM)));
+            chartData.setMaxDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_TO)));
         }
 
         final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / MS_IN_DAY) + 1;
@@ -230,10 +236,10 @@ public class DataProcessor {
         Map<String, double[]> map = new HashMap<>();
         String type;
         for (Record record : records) {
-            type =  record.recordType();
+            type = record.recordType();
             if (codes.contains(type) == false) continue; // Exclude not checked in checkbox
             int index = (int) ((record.getDatum() - chartData.getMinDay()) / MS_IN_DAY);
-            double amount =  (double) (record.getMnozstvi_odved() / MS_IN_HOUR);
+            double amount = (double) (record.getMnozstvi_odved() / MS_IN_HOUR);
 
             // If not exists yet, create new array
             boolean contains = map.containsKey(type);
@@ -271,7 +277,8 @@ public class DataProcessor {
         for (double[] value : values) {
             Log.d(TAG, "countRecordsStackedBarChartData() value " + Arrays.toString(value));
         }
-        Log.d(TAG, "countRecordsStackedBarChartData() min " + chartData.getMinDay() + " max" + chartData.getMaxDay());
+        Log.d(TAG, "countRecordsStackedBarChartData() min "
+                + AppUtil.formatAbbrDate(chartData.getMinDay()) + " max" + AppUtil.formatAbbrDate(chartData.getMaxDay()));
 
         return chartData;
     }

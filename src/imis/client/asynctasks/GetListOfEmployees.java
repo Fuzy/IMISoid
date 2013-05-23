@@ -2,6 +2,7 @@ package imis.client.asynctasks;
 
 import android.app.Activity;
 import android.util.Log;
+import imis.client.AppUtil;
 import imis.client.model.Employee;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
@@ -43,7 +44,19 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
 
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setAuthorization(authHeader);
+        String username, password;
+        try {
+            username = AppUtil.getUserUsername(activity);
+            password = AppUtil.getUserPassword(activity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;//TODO err msg
+        }
+        Log.d(TAG, "doInBackground() username " + username);
+        Log.d(TAG, "doInBackground() password " + password);
+
+        HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+        requestHeaders.setAuthorization(authHeader);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
 
@@ -61,13 +74,13 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
             return body;
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage(), e);
-            return new Employee[]{};
+            return null; //TODO err msg
         }
     }
 
     @Override
     protected void onPostExecute(Employee[] employees) {
-        Log.d(TAG,"onPostExecute() employees " + Arrays.toString(employees));
+        Log.d(TAG, "onPostExecute() employees " + Arrays.toString(employees));
 /*
         Employee employee = new Employee();
         employee.setIcp("123");

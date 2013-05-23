@@ -19,7 +19,6 @@ import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.Result;
 import imis.client.model.Record;
-import imis.client.persistent.RecordManager;
 import imis.client.ui.adapters.RecordsCursorAdapter;
 import imis.client.ui.fragments.RecordListFragment;
 
@@ -28,6 +27,8 @@ import java.util.Arrays;
 
 import static imis.client.AppUtil.showAccountNotExistsError;
 import static imis.client.AppUtil.showPeriodInputError;
+import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
+import static imis.client.persistent.RecordManager.DataQuery.SELECTION_LIST;
 
 /**
  * Created with IntelliJ IDEA.
@@ -90,9 +91,8 @@ public class RecordListActivity extends ControlActivity implements
         Log.d(TAG, "onCreateLoader()");
         switch (i) {
             case LOADER_RECORDS:
-                Log.d(TAG, "onCreateLoader() SELECTION " + RecordManager.DataQuery.SELECTION);
-                return new CursorLoader(this, RecordManager.DataQuery.CONTENT_URI,
-                        null, RecordManager.DataQuery.SELECTION, getSelectionArgs(), null);
+                Log.d(TAG, "onCreateLoader() SELECTION_LIST " + SELECTION_LIST);
+                return new CursorLoader(this, CONTENT_URI, null, SELECTION_LIST, getSelectionArgs(), null);
             default:
                 return super.onCreateLoader(i, bundle);
         }
@@ -203,10 +203,10 @@ public class RecordListActivity extends ControlActivity implements
     @Override
     protected String[] getSelectionArgs() {
         String[] args = new String[4];
+        args[0] = selectionArgs.get(PAR_TYPE);
+        args[1] = selectionArgs.get(PAR_EMP);
         args[2] = selectionArgs.get(PAR_FROM);
         args[3] = selectionArgs.get(PAR_TO);
-        args[1] = selectionArgs.get(PAR_EMP);
-        args[0] = selectionArgs.get(PAR_TYPE);
         Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
         return args;
     }

@@ -32,6 +32,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         AdapterView.OnItemSelectedListener {
     private static final String TAG = ControlActivity.class.getSimpleName();
 
+    public static final String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP = "EMP";
     private static final int CALENDAR_ACTIVITY_DATE_CODE = 0;
     private static final int CALENDAR_ACTIVITY_DAY_CODE = 1;
     private static final int CALENDAR_ACTIVITY_MONTH_CODE = 2;
@@ -49,7 +50,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     private int selectedEditId = -1;
 
-    protected String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP = "EMP";
+//    protected String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP = "EMP";
     protected Map<String, String> selectionArgs = new HashMap<>();
 
     @Override

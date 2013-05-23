@@ -37,7 +37,19 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
         String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setAuthorization(authHeader);
+        String username, password;
+        try {
+            username = AppUtil.getUserUsername(activity);
+            password = AppUtil.getUserPassword(activity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;//TODO err msg
+        }
+        Log.d(TAG, "doInBackground() username " + username);
+        Log.d(TAG, "doInBackground() password " + password);
+
+        HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+        requestHeaders.setAuthorization(authHeader);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
 
@@ -51,10 +63,10 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
                     Record[].class, kodpra, from, to);
             Record[] body = response.getBody();
             Log.d(TAG, "doInBackground() ok " + body);
-            return new ResultData(response.getStatusCode(), body);
+            return new ResultData<Record>(response.getStatusCode(), body);
         } catch (Exception e) { //ResourceAccessException
             Log.d(TAG, e.getLocalizedMessage(), e);
-            return new ResultData(null, activity.getString(R.string.service_unavailable));
+            return new ResultData<Record>(activity.getString(R.string.service_unavailable));
         }
     }
 
