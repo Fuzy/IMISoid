@@ -160,10 +160,9 @@ public class EventManager {
         public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
         public static final String SELECTION_DAY_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED;
         public static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
-        public static final String SELECTION_KODPRA = Event.COL_ICP + " LIKE ? || '%' ";//TODO kodpra->icp
+        public static final String SELECTION_ICP = Event.COL_ICP + " LIKE ? || '%' ";
         public static final String SELECTION_PERIOD = " ? <= " + Event.COL_DATUM + " and " + Event.COL_DATUM + " <= ? ";
-        //TODO posledni den +1 den
-        public static final String SELECTION_CHART = SELECTION_KODPRA + " and " + SELECTION_PERIOD;
+        public static final String SELECTION_CHART = SELECTION_ICP + " and " + SELECTION_PERIOD + " and " + SELECTION_UNDELETED;
 
     }
 

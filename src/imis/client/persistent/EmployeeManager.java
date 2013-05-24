@@ -118,6 +118,11 @@ public class EmployeeManager {
         return getEmployee(context, EmployeeQuery.SELECTION_ID, new String[]{String.valueOf(id)});
     }
 
+    public static Employee getEmployeeOnKodpra(Context context, String kodpra) {
+        Log.d(TAG, "getEmployee()" + "kodpra = [" + kodpra + "]");
+        return getEmployee(context, EmployeeQuery.SELECTION_KODPRA, new String[]{kodpra});
+    }
+
     private static Employee getEmployee(Context context, String selection, String[] selectionArgs) {
         Log.d(TAG, "getEmployee()" + "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
@@ -158,6 +163,7 @@ public class EmployeeManager {
 
         public static final String SELECTION_ICP = Employee.COL_ICP + "=?";
         public static final String SELECTION_ID = Employee.COL_ID + "=?";
+        public static final String SELECTION_KODPRA = Employee.COL_KODPRA + "=?";
         public static final String SELECTION_WIDGET_ID = Employee.COL_WIDGET_ID + "=?";
 
         public static final String ORDER_BY_USER = Employee.COL_USER + "=1 DESC";

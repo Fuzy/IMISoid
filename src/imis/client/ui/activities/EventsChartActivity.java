@@ -12,7 +12,9 @@ import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
+import imis.client.model.Employee;
 import imis.client.model.Event;
+import imis.client.persistent.EmployeeManager;
 import imis.client.processor.DataProcessor;
 import imis.client.ui.ColorUtil;
 
@@ -32,21 +34,15 @@ import static imis.client.persistent.EventManager.EventQuery;
 public class EventsChartActivity extends ChartActivity {
     private static final String TAG = EventsChartActivity.class.getSimpleName();
 
-    private List<Block> blockList;
-
     private static final int LOADER_EVENTS = 0x03;
-
+    private List<Block> blockList;
     private final Map<String, String> kody_po = new HashMap<>();
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
-//        getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
-
         initEventCodesAndDesc();
 
     }
@@ -63,7 +59,6 @@ public class EventsChartActivity extends ChartActivity {
         int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(kod_po);
         int color = ColorUtil.getColor(kod_po);
         addCheckBox(index, color);
-
     }
 
 
@@ -73,7 +68,7 @@ public class EventsChartActivity extends ChartActivity {
         switch (i) {
             case LOADER_EVENTS:
                 return new CursorLoader(this, EventQuery.CONTENT_URI,
-                        null, EventQuery.SELECTION_CHART, getSelectionArgs(), null);//TODO selekce EventQuery.SELECTION_DATUM, new String[]{String.valueOf(date)},
+                        null, EventQuery.SELECTION_CHART, getSelectionArgs(), null);
             default:
                 return super.onCreateLoader(i, bundle);
         }
@@ -105,7 +100,9 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     protected String[] getSelectionArgs() {
         String[] args = super.getSelectionArgs();
-        //TODO prevod kodpra->icp
+        Employee employee = EmployeeManager.getEmployeeOnKodpra(this, args[0]);
+        args[0] = employee.getIcp();
+        Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
         return args;
     }
 
@@ -138,8 +135,8 @@ public class EventsChartActivity extends ChartActivity {
 
 
     @Override
-    protected void refresh() {
-        Log.d(TAG, "refresh()");
+    protected void processNetworkTask() {
+        Log.d(TAG, "processNetworkTask()");
 
         try {
             String kodpra = getSelectedUser();
@@ -152,17 +149,12 @@ public class EventsChartActivity extends ChartActivity {
         } catch (Exception e) {
             showAccountNotExistsError(this);
         }
-
-
     }
 
-    @Override
-    protected void resfreshQuery() {
-        Log.d(TAG, "resfreshQuery()");
-    }
 
     @Override
-    protected void restartLoaders() {
+    protected void processDataQuery() {
+        Log.d(TAG, "processDataQuery()");
         getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
     }
 
@@ -183,6 +175,7 @@ public class EventsChartActivity extends ChartActivity {
 
     @Override
     public void onTaskFinished(Result result) {
-
+        Log.d(TAG, "onTaskFinished()");
+        //TODO
     }
 }

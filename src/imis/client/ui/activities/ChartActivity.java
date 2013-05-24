@@ -52,7 +52,6 @@ public abstract class ChartActivity extends ControlActivity {
         super.onResume();
         Log.d(TAG, "onResume()");
         initFragment();
-//        restartLoaders();
     }
 
     @Override
@@ -82,7 +81,7 @@ public abstract class ChartActivity extends ControlActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                refresh();
+                processNetworkTask();
                 return true;
             case R.id.switchFragment:
                 switchFragment();
@@ -92,7 +91,7 @@ public abstract class ChartActivity extends ControlActivity {
         }
     }
 
-    protected abstract void refresh();
+    protected abstract void processNetworkTask();
 
     protected void switchFragment() {
         Log.d(TAG, "switchFragment() num of existing ");
@@ -106,8 +105,7 @@ public abstract class ChartActivity extends ControlActivity {
             removeFragment(FRAG_STACK);
             switchToStatisticsFragment();
         }
-
-        restartLoaders();
+        processDataQuery();
     }
 
     private void initFragment() {
@@ -125,8 +123,6 @@ public abstract class ChartActivity extends ControlActivity {
             switchToStackedBarFragment();
         }
     }
-
-    protected abstract void restartLoaders();
 
     protected void removeFragment(String tag) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
@@ -204,9 +200,6 @@ public abstract class ChartActivity extends ControlActivity {
 
         @Override
         public void onClick(View view) {
-           /* CheckBox check = checkBoxes.get(view.getId());
-            Log.d(TAG, "onClick() " + view.getId() + " is " +
-                    check.isChecked() + " kod " + Event.KOD_PO_VALUES[view.getId()]);*/
             refreshCurrentFragment();
         }
     }

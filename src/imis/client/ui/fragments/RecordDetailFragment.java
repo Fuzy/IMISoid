@@ -62,6 +62,8 @@ public class RecordDetailFragment extends Fragment {
             tt.setText(record.getStav_v());
             tt = (TextView) detail.findViewById(R.id.recordIdentification);
             tt.setText(identification);
+            tt = (TextView) detail.findViewById(R.id.date);
+            tt.setText(AppUtil.formatAbbrDate(record.getDatum()));
             tt = (TextView) detail.findViewById(R.id.time);
             tt.setText(AppUtil.formatTime(record.getMnozstvi_odved()));
             tt = (TextView) detail.findViewById(R.id.record_detail_report);

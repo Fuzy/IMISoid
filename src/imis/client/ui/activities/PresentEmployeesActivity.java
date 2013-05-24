@@ -101,7 +101,7 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
     }
 
     private void refresh() {
-        Log.d(TAG, "refresh()");
+        Log.d(TAG, "processNetworkTask()");
         createTaskFragment(new GetListOfEmployees(this));
     }
 

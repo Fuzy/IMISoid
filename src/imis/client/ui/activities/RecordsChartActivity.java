@@ -40,7 +40,6 @@ public class RecordsChartActivity extends ChartActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("RecordsChartActivity", "onCreate()");
         super.onCreate(savedInstanceState);
-//        getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
     }
 
     protected void addCheckBox(String kod_po) {
@@ -51,7 +50,7 @@ public class RecordsChartActivity extends ChartActivity {
 
 
     @Override
-    protected void refresh() {
+    protected void processNetworkTask() {
         Log.d("RecordsChartActivity", "resfreshRecords()");
 
         try {
@@ -67,11 +66,11 @@ public class RecordsChartActivity extends ChartActivity {
         }
     }
 
-    @Override
+    /*@Override
     protected void restartLoaders() {
         Log.d(TAG, "restartLoaders()");
         getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
-    }
+    }*/
 
     @Override
     public PieChartData getPieChartData() {
@@ -138,8 +137,9 @@ public class RecordsChartActivity extends ChartActivity {
 
 
     @Override
-    protected void resfreshQuery() {
-        Log.d(TAG, "resfreshQuery()");
+    protected void processDataQuery() {
+        Log.d(TAG, "processDataQuery()");
+        getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
     }
 
     @Override

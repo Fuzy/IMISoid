@@ -62,6 +62,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     protected void initControlPanel() {
         spinnerEmp = (Spinner) findViewById(R.id.spinnerEmp);
+        spinnerEmp.setOnItemSelectedListener(this);
         dateFromEdit = (EditText) findViewById(R.id.dateFromEdit);
         dateFromEdit.setOnFocusChangeListener(focusListener);
         dateFromEdit.setInputType(InputType.TYPE_NULL);
@@ -73,7 +74,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             @Override
             public void onClick(View view) {
                 setDateToSelectedField(AppUtil.todayInLong());
-                resfreshQuery();
+                processDataQuery();
             }
         });
         dateDateButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -88,7 +89,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             @Override
             public void onClick(View view) {
                 setDay(AppUtil.todayInLong());
-                resfreshQuery();
+                processDataQuery();
             }
         });
         dateDayButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -103,7 +104,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             @Override
             public void onClick(View view) {
                 setMonth(AppUtil.todayInLong());
-                resfreshQuery();
+                processDataQuery();
             }
         });
         dateMonthButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -147,7 +148,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
                 break;
         }
 
-        resfreshQuery();
+        processDataQuery();
     }
 
     @Override
@@ -266,8 +267,8 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             case R.id.spinnerEmp:
                 Log.d(TAG, "onItemSelected() spinnerEmp");
                 selectionArgs.put(PAR_EMP, getSelectedUser());
-                resfreshQuery();
-                break;
+                processDataQuery();
+                break; //TODO grafove aktivity
         }
 
     }
@@ -276,10 +277,10 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
+        Log.d(TAG, "onNothingSelected()");
     }
 
-    protected abstract void resfreshQuery();
+    protected abstract void processDataQuery();
 
     private class MyOnFocusChangeListener implements View.OnFocusChangeListener {
 

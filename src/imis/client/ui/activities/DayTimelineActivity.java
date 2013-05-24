@@ -99,6 +99,10 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
         loadNetworkSharedPreferences();
         loadColorSharedPreferences();
+
+        // delete old data
+        //TODO delete old data
+        AppUtil.getStartDateOfPreviousMonth();
     }
 
     private void setDateTitle(long date) {

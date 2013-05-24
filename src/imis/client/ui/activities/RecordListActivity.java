@@ -63,7 +63,6 @@ public class RecordListActivity extends ControlActivity implements
                 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typesArray);
         spinnerType.setAdapter(spinnerArrayAdapter);
         spinnerType.setOnItemSelectedListener(this);
-        spinnerEmp.setOnItemSelectedListener(this);
 
         addListFragment();
 
@@ -192,7 +191,7 @@ public class RecordListActivity extends ControlActivity implements
             case R.id.spinnerRecords:
                 Log.d(TAG, "onItemSelected() spinnerRecords");
                 selectionArgs.put(PAR_TYPE, getSelectedType());
-                resfreshQuery(); //TODO co s tim?
+                processDataQuery(); //TODO co s tim?
                 break;
             default:
                 super.onItemSelected(adapterView, view, pos, l);
@@ -212,8 +211,8 @@ public class RecordListActivity extends ControlActivity implements
     }
 
     @Override
-    protected void resfreshQuery() {
-        Log.d(TAG, "resfreshQuery()");
+    protected void processDataQuery() {
+        Log.d(TAG, "processDataQuery()");
         getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
     }
 

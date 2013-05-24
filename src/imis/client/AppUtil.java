@@ -126,18 +126,6 @@ public class AppUtil {
         dfAbbr.parse(date);
     }
 
-    /*public static long convertToTime(String s) {
-        long date;
-        try {
-            date = dfAbbr.parse(s).getTime();
-            Log.d(TAG, "convertToTime() date " + date);
-        } catch (ParseException e) {
-            return todayInLong();//TODO je to dobrz napad?
-        }
-        Log.d(TAG, "convertToTime() date " + date);
-        return date;
-    }*/
-
     public static long getFirstDateOfMonth(long time) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(time);
@@ -151,6 +139,19 @@ public class AppUtil {
         cal.setTimeInMillis(time);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         Log.d(TAG, "getLastDateOfMonth() cal.getTimeInMillis() " + cal.getTimeInMillis());
+        return cal.getTimeInMillis();
+    }
+
+    public static long getStartDateOfPreviousMonth() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.add(Calendar.MONTH, -1);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        Log.d(TAG, "getStartDateOfPreviousMonth() cal.getTimeInMillis() " + cal.getTimeInMillis());
+        Log.d(TAG, "getStartDateOfPreviousMonth() cal.getTimeInMillis() " + formatAbbrDate(cal.getTimeInMillis()));
         return cal.getTimeInMillis();
     }
 
