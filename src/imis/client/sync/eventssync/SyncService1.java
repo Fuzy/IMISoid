@@ -1,4 +1,4 @@
-package imis.client.syncadapter;
+package imis.client.sync.eventssync;
 
 import android.app.Service;
 import android.content.Intent;
@@ -9,12 +9,12 @@ import android.util.Log;
  * Sluzba provadejici synchronizaci uctu. 
  *  
  */
-public class SyncService extends Service {
-  private static final String TAG = "SyncService";
+public class SyncService1 extends Service {
+  private static final String TAG = SyncService1.class.getSimpleName();
   
     private static final Object sSyncAdapterLock = new Object();
 
-    private static SyncAdapter sSyncAdapter = null;
+    private static SyncAdapter1 sSyncAdapter = null;
 
     @Override
     public void onCreate() {
@@ -22,7 +22,7 @@ public class SyncService extends Service {
       Log.d(TAG, "onCreate()");
         synchronized (sSyncAdapterLock) {
             if (sSyncAdapter == null) {
-                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+                sSyncAdapter = new SyncAdapter1(getApplicationContext(), true);
             }
         }
     }

@@ -21,8 +21,8 @@ import java.util.List;
 
 import static imis.client.AppUtil.showAccountNotExistsError; //TODO staticke importy
 import static imis.client.AppUtil.showPeriodInputError;
-import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
-import static imis.client.persistent.RecordManager.DataQuery.SELECTION_CHART;
+import static imis.client.persistent.RecordManager.RecordQuery.CONTENT_URI;
+import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_CHART;
 
 /**
  * Created with IntelliJ IDEA.

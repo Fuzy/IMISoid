@@ -30,7 +30,7 @@
 
         <!-- Vlastni poskytovatel obsahu -->
         <provider
-            android:name=".persistent.MyContentProvider"
+            android:name=".persistent.MyContentProvider1"
             android:authorities="imis.client.events.contentprovider"
             android:exported="false" >
         </provider>
@@ -51,7 +51,7 @@
 
         <!-- Sluzba synchronizace -->
         <service
-            android:name=".syncadapter.SyncService"
+            android:name=".sync.eventssync.SyncService1"
             android:exported="true"
             android:permission="normal" >
             <intent-filter>
@@ -60,7 +60,7 @@
 
             <meta-data
                 android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
+                android:resource="@xml/syncadapter1" />
         </service>
 
         <activity android:name=".ui.activities.DayTimelineActivity"

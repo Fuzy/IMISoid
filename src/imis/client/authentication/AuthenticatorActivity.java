@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
@@ -22,7 +23,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private static final String TAG = "AuthenticatorActivity";
     private String username = null, icp = null, password = null;
     private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
-    private static final String AUTHORITY = AuthenticationConsts.AUTHORITY;
+//    private static final String AUTHORITY1 = AuthenticationConsts.AUTHORITY1;
     private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
     /**
      * The Intent extras.
@@ -67,9 +68,9 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        usernameEdit.setText("JSA");
-        icpEdit.setText("700510");
-        passwordEdit.setText("");
+        usernameEdit.setText("TST");
+        icpEdit.setText("TST");
+        passwordEdit.setText("TST");
     }
 
     private void initLayoutComponents() {
@@ -92,7 +93,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         EmployeeManager.addEmployee(this, user);
 
         // Povoli synchronizaci pro tento ucet
-        ContentResolver.setSyncAutomatically(account, AUTHORITY, true);
+        ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
 
         // Now we tell our caller, could be the Android Account Manager or even our own application
         // that the process was successful
@@ -185,7 +186,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
             icp = icpEdit.getText().toString();
         }
         password = passwordEdit.getText().toString();
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(icp)) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(icp)) {//TODO kod tahat ze serveru
             mMessage.setText(getMessage());
         } else {
             // Show a progress dialog, and kick off a background task to perform

@@ -1,4 +1,4 @@
-package imis.client.syncadapter;
+package imis.client.sync.eventssync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -19,14 +19,14 @@ import org.apache.http.HttpStatus;
 
 import java.util.List;
 
-public class SyncAdapter extends AbstractThreadedSyncAdapter {
-    private static final String TAG = SyncAdapter.class.getSimpleName();
+public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
+    private static final String TAG = SyncAdapter1.class.getSimpleName();
     private final AccountManager accountManager;
     private final Context context;
 
-    public SyncAdapter(Context context, boolean autoInitialize) {
+    public SyncAdapter1(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        Log.d(TAG, "SyncAdapter()");
+        Log.d(TAG, "SyncAdapter1()");
         this.context = context;
         accountManager = AccountManager.get(context);
     }
@@ -78,7 +78,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         } else if (deleteResult.isServerError()) {
             showServerError(deleteResult);
         } else if (deleteResult.getStatusCode().value() == HttpStatus.SC_OK) {
-            EventManager.deleteEvent(context, event.get_id());
+            EventManager.deleteEventOnId(context, event.get_id());
         }
     }
 

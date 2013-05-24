@@ -35,8 +35,14 @@
 
         <!-- Vlastni poskytovatel obsahu -->
         <provider
-                android:name=".persistent.MyContentProvider"
-                android:authorities="imisoid.contentprovider"
+                android:name=".persistent.MyContentProvider1"
+                android:authorities="imisoid.contentprovider1"
+                android:exported="false">
+        </provider>
+
+        <provider
+                android:name=".persistent.MyContentProvider2"
+                android:authorities="imisoid.contentprovider2"
                 android:exported="false">
         </provider>
 
@@ -54,9 +60,9 @@
                     android:resource="@xml/authenticator"/>
         </service>
 
-        <!-- Sluzba synchronizace -->
+        <!-- Service for  synchronization of events -->
         <service
-                android:name=".syncadapter.SyncService"
+                android:name=".sync.eventssync.SyncService1"
                 android:exported="true"
                 android:permission="normal">
             <intent-filter>
@@ -65,7 +71,21 @@
 
             <meta-data
                     android:name="android.content.SyncAdapter"
-                    android:resource="@xml/syncadapter"/>
+                    android:resource="@xml/syncadapter1"/>
+        </service>
+
+        <!-- Service for  synchronization of employees -->
+        <service
+                android:name=".sync.employeessync.SyncService2"
+                android:exported="true"
+                android:permission="normal">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+
+            <meta-data
+                    android:name="android.content.SyncAdapter"
+                    android:resource="@xml/syncadapter2"/>
         </service>
 
         <activity android:name=".ui.activities.DayTimelineActivity"

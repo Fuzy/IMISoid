@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import imis.client.AppConsts;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Employee;
 
@@ -137,8 +138,18 @@ public class EmployeeManager {
 
     public static List<Employee> getAllEmployees(Context context) {
         Log.d(TAG, "getAllEmployees()");
+        return getEmployees(context, null, null);
+    }
+
+    public static List<Employee> getEmployeesWithWidget(Context context) {
+        Log.d(TAG, "getAllEmployees()");
+        return getEmployees(context, EmployeeQuery.SELECTION_WIDGET_NOT_NULL, null);
+    }
+
+    public static List<Employee> getEmployees(Context context, String selection, String[] selectionArgs) {
+        Log.d(TAG,"getEmployees()" + "selection = [" + selection + "], selectionArgs = [" + selectionArgs + "]");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EmployeeQuery.CONTENT_URI, null, null, null, null);
+        Cursor cursor = resolver.query(EmployeeQuery.CONTENT_URI, null, selection, selectionArgs, null);
         List<Employee> employees = new ArrayList<>();
         Employee employee;
         while (cursor.moveToNext()) {
@@ -150,7 +161,7 @@ public class EmployeeManager {
     }
 
     public static int deleteEvent(Context context, long id) {
-        Log.d(TAG, "deleteEvent()" + "id = [" + id + "]");
+        Log.d(TAG, "delete()" + "id = [" + id + "]");
         Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(id));
         ContentResolver resolver = context.getContentResolver();
         return resolver.delete(uri, null, null);
@@ -158,13 +169,14 @@ public class EmployeeManager {
 
     final public static class EmployeeQuery {
 
-        public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
+        public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + AppConsts.AUTHORITY2 + "/"
                 + MyDatabaseHelper.TABLE_EMPLOYEES);
 
         public static final String SELECTION_ICP = Employee.COL_ICP + "=?";
         public static final String SELECTION_ID = Employee.COL_ID + "=?";
         public static final String SELECTION_KODPRA = Employee.COL_KODPRA + "=?";
         public static final String SELECTION_WIDGET_ID = Employee.COL_WIDGET_ID + "=?";
+        public static final String SELECTION_WIDGET_NOT_NULL = Employee.COL_WIDGET_ID + " is not null";
 
         public static final String ORDER_BY_USER = Employee.COL_USER + "=1 DESC";
         public static final String ORDER_BY_PRESENT = Employee.COL_DRUH + "='P' DESC";

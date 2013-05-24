@@ -8,35 +8,35 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
+import imis.client.AppConsts;
 import imis.client.model.Employee;
-import imis.client.model.Event;
-import imis.client.model.Record;
 
 import java.util.Arrays;
 
-public class MyContentProvider extends ContentProvider {
-    private static final String TAG = "MyContentProvider";
+/*employees*/
+public class MyContentProvider2 extends ContentProvider {
+    private static final String TAG = MyContentProvider2.class.getSimpleName();
 
     private MyDatabaseHelper database;
-    private static final int EVENTS = 1;
+    /*private static final int EVENTS = 1;
     private static final int EVENT_ID = 2;
     private static final int RECORDS = 3;
-    private static final int RECORD_ID = 4;
+    private static final int RECORD_ID = 4;*/
     private static final int EMPLOYEES = 5;
     private static final int EMPLOYEE_ID = 6;
 
-    private static final String AUTHORITY = Consts.AUTHORITY;
-    private static final String TABLE_EVENTS = MyDatabaseHelper.TABLE_EVENTS;
-    private static final String TABLE_RECORDS = MyDatabaseHelper.TABLE_RECORDS;
+    private static final String AUTHORITY = AppConsts.AUTHORITY2;
+    /*private static final String TABLE_EVENTS = MyDatabaseHelper.TABLE_EVENTS;
+    private static final String TABLE_RECORDS = MyDatabaseHelper.TABLE_RECORDS;*/
     private static final String TABLE_EMPLOYEES = MyDatabaseHelper.TABLE_EMPLOYEES;
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        sURIMatcher.addURI(AUTHORITY, TABLE_EVENTS, EVENTS);
-        sURIMatcher.addURI(AUTHORITY, TABLE_RECORDS, RECORDS);
+       /* sURIMatcher.addURI(AUTHORITY, TABLE_EVENTS, EVENTS);
+        sURIMatcher.addURI(AUTHORITY, TABLE_RECORDS, RECORDS);*/
         sURIMatcher.addURI(AUTHORITY, TABLE_EMPLOYEES, EMPLOYEES);
-        sURIMatcher.addURI(AUTHORITY, TABLE_EVENTS + "/#", EVENT_ID);
-        sURIMatcher.addURI(AUTHORITY, TABLE_RECORDS + "/#", RECORD_ID);
+       /* sURIMatcher.addURI(AUTHORITY, TABLE_EVENTS + "/#", EVENT_ID);
+        sURIMatcher.addURI(AUTHORITY, TABLE_RECORDS + "/#", RECORD_ID);*/
         sURIMatcher.addURI(AUTHORITY, TABLE_EMPLOYEES + "/#", EMPLOYEE_ID);
     }
 
@@ -56,7 +56,7 @@ public class MyContentProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
 
         switch (uriType) {
-            case EVENTS:
+           /* case EVENTS:
                 rowsDeleted = sqlDB.delete(TABLE_EVENTS, selection, selectionArgs);
                 break;
             case RECORDS:
@@ -68,7 +68,7 @@ public class MyContentProvider extends ContentProvider {
             case EVENT_ID:
                 id = uri.getLastPathSegment();
                 rowsDeleted = sqlDB.delete(TABLE_EVENTS, EventManager.EventQuery.SELECTION_ID, new String[]{id});
-                break;
+                break;*/
             case EMPLOYEE_ID:
                 id = uri.getLastPathSegment();
                 rowsDeleted = sqlDB.delete(TABLE_EMPLOYEES, EventManager.EventQuery.SELECTION_ID, new String[]{id});
@@ -96,15 +96,15 @@ public class MyContentProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
 
         switch (uriType) {
-            case EVENTS:
+           /* case EVENTS:
                 // muze vlozit jen 1 zaznam
                 id = sqlDB.insert(TABLE_EVENTS, null, values);
-                break;
+                break;*/
             case EMPLOYEES:
                 id = sqlDB.insert(TABLE_EMPLOYEES, null, values);
                 break;
-            case RECORDS:
-                id = sqlDB.insert(TABLE_RECORDS, null, values);
+           /* case RECORDS:
+                id = sqlDB.insert(TABLE_RECORDS, null, values);*/
             default:
                 break;
         }
@@ -128,14 +128,14 @@ public class MyContentProvider extends ContentProvider {
         int uriType = sURIMatcher.match(uri);
         Log.d(TAG, "query() uriType " + uriType);
         switch (uriType) {
-            case EVENTS:
+           /* case EVENTS:
                 // vsechny radky tabulky
                 queryBuilder.setTables(TABLE_EVENTS);
                 break;
             case RECORDS:
                 // vsechny radky tabulky
                 queryBuilder.setTables(TABLE_RECORDS);
-                break;
+                break;*/
             case EMPLOYEES:
                 queryBuilder.setTables(TABLE_EMPLOYEES);
                 break;
@@ -165,7 +165,7 @@ public class MyContentProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
 
         switch (uriType) {
-            case EVENTS:
+           /* case EVENTS:
                 rowsUpdated = sqlDB.update(TABLE_EVENTS, values, selection, selectionArgs);
                 break;
             case RECORDS:
@@ -175,7 +175,7 @@ public class MyContentProvider extends ContentProvider {
                 id = uri.getLastPathSegment();
                 rowsUpdated = sqlDB.update(TABLE_RECORDS, values, Record.COL_ID + "=" + id, null);
                 Log.d(TAG, "update() RECORDS_ID rowsUpdated " + rowsUpdated);
-                break;
+                break;*/
             case EMPLOYEE_ID:
                 id = uri.getLastPathSegment();
                 rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, Employee.COL_ID + "=" + id, null);
@@ -187,11 +187,11 @@ public class MyContentProvider extends ContentProvider {
                 Log.d(TAG, "update() EMPLOYEES rowsUpdated " + rowsUpdated);*//*
                 throw new NotImplementedException();*/
             //break;
-            case EVENT_ID:
+           /* case EVENT_ID:
                 id = uri.getLastPathSegment();
                 Log.d(TAG, "update EVENT_ID id: " + id);
                 rowsUpdated = sqlDB.update(TABLE_EVENTS, values, Event.COL_ID + "=" + id, null);
-                break;
+                break;*/
             default:
                 break;
         }
@@ -199,5 +199,4 @@ public class MyContentProvider extends ContentProvider {
 
         return rowsUpdated;
     }
-
 }

@@ -6,9 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import imis.client.AppConsts;
 import imis.client.model.Event;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EventManager {
@@ -23,43 +25,48 @@ public class EventManager {
         return Integer.valueOf(uri.getLastPathSegment());
     }
 
-    public static int deleteEvent(Context context, long id) {
-        Log.d(TAG, "deleteEvent()" + "id = [" + id + "]");
-        Uri uri = Uri.withAppendedPath(EventQuery.CONTENT_URI, String.valueOf(id));
-        ContentResolver resolver = context.getContentResolver();
-        return resolver.delete(uri, null, null);
+    public static int deleteEventOnId(Context context, long id) {
+        Log.d(TAG, "delete()" + "id = [" + id + "]");
+        return delete(context, EventQuery.SELECTION_ID, new String[]{String.valueOf(id)});
     }
 
-    public static int deleteAllEvents(Context context) {
+    public static int deleteEventsOlderThan(Context context, long date) {
+        Log.d(TAG, "delete()" + "date = [" + date + "]");
+        return delete(context, EventQuery.SELECTION_OLDER_THAN, new String[]{String.valueOf(date)});
+    }
+
+    public static int delete(Context context, String where, String[] selectionArgs) {
+        Log.d(TAG, "delete()" + "where = [" + where + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
+        ContentResolver resolver = context.getContentResolver();
+        return resolver.delete(EventQuery.CONTENT_URI, where, selectionArgs);
+    }
+
+    /*public static int deleteAllEvents(Context context) {
         Log.d(TAG, "deleteAllEvents()");
         Uri uri = EventQuery.CONTENT_URI;
         ContentResolver resolver = context.getContentResolver();
         return resolver.delete(uri, null, null);
-    }
+    }*/
 
-    public static Event getEvent(Context context, long id) {//TODO refaktor
+    public static Event getEvent(Context context, long id) {
         Log.d(TAG, "getEvent()" + "id = [" + id + "]");
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
-                EventQuery.SELECTION_ID, new String[]{String.valueOf(id)}, null);
-        Event event = null;
-        while (cursor.moveToNext()) {
-            event = Event.cursorToEvent(cursor);
-        }
-        cursor.close();
-        return event;
+        return getEvent(context, EventQuery.SELECTION_ID, new String[]{String.valueOf(id)});
     }
 
-    public static Event getEvent(Context context, String rowid) {//TODO refaktor
-        Log.d(TAG, "getEvent()" + "context = [" + context + "], rowid = [" + rowid + "]");
+    public static Event getEvent(Context context, String rowid) {
+        Log.d(TAG, "getEvent()" + "rowid = [" + rowid + "]");
+        return getEvent(context, EventQuery.SELECTION_SERVER_ID, new String[]{String.valueOf(rowid)});
+    }
+
+    public static Event getEvent(Context context, String selection, String[] selectionArgs) {
+        Log.d(TAG, "getRecord()" + "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
-                EventQuery.SELECTION_SERVER_ID, new String[]{String.valueOf(rowid)}, null);
+                selection, selectionArgs, null);
         Event event = null;
         while (cursor.moveToNext()) {
             event = Event.cursorToEvent(cursor);
         }
-        cursor.close();
         return event;
     }
 
@@ -151,13 +158,14 @@ public class EventManager {
 
     final public static class EventQuery {
 
-        public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + Consts.AUTHORITY + "/"
+        public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + AppConsts.AUTHORITY1 + "/"
                 + MyDatabaseHelper.TABLE_EVENTS);
 
         public static final String SELECTION_ID = Event.COL_ID + "=?";
         public static final String SELECTION_DIRTY = Event.COL_DIRTY + "=1";
         public static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
         public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
+        public static final String SELECTION_OLDER_THAN = Event.COL_DATUM + "<?";
         public static final String SELECTION_DAY_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED;
         public static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
         public static final String SELECTION_ICP = Event.COL_ICP + " LIKE ? || '%' ";

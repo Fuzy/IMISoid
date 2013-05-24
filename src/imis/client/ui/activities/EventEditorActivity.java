@@ -293,7 +293,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     @Override
     public void deleteEvent(int deleteCode) {
-        Log.d(TAG, "deleteEvent() deleteCode " + deleteCode);
+        Log.d(TAG, "delete() deleteCode " + deleteCode);
         if (deleteCode == -1) return;
         switch (deleteCode) {
             case DeleteEventDialog.DEL_ARRIVE:
@@ -312,9 +312,9 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void deleteEvent(Event event) {
         if (event != null) {
             if (event.isDirty()) {
-                EventManager.deleteEvent(getApplicationContext(), event.get_id());
+                EventManager.deleteEventOnId(this, event.get_id());
             } else {
-                EventManager.markEventAsDeleted(getApplicationContext(), event.get_id());
+                EventManager.markEventAsDeleted(this, event.get_id());
             }
         }
         finish();

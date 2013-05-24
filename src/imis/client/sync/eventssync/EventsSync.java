@@ -1,4 +1,4 @@
-package imis.client.syncadapter;
+package imis.client.sync.eventssync;
 
 import android.util.Log;
 import imis.client.AppUtil;
@@ -27,7 +27,7 @@ public class EventsSync {
     private static final String TAG = "EventsSync";
 
     public static Result deleteEvent(final String rowid) {
-        Log.d(TAG, "deleteEvent() rowid: " + rowid);
+        Log.d(TAG, "delete() rowid: " + rowid);
 
         HttpHeaders requestHeaders = new HttpHeaders();
         //requestHeaders.setAuthorization(authHeader);

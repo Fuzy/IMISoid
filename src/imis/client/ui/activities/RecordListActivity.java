@@ -27,8 +27,8 @@ import java.util.Arrays;
 
 import static imis.client.AppUtil.showAccountNotExistsError;
 import static imis.client.AppUtil.showPeriodInputError;
-import static imis.client.persistent.RecordManager.DataQuery.CONTENT_URI;
-import static imis.client.persistent.RecordManager.DataQuery.SELECTION_LIST;
+import static imis.client.persistent.RecordManager.RecordQuery.CONTENT_URI;
+import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_LIST;
 
 /**
  * Created with IntelliJ IDEA.

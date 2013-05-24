@@ -9,8 +9,8 @@ import android.util.Log;
 
 public class Authenticator extends AbstractAccountAuthenticator {
   private static final String TAG = "Authenticator";
-  private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
-  private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
+ /* private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
+  private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;*/
 
   // Authentication Service context
   private final Context context;
