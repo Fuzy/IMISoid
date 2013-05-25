@@ -75,7 +75,7 @@
       <filter>
         <option name="logLevel" value="verbose" />
         <option name="logMessagePattern" value="" />
-        <option name="logTagPattern" value="SyncAdapter" />
+        <option name="logTagPattern" value="SyncAdapter|EmployeesSync" />
         <option name="name" value="sync" />
         <option name="pid" value="" />
       </filter>
@@ -150,49 +150,40 @@
       <entry key="file://$PROJECT_DIR$/res/layout/statistics.xml" value="Landscape" />
     </device-configurations>
   </component>
-  <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="SyncAdapter2" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="83319ee7-2f42-4678-ad2d-6b04d3de4826" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/imis/client/persistent/MyContentProvider2.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncService2.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/xml/syncadapter2.xml" />
-      <change type="MOVED" beforePath="C:\Users\Fuzy\workspace\DP\res\xml\syncadapter.xml" afterPath="$PROJECT_DIR$/res/xml/syncadapter1.xml" />
-      <change type="MOVED" beforePath="C:\Users\Fuzy\workspace\DP\src\imis\client\persistent\MyContentProvider.java" afterPath="$PROJECT_DIR$/src/imis/client/persistent/MyContentProvider1.java" />
-      <change type="MOVED" beforePath="C:\Users\Fuzy\workspace\DP\src\imis\client\syncadapter\EventsSync.java" afterPath="$PROJECT_DIR$/src/imis/client/sync/eventssync/EventsSync.java" />
-      <change type="MOVED" beforePath="C:\Users\Fuzy\workspace\DP\src\imis\client\syncadapter\SyncAdapter.java" afterPath="$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncAdapter1.java" />
-      <change type="MOVED" beforePath="C:\Users\Fuzy\workspace\DP\src\imis\client\syncadapter\SyncService.java" afterPath="$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncService1.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/imis/client/authentication/AuthenticationUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/imis/client/sync/employeessync/EmployeesSync.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/AndroidManifest.xml" afterPath="$PROJECT_DIR$/bin/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/AppConsts.java" afterPath="$PROJECT_DIR$/src/imis/client/AppConsts.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/authentication/AuthenticationConsts.java" afterPath="$PROJECT_DIR$/src/imis/client/authentication/AuthenticationConsts.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/authentication/Authenticator.java" afterPath="$PROJECT_DIR$/src/imis/client/authentication/Authenticator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/authentication/AuthenticatorActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/authentication/AuthenticatorActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/persistent/Consts.java" afterPath="$PROJECT_DIR$/src/imis/client/persistent/Consts.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/ColorUtil.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/ColorUtil.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/persistent/EmployeeManager.java" afterPath="$PROJECT_DIR$/src/imis/client/persistent/EmployeeManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/EventEditorActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/EventEditorActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/persistent/EventManager.java" afterPath="$PROJECT_DIR$/src/imis/client/persistent/EventManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordListActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordListActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/persistent/RecordManager.java" afterPath="$PROJECT_DIR$/src/imis/client/persistent/RecordManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordsChartActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordsChartActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/EventsChartActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/EventsChartActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/sync/eventssync/EventsSync.java" afterPath="$PROJECT_DIR$/src/imis/client/sync/eventssync/EventsSync.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEmployees.java" afterPath="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEmployees.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEvents.java" afterPath="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEvents.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfRecords.java" afterPath="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfRecords.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/NetworkSettingsActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/NetworkSettingsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/network/NetworkUtilities.java" afterPath="$PROJECT_DIR$/src/imis/client/network/NetworkUtilities.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/asynctasks/NetworkingAsyncTask.java" afterPath="$PROJECT_DIR$/src/imis/client/asynctasks/NetworkingAsyncTask.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncAdapter1.java" afterPath="$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncAdapter1.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java" afterPath="$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/asynctasks/TestConnection.java" afterPath="$PROJECT_DIR$/src/imis/client/asynctasks/TestConnection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DP.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369427869482" ignored="false" />
+    <file path="/Dummy.txt" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369480326525" ignored="false" />
     <file path="/fragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368213977443" ignored="false" />
-    <file path="/DayTimelineActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369419556403" ignored="false" />
+    <file path="/DayTimelineActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369488393759" ignored="false" />
     <file path="/BlocksLayout.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365544828932" ignored="false" />
-    <file path="/NetworkSettingsActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368903806210" ignored="false" />
+    <file path="/NetworkSettingsActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369485986750" ignored="false" />
     <file path="/BlockView.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366645396497" ignored="false" />
     <file path="/EventsAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365599988401" ignored="false" />
     <file path="/SyncAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369413839809" ignored="false" />
-    <file path="/NetworkUtilities.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369340640354" ignored="false" />
+    <file path="/NetworkUtilities.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369479163561" ignored="false" />
     <file path="/EventEditor.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1363293742196" ignored="false" />
-    <file path="/AndroidManifest.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369424100576" ignored="false" />
+    <file path="/AndroidManifest.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369487980862" ignored="false" />
     <file path="/list_options_menu.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368125412956" ignored="false" />
     <file path="/strings.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368807021376" ignored="false" />
     <file path="/CalendarActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368291161590" ignored="false" />
@@ -216,14 +207,14 @@
     <file path="/HttpRequest.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365355463653" ignored="false" />
     <file path="/AppConsts.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366460819122" ignored="false" />
     <file path="/ColorPickerDialog.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366461534243" ignored="false" />
-    <file path="/ColorUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369141262571" ignored="false" />
+    <file path="/ColorUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369488607352" ignored="false" />
     <file path="/colors.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366488715560" ignored="false" />
     <file path="/Employee.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369039900063" ignored="false" />
     <file path="/EmployeeManager.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369427682542" ignored="false" />
     <file path="/PresentEmployeesActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368791631174" ignored="false" />
     <file path="/employees_present.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366134346063" ignored="false" />
     <file path="/EmployeesAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366899519681" ignored="false" />
-    <file path="/EventsChartActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369409346679" ignored="false" />
+    <file path="/EventsChartActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369485848075" ignored="false" />
     <file path="/events_chart.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366480282148" ignored="false" />
     <file path="/RecordManager.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369419612561" ignored="false" />
     <file path="/pom.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365444135408" ignored="false" />
@@ -252,8 +243,8 @@
     <file path="/HttpClientFactory.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365802108527" ignored="false" />
     <file path="/EmployeeList.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365806806481" ignored="false" />
     <file path="/EventsSync.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368980637969" ignored="false" />
-    <file path="/GetListOfRecords.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369340838842" ignored="false" />
-    <file path="/GetListOfEmployees.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369339347371" ignored="false" />
+    <file path="/GetListOfRecords.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369485952122" ignored="false" />
+    <file path="/GetListOfEmployees.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369485805038" ignored="false" />
     <file path="/SyncUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365886522760" ignored="false" />
     <file path="/AuthenticationConsts.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366640864065" ignored="false" />
     <file path="/RecordListActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369342192935" ignored="false" />
@@ -281,8 +272,8 @@
     <file path="/column_select.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366481566892" ignored="false" />
     <file path="/records_chart.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366480152766" ignored="false" />
     <file path="/checkbox_label.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366482098934" ignored="false" />
-    <file path="/NetworkingAsyncTask.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368820292240" ignored="false" />
-    <file path="/GetListOfEvents.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366664927665" ignored="false" />
+    <file path="/NetworkingAsyncTask.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369485759876" ignored="false" />
+    <file path="/GetListOfEvents.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369485835752" ignored="false" />
     <file path="/btn_block_error.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369044996381" ignored="false" />
     <file path="/MyResponse.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368803558481" ignored="false" />
     <file path="/ChartActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369408357880" ignored="false" />
@@ -323,11 +314,14 @@
     <file path="/EmployeesCursorAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369136637787" ignored="false" />
     <file path="/MyContentProvider2.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369421049078" ignored="false" />
     <file path="/MyContentProvider1.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369421028165" ignored="false" />
-    <file path="/SyncAdapter2.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369428089443" ignored="false" />
+    <file path="/SyncAdapter2.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369486552946" ignored="false" />
     <file path="/SyncService1.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369422706342" ignored="false" />
     <file path="/SyncService2.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369422746103" ignored="false" />
     <file path="/syncadapter2.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369423134864" ignored="false" />
     <file path="/syncadapter1.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369424008687" ignored="false" />
+    <file path="/EmployeesSync.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369485608427" ignored="false" />
+    <file path="/AuthenticationUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369485549992" ignored="false" />
+    <file path="/SyncAdapter1.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369486185501" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -342,7 +336,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -379,6 +372,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -391,25 +385,25 @@
       <file leaf-file-name="SyncAdapter1.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncAdapter1.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="37" selection-start="877" selection-end="907" vertical-scroll-proportion="0.0">
+            <state line="118" column="35" selection-start="5013" selection-end="5013" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GetListOfEmployees.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEmployees.java">
+      <file leaf-file-name="EventsSync.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/sync/eventssync/EventsSync.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="22" selection-start="1157" selection-end="1157" vertical-scroll-proportion="0.19101124">
+            <state line="27" column="23" selection-start="931" selection-end="941" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SyncAdapter2.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java">
+      <file leaf-file-name="EmployeesSync.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/sync/employeessync/EmployeesSync.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="30" selection-start="1259" selection-end="1259" vertical-scroll-proportion="0.0">
+            <state line="25" column="51" selection-start="841" selection-end="841" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -417,10 +411,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EmployeeManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/imis/client/persistent/EmployeeManager.java">
+      <file leaf-file-name="SyncAdapter2.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="178" column="96" selection-start="8020" selection-end="8020" vertical-scroll-proportion="0.0">
+            <state line="42" column="45" selection-start="1455" selection-end="1455" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -429,7 +423,52 @@
       <file leaf-file-name="WidgetProvider.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/imis/client/widget/WidgetProvider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="31" selection-start="1593" selection-end="1593" vertical-scroll-proportion="0.0">
+            <state line="48" column="76" selection-start="1947" selection-end="1947" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="18" selection-start="997" selection-end="997" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DayTimelineActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="432" column="5" selection-start="16885" selection-end="16885" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ColorUtil.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/ui/ColorUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="24" selection-start="413" selection-end="413" vertical-scroll-proportion="0.5403423">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AsyncActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/AsyncActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="22" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RecordListActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/RecordListActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="95" column="36" selection-start="3451" selection-end="3451" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -453,22 +492,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/imis/client/authentication/AuthenticatorActivity.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/persistent/MyContentProvider1.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/AppConsts.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/persistent/MyContentProvider2.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/sync/eventssync/employeessync/SyncService2.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncService.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncAdapter.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/network/NetworkUtilities.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/authentication/AuthenticationUtil.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/sync/employeessync/EmployeesSync.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/asynctasks/NetworkingAsyncTask.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEmployees.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEvents.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/EventsChartActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfRecords.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/asynctasks/TestConnection.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/NetworkSettingsActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/sync/eventssync/EventsSync.java" />
         <option value="$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncAdapter1.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncService1.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncService2.java" />
-        <option value="$PROJECT_DIR$/res/xml/syncadapter2.xml" />
-        <option value="$PROJECT_DIR$/res/xml/syncadapter1.xml" />
+        <option value="$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/persistent/EmployeeManager.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/ColorUtil.java" />
       </list>
     </option>
   </component>
@@ -522,6 +561,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -734,26 +774,73 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="authentication" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="asynctasks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="asynctasks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="result" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Modules" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="129" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="OverrideImplement.combined" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="129" />
+    <property name="OverrideImplement.combined" value="false" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="133" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
-    <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="133" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="C:/Program Files/Java/jdk1.7.0_09" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="129" />
@@ -770,9 +857,9 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="last_directory_selection" value="$PROJECT_DIR$/src/imis/client/sync" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/imis/client/sync" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
@@ -832,6 +919,19 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -857,19 +957,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1021,7 +1108,11 @@
       <created>1369411213294</created>
       <updated>1369411213294</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="second sync adapter for synchronization of employees&#10;">
+      <created>1369429385671</created>
+      <updated>1369429385671</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1050,25 +1141,25 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16935484" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.8446602" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26375404" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18770227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.8074434" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32847896" sideWeight="0.5008104" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22815534" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3171521" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23786408" sideWeight="0.49918962" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26213592" sideWeight="0.49918962" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27096775" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23419774" sideWeight="0.27993527" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.697411" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20988655" sideWeight="0.7621359" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3171521" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20988655" sideWeight="0.7378641" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3381877" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3249595" sideWeight="0.7750809" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21231766" sideWeight="0.7750809" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.8446602" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.8770226" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1116,7 +1207,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="charts refresh query - bug, query only undeleted events, detail of record including date&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="second sync adapter for synchronization of employees&#10;" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1139,6 +1230,7 @@
     <MESSAGE value="list of employees synchronization" />
     <MESSAGE value="authentication, acount manager refactor, chart - days bug" />
     <MESSAGE value="charts refresh query - bug, query only undeleted events, detail of record including date&#10;" />
+    <MESSAGE value="second sync adapter for synchronization of employees&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1160,118 +1252,116 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/imis/client/AppConsts.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/asynctasks/TestConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="69" selection-start="282" selection-end="282" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/authentication/AuthenticatorActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="68" selection-start="3538" selection-end="3538" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/eventssync/EventsSync.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="845" selection-end="845" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/xml/syncadapter2.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="42" selection-start="222" selection-end="222" vertical-scroll-proportion="0.14886165">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="43" selection-start="2625" selection-end="2625" vertical-scroll-proportion="0.3260135">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/xml/syncadapter1.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="43" selection-start="223" selection-end="223" vertical-scroll-proportion="0.14358108">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncService2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="36" selection-start="468" selection-end="468" vertical-scroll-proportion="0.2820946">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncService1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="19" selection-start="750" selection-end="750" vertical-scroll-proportion="0.6554054">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/widget/WidgetProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="31" selection-start="1593" selection-end="1593" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="456" column="33" selection-start="18226" selection-end="18226" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/model/Employee.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="172" column="30" selection-start="4211" selection-end="4211" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/persistent/EmployeeManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="178" column="96" selection-start="8020" selection-end="8020" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="30" selection-start="1259" selection-end="1259" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/persistent/MyDatabaseHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="28" selection-start="5915" selection-end="5915" vertical-scroll-proportion="0.6689815">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncAdapter1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="37" selection-start="877" selection-end="907" vertical-scroll-proportion="0.0">
+        <state line="13" column="18" selection-start="292" selection-end="292" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEmployees.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="22" selection-start="1157" selection-end="1157" vertical-scroll-proportion="0.19101124">
+        <state line="44" column="55" selection-start="1397" selection-end="1528" vertical-scroll-proportion="0.4642857">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfEvents.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="23" selection-start="689" selection-end="689" vertical-scroll-proportion="0.006302521">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/asynctasks/GetListOfRecords.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="83" selection-start="1355" selection-end="1355" vertical-scroll-proportion="0.63282937">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/eventssync/EventsSync.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="23" selection-start="931" selection-end="941" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/eventssync/SyncAdapter1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="118" column="35" selection-start="5013" selection-end="5013" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/employeessync/EmployeesSync.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="51" selection-start="841" selection-end="841" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="18" selection-start="997" selection-end="997" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="25" selection-start="2077" selection-end="2077" vertical-scroll-proportion="1.8847826">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/sync/employeessync/SyncAdapter2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="45" selection-start="1455" selection-end="1455" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/AsyncActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="22" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/ControlActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="26" selection-start="5514" selection-end="5514" vertical-scroll-proportion="0.3326087">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/RecordListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="36" selection-start="3451" selection-end="3451" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="432" column="5" selection-start="16885" selection-end="16885" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/widget/WidgetProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="76" selection-start="1947" selection-end="1947" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/ColorUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="24" selection-start="413" selection-end="413" vertical-scroll-proportion="0.5403423">
           <folding />
         </state>
       </provider>

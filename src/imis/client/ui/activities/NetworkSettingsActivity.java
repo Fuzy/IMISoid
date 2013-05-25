@@ -135,7 +135,7 @@ public class NetworkSettingsActivity extends AsyncActivity {
                 showNetworkAccessUnavailable(getApplication());
                 return;
             }*/
-            createTaskFragment(new TestConnection());
+            createTaskFragment(new TestConnection(this));
         }
     }
 

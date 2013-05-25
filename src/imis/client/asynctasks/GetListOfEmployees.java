@@ -1,8 +1,8 @@
 package imis.client.asynctasks;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
-import imis.client.AppUtil;
+import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Employee;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
@@ -24,11 +24,8 @@ import java.util.Collections;
 public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employee[]> {
     private static final String TAG = GetListOfEmployees.class.getSimpleName();
 
-    private Activity activity;
-
-    public GetListOfEmployees(Activity activity, String... params) {
-        super(params);
-        this.activity = activity;
+    public GetListOfEmployees(Context context, String... params) {
+        super(context, params);
     }
 
     @Override
@@ -44,18 +41,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
 
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        String username, password;
-        try {
-            username = AppUtil.getUserUsername(activity);
-            password = AppUtil.getUserPassword(activity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;//TODO err msg
-        }
-        Log.d(TAG, "doInBackground() username " + username);
-        Log.d(TAG, "doInBackground() password " + password);
-
-        HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
         requestHeaders.setAuthorization(authHeader);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
@@ -106,10 +92,10 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
         //employees = new Employee[]{employee, employee2};  //TODO pouze pro test
         Log.d(TAG, "onPostExecute()");
         if (employees != null) {
-            EmployeeManager.syncEmployees(activity, employees);
+            EmployeeManager.syncEmployees(context, employees);
             //TODO synchronize list of employees
         }
-        Log.d(TAG, "onPostExecute() " + EmployeeManager.getAllEmployees(activity));
+        Log.d(TAG, "onPostExecute() " + EmployeeManager.getAllEmployees(context));
         super.onPostExecute(null);
     }
 }

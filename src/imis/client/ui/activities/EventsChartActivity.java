@@ -142,7 +142,7 @@ public class EventsChartActivity extends ChartActivity {
             String kodpra = getSelectedUser();
             String from = getStringDateFrom();
             String to = getStringDateTo();
-            createTaskFragment(new GetListOfEvents(kodpra, from, to));
+            createTaskFragment(new GetListOfEvents(this, kodpra, from, to));
         } catch (ParseException e) {
             Log.d(TAG, "resfreshRecords() " + e.getMessage());
             showPeriodInputError(this);

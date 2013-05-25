@@ -25,7 +25,8 @@ public class NetworkUtilities {
     private static final String RECORDS_PATH = "records/{kodpra}?from={from}&to={to}";
     private static final String AUTH_PATH = "authentication";
     private static final String EMPLOYEES_PATH = "employees/{icp}";
-    private static final String EMPLOYEES_EVENTS_PATH = "employees";
+    private static final String EMPLOYEES_EVENTS_PATH = "employees/lastevents";
+    private static final String EMPLOYEE_EVENT_PATH = "employees/lastevent/{icp}";
     private static final String TEST_PATH = "test/";
     private static final String TEST_MODE = "test";
     private static final String TEST_CONN = "testconnection";
@@ -41,6 +42,7 @@ public class NetworkUtilities {
     public static String RECORDS_URL;
     public static String EMPLOYEES_URL;
     public static String EMPLOYEES_EVENTS_URL;
+    public static String EMPLOYEE_EVENT_URL;
     public static String AUTH_URL;
     public static String TEST_CONN_URL;
 
@@ -124,6 +126,7 @@ public class NetworkUtilities {
         RECORDS_URL = BASE_URL + RECORDS_PATH;
         EMPLOYEES_URL = BASE_URL + EMPLOYEES_PATH;
         EMPLOYEES_EVENTS_URL = BASE_URL + EMPLOYEES_EVENTS_PATH;
+        EMPLOYEE_EVENT_URL = BASE_URL + EMPLOYEE_EVENT_PATH;
         AUTH_URL = BASE_URL + AUTH_PATH;
         TEST_CONN_URL = BASE_URL + TEST_CONN;
         Log.d(TAG, "resetDomainAndPort() TEST_CONN_URL " + TEST_CONN_URL);

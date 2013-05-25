@@ -1,6 +1,8 @@
 package imis.client.asynctasks;
 
+import android.content.Context;
 import android.util.Log;
+import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Event;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
@@ -18,11 +20,11 @@ import java.util.Collections;
  * Date: 17.4.13
  * Time: 0:17
  */
-public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]>{
+public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]> {
     private static final String TAG = GetListOfRecords.class.getSimpleName();
 
-    public GetListOfEvents(String... params) {
-        super(params);
+    public GetListOfEvents(Context context, String... params) {
+        super(context, params);
     }
 
     @Override
@@ -30,7 +32,8 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]>{
         String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setAuthorization(authHeader);
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
+        requestHeaders.setAuthorization(authHeader);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
 

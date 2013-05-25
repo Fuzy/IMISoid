@@ -1,5 +1,6 @@
 package imis.client.asynctasks;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import imis.client.asynctasks.result.Result;
@@ -12,9 +13,11 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
     private static final String TAG = NetworkingAsyncTask.class.getSimpleName();
     protected TaskFragment mFragment;
     protected T[] params;
+    protected final Context context;
 
     @SuppressWarnings({"unchecked", "varargs"})
-    protected NetworkingAsyncTask(T... params) {
+    protected NetworkingAsyncTask(Context context, T... params) {
+        this.context = context;
         this.params = params;
     }
 

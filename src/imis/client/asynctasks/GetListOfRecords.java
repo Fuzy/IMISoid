@@ -1,10 +1,11 @@
 package imis.client.asynctasks;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.asynctasks.result.ResultData;
+import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Record;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
@@ -25,11 +26,8 @@ import java.util.Collections;
 public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultData<Record>> {
     private static final String TAG = GetListOfRecords.class.getSimpleName();
 
-    private Activity activity;
-
-    public GetListOfRecords(Activity activity, String... params) {
-        super(params);
-        this.activity = activity;
+    public GetListOfRecords(Context context, String... params) {
+        super(context, params);
     }
 
     @Override
@@ -37,18 +35,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
         String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        String username, password;
-        try {
-            username = AppUtil.getUserUsername(activity);
-            password = AppUtil.getUserPassword(activity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;//TODO err msg
-        }
-        Log.d(TAG, "doInBackground() username " + username);
-        Log.d(TAG, "doInBackground() password " + password);
-
-        HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
         requestHeaders.setAuthorization(authHeader);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
@@ -66,7 +53,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
             return new ResultData<Record>(response.getStatusCode(), body);
         } catch (Exception e) { //ResourceAccessException
             Log.d(TAG, e.getLocalizedMessage(), e);
-            return new ResultData<Record>(activity.getString(R.string.service_unavailable));
+            return new ResultData<Record>(context.getString(R.string.service_unavailable));
         }
     }
 
@@ -115,15 +102,15 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
 
         if (resultData.isUnknownErr()) {
             Log.d(TAG, "onPostExecute() isUnknownErr");
-            AppUtil.showError(activity, resultData.getMsg());
+            AppUtil.showError(context, resultData.getMsg());
         } else {
             Record[] records = resultData.getArray();
             if (records != null) {
-                RecordManager.addRecords(activity, records);
-                Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(activity));
+                RecordManager.addRecords(context, records);
+                Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(context));
             } else {
                 Log.d(TAG, "onPostExecute() empty");
-                AppUtil.showInfo(activity, activity.getString(R.string.no_records));
+                AppUtil.showInfo(context, context.getString(R.string.no_records));
             }
         }
 

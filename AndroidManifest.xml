@@ -33,20 +33,23 @@
         <!--android:theme="@style/AppTheme"  -->
 
 
-        <!-- Vlastni poskytovatel obsahu -->
+        <!-- Content provider for events and records -->
         <provider
                 android:name=".persistent.MyContentProvider1"
                 android:authorities="imisoid.contentprovider1"
-                android:exported="false">
+                android:exported="false"
+                android:label="@string/sync_events">
         </provider>
 
+        <!-- Content provider for employees -->
         <provider
                 android:name=".persistent.MyContentProvider2"
                 android:authorities="imisoid.contentprovider2"
-                android:exported="false">
+                android:exported="false"
+                android:label="@string/sync_widgets">
         </provider>
 
-        <!-- Sluzba authentikace -->
+        <!-- Service for  authentication -->
         <service
                 android:name=".authentication.AuthenticationService"
                 android:exported="true"
@@ -144,15 +147,15 @@
         <!-- Widget -->
         <receiver android:name=".widget.WidgetProvider">
             <meta-data android:name="android.appwidget.provider"
-                       android:resource="@xml/appwidget_provider" />
+                       android:resource="@xml/appwidget_provider"/>
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
         </receiver>
 
         <activity android:name=".widget.WidgetConfigure">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
     </application>

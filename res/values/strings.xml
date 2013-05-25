@@ -170,5 +170,7 @@
     <string name="eventTypeOthers">Ostatní</string>
     <string name="no_item_set">Není vybráno pole období</string>
     <string name="record_detail_date">Datum</string>
+    <string name="sync_widgets">Widgety pro přítomnost</string>
+    <string name="sync_events">Vlastní docházka</string>
 
 </resources>

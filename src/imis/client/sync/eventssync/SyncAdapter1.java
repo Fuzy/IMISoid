@@ -23,12 +23,15 @@ public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapter1.class.getSimpleName();
     private final AccountManager accountManager;
     private final Context context;
+    private final EventsSync sync;
+
 
     public SyncAdapter1(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         Log.d(TAG, "SyncAdapter1()");
         this.context = context;
         accountManager = AccountManager.get(context);
+        sync = new EventsSync(context);
     }
 
     @Override
@@ -71,7 +74,7 @@ public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
     }
 
     private void processDeleteEvent(Event event) {
-        Result deleteResult = EventsSync.deleteEvent(event.getServer_id());
+        Result deleteResult = sync.deleteEvent(event.getServer_id());
         Log.d(TAG, "processDeleteEvent()" + "event = [" + event + "]" + "deleteResult = [" + deleteResult + "]");
         if (deleteResult.isUnknownErr()) {
             showUnknownError(deleteResult);
@@ -83,7 +86,7 @@ public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
     }
 
     private void processUpdateEvent(Event event) {
-        Result updateResult = EventsSync.updateEvent(event);
+        Result updateResult = sync.updateEvent(event);
         Log.d(TAG, "processUpdateEvent()" + "event = [" + event + "]" + "updateResult = [" + updateResult + "]");
 
         if (updateResult.isUnknownErr()) {
@@ -98,7 +101,7 @@ public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
     }
 
     private void processCreateEvent(Event event) {
-        Result createResult = EventsSync.createEvent(event);
+        Result createResult = sync.createEvent(event);
         Log.d(TAG, "processCreateEvent()" + "event = [" + event + "]" + "createResult = [" + createResult + "]");
         if (createResult.isUnknownErr()) {
             showUnknownError(createResult);
@@ -113,7 +116,7 @@ public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
     }
 
     private void processDownloadEvents(final String icp, final long date) {
-        ResultData getResult = EventsSync.getUserEvents(icp, date, date);
+        ResultData getResult = sync.getUserEvents(icp, date, date);
         Log.d(TAG, "processDownloadEvents()" + "icp = [" + icp + "], date = [" + date + "]" + "getResult = [" + getResult + "]");
 
         if (getResult.isUnknownErr()) {

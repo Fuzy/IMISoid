@@ -18,7 +18,7 @@ import java.util.Map;
 public class ColorUtil {
     private static final String TAG = "ColorUtil";
 
-    private static Map<String, Integer> colors = new HashMap<>();
+    private static final Map<String, Integer> colors = new HashMap<>();
 
 
     public static Map<String, Integer> getColors() {

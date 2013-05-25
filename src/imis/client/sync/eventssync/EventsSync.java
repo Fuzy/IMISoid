@@ -1,9 +1,11 @@
 package imis.client.sync.eventssync;
 
+import android.content.Context;
 import android.util.Log;
 import imis.client.AppUtil;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultData;
+import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Event;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
@@ -26,11 +28,18 @@ import java.util.Collections;
 public class EventsSync {
     private static final String TAG = "EventsSync";
 
-    public static Result deleteEvent(final String rowid) {
+    private final Context context;
+
+    public EventsSync(Context context) {
+        this.context = context;
+    }
+
+    public Result deleteEvent(final String rowid) {
         Log.d(TAG, "delete() rowid: " + rowid);
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setAuthorization(authHeader);
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
+        requestHeaders.setAuthorization(authHeader);
         HttpEntity<Object> entity = new org.springframework.http.HttpEntity<>(requestHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -46,13 +55,14 @@ public class EventsSync {
         }
     }
 
-    public static ResultData<Event> getUserEvents(final String icp, final long from, final long to) {
+    public ResultData<Event> getUserEvents(final String icp, final long from, final long to) {
         String strFrom = AppUtil.formatDate(from);
         String strTo = AppUtil.formatDate(to);
         Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo: " + strTo);
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setAuthorization(authHeader);
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
+        requestHeaders.setAuthorization(authHeader);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity entity = new org.springframework.http.HttpEntity<>(requestHeaders);
 
@@ -73,11 +83,12 @@ public class EventsSync {
         }
     }
 
-    public static Result createEvent(Event event) {
+    public Result createEvent(Event event) {
         Log.d(TAG, "createEvent() event: " + event);
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setAuthorization(authHeader);
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
+        requestHeaders.setAuthorization(authHeader);
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.setContentEncoding(ContentCodingType.valueOf("UTF-8"));
         HttpEntity<Event> entity = new HttpEntity<>(event, requestHeaders);
@@ -106,11 +117,12 @@ public class EventsSync {
 
     }
 
-    public static Result updateEvent(Event event) {
+    public Result updateEvent(Event event) {
         Log.d(TAG, "updateEvent() event: " + event);
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setAuthorization(authHeader);
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
+        requestHeaders.setAuthorization(authHeader);
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.setContentEncoding(ContentCodingType.valueOf("UTF-8"));
         HttpEntity<Event> entity = new HttpEntity<>(event, requestHeaders);
