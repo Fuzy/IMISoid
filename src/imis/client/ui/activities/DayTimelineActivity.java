@@ -27,6 +27,7 @@ import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.RecordManager;
 import imis.client.processor.DataProcessor;
+import imis.client.sync.eventssync.SyncSettingsActivity;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
@@ -87,6 +88,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
         // delete old data
         deleteOldData();
+
     }
 
     private void deleteOldData() {
@@ -187,10 +189,15 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             case R.id.info_color:
                 startColorInfoActivity();
                 return true;
+             case R.id.sync_settings:
+                startSyncSettingsActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
 
     private void refreshListOfEmployees() {
@@ -331,6 +338,11 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private void startColorInfoActivity() {
         Intent intent = new Intent(this, InfoColorActivity.class);
+        startActivity(intent);
+    }
+
+    private void startSyncSettingsActivity() {
+        Intent intent = new Intent(this, SyncSettingsActivity.class);
         startActivity(intent);
     }
 

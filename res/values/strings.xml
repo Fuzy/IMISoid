@@ -164,7 +164,7 @@
     <string name="error_perriod_set">Špatně zadané období</string>
     <string name="spinnerRecordType_title">Typ zakázky</string>
     <string name="selectEmp">Vyber zaměstnance</string>
-    <string name="menu_color_info">Nápověda</string>
+    <string name="menu_color_info">Barvy</string>
     <string name="eventsType">Události docházky</string>
     <string name="recordsType">Zakázky</string>
     <string name="eventTypeOthers">Ostatní</string>
@@ -172,5 +172,10 @@
     <string name="record_detail_date">Datum</string>
     <string name="sync_widgets">Widgety pro přítomnost</string>
     <string name="sync_events">Vlastní docházka</string>
+    <string name="pref_sync_events_frequency">Synchronizace vlastní docházky</string>
+    <string name="sync_settings">Nastavení</string>
+    <string name="pref_sync_network_type">Povolit synchronizaci</string>
+    <string name="pref_sync_period">Perioda synchronizace</string>
+    <string name="pref_network_type">Datový přenos</string>
 
 </resources>

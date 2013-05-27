@@ -15,5 +15,12 @@ public class AppConsts {
     public static final String KEY_DOMAIN = "DOMAIN";
     public static final String KEY_PORT = "PORT";
 
+
+    public static final String KEY_NETWORK_TYPE = "prefSyncOnNetworkType";
+    public static final String NETWORK_TYPE_WIFI = "WIFI";
+    public static final String NETWORK_TYPE_ANY = "ANY";
+
+
+
     public final static String PREFS_CREDENTIALS = "AccountCredentials";
 }

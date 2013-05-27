@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="@string/pref_network_type"
+            android:key="pref_network_type">
+        <ListPreference
+                android:key="@string/prefSyncOnNetworkType"
+                android:entries="@array/prefsyncNetworkType"
+                android:entryValues="@array/prefsyncNetworkTypeValues"
+                android:title="@string/pref_sync_network_type"
+                android:defaultValue="@string/network_type_default"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/pref_sync_period"
+            android:key="pref_sync_period">
+        <ListPreference
+                android:key="@string/prefSyncEventsFrequency"
+                android:entries="@array/syncEventsFrequency"
+                android:entryValues="@array/syncEventsFrequencyValues"
+                android:title="@string/sync_events"
+                android:defaultValue="@string/sync_events_frequency_default"/>
+        <ListPreference
+                android:key="@string/prefSyncWidgetsFrequency"
+                android:entries="@array/prefSyncWidgetsFrequency"
+                android:entryValues="@array/prefSyncWidgetsFrequencyValues"
+                android:title="@string/sync_widgets"
+                android:defaultValue="@string/sync_widget_frequency_default"/>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

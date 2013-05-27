@@ -23,6 +23,7 @@
     <uses-sdk
             android:minSdkVersion="11"
             android:targetSdkVersion="17"/>
+    <!--android:minSdkVersion="11"-->
 
     <application
             android:icon="@drawable/ic_launcher"
@@ -48,6 +49,13 @@
                 android:exported="false"
                 android:label="@string/sync_widgets">
         </provider>
+
+        <receiver android:name=".network.NetworkReceiver"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
 
         <!-- Service for  authentication -->
         <service
@@ -142,6 +150,12 @@
         <activity android:name=".ui.activities.InfoColorActivity"></activity>
         <activity android:name=".ui.activities.RecordDetailActivity"></activity>
         <activity android:name=".ui.activities.EmployeeDetailActivity"/>
+        <activity android:name=".sync.eventssync.SyncSettingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
 
         <!-- Widget -->

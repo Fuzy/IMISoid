@@ -5,5 +5,4 @@
               android:contentAuthority="imisoid.contentprovider1"
               android:accountType="imisoid"
               android:supportsUploading="false"
-              android:userVisible="true"
-        />
+              android:userVisible="true"/>

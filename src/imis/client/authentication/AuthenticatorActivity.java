@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
@@ -23,7 +21,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private static final String TAG = "AuthenticatorActivity";
     private String username = null, icp = null, password = null;
     private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
-//    private static final String AUTHORITY1 = AuthenticationConsts.AUTHORITY1;
+    //    private static final String AUTHORITY1 = AuthenticationConsts.AUTHORITY1;
     private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
     /**
      * The Intent extras.
@@ -83,7 +81,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private void finishLogin(String authToken) {
         Log.d(TAG, "finishLogin()");
         final Account account = new Account(username, ACCOUNT_TYPE);
-        Bundle userdata= new Bundle();
+        Bundle userdata = new Bundle();
         userdata.putString(AuthenticationConsts.KEY_ICP, icp);
         accountManager.addAccountExplicitly(account, password, userdata);
         //TODO pridat uzivatele do tabulky
@@ -93,7 +91,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         EmployeeManager.addEmployee(this, user);
 
         // Povoli synchronizaci pro tento ucet
-        ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
+        /*ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
+        ContentResolver.addPeriodicSync(account, AppConsts.AUTHORITY1, null, 60);*/
 
         // Now we tell our caller, could be the Android Account Manager or even our own application
         // that the process was successful

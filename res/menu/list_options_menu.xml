@@ -36,4 +36,7 @@
     <item android:id="@+id/info_color"
           android:title="@string/menu_color_info"
           android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/sync_settings"
+          android:title="@string/sync_settings"
+          android:showAsAction="ifRoom|withText"/>
 </menu>

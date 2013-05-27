@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 
-public class NetworkUtilities {
+public class NetworkUtilities {//TODO asi jako nestaticka trida
     private static final String TAG = "NetworkUtilities";
     private static final String SCHEME = "http://";
     private static final String BASE_PATH = "/Imisoid_WS/";
@@ -34,6 +34,7 @@ public class NetworkUtilities {
     private static String DOMAIN = null;
     private static int PORT = -1;
     private static boolean isTest = false;
+    private static boolean isConnected = false;
     public static String BASE_URL;
     public static String EVENTS_DELETE_URL;
     public static String EVENTS_UPDATE_URL;
@@ -101,7 +102,7 @@ public class NetworkUtilities {
         }
     }
 
-    public static boolean isOnline(Context context) {
+    public static boolean isOnline(Context context) { //TODO nerozlisuje typ spojeni
 
         ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -161,4 +162,11 @@ public class NetworkUtilities {
         return (PORT == -1) ? getPortAsString(PORT_DEFAULT) : getPortAsString(PORT);
     }
 
+    public static boolean isConnected() {
+        return isConnected;
+    }
+
+    public static void setConnected(boolean connected) {
+        isConnected = connected;
+    }
 }
