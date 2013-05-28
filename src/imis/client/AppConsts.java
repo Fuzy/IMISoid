@@ -20,6 +20,9 @@ public class AppConsts {
     public static final String NETWORK_TYPE_WIFI = "WIFI";
     public static final String NETWORK_TYPE_ANY = "ANY";
 
+    public static final String SHORTCUT_ADD_ACTION = "imis.client.widget.ADD_EVENT";
+    public static final String KEY_WIDGET_ID = "widgetID";
+
 
 
     public final static String PREFS_CREDENTIALS = "AccountCredentials";

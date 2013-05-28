@@ -50,23 +50,40 @@ public class EventManager {
 
     public static Event getEvent(Context context, long id) {
         Log.d(TAG, "getEvent()" + "id = [" + id + "]");
-        return getEvent(context, EventQuery.SELECTION_ID, new String[]{String.valueOf(id)});
+        return getEvent(context, EventQuery.SELECTION_ID, new String[]{String.valueOf(id)}, null);
+    }
+
+    public static Event getLastEvent(Context context) {
+        Log.d(TAG, "getEvent()");
+        /*ContentResolver resolver = context.getContentResolver();
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
+                null, null, EventQuery.ORDER_BY_LAST);
+
+        Log.d(TAG, "getLastEvent() count" + cursor.getCount());
+        Event event = null;
+        while (cursor.moveToNext()) {
+            event = Event.cursorToEvent(cursor);
+            Log.d(TAG, "getLastEvent() event " + event);
+        }
+        return event;*/
+        return getEvent(context, EventQuery.SELECTION_LAST, null, EventQuery.ORDER_BY_LAST);
     }
 
     public static Event getEvent(Context context, String rowid) {
         Log.d(TAG, "getEvent()" + "rowid = [" + rowid + "]");
-        return getEvent(context, EventQuery.SELECTION_SERVER_ID, new String[]{String.valueOf(rowid)});
+        return getEvent(context, EventQuery.SELECTION_SERVER_ID, new String[]{String.valueOf(rowid)}, null);
     }
 
-    public static Event getEvent(Context context, String selection, String[] selectionArgs) {
-        Log.d(TAG, "getRecord()" + "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
+    public static Event getEvent(Context context, String selection, String[] selectionArgs, String orderBy) {
+        Log.d(TAG, "getEvent()" + "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
-                selection, selectionArgs, null);
+                selection, selectionArgs, orderBy);
         Event event = null;
         while (cursor.moveToNext()) {
             event = Event.cursorToEvent(cursor);
         }
+        cursor.close();
         return event;
     }
 
@@ -171,7 +188,11 @@ public class EventManager {
         public static final String SELECTION_ICP = Event.COL_ICP + " LIKE ? || '%' ";
         public static final String SELECTION_PERIOD = " ? <= " + Event.COL_DATUM + " and " + Event.COL_DATUM + " <= ? ";
         public static final String SELECTION_CHART = SELECTION_ICP + " and " + SELECTION_PERIOD + " and " + SELECTION_UNDELETED;
-
+        public static final String SELECTION_LAST_ARRIVE = Event.COL_DRUH + "=P";
+        public static final String SELECTION_LAST = Event.COL_DATUM;
+        public static final String ORDER_BY_DATE = Event.COL_DATUM + " DESC";
+        public static final String ORDER_BY_TIME = Event.COL_CAS + " DESC";
+        public static final String ORDER_BY_LAST = ORDER_BY_DATE + ", " + ORDER_BY_TIME + " LIMIT 1";
     }
 
 }

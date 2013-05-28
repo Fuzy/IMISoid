@@ -1,5 +1,6 @@
 package imis.client.ui.activities;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,17 +14,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
+import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
 import imis.client.ui.activities.util.ActivityConsts;
+import imis.client.ui.dialogs.AddEventDialog;
 import imis.client.ui.dialogs.DeleteEventDialog;
+import imis.client.widget.ShortcutWidgetProvider;
 
 import java.util.Arrays;
+import java.util.Set;
 
 public class EventEditorActivity extends FragmentActivity implements OnItemSelectedListener,
-        View.OnClickListener, DeleteEventDialog.OnDeleteEventListener {
+        View.OnClickListener, DeleteEventDialog.OnDeleteEventListener, AddEventDialog.AddEventDialogListener {
     private static final String TAG = EventEditorActivity.class.getSimpleName();
 
     // Ulozena data v pripade preruseni aktivity (onSaveInstanceState)
@@ -32,7 +37,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     // Actual event
     private Event arriveEvent = null, leaveEvent = null;
-    private int arriveId = -1, leaveId = -1;
+    private int arriveId = -1, leaveId = -1, widgetID = -1;
     private long date;
 
     // States this activities could be in
@@ -54,39 +59,56 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_editor);
         final Intent intent = getIntent();
-        date = intent.getLongExtra(Event.KEY_DATE, -1);
-        Log.d(TAG, "onCreate date : " + date + "  " + EventManager.getAllEvents(getApplicationContext()));
+        date = intent.getLongExtra(Event.KEY_DATE, AppUtil.todayInLong());
+//        Log.d(TAG, "onCreate date : " + date + "  " + EventManager.getAllEvents(getApplicationContext()));
+        Log.d(TAG, "onCreate() intent " + intent.getAction());
+        Log.d(TAG, "onCreate() date " + AppUtil.formatAbbrDate(date));
 
-
-        // Provede nastaveni na zaklade akce o kterou se jedna (view/insert).
-        final String action = intent.getAction();
-        if (Intent.ACTION_VIEW.equals(action)) {
-            // Prohlizeni: nacte udalosti
-            state = STATE_VIEWING;
-            arriveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_ARRIVE));
-            leaveId = Integer.valueOf(intent.getExtras().getInt(ActivityConsts.ID_LEAVE));
-            loadEvents(arriveId, leaveId);
-        } else if (Intent.ACTION_INSERT.equals(action)) {
-            state = STATE_INSERT;
-            arriveEvent = new Event();
-        } else {
-            Log.e(TAG, "Unknown action, exiting");
-            finish();
-            return;
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Set<String> set = extras.keySet();
+            Log.d(TAG, "onCreate() extras " + extras.keySet());
+            for (String s : set) {
+                Log.d(TAG, "onCreate() s " + extras.get(s));
+            }
         }
 
+        final String action = intent.getAction();
+        if (Intent.ACTION_VIEW.equals(action)) {
+            state = STATE_VIEWING;
+        } else if (Intent.ACTION_INSERT.equals(action)) {
+            state = STATE_INSERT;
+        }
+
+        arriveId = intent.getIntExtra(ActivityConsts.ID_ARRIVE, -1);
+        leaveId = intent.getIntExtra(ActivityConsts.ID_LEAVE, -1);
+        loadEvents(arriveId, leaveId);
+
+        widgetID = intent.getIntExtra(AppConsts.KEY_WIDGET_ID, 0);
+        if (widgetID != 0) {
+            showAddEventDialog();//TODO mesage
+        }
         init();
         restorePreviousValues(savedInstanceState);
     }
 
     private void loadEvents(int arriveId, int leaveId) {
-        Log.d(TAG, "onCreate arriveId: " + arriveId + " leaveId: " + leaveId);
+        Log.d(TAG, "loadEvents arriveId: " + arriveId + " leaveId: " + leaveId);
         String arriveMsg = null, leaveMsg = null;
-        arriveEvent = EventManager.getEvent(getApplicationContext(), arriveId);
+        if (arriveId == -1) {
+            arriveEvent = new Event();
+        } else {
+            arriveEvent = EventManager.getEvent(getApplicationContext(), arriveId);
+        }
         if (arriveEvent.getMsg() != null) arriveMsg = arriveEvent.getMsg();
         if (leaveId != -1) {
             leaveEvent = EventManager.getEvent(getApplicationContext(), leaveId);
             if (leaveEvent.getMsg() != null) leaveMsg = leaveEvent.getMsg();
+        } else if (widgetID != 0 && arriveId != -1)  {
+            Log.d(TAG, "loadEvents() widgetID != 0 && arriveId != -1");
+            //TODO pokud zdrojem widget, vztvorit leave udalost
+            leaveEvent = new Event();// TODO test
+            //setTimePickerToNow(leaveTime);
         }
 
         showToastIfErrors(arriveMsg, leaveMsg);
@@ -107,6 +129,11 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             Toast toast = Toast.makeText(getApplication(), errMsg, Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    private void showAddEventDialog() {
+        DialogFragment deleteEventDialog = new AddEventDialog();
+        deleteEventDialog.show(getSupportFragmentManager(), "AddEventDialog");
     }
 
     private void init() {
@@ -130,11 +157,12 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void prepareTimePickers() {
         arriveTime = (TimePicker) this.findViewById(R.id.time_arrive);
         arriveTime.setIs24HourView(true);
-        if (state == STATE_INSERT) {
-            setTimePickerToNow(arriveTime);
-        }
         leaveTime = (TimePicker) this.findViewById(R.id.time_leave);
         leaveTime.setIs24HourView(true);
+        if (state == STATE_INSERT) {
+            setTimePickerToNow(arriveTime);
+            setTimePickerToNow(leaveTime);//TODO
+        }
     }
 
     private void setTimePickerToNow(TimePicker timePicker) {
@@ -225,6 +253,12 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         super.onResume();
         Log.d(TAG, "onResume");
 
+        /*try {
+            String icp = AppUtil.getUserICP(this);
+        } catch (Exception e) {
+            AppUtil.showAccountNotExistsError(this);
+        }   */
+
         if (state == STATE_VIEWING) {
             setTitle(getText(R.string.title_view));
         } else if (state == STATE_INSERT) {
@@ -232,8 +266,9 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         }
 
         // Pokud se podarilo ziskat event s daty lze pokracovat dal.
+        Log.d(TAG, "onResume() arriveEvent " + arriveEvent);
         if (arriveEvent != null) {
-            if (state != STATE_INSERT) {
+            if (arriveEvent.get_id() != 0) { //if (state != STATE_INSERT) { //TODO test
                 populateArriveFields();
             }
             if (state == STATE_VIEWING) {
@@ -320,11 +355,11 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         finish();
     }
 
-    private void saveEvent() {
-        Log.d(TAG, "saveEvent()");
+    private void saveEvents() {
+        Log.d(TAG, "saveEvents()");
         saveArriveEvent();
         saveLeaveEvent();
-        finish();
+
     }
 
     private void saveArriveEvent() {
@@ -365,7 +400,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         }
     }
 
-    private boolean setImplicitEventValues(Event event) {
+    private boolean setImplicitEventValues(Event event) {//TODO asi void
         event.setDirty(true);
         event.setDatum_zmeny(AppUtil.todayInLong());
         event.setTyp(Event.TYPE_ORIG);
@@ -377,8 +412,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             event.setIc_obs(kod); //TODO testovaci chyba: "12345"
         } catch (Exception e) {
             //e.printStackTrace(); //TODO err msg
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.no_account_set, Toast.LENGTH_LONG);
-            toast.show();
+            //AppUtil.showAccountNotExistsError(this);
             return false;
         }
         return true;
@@ -475,7 +509,8 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
         switch (item.getItemId()) {
             case R.id.menu_save:
-                saveEvent();
+                saveEvents();
+                finish();
                 break;
             case R.id.menu_delete:
                 showDeleteDialog();
@@ -511,4 +546,23 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     }
 
 
+    @Override
+    public void onAddEventDialogPositiveClick() {
+        Log.d(TAG, "onAddEventDialogPositiveClick()");
+        saveEvents();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        ShortcutWidgetProvider.updateAppWidget(this, appWidgetManager, widgetID);
+        finish();
+    }
+
+    @Override
+    public void onAddEventDialogNegativeClick() {
+        Log.d(TAG, "onAddEventDialogNegativeClick()");
+        finish();
+    }
+
+    @Override
+    public void onAddEventDialogNeutralClick() {
+        Log.d(TAG, "onAddEventDialogNeutralClick()");
+    }
 }

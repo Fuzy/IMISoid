@@ -26,7 +26,8 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        Log.d(TAG, "onUpdate()");
+        Log.d(TAG,"onUpdate() appWidgetIds " + Arrays.toString(appWidgetIds));
+        //TODO urcite se mazou
         for (int i = 0; i < appWidgetIds.length; i++) {
             int appWidgetId = appWidgetIds[i];
             updateAppWidget(context, appWidgetManager, appWidgetId);

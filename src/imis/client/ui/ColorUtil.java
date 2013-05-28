@@ -1,6 +1,7 @@
 package imis.client.ui;
 
 import android.graphics.Color;
+import android.util.Log;
 import imis.client.model.Event;
 import imis.client.model.Record;
 
@@ -21,6 +22,7 @@ public class ColorUtil {
     private static final Map<String, Integer> colors = new HashMap<>();
 
 
+
     public static Map<String, Integer> getColors() {
         return colors;
     }
@@ -34,12 +36,19 @@ public class ColorUtil {
     }
 
     public static int getColor(String key) {
+        Log.d(TAG, "getColor() key " + key);
         if (key == null) return Color.GRAY;
         List<String> eventCodes = Arrays.asList(Event.KOD_PO_VALUES);
         List<String> recordCodes =  Arrays.asList(Record.TYPE_VALUES);
         if (eventCodes.indexOf(key) == -1 && recordCodes.indexOf(key) == -1) key = Event.KOD_PO_OTHERS;
         //Log.d(TAG, "getColor() key " + key);
-        return colors.get(key);
+        Log.d(TAG, "getColor() colors " + colors);
+        Integer value =  colors.get(key);
+        if (value == null) {
+            return Color.GRAY;//TODO lifecycle, prazdna kolekce
+        }
+        Log.d(TAG, "getColor() value " + value);
+        return value;
     }
 
 

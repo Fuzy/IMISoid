@@ -66,14 +66,16 @@ public class EmployeeManager {
 
     public static int resetEmployeeWidgetId(Context context, int widgetId) {
         Log.d(TAG, "resetEmployeeWidgetId()" + "widgetId = [" + widgetId + "]");
-        long id = (EmployeeManager.getEmployee(context, widgetId)).get_id();
+        Employee employee = EmployeeManager.getEmployee(context, widgetId);
+        if (employee == null) return 0;
+        long id = employee.get_id();
         ContentValues values = new ContentValues();
         values.put(Employee.COL_WIDGET_ID, (Integer) null);
         return updateEmployee(context, values, id);
     }
 
     public static void syncEmployees(Context context, Employee[] employees) {
-        Log.d(TAG,"syncEmployees() employees " + Arrays.toString(employees));
+        Log.d(TAG, "syncEmployees() employees " + Arrays.toString(employees));
         List<Employee> currentList = getAllEmployees(context);
         Log.d(TAG, "syncEmployees() currentList " + currentList.size());
         AccountManager accountManager = AccountManager.get(context);
@@ -147,7 +149,7 @@ public class EmployeeManager {
     }
 
     public static List<Employee> getEmployees(Context context, String selection, String[] selectionArgs) {
-        Log.d(TAG,"getEmployees()" + "selection = [" + selection + "], selectionArgs = [" + selectionArgs + "]");
+        Log.d(TAG, "getEmployees()" + "selection = [" + selection + "], selectionArgs = [" + selectionArgs + "]");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EmployeeQuery.CONTENT_URI, null, selection, selectionArgs, null);
         List<Employee> employees = new ArrayList<>();

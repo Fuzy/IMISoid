@@ -177,5 +177,9 @@
     <string name="pref_sync_network_type">Povolit synchronizaci</string>
     <string name="pref_sync_period">Perioda synchronizace</string>
     <string name="pref_network_type">Datový přenos</string>
+    <string name="widget_allready_exists">Widget pro daného zaměstnance již existuje</string>
+    <string name="widget_label_employees">Přítomnost zaměstnance</string>
+    <string name="widget_label_shortcut">Zadávání docházky</string>
+    <string name="other_option">Jiný</string>
 
 </resources>

@@ -158,14 +158,34 @@
         </activity>
 
 
-        <!-- Widget -->
-        <receiver android:name=".widget.WidgetProvider">
+        <!-- Widget for employees -->
+        <receiver android:name=".widget.WidgetProvider"
+                  android:label="@string/widget_label_employees">
             <meta-data android:name="android.appwidget.provider"
-                       android:resource="@xml/appwidget_provider"/>
+                       android:resource="@xml/employees_widget_provider"/>
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
         </receiver>
+
+        <!-- Widget for adding event -->
+        <receiver android:name=".widget.ShortcutWidgetProvider"
+                  android:label="@string/widget_label_shortcut">
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/shortcut_widget_provider"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+        </receiver>
+
+
+        <receiver android:name=".widget.ShortcutWidgetReceiver"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="imis.client.widget.ADD_EVENT"/>
+            </intent-filter>
+        </receiver>
+
 
         <activity android:name=".widget.WidgetConfigure">
             <intent-filter>

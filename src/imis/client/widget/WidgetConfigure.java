@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Spinner;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
@@ -80,8 +81,7 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished()");
-        int id = cursorLoader.getId();
-        switch (id) {
+        switch (cursorLoader.getId()) {
             case LOADER_EMPLOYEES:
                 Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
                 adapter.swapCursor(cursor);
@@ -117,20 +117,26 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
 
     private void saveWidgetEmployee() {
         Log.d(TAG, "saveWidgetEmployee() ");
-        //TODO co kdyz neexistuje zadny zamestnanec
-        //TODO max jeden widget pro zamestnance
         CursorWrapper wrapper = (CursorWrapper) spinnerEmp.getSelectedItem();
-        int empId = wrapper.getInt(Employee.IND_COL_ID);
-        Log.d(TAG, "saveWidgetEmployee() empId " + empId + " mAppWidgetId " + mAppWidgetId);
-        EmployeeManager.updateEmployeeWidgetId(this, empId, mAppWidgetId);
+        if (wrapper != null) {
+            int prevWidgetId = wrapper.getInt(Employee.IND_COL_WIDGET_ID);
+            if (prevWidgetId != 0) {
+                AppUtil.showWidgetAlreadyExists(this);
+            } else {
+                Log.d(TAG, "saveWidgetEmployee() prevWidgetId " + prevWidgetId);
+                int empId = wrapper.getInt(Employee.IND_COL_ID);
+                Log.d(TAG, "saveWidgetEmployee() empId " + empId + " mAppWidgetId " + mAppWidgetId);
+                EmployeeManager.updateEmployeeWidgetId(this, empId, mAppWidgetId);
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        WidgetProvider.updateAppWidget(this, appWidgetManager, mAppWidgetId);
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+                WidgetProvider.updateAppWidget(this, appWidgetManager, mAppWidgetId);
 
-        // Make sure we pass back the original appWidgetId
-        Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-        setResult(RESULT_OK, resultValue);
+                // Make sure we pass back the original appWidgetId
+                Intent resultValue = new Intent();
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                setResult(RESULT_OK, resultValue);
+            }
+        }
         finish();
     }
 }

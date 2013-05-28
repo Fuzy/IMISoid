@@ -3,6 +3,8 @@ package imis.client;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.Intent;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 import imis.client.authentication.AuthenticationConsts;
@@ -27,12 +29,15 @@ public class AppUtil {
 
     static {
         dfUTCTime.setTimeZone((TimeZone.getTimeZone("UTC")));
-    }
+    }//TODO casove zone, nekde to hodinu nesedi
 
     private static final String TAG = AppUtil.class.getSimpleName();
 
     public static void showAccountNotExistsError(Context context) {
         Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_LONG);
+        Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
+        intent.putExtra(Settings.EXTRA_AUTHORITIES, new String[]{AppConsts.AUTHORITY1, AppConsts.AUTHORITY2});//
+        context.startActivity(intent);
         toast.show();
     }
 
@@ -43,6 +48,11 @@ public class AppUtil {
 
     public static void showNetworkAccessUnavailable(Context context) {
         Toast toast = Toast.makeText(context, R.string.network_unavailable, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    public static void showWidgetAlreadyExists(Context context) {
+        Toast toast = Toast.makeText(context, R.string.widget_allready_exists, Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -74,10 +84,19 @@ public class AppUtil {
         return accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
     }
 
-    public static Account getUserAccount(Context context)throws Exception {
+    public static Account getUserAccount(Context context) throws Exception {
         AccountManager accountManager = AccountManager.get(context);
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
         return accounts[0];
+    }
+
+    public static long currentTimeInLong() {
+        Calendar rightNow = Calendar.getInstance();
+        Calendar time = Calendar.getInstance();
+        time.setTimeInMillis(0);
+        time.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY));
+        time.set(Calendar.MINUTE, rightNow.get(Calendar.MINUTE));
+        return time.getTimeInMillis();
     }
 
     public static long todayInLong() {

@@ -89,6 +89,10 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         // delete old data
         deleteOldData();
 
+        //TODO
+        Event lastEvent = EventManager.getLastEvent(this);
+        Log.d(TAG, "onCreate() lastEvent " + lastEvent);
+
     }
 
     private void deleteOldData() {
@@ -125,6 +129,12 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         Log.d(TAG, "onResume()");
         Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
         super.onResume();
+
+        /*try {  //TODO + dialog do AppUtil, ne onResume()!!!
+            String icp = AppUtil.getUserICP(this);
+        } catch (Exception e) {
+            AppUtil.showAccountNotExistsError(this);
+        }*/
 
         setDateTitle(date);
         scroll.post(new Runnable() {
@@ -212,13 +222,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         }
     }
 
-    private void startInsertActivity() {
-        Intent intent = new Intent(Intent.ACTION_INSERT);
-        intent.setType("vnd.android.cursor.dir/event.imisoid");
-        intent.putExtra(Event.KEY_DATE, date);
-        startActivity(intent);
-    }
-
     private void performSync() {
         Log.d(TAG, "onOptionsItemSelected sync request");
 
@@ -288,6 +291,13 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         DialogFragment dialog = new ColorPickerDialog(block.getType());
         dialog.show(getSupportFragmentManager(), "ColorPickerDialog"); //TODO [rpc nejde support verze
         return true;
+    }
+
+    private void startInsertActivity() {
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+        intent.setType("vnd.android.cursor.dir/event.imisoid");
+        intent.putExtra(Event.KEY_DATE, date);
+        startActivity(intent);
     }
 
     private void startEditActivity(int arriveID, int leaveID) {
