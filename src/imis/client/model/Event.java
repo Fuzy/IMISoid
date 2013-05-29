@@ -2,6 +2,7 @@ package imis.client.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import imis.client.AppUtil;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import static imis.client.AppUtil.*;
@@ -34,6 +35,7 @@ public class Event {
 
 
     public Event() {
+        this.setCas(AppUtil.currentTimeInLong());
     }
 
     public Event(boolean dirty, boolean deleted, String icp, long datum, String kod_po, String druh,

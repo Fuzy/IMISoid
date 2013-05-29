@@ -104,17 +104,15 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         if (leaveId != -1) {
             leaveEvent = EventManager.getEvent(getApplicationContext(), leaveId);
             if (leaveEvent.getMsg() != null) leaveMsg = leaveEvent.getMsg();
-        } else if (widgetID != 0 && arriveId != -1)  {
-            Log.d(TAG, "loadEvents() widgetID != 0 && arriveId != -1");
-            //TODO pokud zdrojem widget, vztvorit leave udalost
-            leaveEvent = new Event();// TODO test
-            //setTimePickerToNow(leaveTime);
+        } else if (widgetID != 0 && arriveId != -1) {
+            leaveEvent = new Event();
         }
 
         showToastIfErrors(arriveMsg, leaveMsg);
     }
 
     private void showToastIfErrors(String arriveMsg, String leaveMsg) {
+        Log.d(TAG,"showToastIfErrors()" + "arriveMsg = [" + arriveMsg + "], leaveMsg = [" + leaveMsg + "]");
         //TODO ukazovat pouze pri chybe
         StringBuilder errMsg = new StringBuilder();
         if (arriveMsg != null) {
@@ -143,7 +141,6 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         leaveLayout = (LinearLayout) findViewById(R.id.leave_layout);
         leaveBtn = (Button) findViewById(R.id.leave_add_btn);
         leaveBtn.setOnClickListener(this);
-        // leaveEvent = null;//TODO
         if (leaveEvent == null) {
             Log.d(TAG, "init leaveEvent == null");
             leaveLayout.setVisibility(View.GONE);
@@ -157,12 +154,10 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void prepareTimePickers() {
         arriveTime = (TimePicker) this.findViewById(R.id.time_arrive);
         arriveTime.setIs24HourView(true);
+        setTimePickerToNow(arriveTime);
         leaveTime = (TimePicker) this.findViewById(R.id.time_leave);
         leaveTime.setIs24HourView(true);
-        if (state == STATE_INSERT) {
-            setTimePickerToNow(arriveTime);
-            setTimePickerToNow(leaveTime);//TODO
-        }
+        setTimePickerToNow(leaveTime);
     }
 
     private void setTimePickerToNow(TimePicker timePicker) {
@@ -216,7 +211,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     }
 
     private void disableNoteField(EditText field) {
-        field.setEnabled(false);// TODO prostudovat
+        field.setEnabled(false);
         field.setInputType(InputType.TYPE_NULL);
         field.setFocusable(false);
         field.setFocusableInTouchMode(false);
@@ -253,7 +248,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         super.onResume();
         Log.d(TAG, "onResume");
 
-        /*try {
+        /*try {//TODO
             String icp = AppUtil.getUserICP(this);
         } catch (Exception e) {
             AppUtil.showAccountNotExistsError(this);
@@ -261,23 +256,21 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
         if (state == STATE_VIEWING) {
             setTitle(getText(R.string.title_view));
+            disableChanges();
         } else if (state == STATE_INSERT) {
             setTitle(getText(R.string.title_create));
         }
 
-        // Pokud se podarilo ziskat event s daty lze pokracovat dal.
-        Log.d(TAG, "onResume() arriveEvent " + arriveEvent);
         if (arriveEvent != null) {
-            if (arriveEvent.get_id() != 0) { //if (state != STATE_INSERT) { //TODO test
+            if (arriveEvent.get_id() != 0) {
                 populateArriveFields();
-            }
-            if (state == STATE_VIEWING) {
-                disableChanges();
             }
         }
 
         if (leaveEvent != null) {
-            populateLeaveFields();
+            if (leaveEvent.get_id() != 0) {
+                populateLeaveFields();
+            }
         }
     }
 
@@ -319,13 +312,6 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         textPoznamkaLeave.setText(poznamka);
     }
 
-    private void revertEvent() {
-        Log.d(TAG, "revertEvent");
-        if (arriveEvent != null && state == STATE_EDIT) {
-            populateArriveFields();
-        }
-    }
-
     @Override
     public void deleteEvent(int deleteCode) {
         Log.d(TAG, "delete() deleteCode " + deleteCode);
@@ -365,9 +351,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void saveArriveEvent() {
         if (arriveEvent != null) {
             Log.d(TAG, "saveArriveEvent() arriveEvent != null");
-            // Ulozi aktualizovane hodnoty
-            boolean hasICP = setImplicitEventValues(arriveEvent);
-            if (!hasICP) return;
+            setImplicitEventValues(arriveEvent);
             arriveEvent.setKod_po(kody_po_values[selectedArrive]);
             arriveEvent.setCas(getPickerCurrentTimeInMs(arriveTime));
             arriveEvent.setPoznamka(textPoznamkaArrive.getText().toString());
@@ -385,8 +369,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void saveLeaveEvent() {
         if (leaveEvent != null) {
             // Ulozi aktualizovane hodnoty
-            boolean hasICP = setImplicitEventValues(leaveEvent);
-            if (!hasICP) return;
+            setImplicitEventValues(leaveEvent);
             leaveEvent.setKod_po(kody_po_values[selectedLeave]);
             leaveEvent.setCas(getPickerCurrentTimeInMs(leaveTime));
             leaveEvent.setPoznamka(textPoznamkaLeave.getText().toString());
@@ -400,7 +383,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         }
     }
 
-    private boolean setImplicitEventValues(Event event) {//TODO asi void
+    private void setImplicitEventValues(Event event) {
         event.setDirty(true);
         event.setDatum_zmeny(AppUtil.todayInLong());
         event.setTyp(Event.TYPE_ORIG);
@@ -413,9 +396,9 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         } catch (Exception e) {
             //e.printStackTrace(); //TODO err msg
             //AppUtil.showAccountNotExistsError(this);
-            return false;
+            AppUtil.showAccountNotExistsError(this);
+            finish();
         }
-        return true;
 
     }
 
@@ -433,7 +416,6 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         setTitle(getText(R.string.title_editing));
         enableChanges();
         invalidateOptionsMenu();
-        // TODO dokoncit
     }
 
     @Override
@@ -485,21 +467,18 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void setActionsToEditState(Menu menu) {
         menu.findItem(R.id.menu_delete).setVisible(true);
         menu.findItem(R.id.menu_edit).setVisible(false);
-        menu.findItem(R.id.menu_revert).setVisible(false);
         menu.findItem(R.id.menu_save).setVisible(true);
     }
 
     private void setActionsToInsertState(Menu menu) {
         menu.findItem(R.id.menu_delete).setVisible(true);
         menu.findItem(R.id.menu_edit).setVisible(false);
-        menu.findItem(R.id.menu_revert).setVisible(false);
         menu.findItem(R.id.menu_save).setVisible(true);
     }
 
     private void setActionsToViewState(Menu menu) {
         menu.findItem(R.id.menu_delete).setVisible(true);
         menu.findItem(R.id.menu_edit).setVisible(true);
-        menu.findItem(R.id.menu_revert).setVisible(false);
         menu.findItem(R.id.menu_save).setVisible(false);
     }
 
@@ -515,8 +494,6 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             case R.id.menu_delete:
                 showDeleteDialog();
                 break;
-            /*case R.id.menu_revert:
-                revertEvent();*/
             case R.id.menu_edit:
                 makeEventsEditable();
                 break;
@@ -541,8 +518,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         Log.d(TAG, "onClick");
         leaveBtn.setVisibility(View.GONE);
         leaveLayout.setVisibility(View.VISIBLE);
-        leaveEvent = new Event();// TODO test
-        setTimePickerToNow(leaveTime);
+        leaveEvent = new Event();
     }
 
 
