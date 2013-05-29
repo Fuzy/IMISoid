@@ -192,7 +192,9 @@ public class EventManager {
         public static final String SELECTION_LAST = Event.COL_DATUM;
         public static final String ORDER_BY_DATE = Event.COL_DATUM + " DESC";
         public static final String ORDER_BY_TIME = Event.COL_CAS + " DESC";
-        public static final String ORDER_BY_LAST = ORDER_BY_DATE + ", " + ORDER_BY_TIME + " LIMIT 1";
+        public static final String ORDER_BY_DRUH = Event.COL_DRUH + "='O' DESC";
+        public static final String ORDER_BY_ID = Event.COL_ID + " DESC";
+        public static final String ORDER_BY_LAST = ORDER_BY_DATE + ", " + ORDER_BY_TIME + ", " + ORDER_BY_ID + " LIMIT 1";
     }
 
 }

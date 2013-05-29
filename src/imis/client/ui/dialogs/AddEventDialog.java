@@ -15,9 +15,19 @@ import imis.client.R;
  */
 public class AddEventDialog extends DialogFragment {
 
+    private String title;
+    private String message;
+
+    public AddEventDialog(String title, String message) {
+        this.title = title;
+        this.message = message;
+    }
+
     public interface AddEventDialogListener {
         public void onAddEventDialogPositiveClick();
+
         public void onAddEventDialogNegativeClick();
+
         public void onAddEventDialogNeutralClick();
     }
 
@@ -25,8 +35,8 @@ public class AddEventDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.menu_add)
-                .setMessage("messdage")
+        builder.setTitle(title)
+                .setMessage(message)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -47,8 +57,11 @@ public class AddEventDialog extends DialogFragment {
                         AddEventDialogListener activity = (AddEventDialogListener) getActivity();
                         activity.onAddEventDialogNeutralClick();
                     }
-                });
+                })
+                .setCancelable(false);
 
-        return builder.create();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        return alertDialog;
     }
 }

@@ -49,6 +49,7 @@ public class SyncAdapter2 extends AbstractThreadedSyncAdapter {
                 EmployeeManager.updateEmployeeOnIcp(context, ((Employee[]) employeeToSync.getArray())[0]);
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 WidgetProvider.updateAppWidget(context, appWidgetManager, employee.getWidgetId());
+                //TODO lze vyvolat aktualizaci vsech widgetu daneho typu
             }
 
         }

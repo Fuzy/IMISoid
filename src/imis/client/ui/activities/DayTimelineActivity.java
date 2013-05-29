@@ -54,7 +54,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private ObservableScrollView scroll;
     private List<Block> blockList;
     private EventsArrayAdapter adapter;
-    private long date = 1364428800000L; //1364166000000L;//1364169600000L;
+    private long date;// = 1364428800000L; //1364166000000L;//1364169600000L;
 
     private static final int LOADER_EVENTS = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;

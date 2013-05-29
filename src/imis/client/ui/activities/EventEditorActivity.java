@@ -1,6 +1,5 @@
 package imis.client.ui.activities;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -37,8 +36,9 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     // Actual event
     private Event arriveEvent = null, leaveEvent = null;
-    private int arriveId = -1, leaveId = -1, widgetID = -1;
+    private int arriveId = -1, leaveId = -1;//, widgetID = -1;
     private long date;
+    private boolean widgetIsSource = false;
 
     // States this activities could be in
     private static final int STATE_EDIT = 0, STATE_INSERT = 1, STATE_VIEWING = 2;
@@ -60,6 +60,8 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         setContentView(R.layout.event_editor);
         final Intent intent = getIntent();
         date = intent.getLongExtra(Event.KEY_DATE, AppUtil.todayInLong());
+        widgetIsSource = intent.getBooleanExtra(AppConsts.KEY_WIDGET_IS_SOURCE, false);
+
 //        Log.d(TAG, "onCreate date : " + date + "  " + EventManager.getAllEvents(getApplicationContext()));
         Log.d(TAG, "onCreate() intent " + intent.getAction());
         Log.d(TAG, "onCreate() date " + AppUtil.formatAbbrDate(date));
@@ -84,11 +86,11 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         leaveId = intent.getIntExtra(ActivityConsts.ID_LEAVE, -1);
         loadEvents(arriveId, leaveId);
 
-        widgetID = intent.getIntExtra(AppConsts.KEY_WIDGET_ID, 0);
-        if (widgetID != 0) {
-            showAddEventDialog();//TODO mesage
-        }
         init();
+        if (widgetIsSource) {
+            showAddEventDialog(arriveId == -1);
+        }
+
         restorePreviousValues(savedInstanceState);
     }
 
@@ -104,7 +106,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         if (leaveId != -1) {
             leaveEvent = EventManager.getEvent(getApplicationContext(), leaveId);
             if (leaveEvent.getMsg() != null) leaveMsg = leaveEvent.getMsg();
-        } else if (widgetID != 0 && arriveId != -1) {
+        } else if (widgetIsSource && arriveId != -1) {
             leaveEvent = new Event();
         }
 
@@ -112,7 +114,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     }
 
     private void showToastIfErrors(String arriveMsg, String leaveMsg) {
-        Log.d(TAG,"showToastIfErrors()" + "arriveMsg = [" + arriveMsg + "], leaveMsg = [" + leaveMsg + "]");
+        Log.d(TAG, "showToastIfErrors()" + "arriveMsg = [" + arriveMsg + "], leaveMsg = [" + leaveMsg + "]");
         //TODO ukazovat pouze pri chybe
         StringBuilder errMsg = new StringBuilder();
         if (arriveMsg != null) {
@@ -129,8 +131,26 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         }
     }
 
-    private void showAddEventDialog() {
-        DialogFragment deleteEventDialog = new AddEventDialog();
+    private void showAddEventDialog(boolean isArrive) {
+        String title, time, desc = "";
+        StringBuilder message = new StringBuilder();
+
+        if (isArrive) {
+            title = "Přidat příchod";
+            time = AppUtil.formatTime(arriveEvent.getCas());
+            desc = spinnerKod_poArrive.getSelectedItem().toString();
+        } else {
+            title = "Přidat odchod";
+            time = AppUtil.formatTime(leaveEvent.getCas());
+            desc = spinnerKod_poLeave.getSelectedItem().toString();
+
+        }
+        message.append(getResources().getString(R.string.dialog_add_time));
+        message.append(time + "\n");
+        message.append(getResources().getString(R.string.dialog_add_type));
+        message.append(desc);
+
+        DialogFragment deleteEventDialog = new AddEventDialog(title, message.toString());
         deleteEventDialog.show(getSupportFragmentManager(), "AddEventDialog");
     }
 
@@ -280,6 +300,17 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         Log.d(TAG, "onPause" + EventManager.getAllEvents(getApplicationContext()));
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop()");
+        refreshShortcutWidgets();
+    }
+
+    private void refreshShortcutWidgets() {
+        ShortcutWidgetProvider.updateAllWidgets(this);
+    }
+
     private void populateArriveFields() {
         Log.d(TAG, "populateArriveFields event " + arriveEvent);
         // Type
@@ -357,18 +388,19 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             arriveEvent.setPoznamka(textPoznamkaArrive.getText().toString());
             if (state == STATE_EDIT) {
                 EventManager.updateEvent(getApplicationContext(), arriveEvent);
-            } else if (state == STATE_INSERT) {
+            } else if (state == STATE_INSERT && arriveEvent.get_id() == 0) {
+                Log.d(TAG, "saveArriveEvent() vkladam prichod");
                 arriveEvent.setDruh(Event.DRUH_ARRIVAL);
                 arriveEvent.setDatum(date);
                 Log.d(TAG, "saveArriveEvent() insert " + arriveEvent);
-                arriveId = EventManager.addEvent(getApplicationContext(), arriveEvent);
+                arriveId = EventManager.addEvent(getApplicationContext(), arriveEvent);//TODO nepridavat z widgety
             }
         }
     }
 
     private void saveLeaveEvent() {
         if (leaveEvent != null) {
-            // Ulozi aktualizovane hodnoty
+            Log.d(TAG, "saveLeaveEvent() leaveEvent != null");
             setImplicitEventValues(leaveEvent);
             leaveEvent.setKod_po(kody_po_values[selectedLeave]);
             leaveEvent.setCas(getPickerCurrentTimeInMs(leaveTime));
@@ -376,6 +408,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             if (state == STATE_EDIT) {
                 EventManager.updateEvent(getApplicationContext(), leaveEvent);
             } else if (state == STATE_INSERT) {
+                Log.d(TAG, "saveLeaveEvent() vkladam odchod");
                 leaveEvent.setDruh(Event.DRUH_LEAVE);
                 leaveEvent.setDatum(date);
                 leaveId = EventManager.addEvent(getApplicationContext(), leaveEvent);
@@ -521,13 +554,10 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         leaveEvent = new Event();
     }
 
-
     @Override
     public void onAddEventDialogPositiveClick() {
         Log.d(TAG, "onAddEventDialogPositiveClick()");
         saveEvents();
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        ShortcutWidgetProvider.updateAppWidget(this, appWidgetManager, widgetID);
         finish();
     }
 

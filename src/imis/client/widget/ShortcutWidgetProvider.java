@@ -3,6 +3,7 @@ package imis.client.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -37,16 +38,18 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                       int appWidgetId) {
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                        int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.shortcut_widget);
 
         Event lastEvent = EventManager.getLastEvent(context);
         Log.d(TAG, "updateAppWidget() lastEvent " + lastEvent);
-        views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorUtil.getColor(lastEvent.getKod_po()));
-        String last = lastEvent.getDruh() + " " + AppUtil.formatEmpDate(lastEvent.getDatum() + lastEvent.getCas());
-        views.setTextViewText(R.id.emp_time, last);
-
+        if (lastEvent != null) {
+            views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorUtil.getColor(lastEvent.getKod_po()));
+            String last = lastEvent.getDruh() + " " + AppUtil.formatEmpDate(lastEvent.getDatum())
+                    + " " + AppUtil.formatTime(lastEvent.getCas());
+            views.setTextViewText(R.id.emp_time, last);
+        }
         // Register an onClickListener
         Intent intent = new Intent(context, ShortcutWidgetReceiver.class);
 
@@ -60,5 +63,15 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
 
         // Tell the widget manager
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    public static void updateAllWidgets(Context context) {
+        AppWidgetManager man = AppWidgetManager.getInstance(context);
+        int[] ids = man.getAppWidgetIds(
+                new ComponentName(context, ShortcutWidgetProvider.class));
+        Log.d(TAG, "updateAllWidgets() ids " + Arrays.toString(ids));
+        for (int id : ids) {
+            updateAppWidget(context, man, id);
+        }
     }
 }

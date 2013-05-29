@@ -21,9 +21,10 @@ public class AppConsts {
     public static final String NETWORK_TYPE_ANY = "ANY";
 
     public static final String SHORTCUT_ADD_ACTION = "imis.client.widget.ADD_EVENT";
-    public static final String KEY_WIDGET_ID = "widgetID";
+    public static final String KEY_WIDGET_IS_SOURCE = "widget";
 
-
+    public static final long MS_IN_HOUR = 60L * 60L * 1000L;
+    public static final long MS_IN_MIN = 60L * 1000L;
 
     public final static String PREFS_CREDENTIALS = "AccountCredentials";
 }

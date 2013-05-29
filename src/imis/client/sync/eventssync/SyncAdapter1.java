@@ -15,6 +15,7 @@ import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
+import imis.client.widget.ShortcutWidgetProvider;
 import org.apache.http.HttpStatus;
 
 import java.util.List;
@@ -70,6 +71,9 @@ public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
         long date = extras.getLong(Event.KEY_DATE, AppUtil.todayInLong());
         processDownloadEvents(icp, date);
         Log.d(TAG, "onPerformSync() end");
+
+        // Refresh shortcut widgets
+        ShortcutWidgetProvider.updateAllWidgets(context);
 
     }
 

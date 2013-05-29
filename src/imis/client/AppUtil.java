@@ -13,7 +13,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,19 +23,14 @@ import java.util.TimeZone;
 public class AppUtil {
     public static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
     public static final DateFormat dfAbbr = new SimpleDateFormat("d.M.yy");
-    public static final DateFormat dfUTCTime = new SimpleDateFormat("HH:mm");
-    public static final DateFormat dfEmpTime = new SimpleDateFormat("d.M. HH:mm");
-
-    static {
-        dfUTCTime.setTimeZone((TimeZone.getTimeZone("UTC")));
-    }//TODO casove zone, nekde to hodinu nesedi
+    public static final DateFormat dfTime = new SimpleDateFormat("HH:mm");
 
     private static final String TAG = AppUtil.class.getSimpleName();
 
     public static void showAccountNotExistsError(Context context) {
         Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_LONG);
         Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
-        intent.putExtra(Settings.EXTRA_AUTHORITIES, new String[]{AppConsts.AUTHORITY1, AppConsts.AUTHORITY2});//
+        intent.putExtra(Settings.EXTRA_AUTHORITIES, new String[]{AppConsts.AUTHORITY1, AppConsts.AUTHORITY2});
         context.startActivity(intent);
         toast.show();
     }
@@ -131,14 +125,13 @@ public class AppUtil {
     public static String formatEmpDate(long date) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
-        return dfEmpTime.format(cal.getTime());
+        return dfAbbr.format(cal.getTime());
     }
 
     public static String formatTime(long time) {
         Calendar cal = Calendar.getInstance();
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         cal.setTimeInMillis(time);
-        return dfUTCTime.format(cal.getTime());
+        return dfTime.format(cal.getTime());
     }
 
     public static void validateDate(String date) throws ParseException {
@@ -149,7 +142,7 @@ public class AppUtil {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(time);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-        Log.d(TAG, "getFirstDateOfMonth() cal.getTimeInMillis() " + cal.getTimeInMillis());
+        Log.d(TAG, "getFirstDateOfMonth() cal.getTimeInMillis() " + formatAbbrDate(cal.getTimeInMillis()));
         return cal.getTimeInMillis();
     }
 
@@ -157,7 +150,7 @@ public class AppUtil {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(time);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        Log.d(TAG, "getLastDateOfMonth() cal.getTimeInMillis() " + cal.getTimeInMillis());
+        Log.d(TAG, "getLastDateOfMonth() cal.getTimeInMillis() " + formatAbbrDate(cal.getTimeInMillis()));
         return cal.getTimeInMillis();
     }
 
@@ -169,7 +162,6 @@ public class AppUtil {
         cal.set(Calendar.MILLISECOND, 0);
         cal.add(Calendar.MONTH, -1);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-        Log.d(TAG, "getStartDateOfPreviousMonth() cal.getTimeInMillis() " + cal.getTimeInMillis());
         Log.d(TAG, "getStartDateOfPreviousMonth() cal.getTimeInMillis() " + formatAbbrDate(cal.getTimeInMillis()));
         return cal.getTimeInMillis();
     }
