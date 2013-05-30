@@ -202,6 +202,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
              case R.id.sync_settings:
                 startSyncSettingsActivity();
                 return true;
+            case R.id.location_settings:
+                startLocationSettingsActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -353,6 +356,11 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private void startSyncSettingsActivity() {
         Intent intent = new Intent(this, SyncSettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void startLocationSettingsActivity() {
+        Intent intent = new Intent(this, LocationSettingsActivity.class);
         startActivity(intent);
     }
 

@@ -170,5 +170,6 @@
     <string name="widget_label_employees">Přítomnost zaměstnance</string>
     <string name="widget_label_shortcut">Zadávání docházky</string>
     <string name="other_option">Jiný</string>
+    <string name="location_settings">Nastavení umístění</string>
 
 </resources>
