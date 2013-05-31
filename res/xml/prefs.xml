@@ -26,6 +26,16 @@
                 android:title="@string/sync_widgets"
                 android:defaultValue="@string/sync_widget_frequency_default"/>
     </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/pref_notification_period"
+            android:key="pref_notification_period">
+        <ListPreference
+                android:key="@string/prefNotificationArrive"
+                android:entries="@array/prefNotificationDelay"
+                android:entryValues="@array/prefNotificationDelayValues"
+                android:title="@string/pref_notification_arrive"
+                android:defaultValue="@string/pref_notification_default"/>
+    </PreferenceCategory>
 
 
 </PreferenceScreen>

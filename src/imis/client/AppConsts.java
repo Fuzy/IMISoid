@@ -15,6 +15,10 @@ public class AppConsts {
     public static final String KEY_DOMAIN = "DOMAIN";
     public static final String KEY_PORT = "PORT";
 
+    public static final String KEY_LATITUDE = "LATITUDE";
+    public static final String KEY_LONGITUDE = "LONGITUDE";
+    public static final String KEY_RADIUS = "RADIUS";
+    public static final String KEY_SEEK_POS = "SEEK";
 
     public static final String KEY_NETWORK_TYPE = "prefSyncOnNetworkType";
     public static final String NETWORK_TYPE_WIFI = "WIFI";

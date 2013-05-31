@@ -171,5 +171,7 @@
     <string name="widget_label_shortcut">Zadávání docházky</string>
     <string name="other_option">Jiný</string>
     <string name="location_settings">Nastavení umístění</string>
+    <string name="pref_notification_period">Upozornění při opomenutí</string>
+    <string name="pref_notification_arrive">Chybějící příchod</string>
 
 </resources>

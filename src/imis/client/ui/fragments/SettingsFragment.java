@@ -1,4 +1,4 @@
-package imis.client.sync.eventssync;
+package imis.client.ui.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,22 +17,25 @@ import java.util.Map;
  * Date: 25.5.13
  * Time: 22:28
  */
-public class SyncSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final String TAG = SyncSettingsFragment.class.getSimpleName();
+public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final String TAG = SettingsFragment.class.getSimpleName();
 
     private static Map<String, String> eventsFreq = new HashMap<>();
     private static Map<String, String> widgetsFreq = new HashMap<>();
     private static Map<String, String> networkType = new HashMap<>();
+    private static Map<String, String> notificationDelay = new HashMap<>();
     private static String KEY_PREF_NETWORK_TYPE;
     private static String KEY_PREF_SYNC_EVENTS;
     private static String KEY_PREF_SYNC_WIDGETS;
+    private static String KEY_PREF_NOTIFI_ARRIVE;
+    //TODO to samy pro odchod
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.sync_prefs);
+        addPreferencesFromResource(R.xml.prefs);
 
         //load resources
         loadKeys();
@@ -46,6 +49,7 @@ public class SyncSettingsFragment extends PreferenceFragment implements SharedPr
         KEY_PREF_NETWORK_TYPE = getResources().getString(R.string.prefSyncOnNetworkType);
         KEY_PREF_SYNC_EVENTS = getResources().getString(R.string.prefSyncEventsFrequency);
         KEY_PREF_SYNC_WIDGETS = getResources().getString(R.string.prefSyncWidgetsFrequency);
+        KEY_PREF_NOTIFI_ARRIVE = getResources().getString(R.string.prefNotificationArrive);
     }
 
     private void populateMaps() {
@@ -58,6 +62,9 @@ public class SyncSettingsFragment extends PreferenceFragment implements SharedPr
         String[] networkTypeAr = getResources().getStringArray(R.array.prefsyncNetworkType);
         String[] networkTypeValuesAr = getResources().getStringArray(R.array.prefsyncNetworkTypeValues);
         populateMap(networkTypeValuesAr, networkTypeAr, networkType);
+        String[] notificationAr = getResources().getStringArray(R.array.prefNotificationDelay);
+        String[] notificationValuesAr = getResources().getStringArray(R.array.prefNotificationDelayValues);
+        populateMap(notificationValuesAr, notificationAr, notificationDelay);
     }
 
     private void populateMap(String[] keys, String[] values, Map<String, String> map) {
@@ -104,6 +111,8 @@ public class SyncSettingsFragment extends PreferenceFragment implements SharedPr
             summary = eventsFreq.get(value);
         } else if (key.equals(KEY_PREF_SYNC_WIDGETS)) {
             summary = widgetsFreq.get(value);
+        }else if (key.equals(KEY_PREF_NOTIFI_ARRIVE)) {
+            summary = notificationDelay.get(value);
         }
         connectionPref.setSummary(summary);
     }

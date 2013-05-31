@@ -27,7 +27,6 @@ import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.RecordManager;
 import imis.client.processor.DataProcessor;
-import imis.client.sync.eventssync.SyncSettingsActivity;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
@@ -355,7 +354,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     private void startSyncSettingsActivity() {
-        Intent intent = new Intent(this, SyncSettingsActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
