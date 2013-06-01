@@ -23,7 +23,7 @@ public class NetworkUtilities {//TODO asi jako nestaticka trida
     private static final String EVENTS_UPDATE_PATH = "events/{rowid}";
     private static final String EVENTS_GET_PATH = "events/{icp}?from={from}&to={to}";
     private static final String RECORDS_PATH = "records/{kodpra}?from={from}&to={to}";
-    private static final String AUTH_PATH = "authentication";
+    private static final String EMPLOYEE_PATH = "employee/{icp}";
     private static final String EMPLOYEES_PATH = "employees/{icp}";
     private static final String EMPLOYEES_EVENTS_PATH = "employees/lastevents";
     private static final String EMPLOYEE_EVENT_PATH = "employees/lastevent/{icp}";
@@ -44,43 +44,11 @@ public class NetworkUtilities {//TODO asi jako nestaticka trida
     public static String EMPLOYEES_URL;
     public static String EMPLOYEES_EVENTS_URL;
     public static String EMPLOYEE_EVENT_URL;
-    public static String AUTH_URL;
+    public static String EMPLOYEE_URL;
     public static String TEST_CONN_URL;
 
     public static final String DOMAIN_DEFAULT = "10.0.0.2";//        //10.0.0.1
     public static final int PORT_DEFAULT = 8081;
-
-    /*private static final String PARAM_USERNAME = "username";
-    private static final String PARAM_PASSWORD = "password";*/
-
-   /* public static String authenticate(String username, String password) {  //TODO predelat
-        Log.d("NetworkUtilities", "authenticate() username: " + username + " password: " + password);
-        HttpClient httpClient = HttpClientFactory.getThreadSafeClient();
-        HttpPost post = new HttpPost(AUTH_URL);
-        HttpResponse resp;
-        int code = -1;
-        try {
-            final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair(PARAM_USERNAME, username));
-            params.add(new BasicNameValuePair(PARAM_PASSWORD, password));
-            String json = Util.gson.toJson(params);
-            Log.d("NetworkUtilities", "authenticate() json: " + json);
-            StringEntity se = new StringEntity(json);
-            post.setEntity(se);
-            post.setHeader("Accept", "application/json");
-            post.setHeader("Content-type", "application/json");
-            resp = httpClient.execute(post);
-            code = resp.getStatusLine().getStatusCode();
-            Log.d("NetworkUtilities", "authenticate() code: " + code);
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return "qwertyxx";
-    }*/
 
     public static Result testWebServiceAndDBAvailability() {
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -128,7 +96,7 @@ public class NetworkUtilities {//TODO asi jako nestaticka trida
         EMPLOYEES_URL = BASE_URL + EMPLOYEES_PATH;
         EMPLOYEES_EVENTS_URL = BASE_URL + EMPLOYEES_EVENTS_PATH;
         EMPLOYEE_EVENT_URL = BASE_URL + EMPLOYEE_EVENT_PATH;
-        AUTH_URL = BASE_URL + AUTH_PATH;
+        EMPLOYEE_URL = BASE_URL + EMPLOYEE_PATH;
         TEST_CONN_URL = BASE_URL + TEST_CONN;
         Log.d(TAG, "resetDomainAndPort() TEST_CONN_URL " + TEST_CONN_URL);
     }

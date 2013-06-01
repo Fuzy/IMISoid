@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import imis.client.AppUtil;
 import imis.client.R;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.ResultList;
 import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Record;
 import imis.client.network.HttpClientFactory;
@@ -23,7 +23,7 @@ import java.util.Collections;
  * Date: 13.4.13
  * Time: 19:36
  */
-public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultData<Record>> {
+public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultList<Record>> {
     private static final String TAG = GetListOfRecords.class.getSimpleName();
 
     public GetListOfRecords(Context context, String... params) {
@@ -31,7 +31,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
     }
 
     @Override
-    protected ResultData<Record> doInBackground(String... params) {
+    protected ResultList<Record> doInBackground(String... params) {
         String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -50,15 +50,15 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
                     Record[].class, kodpra, from, to);
             Record[] body = response.getBody();
             Log.d(TAG, "doInBackground() ok " + body);
-            return new ResultData<Record>(response.getStatusCode(), body);
+            return new ResultList<Record>(response.getStatusCode(), body);
         } catch (Exception e) { //ResourceAccessException
             Log.d(TAG, e.getLocalizedMessage(), e);
-            return new ResultData<Record>(context.getString(R.string.service_unavailable));
+            return new ResultList<Record>(context.getString(R.string.service_unavailable));
         }
     }
 
     @Override
-    protected void onPostExecute(ResultData<Record> resultData) {
+    protected void onPostExecute(ResultList<Record> resultList) {
 
 
         /*Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
@@ -100,11 +100,11 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultDa
         records[1] = record2;*/
 
 
-        if (resultData.isUnknownErr()) {
+        if (resultList.isUnknownErr()) {
             Log.d(TAG, "onPostExecute() isUnknownErr");
-            AppUtil.showError(context, resultData.getMsg());
+            AppUtil.showError(context, resultList.getMsg());
         } else {
-            Record[] records = resultData.getArray();
+            Record[] records = resultList.getArray();
             if (records != null) {
                 RecordManager.addRecords(context, records);
                 Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(context));

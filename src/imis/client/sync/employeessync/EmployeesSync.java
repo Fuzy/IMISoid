@@ -2,7 +2,7 @@ package imis.client.sync.employeessync;
 
 import android.content.Context;
 import android.util.Log;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.ResultItem;
 import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Employee;
 import imis.client.network.HttpClientFactory;
@@ -29,7 +29,7 @@ public class EmployeesSync {
         this.context = context;
     }
 
-    public ResultData<Employee> getEmployeeLastEvent(final String icp) {
+    public ResultItem<Employee> getEmployeeLastEvent(final String icp) {//TODO predelat na item
         Log.d(TAG, "getUserEvents() icp: " + icp );
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -43,13 +43,13 @@ public class EmployeesSync {
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            ResponseEntity<Employee[]> response = restTemplate.exchange(NetworkUtilities.EMPLOYEE_EVENT_URL,
-                    HttpMethod.GET, entity, Employee[].class, icp);
-            Employee[] employee = response.getBody();
-            return new ResultData<Employee>(response.getStatusCode(), employee);
+            ResponseEntity<Employee> response = restTemplate.exchange(NetworkUtilities.EMPLOYEE_EVENT_URL,
+                    HttpMethod.GET, entity, Employee.class, icp);
+            Employee employee = response.getBody();
+            return new ResultItem<Employee>(response.getStatusCode(), employee);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultData<Employee>(e.getLocalizedMessage());
+            return new ResultItem<Employee>(e.getLocalizedMessage());
         }
     }
 }

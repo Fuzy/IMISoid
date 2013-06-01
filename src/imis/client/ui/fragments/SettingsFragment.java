@@ -1,5 +1,9 @@
 package imis.client.ui.fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -7,6 +11,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import imis.client.R;
+import imis.client.services.AttendanceGuardService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +35,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private static String KEY_PREF_NOTIFI_ARRIVE;
     //TODO to samy pro odchod
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         // set all summaries
         initSummaries();
+
+        //TODO
+        AlarmManager am = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
+        Intent intent = new Intent(getActivity(), AttendanceGuardService.class);
+        PendingIntent pi = PendingIntent.getService(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.set(AlarmManager.RTC, System.currentTimeMillis() + 5 * 1000, pi);
     }
 
     private void loadKeys() {
@@ -111,9 +123,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             summary = eventsFreq.get(value);
         } else if (key.equals(KEY_PREF_SYNC_WIDGETS)) {
             summary = widgetsFreq.get(value);
-        }else if (key.equals(KEY_PREF_NOTIFI_ARRIVE)) {
+        } else if (key.equals(KEY_PREF_NOTIFI_ARRIVE)) {
             summary = notificationDelay.get(value);
         }
         connectionPref.setSummary(summary);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //TODO
+//        am.cancel(pi);
+//        getActivity().unregisterReceiver(br);
     }
 }

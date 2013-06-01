@@ -58,7 +58,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
             Employee[] body = response.getBody();
             Log.d(TAG, "doInBackground() body " + body);
             return body;
-        } catch (Exception e) {
+        } catch (Exception e) { //TODO predelat
             Log.e(TAG, e.getLocalizedMessage(), e);
             return null; //TODO err msg
         }

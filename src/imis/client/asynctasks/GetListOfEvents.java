@@ -48,7 +48,7 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]> 
                     Event[].class, kodpra, from, to);
             Event[] body = response.getBody();
             return body;
-        } catch (Exception e) {
+        } catch (Exception e) {  //TODO predelat
             Log.e(TAG, e.getLocalizedMessage(), e);
         }
 

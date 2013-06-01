@@ -26,7 +26,7 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        Log.d(TAG,"onUpdate() appWidgetIds " + Arrays.toString(appWidgetIds));
+        Log.d(TAG, "onUpdate() appWidgetIds " + Arrays.toString(appWidgetIds));
         //TODO urcite se mazou
         for (int i = 0; i < appWidgetIds.length; i++) {
             int appWidgetId = appWidgetIds[i];
@@ -47,6 +47,9 @@ public class WidgetProvider extends AppWidgetProvider {
             views.setTextViewText(R.id.emp_kodpra, name);
             Long time = employee.getLastEventTime();
             if (time != null) views.setTextViewText(R.id.emp_time, AppUtil.formatEmpDate(time));
+           /* String last = employee.getDruh() + " " + AppUtil.formatEmpDate(employee.getDatum())
+                    + " " + AppUtil.formatTime(lastEvent.getCas());*/
+//            views.setTextViewText(R.id.emp_time, last); //TODO stejna jako shortcut widget
             views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorUtil.getColor(employee.getKod_po()));
 
             // Tell the widget manager

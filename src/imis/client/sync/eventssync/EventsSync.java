@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import imis.client.AppUtil;
 import imis.client.asynctasks.result.Result;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.ResultList;
 import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Event;
 import imis.client.network.HttpClientFactory;
@@ -55,7 +55,7 @@ public class EventsSync {
         }
     }
 
-    public ResultData<Event> getUserEvents(final String icp, final long from, final long to) {
+    public ResultList<Event> getUserEvents(final String icp, final long from, final long to) {
         String strFrom = AppUtil.formatDate(from);
         String strTo = AppUtil.formatDate(to);
         Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo: " + strTo);
@@ -75,11 +75,11 @@ public class EventsSync {
                     HttpMethod.GET, entity, Event[].class, icp, strFrom, strTo);
             Event[] events = response.getBody();
             Log.d(TAG, "getUserEvents() events " + events);
-            return new ResultData<Event>(response.getStatusCode(), events);
+            return new ResultList<Event>(response.getStatusCode(), events);
         } catch (Exception e) {
             Log.d(TAG, "getUserEvents() e " + e);
             e.printStackTrace();
-            return new ResultData<Event>(e.getLocalizedMessage());
+            return new ResultList<Event>(e.getLocalizedMessage());
         }
     }
 

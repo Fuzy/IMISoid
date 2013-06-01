@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import imis.client.AppUtil;
 import imis.client.asynctasks.result.Result;
-import imis.client.asynctasks.result.ResultData;
+import imis.client.asynctasks.result.ResultList;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
@@ -120,7 +120,7 @@ public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
     }
 
     private void processDownloadEvents(final String icp, final long date) {
-        ResultData getResult = sync.getUserEvents(icp, date, date);
+        ResultList getResult = sync.getUserEvents(icp, date, date);
         Log.d(TAG, "processDownloadEvents()" + "icp = [" + icp + "], date = [" + date + "]" + "getResult = [" + getResult + "]");
 
         if (getResult.isUnknownErr()) {

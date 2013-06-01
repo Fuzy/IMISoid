@@ -96,21 +96,7 @@
     <string name="network_ws_reach_lab">WS</string>
     <string name="network_db_reach_lab">DB</string>
 
-    <string
-            name="login_activity_loginfail_text_both">The username or password isn\'t valid. A Sample SyncAdapter
-        account is
-        required. Please try again.
-    </string>
-    <string
-            name="login_activity_loginfail_text_pwonly">You entered the wrong password or your account has changed.
-        Please re-enter your password.
-    </string>
-    <string
-            name="login_activity_loginfail_text_pwmissing">Zadej heslo.
-    </string>
-    <string
-            name="login_activity_loginfail_text_usmissing">Zadej zkratku uživatele.
-    </string>
+    <string name="login_activity_loginfail_text_both">Chybné uživatelské jméno nebo heslo.</string>
     <string name="ui_activity_authenticating">Authentikace\u2026</string>
     <string name="menu_refresh">Aktualizovat</string>
     <string name="menu_records">Výkazy</string>

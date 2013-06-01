@@ -10,19 +10,19 @@ import java.util.Arrays;
  * Date: 27.4.13
  * Time: 19:37
  */
-public class ResultData<T> extends Result {
+public class ResultList<T> extends Result {
     protected T[] array;
 
-    public ResultData(HttpStatus statusCode, T[] array) {
+    public ResultList(HttpStatus statusCode, T[] array) {
         super(statusCode);
         this.array = array;
     }
 
-    public ResultData(String msg) {
+    public ResultList(String msg) {
         super(msg);
     }
 
-    public ResultData(HttpStatus statusCode, String msg) {
+    public ResultList(HttpStatus statusCode, String msg) {
         super(statusCode, msg);
     }
 
@@ -36,7 +36,7 @@ public class ResultData<T> extends Result {
 
     @Override
     public String toString() {
-        return "ResultData{" +
+        return "ResultList{" +
                 "statusCode=" + statusCode +
                 ", msg='" + msg + '\'' +
                 ", unknownErr=" + unknownErr +

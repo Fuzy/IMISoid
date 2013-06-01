@@ -1,12 +1,9 @@
 package imis.client.authentication;
 
 import android.accounts.Account;
-import android.accounts.AccountAuthenticatorActivity;
+import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,51 +11,45 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import imis.client.R;
+import imis.client.asynctasks.result.Result;
+import imis.client.asynctasks.result.ResultItem;
 import imis.client.model.Employee;
-import imis.client.persistent.EmployeeManager;
+import imis.client.ui.activities.AsyncActivity;
 
-public class AuthenticatorActivity extends AccountAuthenticatorActivity {
-    private static final String TAG = "AuthenticatorActivity";
-    private String username = null, icp = null, password = null;
+public class AuthenticatorActivity extends AsyncActivity {
+    private static final String TAG = AuthenticatorActivity.class.getSimpleName();
+
+    //Fields from android.accounts.AccountAuthenticatorActivity
+    private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
+    private Bundle mResultBundle = null;
+    //Fields from android.accounts.AccountAuthenticatorActivity ends
+
+    private String icp = null, password = null;
     private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
     //    private static final String AUTHORITY1 = AuthenticationConsts.AUTHORITY1;
-    private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
-    /**
-     * The Intent extras.
-     */
+    /*private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
     public static final String PARAM_PASSWORD = "password", PARAM_USERNAME = "username",
-            PARAM_AUTHTOKEN_TYPE = "authtokenType";
+            PARAM_AUTHTOKEN_TYPE = "authtokenType";*/
     private AccountManager accountManager;
-    /**
-     * Keep track of the login task so can cancel it if requested
-     */
-    private UserLoginTask authTask = null;
-    /**
-     * If set we are just checking that the user knows their credentials; this
-     * doesn't cause the user's password or authToken to be changed on the
-     * device.
-     */
-
-    private Boolean mConfirmCredentials = false;//TODO k cemu?
-    /**
-     * Was the original caller asking for an entirely new account?
-     */
-    protected boolean requestNewAccount = false;//TODO k cemu?
-    private ProgressDialog progressDialog = null;
     private TextView mMessage;
-    private EditText passwordEdit, usernameEdit, icpEdit;
+    private EditText passwordEdit, icpEdit;
 
     @Override
     protected void onCreate(Bundle icicle) {
         Log.d(TAG, "onCreate()");
+
+        //onCreate() android.accounts.AccountAuthenticatorActivity
+        mAccountAuthenticatorResponse =
+                getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
+
+        if (mAccountAuthenticatorResponse != null) {
+            mAccountAuthenticatorResponse.onRequestContinued();
+        }
+        //onCreate() android.accounts.AccountAuthenticatorActivity ends
+
+
         super.onCreate(icicle);
-        // ziska account manager
         accountManager = AccountManager.get(this);
-        //TODO dodelat podle predlohy
-        requestNewAccount = (username == null) ? true : false;
-
-
-        //finishLogin(AUTH_TOKEN);
         setContentView(R.layout.user_login);
         initLayoutComponents();
     }
@@ -66,29 +57,28 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        usernameEdit.setText("TST");
-        icpEdit.setText("TST");
+        icpEdit.setText("TST");//TODO smazat
         passwordEdit.setText("TST");
     }
 
     private void initLayoutComponents() {
-        usernameEdit = (EditText) findViewById(R.id.username_edit);
         passwordEdit = (EditText) findViewById(R.id.password_edit);
         icpEdit = (EditText) findViewById(R.id.icp_edit);
         mMessage = (TextView) findViewById(R.id.message);
     }
 
-    private void finishLogin(String authToken) {
+    private void finishLogin() {
         Log.d(TAG, "finishLogin()");
-        final Account account = new Account(username, ACCOUNT_TYPE);
+        final Account account = new Account(icp, ACCOUNT_TYPE);
         Bundle userdata = new Bundle();
         userdata.putString(AuthenticationConsts.KEY_ICP, icp);
         accountManager.addAccountExplicitly(account, password, userdata);
-        //TODO pridat uzivatele do tabulky
+
 
         // add employee as a user
-        Employee user = new Employee(icp, username, false, false, true);
-        EmployeeManager.addEmployee(this, user);
+        //TODO pridat uzivatele do tabulky
+        /*Employee user = new Employee(icp, username, false, false, true);
+        EmployeeManager.addEmployee(this, user);*/
 
         // Povoli synchronizaci pro tento ucet
         /*ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
@@ -97,181 +87,76 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         // Now we tell our caller, could be the Android Account Manager or even our own application
         // that the process was successful
         final Intent intent = new Intent();
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
+        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, icp);
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    /**
-     * Called when the authentication process completes (see attemptLogin()).
-     *
-     * @param authToken the authentication token returned by the server, or NULL if
-     *                  authentication failed.
-     */
-    public void onAuthenticationResult(String authToken) {
-        Log.d("AuthenticatorActivity", "onAuthenticationResult()");
-        boolean success = ((authToken != null) && (authToken.length() > 0));
-        Log.i(TAG, "onAuthenticationResult(" + success + ")");
-
-        // Our task is complete, so clear it out
-        authTask = null;
-
-        // Hide the progress dialog
-        hideProgress();
-
+    @Override
+    public void onTaskFinished(Result result) {
+        ResultItem<Employee> employeeResult = (ResultItem<Employee>) result;
+        Log.d(TAG, "onTaskFinished() employeeResult " + employeeResult);
+        if (employeeResult != null) {
+            Employee employee = employeeResult.getItem();
+            Log.d(TAG, "onTaskFinished() employee " + employee);
+        }
+        boolean success = !employeeResult.isClientError();//TODO
         if (success) {
-            if (!mConfirmCredentials) {
-                finishLogin(authToken);
-            } else {
-                finishConfirmCredentials(success);
-            }
+            //TODO zobrazit vysledek, dialog
+            finishLogin();
         } else {
             Log.e(TAG, "onAuthenticationResult: failed to authenticate");
-            if (requestNewAccount) {
-                // "Please enter a valid username/password.
-                mMessage.setText(getText(R.string.login_activity_loginfail_text_both));
-            } else {
-                // "Please enter a valid password." (Used when the
-                // account is already in the database but the password
-                // doesn't work.)
-                mMessage.setText(getText(R.string.login_activity_loginfail_text_pwonly));
-            }
+            mMessage.setText(getText(R.string.login_activity_loginfail_text_both));
         }
     }
 
-    /**
-     * Pouzije se pokud je treba zadat pouze heslo.
-     *
-     * @param result the confirmCredentials result.
-     */
-    private void finishConfirmCredentials(boolean result) {
-        Log.i(TAG, "finishConfirmCredentials()");
-        final Account account = new Account(username, AuthenticationConsts.ACCOUNT_TYPE);
-        accountManager.setPassword(account, password);
-        final Intent intent = new Intent();
-        intent.putExtra(AccountManager.KEY_BOOLEAN_RESULT, result);
-        setAccountAuthenticatorResult(intent.getExtras());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    private void onAuthenticationCancel() {
-        Log.i(TAG, "onAuthenticationCancel()");
-        authTask = null;
-        hideProgress();
-    }
-
-    private void hideProgress() {
-        Log.d("AuthenticatorActivity", "hideProgress()");
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
-    }
-
-    /**
-     * Handles onClick event on the Submit button. Sends username/password to
-     * the server for authentication. The button is configured to call
-     * handleLogin() in the layout XML.
-     *
-     * @param view The Submit button for which this method is invoked
-     */
     public void handleLogin(View view) {
         Log.d("AuthenticatorActivity", "handleLogin()");
-        if (requestNewAccount) {
-            username = usernameEdit.getText().toString();
-            icp = icpEdit.getText().toString();
-        }
+        icp = icpEdit.getText().toString();
         password = passwordEdit.getText().toString();
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(icp)) {//TODO kod tahat ze serveru
-            mMessage.setText(getMessage());
-        } else {
-            // Show a progress dialog, and kick off a background task to perform
-            // the user login attempt.
-            showProgress();
-            authTask = new UserLoginTask();
-            authTask.execute();
-        }
-    }
-
-    /**
-     * Vraci chybovou zpravu v pripade ze chybi jmeno ci heslo.
-     */
-    private CharSequence getMessage() {
-        Log.d("AuthenticatorActivity", "getMessage()");
-        if (TextUtils.isEmpty(username)) {
-            return getText(R.string.login_activity_loginfail_text_usmissing);
-        }
+        Log.d(TAG, "handleLogin() password " + password);
         if (TextUtils.isEmpty(icp)) {
-            return getText(R.string.login_activity_loginfail_text_icpmissing);
+            mMessage.setText(getText(R.string.login_activity_loginfail_text_icpmissing));
+        } else {
+            createTaskFragment(new AuthEmployee(this, icp, password));
         }
-        if (TextUtils.isEmpty(password)) {
-            return getText(R.string.login_activity_loginfail_text_pwmissing);
-        }
-        return null;
-    }
-
-    /**
-     * Shows the progress UI for a lengthy operation.
-     */
-    private void showProgress() {
-        Log.d("AuthenticatorActivity", "showProgress()");
-        progressDialog = ProgressDialog.show(this, "", getText(R.string.ui_activity_authenticating),
-                true, true, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                if (authTask != null) {
-                    authTask.cancel(true);
-                }
-            }
-        });
     }
 
     @Override
     protected void onPause() {
         Log.d("AuthenticatorActivity", "onPause()");
         super.onPause();
-        hideProgress();
+    }
+
+    //Methods from android.accounts.AccountAuthenticatorActivity
+
+    /**
+     * Set the result that is to be sent as the result of the request that caused this
+     * Activity to be launched. If result is null or this method is never called then
+     * the request will be canceled.
+     *
+     * @param result this is returned as the result of the AbstractAccountAuthenticator request
+     */
+    public final void setAccountAuthenticatorResult(Bundle result) {
+        mResultBundle = result;
     }
 
     /**
-     * Represents an asynchronous task used to authenticate a user against the
-     * SampleSync Service
+     * Sends the result or a Constants.ERROR_CODE_CANCELED error if a result isn't present.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, String> {//TODO dat k ostatnim
-
-        @Override
-        protected String doInBackground(Void... params) {
-            Log.d("AuthenticatorActivity$UserLoginTask", "doInBackground()");
-            // We do the actual work of authenticating the user
-            // in the NetworkUtilities class.
-            try {
-                return "bla";// NetworkUtilities.authenticate(username, password);
-            } catch (Exception ex) {
-                Log.e(TAG, "UserLoginTask.doInBackground: failed to authenticate");
-                ex.printStackTrace();//TODO hodilo null (asi nenastavena sit)
-                return null;
+    public void finish() {
+        if (mAccountAuthenticatorResponse != null) {
+            // send the result bundle back if set, otherwise send an error.
+            if (mResultBundle != null) {
+                mAccountAuthenticatorResponse.onResult(mResultBundle);
+            } else {
+                mAccountAuthenticatorResponse.onError(AccountManager.ERROR_CODE_CANCELED,
+                        "canceled");
             }
+            mAccountAuthenticatorResponse = null;
         }
-
-        @Override
-        protected void onPostExecute(final String authToken) {
-            Log.d("AuthenticatorActivity$UserLoginTask", "onPostExecute()");
-            // Uspesna autorizace vraci autorizacni token.
-            onAuthenticationResult(authToken);
-        }
-
-        @Override
-        protected void onCancelled() {
-            Log.d("AuthenticatorActivity$UserLoginTask", "onCancelled()");
-            // If the action was canceled (by the user clicking the cancel
-            // button in the progress dialog), then call back into the
-            // activities to let it know.
-            onAuthenticationCancel();
-        }
+        super.finish();
     }
-
-
 }

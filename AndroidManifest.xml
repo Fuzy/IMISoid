@@ -115,6 +115,12 @@
                     android:resource="@xml/syncadapter2"/>
         </service>
 
+        <service android:name=".services.AttendanceGuardService"
+                 android:exported="true">
+
+        </service>
+
+
         <activity android:name=".ui.activities.DayTimelineActivity"
                   android:theme="@android:style/Theme.Holo.Light">
 
@@ -212,7 +218,7 @@
 
         <meta-data
                 android:name="com.google.android.maps.v2.API_KEY"
-                android:value="AIzaSyAP5-vlF_2EjJ_GhiyY9B-PSI8GNPApb7A" />
+                android:value="AIzaSyAP5-vlF_2EjJ_GhiyY9B-PSI8GNPApb7A"/>
     </application>
 
 
