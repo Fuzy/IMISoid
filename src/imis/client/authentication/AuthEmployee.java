@@ -3,6 +3,7 @@ package imis.client.authentication;
 import android.content.Context;
 import android.util.Log;
 import imis.client.asynctasks.NetworkingAsyncTask;
+import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultItem;
 import imis.client.model.Employee;
 import imis.client.network.HttpClientFactory;
@@ -14,7 +15,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -32,8 +32,9 @@ public class AuthEmployee extends NetworkingAsyncTask<String, Void, ResultItem<E
 
     @Override
     protected ResultItem<Employee> doInBackground(String... strings) {
-        Log.d(TAG, "doInBackground() strings " + Arrays.toString(strings));
-        String icp = params[0], password = params[1];
+        String icp = params[0];
+        String password = (params[1].isEmpty()) ? "" : params[1];
+        Log.d(TAG, "doInBackground() icp " + icp + " password " + password);
 
         HttpHeaders requestHeaders = new HttpHeaders();
         HttpAuthentication authHeader = new HttpBasicAuthentication(icp, password);
@@ -52,14 +53,9 @@ public class AuthEmployee extends NetworkingAsyncTask<String, Void, ResultItem<E
             return new ResultItem<Employee>(response.getStatusCode(), employee);
         } catch (Exception e) {
             e.printStackTrace();//TODO client error
-            if (e instanceof HttpClientErrorException) {
-                Log.d(TAG, "doInBackground() HttpClientErrorException");
-                return new ResultItem<Employee>(((HttpClientErrorException) e).getStatusCode(), e.getLocalizedMessage());
-            } else if (e instanceof HttpServerErrorException) {
-                Log.d(TAG, "doInBackground() HttpServerErrorException");
-                return new ResultItem<Employee>(((HttpServerErrorException) e).getStatusCode(), e.getLocalizedMessage());
-            }
-            return new ResultItem<Employee>(e.getLocalizedMessage());
+            ResultItem<Employee> item = processException(e, ResultItem.class);
+            Log.d(TAG, "doInBackground() item " + item);
+            return item;
         }
     }
 
@@ -67,4 +63,34 @@ public class AuthEmployee extends NetworkingAsyncTask<String, Void, ResultItem<E
     protected void onPostExecute(ResultItem<Employee> employeeResult) {
         super.onPostExecute(employeeResult);
     }
+
+    private <T extends Result> T processException(Exception e, Class<T> type) {
+        T instance = null;
+        try {
+            if (e instanceof HttpClientErrorException) {
+                Log.d(TAG, "processException() HttpClientErrorException");
+                instance = type.getDeclaredConstructor(HttpStatus.class, String.class)
+                        .newInstance(((HttpClientErrorException) e).getStatusCode(), e.getLocalizedMessage());
+            } else if (e instanceof HttpServerErrorException) {
+                Log.d(TAG, "processException() HttpServerErrorException");
+                instance = type.getDeclaredConstructor(HttpStatus.class, String.class)
+                        .newInstance(((HttpServerErrorException) e).getStatusCode(), e.getLocalizedMessage());
+            } else {
+                instance = type.getDeclaredConstructor(String.class).newInstance(e.getLocalizedMessage());
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace(); //TODO
+        }
+        return instance;
+    }
+
+
+            /*if (e instanceof HttpClientErrorException) {
+                Log.d(TAG, "doInBackground() HttpClientErrorException");
+                return new ResultItem<Employee>(((HttpClientErrorException) e).getStatusCode(), e.getLocalizedMessage());
+            } else if (e instanceof HttpServerErrorException) {
+                Log.d(TAG, "doInBackground() HttpServerErrorException");
+                return new ResultItem<Employee>(((HttpServerErrorException) e).getStatusCode(), e.getLocalizedMessage());
+            }
+            return new ResultItem<Employee>(e.getLocalizedMessage());*/
 }

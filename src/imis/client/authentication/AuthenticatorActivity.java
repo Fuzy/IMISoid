@@ -5,6 +5,7 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +15,11 @@ import imis.client.R;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultItem;
 import imis.client.model.Employee;
+import imis.client.persistent.EmployeeManager;
 import imis.client.ui.activities.AsyncActivity;
+import imis.client.ui.dialogs.AuthConfirmDialog;
 
-public class AuthenticatorActivity extends AsyncActivity {
+public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmDialog.AuthConfirmDialogListener {
     private static final String TAG = AuthenticatorActivity.class.getSimpleName();
 
     //Fields from android.accounts.AccountAuthenticatorActivity
@@ -33,6 +36,7 @@ public class AuthenticatorActivity extends AsyncActivity {
     private AccountManager accountManager;
     private TextView mMessage;
     private EditText passwordEdit, icpEdit;
+    private Employee employee = null;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -74,15 +78,8 @@ public class AuthenticatorActivity extends AsyncActivity {
         userdata.putString(AuthenticationConsts.KEY_ICP, icp);
         accountManager.addAccountExplicitly(account, password, userdata);
 
-
-        // add employee as a user
-        //TODO pridat uzivatele do tabulky
-        /*Employee user = new Employee(icp, username, false, false, true);
-        EmployeeManager.addEmployee(this, user);*/
-
-        // Povoli synchronizaci pro tento ucet
-        /*ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
-        ContentResolver.addPeriodicSync(account, AppConsts.AUTHORITY1, null, 60);*/
+        int inserted = EmployeeManager.addEmployee(this, employee);
+        Log.d(TAG, "finishLogin() inserted " + inserted);
 
         // Now we tell our caller, could be the Android Account Manager or even our own application
         // that the process was successful
@@ -93,30 +90,45 @@ public class AuthenticatorActivity extends AsyncActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
+    //TODO pridat menu nastaveni site
+    //TODO po vytvoreni uctu yobrayit nahled se sync
 
     @Override
     public void onTaskFinished(Result result) {
         ResultItem<Employee> employeeResult = (ResultItem<Employee>) result;
         Log.d(TAG, "onTaskFinished() employeeResult " + employeeResult);
+
         if (employeeResult != null) {
-            Employee employee = employeeResult.getItem();
+            employee = employeeResult.getItem();
             Log.d(TAG, "onTaskFinished() employee " + employee);
         }
-        boolean success = !employeeResult.isClientError();//TODO
-        if (success) {
-            //TODO zobrazit vysledek, dialog
-            finishLogin();
-        } else {
-            Log.e(TAG, "onAuthenticationResult: failed to authenticate");
+
+        if (employeeResult.isUnknownErr()) {
+            Log.d(TAG, "onTaskFinished() isUnknownErr");
+            mMessage.setText(getText(R.string.unknown_error));
+        } else if (employeeResult.isServerError()) {
+            Log.d(TAG, "onTaskFinished() isServerError");
+            mMessage.setText(getText(R.string.server_error));
+        } else if (employeeResult.isClientError()) {
+            Log.d(TAG, "onTaskFinished() isClientError");
             mMessage.setText(getText(R.string.login_activity_loginfail_text_both));
+        } else {
+            Log.d(TAG, "onTaskFinished() OK");
+            showConfirmDialog();
         }
+
+    }
+
+    private void showConfirmDialog() {
+        String message = employee.getName() + " (" + employee.getKodpra() + ")";
+        DialogFragment deleteEventDialog = new AuthConfirmDialog(getString(R.string.auth_success), message);
+        deleteEventDialog.show(getSupportFragmentManager(), "AddEventDialog");
     }
 
     public void handleLogin(View view) {
         Log.d("AuthenticatorActivity", "handleLogin()");
         icp = icpEdit.getText().toString();
         password = passwordEdit.getText().toString();
-        Log.d(TAG, "handleLogin() password " + password);
         if (TextUtils.isEmpty(icp)) {
             mMessage.setText(getText(R.string.login_activity_loginfail_text_icpmissing));
         } else {
@@ -158,5 +170,10 @@ public class AuthenticatorActivity extends AsyncActivity {
             mAccountAuthenticatorResponse = null;
         }
         super.finish();
+    }
+
+    @Override
+    public void onConfirmClickPositiveClick() {
+        finishLogin();
     }
 }

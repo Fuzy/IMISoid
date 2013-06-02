@@ -38,7 +38,7 @@ public class ResultItem<T> extends Result {
                 "statusCode=" + statusCode +
                 ", msg='" + msg + '\'' +
                 ", unknownErr=" + unknownErr +
-                "item=" + item +
+                ", item=" + item +
                 '}';
     }
 }

@@ -159,5 +159,8 @@
     <string name="location_settings">Nastavení umístění</string>
     <string name="pref_notification_period">Upozornění při opomenutí</string>
     <string name="pref_notification_arrive">Chybějící příchod</string>
+    <string name="server_error">Chyba serveru</string>
+    <string name="unknown_error">Neznámá chyba</string>
+    <string name="auth_success">Vytvořen účet pro synchronizaci</string>
 
 </resources>

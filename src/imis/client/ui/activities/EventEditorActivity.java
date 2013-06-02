@@ -556,7 +556,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     @Override
     public void onAddEventDialogPositiveClick() {
-        Log.d(TAG, "onAddEventDialogPositiveClick()");
+        Log.d(TAG, "onConfirmClickPositiveClick()");
         saveEvents();
         finish();
     }
