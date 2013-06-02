@@ -18,7 +18,8 @@ public class Employee {
     private String kodpra;
     private String name;
     private Boolean isSubordinate;
-    private Long lastEventTime;
+    private Long datum;
+    private Long cas;
     private String kod_po;
     private String druh;
     private Integer widgetId;
@@ -76,12 +77,12 @@ public class Employee {
         isSubordinate = subordinate;
     }
 
-    public Long getLastEventTime() {
-        return lastEventTime;
+    public Long getDatum() {
+        return datum;
     }
 
-    public void setLastEventTime(Long lastEventTime) {
-        this.lastEventTime = lastEventTime;
+    public void setDatum(Long datum) {
+        this.datum = datum;
     }
 
     public String getKod_po() {
@@ -124,6 +125,14 @@ public class Employee {
         isUser = user;
     }
 
+    public Long getCas() {
+        return cas;
+    }
+
+    public void setCas(Long cas) {
+        this.cas = cas;
+    }
+
     public ContentValues asContentValues() {
         ContentValues values = new ContentValues();
         values.put(COL_ICP, icp);
@@ -137,8 +146,11 @@ public class Employee {
             setSubordinate(false);
         }
         values.put(COL_SUB, isSubordinate);
-        if (lastEventTime != null) {
-            values.put(COL_TIME, lastEventTime);
+        if (datum != null) {
+            values.put(COL_DATUM, datum);
+        }
+         if (cas != null) {
+            values.put(COL_CAS, cas);
         }
         if (kod_po != null) {
             values.put(COL_KOD_PO, kod_po);
@@ -168,7 +180,8 @@ public class Employee {
         if (!c.isNull(IND_COL_JMENO)) employee.setName(c.getString(IND_COL_JMENO));
         employee.setSubordinate(c.getInt(IND_COL_SUB) > 0);
         if (!c.isNull(IND_COL_KOD_PO)) employee.setKod_po(c.getString(IND_COL_KOD_PO));
-        if (!c.isNull(IND_COL_TIME)) employee.setLastEventTime(c.getLong(IND_COL_TIME));
+        if (!c.isNull(IND_COL_DATUM)) employee.setDatum(c.getLong(IND_COL_DATUM));
+        if (!c.isNull(IND_COL_CAS)) employee.setCas(c.getLong(IND_COL_CAS));
         if (!c.isNull(IND_COL_DRUH)) employee.setDruh(c.getString(IND_COL_DRUH));
         if (!c.isNull(IND_COL_WIDGET_ID)) employee.setWidgetId(c.getInt(IND_COL_WIDGET_ID));
         employee.setFav(c.getInt(IND_COL_FAV) > 0);
@@ -203,7 +216,8 @@ public class Employee {
                 ", kodpra='" + kodpra + '\'' +
                 ", name='" + name + '\'' +
                 ", isSubordinate=" + isSubordinate +
-                ", lastEventTime=" + lastEventTime +
+                ", datum=" + datum +
+                ", cas=" + cas +
                 ", kod_po='" + kod_po + '\'' +
                 ", druh='" + druh + '\'' +
                 ", widgetId=" + widgetId +
@@ -218,7 +232,8 @@ public class Employee {
     public static final String COL_JMENO = "JMENO";
     public static final String COL_SUB = "SUB";
     public static final String COL_DRUH = "DRUH";
-    public static final String COL_TIME = "TIME";
+    public static final String COL_DATUM = "DATUM";
+    public static final String COL_CAS = "CAS";
     public static final String COL_KOD_PO = "KOD";
     public static final String COL_WIDGET_ID = "WIDGET_ID";
     public static final String COL_FAV = "FAV";
@@ -230,11 +245,12 @@ public class Employee {
     public static final int IND_COL_JMENO = 3;
     public static final int IND_COL_SUB = 4;
     public static final int IND_COL_DRUH = 5;
-    public static final int IND_COL_TIME = 6;
-    public static final int IND_COL_KOD_PO = 7;
-    public static final int IND_COL_WIDGET_ID = 8;
-    public static final int IND_COL_FAV = 9;
-    public static final int IND_COL_USER = 10;
+    public static final int IND_COL_DATUM = 6;
+    public static final int IND_COL_CAS = 7;
+    public static final int IND_COL_KOD_PO = 8;
+    public static final int IND_COL_WIDGET_ID = 9;
+    public static final int IND_COL_FAV = 10;
+    public static final int IND_COL_USER = 11;
 
 
 }

@@ -45,11 +45,9 @@ public class WidgetProvider extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.employee_preview);
             String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
             views.setTextViewText(R.id.emp_kodpra, name);
-            Long time = employee.getLastEventTime();
-            if (time != null) views.setTextViewText(R.id.emp_time, AppUtil.formatEmpDate(time));
-           /* String last = employee.getDruh() + " " + AppUtil.formatEmpDate(employee.getDatum())
-                    + " " + AppUtil.formatTime(lastEvent.getCas());*/
-//            views.setTextViewText(R.id.emp_time, last); //TODO stejna jako shortcut widget
+            String last = employee.getDruh() + " " + AppUtil.formatEmpDate(employee.getDatum())
+                    + " " + AppUtil.formatTime(employee.getCas());
+            views.setTextViewText(R.id.emp_time, last);
             views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorUtil.getColor(employee.getKod_po()));
 
             // Tell the widget manager

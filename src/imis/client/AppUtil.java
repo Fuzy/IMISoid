@@ -22,7 +22,7 @@ import java.util.Calendar;
  */
 public class AppUtil {
     public static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
-    public static final DateFormat dfAbbr = new SimpleDateFormat("d.M.yy");
+    public static final DateFormat dfAbbr = new SimpleDateFormat("d.M.");//"d.M.yy"
     public static final DateFormat dfTime = new SimpleDateFormat("HH:mm");
 
     private static final String TAG = AppUtil.class.getSimpleName();

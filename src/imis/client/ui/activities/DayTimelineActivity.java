@@ -220,7 +220,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             createTaskFragment(new GetListOfEmployees(this, icp));
         } catch (Exception e) {
             //TODO err msg
-            showAccountNotExistsError(getApplication());
+            showAccountNotExistsError(this);
         }
     }
 

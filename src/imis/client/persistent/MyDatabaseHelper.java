@@ -57,7 +57,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String EMP_COL_JMENO = Employee.COL_JMENO;
     private static final String EMP_COL_SUB = Employee.COL_SUB;
     public static final String EMP_COL_DRUH = Employee.COL_DRUH;
-    public static final String EMP_COL_TIME = Employee.COL_TIME;
+    public static final String EMP_COL_DATUM = Employee.COL_DATUM;
+    public static final String EMP_COL_CAS = Employee.COL_CAS;
     public static final String EMP_COL_KOD_PO = Employee.COL_KOD_PO;
     public static final String EMP_COL_WIDGET_ID = Employee.COL_WIDGET_ID;
     public static final String EMP_COL_FAV = Employee.COL_FAV;
@@ -112,7 +113,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             .concat(EMP_COL_JMENO + " text, ")
             .concat(EMP_COL_SUB + " integer not null,")
             .concat(EMP_COL_DRUH + " text,")
-            .concat(EMP_COL_TIME + " integer,")
+            .concat(EMP_COL_DATUM + " integer,")
+            .concat(EMP_COL_CAS + " integer,")
             .concat(EMP_COL_KOD_PO + " text,")
             .concat(EMP_COL_WIDGET_ID + " integer,")
             .concat(EMP_COL_FAV + " integer not null,")

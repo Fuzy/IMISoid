@@ -72,7 +72,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
         employee.setIcp("123");
         employee.setKodpra("KDA");
         //employee.setSubordinate(false);
-        employee.setLastEventTime(1364169600000L);
+        employee.setDatum(1364169600000L);
         employee.setKod_po(Event.KOD_PO_ARRIVE_NORMAL);
         employee.setDruh("P");
         //employee.setWidgetId(-1);
@@ -83,7 +83,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
         employee2.setIcp("124");
         employee2.setKodpra("JSK");
         //employee2.setSubordinate(false);
-        employee2.setLastEventTime(1364169650000L);
+        employee2.setDatum(1364169650000L);
         employee2.setKod_po(Event.KOD_PO_LEAVE_LUNCH);
         employee2.setDruh("O");
         //employee2.setWidgetId(-1);

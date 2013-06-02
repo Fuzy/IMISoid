@@ -40,8 +40,9 @@ public class EmployeesCursorAdapter extends CursorAdapter {
 
         String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
         ((TextView) view.findViewById(R.id.emp_kodpra)).setText(name);
-        String time = (employee.getLastEventTime() != null) ? AppUtil.formatEmpDate(employee.getLastEventTime()) : "";
-        ((TextView) view.findViewById(R.id.emp_time)).setText(time);
+        String last = employee.getDruh() + " " + AppUtil.formatEmpDate(employee.getDatum())
+                + " " + AppUtil.formatTime(employee.getCas());//TODO test null
+        ((TextView) view.findViewById(R.id.emp_time)).setText(last);
         view.findViewById(R.id.emp_kod_po).setBackgroundColor(ColorUtil.getColor(employee.getKod_po()));
     }
 }
