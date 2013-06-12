@@ -35,5 +35,6 @@ public class ShortcutWidgetReceiver extends BroadcastReceiver {
         startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startIntent.setType("vnd.android.cursor.dir/event.imisoid");
         context.startActivity(startIntent);
+        //TODO smazat notifikaci
     }
 }

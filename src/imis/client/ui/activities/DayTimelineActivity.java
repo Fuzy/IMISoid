@@ -142,6 +142,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
                 scroll.scrollTo(0, blocks.getBottom());
             }
         });
+
     }
 
     @Override
@@ -198,7 +199,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             case R.id.info_color:
                 startColorInfoActivity();
                 return true;
-             case R.id.sync_settings:
+            case R.id.sync_settings:
                 startSyncSettingsActivity();
                 return true;
             case R.id.location_settings:
@@ -208,8 +209,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
 
     private void refreshListOfEmployees() {

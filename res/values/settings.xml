@@ -54,18 +54,18 @@
 
 
     <string name="prefNotificationArrive">prefNotificationArrive</string>
-    <string name="pref_notification_default">0</string>
+    <string name="prefNotificationLeave">prefNotificationLeave</string>
+    <string name="prefNotificationFrequency">prefNotificationFrequency</string>
+    <string name="pref_notification_default">60</string>
     <string-array name="prefNotificationDelay">
         <item>15 min</item>
         <item>30 min</item>
         <item>60 min</item>
-        <item>Nikdy</item>
     </string-array>
     <string-array name="prefNotificationDelayValues">
         <item>15</item>
         <item>30</item>
         <item>60</item>
-        <item>0</item>
     </string-array>
 
 </resources>

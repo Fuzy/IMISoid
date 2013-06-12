@@ -13,6 +13,7 @@ import android.util.Log;
 import imis.client.R;
 import imis.client.services.AttendanceGuardService;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import java.util.Map;
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
+
     private static Map<String, String> eventsFreq = new HashMap<>();
     private static Map<String, String> widgetsFreq = new HashMap<>();
     private static Map<String, String> networkType = new HashMap<>();
@@ -33,8 +35,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private static String KEY_PREF_SYNC_EVENTS;
     private static String KEY_PREF_SYNC_WIDGETS;
     private static String KEY_PREF_NOTIFI_ARRIVE;
-    //TODO to samy pro odchod
-
+    private static String KEY_PREF_NOTIFI_LEAVE;
+    private static String KEY_PREF_NOTIFI_FREQ;
+    private static String[] KEYS_WITH_SUMMARIES;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,12 +52,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         // set all summaries
         initSummaries();
-
-        //TODO
-        AlarmManager am = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
-        Intent intent = new Intent(getActivity(), AttendanceGuardService.class);
-        PendingIntent pi = PendingIntent.getService(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.set(AlarmManager.RTC, System.currentTimeMillis() + 5 * 1000, pi);
     }
 
     private void loadKeys() {
@@ -62,6 +59,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         KEY_PREF_SYNC_EVENTS = getResources().getString(R.string.prefSyncEventsFrequency);
         KEY_PREF_SYNC_WIDGETS = getResources().getString(R.string.prefSyncWidgetsFrequency);
         KEY_PREF_NOTIFI_ARRIVE = getResources().getString(R.string.prefNotificationArrive);
+        KEY_PREF_NOTIFI_LEAVE = getResources().getString(R.string.prefNotificationLeave);
+        KEY_PREF_NOTIFI_FREQ = getResources().getString(R.string.prefNotificationFrequency);
+        KEYS_WITH_SUMMARIES = new String[]{KEY_PREF_NETWORK_TYPE, KEY_PREF_SYNC_EVENTS,
+                KEY_PREF_SYNC_WIDGETS, KEY_PREF_NOTIFI_FREQ};
     }
 
     private void populateMaps() {
@@ -74,9 +75,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         String[] networkTypeAr = getResources().getStringArray(R.array.prefsyncNetworkType);
         String[] networkTypeValuesAr = getResources().getStringArray(R.array.prefsyncNetworkTypeValues);
         populateMap(networkTypeValuesAr, networkTypeAr, networkType);
-        String[] notificationAr = getResources().getStringArray(R.array.prefNotificationDelay);
-        String[] notificationValuesAr = getResources().getStringArray(R.array.prefNotificationDelayValues);
-        populateMap(notificationValuesAr, notificationAr, notificationDelay);
+        String[] notification = getResources().getStringArray(R.array.prefNotificationDelay);
+        String[] notificationValues = getResources().getStringArray(R.array.prefNotificationDelayValues);
+        populateMap(notificationValues, notification, notificationDelay);
     }
 
     private void populateMap(String[] keys, String[] values, Map<String, String> map) {
@@ -89,9 +90,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Map<String, ?> all = sharedPref.getAll();
         for (String s : all.keySet()) {
-            setSummary(sharedPref, s);
+            if (Arrays.asList(KEYS_WITH_SUMMARIES).contains(s)) {
+                setSummary(sharedPref, s);
+            }
         }
-        Log.d(TAG, "onCreate() all " + all);
+        Log.d(TAG, "initSummaries() all " + all);
     }
 
     @Override
@@ -104,16 +107,44 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onPause() {
         super.onPause();
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-        //TODO aplikovat zmeny nastaveni
+        applySettings();
+    }
+
+    private void applySettings() {
+        Log.d(TAG, "applySettings()");
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        boolean notifyArrive = sharedPref.getBoolean(KEY_PREF_NOTIFI_ARRIVE, false);
+        boolean notifyLeave = sharedPref.getBoolean(KEY_PREF_NOTIFI_LEAVE, false);
+        String value = sharedPref.getString(KEY_PREF_NOTIFI_FREQ, "60");
+        int periodNotification = Integer.valueOf(value);
+        applyNotificationSetting(notifyArrive, notifyLeave, periodNotification);
+    }
+
+    private void applyNotificationSetting(boolean notifyArrive, boolean notifyLeave, int periodNotification) {
+        Log.d(TAG, "applyNotificationSetting()" + "notifyArrive = [" + notifyArrive + "], notifyLeave = [" + notifyLeave + "], periodNotification = [" + periodNotification + "]");
+        AttendanceGuardService.cancelAllIntents(getActivity());
+        if (notifyArrive || notifyLeave) {
+            Intent intent = new Intent(getActivity(), AttendanceGuardService.class);
+            intent.putExtra(AttendanceGuardService.ARRIVE, notifyArrive);
+            intent.putExtra(AttendanceGuardService.LEAVE, notifyLeave);
+            intent.putExtra(AttendanceGuardService.PERIOD, periodNotification);
+            PendingIntent pi = PendingIntent.getService(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
+            long next = System.currentTimeMillis() + periodNotification;// * AppConsts.MS_IN_MIN; //TODO
+            am.set(AlarmManager.RTC, next, pi);
+        }
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Log.d(TAG, "onSharedPreferenceChanged()" + "key = [" + key + "]");
-        setSummary(sharedPreferences, key);
+        if (Arrays.asList(KEYS_WITH_SUMMARIES).contains(key)) {
+            setSummary(sharedPreferences, key);
+        }
     }
 
     private void setSummary(SharedPreferences sharedPref, String key) {
+        Log.d(TAG, "setSummary()" + "key = [" + key + "]");
         Preference connectionPref = findPreference(key);
         String value = sharedPref.getString(key, "");
         String summary = null;
@@ -123,17 +154,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             summary = eventsFreq.get(value);
         } else if (key.equals(KEY_PREF_SYNC_WIDGETS)) {
             summary = widgetsFreq.get(value);
-        } else if (key.equals(KEY_PREF_NOTIFI_ARRIVE)) {
+        } else if (key.equals(KEY_PREF_NOTIFI_FREQ)) {
             summary = notificationDelay.get(value);
         }
         connectionPref.setSummary(summary);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //TODO
-//        am.cancel(pi);
-//        getActivity().unregisterReceiver(br);
     }
 }

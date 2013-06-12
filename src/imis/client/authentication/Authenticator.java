@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import imis.client.AppUtil;
 
 public class Authenticator extends AbstractAccountAuthenticator {
     private static final String TAG = Authenticator.class.getSimpleName();
@@ -22,6 +23,15 @@ public class Authenticator extends AbstractAccountAuthenticator {
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType,
                              String authTokenType, String[] requiredFeatures, Bundle options) {
         Log.d(TAG, "addAccount()");
+
+        // Don't create account if already exists
+        AccountManager accountManager = AccountManager.get(context);
+        Account[] accountsByType = accountManager.getAccountsByType(accountType);
+        if (accountsByType.length > 0) {
+            AppUtil.showAccountAlreadyExists(context);
+            return null;
+        }
+
         final Intent intent = new Intent(context, AuthenticatorActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         final Bundle bundle = new Bundle();

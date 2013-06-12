@@ -27,15 +27,23 @@
                 android:defaultValue="@string/sync_widget_frequency_default"/>
     </PreferenceCategory>
     <PreferenceCategory
-            android:title="@string/pref_notification_period"
+            android:title="@string/pref_notification"
             android:key="pref_notification_period">
-        <ListPreference
+        <CheckBoxPreference
                 android:key="@string/prefNotificationArrive"
+                android:title="@string/pref_notification_arrive"
+                android:summary="@string/pref_notification_arrive_summary"
+                android:defaultValue="false"/>
+        <CheckBoxPreference
+                android:key="@string/prefNotificationLeave"
+                android:title="@string/pref_notification_leave"
+                android:summary="@string/pref_notification_leave_summary"
+                android:defaultValue="false"/>
+        <ListPreference
+                android:key="@string/prefNotificationFrequency"
                 android:entries="@array/prefNotificationDelay"
                 android:entryValues="@array/prefNotificationDelayValues"
-                android:title="@string/pref_notification_arrive"
+                android:title="@string/pref_notification_freq"
                 android:defaultValue="@string/pref_notification_default"/>
     </PreferenceCategory>
-
-
 </PreferenceScreen>

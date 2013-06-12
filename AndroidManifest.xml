@@ -120,6 +120,11 @@
 
         </service>
 
+        <service android:name=".services.LocationService"
+                 android:exported="true">
+
+        </service>
+
 
         <activity android:name=".ui.activities.DayTimelineActivity"
                   android:theme="@android:style/Theme.Holo.Light">

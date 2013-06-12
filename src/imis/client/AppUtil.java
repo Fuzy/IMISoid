@@ -4,6 +4,9 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
@@ -48,6 +51,21 @@ public class AppUtil {
     public static void showWidgetAlreadyExists(Context context) {
         Toast toast = Toast.makeText(context, R.string.widget_allready_exists, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    public static void showAccountAlreadyExists(final Context context) {
+       /* Toast toast = Toast.makeText(context, R.string.account_allready_exists, Toast.LENGTH_LONG);
+        toast.show();*/
+        Looper.prepare();
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                Toast toast = Toast.makeText(context, R.string.account_allready_exists, Toast.LENGTH_LONG);
+                toast.show();
+            }
+        };
+        handler.sendEmptyMessage(0);//TODO je toto bezpecny kod
+        Looper.loop();
     }
 
     public static void showError(Context context, String msg) {

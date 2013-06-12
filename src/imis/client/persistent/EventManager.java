@@ -55,17 +55,7 @@ public class EventManager {
 
     public static Event getLastEvent(Context context) {
         Log.d(TAG, "getEvent()");
-        /*ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null,
-                null, null, EventQuery.ORDER_BY_LAST);
-
-        Log.d(TAG, "getLastEvent() count" + cursor.getCount());
-        Event event = null;
-        while (cursor.moveToNext()) {
-            event = Event.cursorToEvent(cursor);
-            Log.d(TAG, "getLastEvent() event " + event);
-        }
-        return event;*/
+        //TODO pouze udalosti uzivatele
         return getEvent(context, EventQuery.SELECTION_LAST, null, EventQuery.ORDER_BY_LAST);
     }
 

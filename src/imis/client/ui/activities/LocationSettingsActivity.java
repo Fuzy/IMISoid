@@ -60,6 +60,7 @@ public class LocationSettingsActivity extends FragmentActivity {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
     private final GoogleMap.OnMapClickListener myMapClickListener = new GoogleMap.OnMapClickListener() {
