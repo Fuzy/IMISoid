@@ -27,6 +27,9 @@ public class AppConsts {
     public static final String SHORTCUT_ADD_ACTION = "imis.client.widget.ADD_EVENT";
     public static final String KEY_WIDGET_IS_SOURCE = "widget";
 
+    public static final String EMPTY_SPINNER_ITEM = "-";//TODO aplikovat vsude
+
+
     public static final long MS_IN_HOUR = 60L * 60L * 1000L;
     public static final long MS_IN_MIN = 60L * 1000L;
 

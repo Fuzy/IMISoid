@@ -38,7 +38,7 @@ public class WidgetProvider extends AppWidgetProvider {
                                        int appWidgetId) {
         Log.d(TAG, "updateAppWidget() appWidgetId " + appWidgetId);
 
-        // processNetworkTask widget
+        // processAsyncTask widget
         Employee employee = EmployeeManager.getEmployee(context, appWidgetId);
         if (employee != null) {
             Log.d(TAG, "updateAppWidget() employee " + employee);

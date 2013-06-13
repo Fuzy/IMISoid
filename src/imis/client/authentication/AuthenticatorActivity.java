@@ -137,6 +137,11 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
     }
 
     @Override
+    protected void processAsyncTask() {
+        Log.d(TAG, "processAsyncTask()");
+    }
+
+    @Override
     protected void onPause() {
         Log.d("AuthenticatorActivity", "onPause()");
         super.onPause();

@@ -26,4 +26,6 @@ public abstract class AsyncActivity extends FragmentActivity implements TaskFrag
         taskFragment.show(getSupportFragmentManager(), TASK_FRAGMENT_TAG);
     }
 
+    protected abstract void processAsyncTask();
+
 }

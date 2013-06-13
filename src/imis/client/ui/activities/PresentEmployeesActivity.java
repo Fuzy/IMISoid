@@ -101,8 +101,13 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
     }
 
     private void refresh() {
-        Log.d(TAG, "processNetworkTask()");
+        Log.d(TAG, "processAsyncTask()");
         createTaskFragment(new GetListOfEmployees(this));
+    }
+
+    @Override
+    protected void processAsyncTask() {
+        Log.d(TAG, "processAsyncTask()");
     }
 
     public void startDetailActivity(long id) {

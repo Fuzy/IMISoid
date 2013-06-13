@@ -31,36 +31,41 @@ public class AppUtil {
     private static final String TAG = AppUtil.class.getSimpleName();
 
     public static void showAccountNotExistsError(Context context) {
-        Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_SHORT);
         Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
         intent.putExtra(Settings.EXTRA_AUTHORITIES, new String[]{AppConsts.AUTHORITY1, AppConsts.AUTHORITY2});
         context.startActivity(intent);
         toast.show();
     }
 
+    public static void showNotUserSelectedError(Context context, String msg) {
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
     public static void showPeriodInputError(Context context) {
-        Toast toast = Toast.makeText(context, R.string.error_perriod_set, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, R.string.error_perriod_set, Toast.LENGTH_SHORT);
         toast.show();
     }
 
     public static void showNetworkAccessUnavailable(Context context) {
-        Toast toast = Toast.makeText(context, R.string.network_unavailable, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, R.string.network_unavailable, Toast.LENGTH_SHORT);
         toast.show();
     }
 
     public static void showWidgetAlreadyExists(Context context) {
-        Toast toast = Toast.makeText(context, R.string.widget_allready_exists, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, R.string.widget_allready_exists, Toast.LENGTH_SHORT);
         toast.show();
     }
 
     public static void showAccountAlreadyExists(final Context context) {
-       /* Toast toast = Toast.makeText(context, R.string.account_allready_exists, Toast.LENGTH_LONG);
+       /* Toast toast = Toast.makeText(context, R.string.account_allready_exists, Toast.LENGTH_SHORT);
         toast.show();*/
         Looper.prepare();
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                Toast toast = Toast.makeText(context, R.string.account_allready_exists, Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(context, R.string.account_allready_exists, Toast.LENGTH_SHORT);
                 toast.show();
             }
         };
@@ -69,12 +74,12 @@ public class AppUtil {
     }
 
     public static void showError(Context context, String msg) {
-        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.show();
     }
 
     public static void showInfo(Context context, String msg) {
-        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.show();
     }
 

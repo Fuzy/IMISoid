@@ -8,9 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,11 +19,8 @@ import imis.client.model.Record;
 import imis.client.ui.adapters.RecordsCursorAdapter;
 import imis.client.ui.fragments.RecordListFragment;
 
-import java.text.ParseException;
 import java.util.Arrays;
 
-import static imis.client.AppUtil.showAccountNotExistsError;
-import static imis.client.AppUtil.showPeriodInputError;
 import static imis.client.persistent.RecordManager.RecordQuery.CONTENT_URI;
 import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_LIST;
 
@@ -121,45 +115,10 @@ public class RecordListActivity extends ControlActivity implements
         adapter.swapCursor(null);
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu");
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.record_list_activity_menu, menu); //TODO refaktor pojmenovani
-
-        return super.onCreateOptionsMenu(menu);
+    protected void processControlAsyncTask(String kodpra, String from, String to) {
+        createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected");
-        switch (item.getItemId()) {
-            case R.id.refresh:
-                refreshRecords();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void refreshRecords() {
-        Log.d(TAG, "refreshRecords()");
-
-        try {
-            String kodpra = getSelectedUser();
-            String from = getStringDateFrom();
-            String to = getStringDateTo();
-            createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
-        } catch (ParseException e) {
-            Log.d(TAG, "refreshRecords() " + e.getMessage());
-            showPeriodInputError(this);
-        } catch (Exception e) {
-            showAccountNotExistsError(this);
-        }
-    }
-
 
     @Override
     public void onDetailSelected(int position) {

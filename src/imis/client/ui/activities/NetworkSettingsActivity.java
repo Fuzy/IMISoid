@@ -139,6 +139,11 @@ public class NetworkSettingsActivity extends AsyncActivity {
         }
     }
 
+    @Override
+    protected void processAsyncTask() {
+        Log.d(TAG, "processAsyncTask()");
+    }
+
     private void setImageAsReachable(ImageView imageView) {
         imageView.setImageResource(R.drawable.btn_check_buttonless_on);
     }

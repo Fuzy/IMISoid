@@ -14,13 +14,10 @@ import imis.client.model.Record;
 import imis.client.processor.DataProcessor;
 import imis.client.ui.ColorUtil;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static imis.client.AppUtil.showAccountNotExistsError; //TODO staticke importy
-import static imis.client.AppUtil.showPeriodInputError;
 import static imis.client.persistent.RecordManager.RecordQuery.CONTENT_URI;
 import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_CHART;
 
@@ -48,22 +45,9 @@ public class RecordsChartActivity extends ChartActivity {
         addCheckBox(index, color);
     }
 
-
     @Override
-    protected void processNetworkTask() {
-        Log.d("RecordsChartActivity", "resfreshRecords()");
-
-        try {
-            String kodpra = getSelectedUser();
-            String from = getStringDateFrom();
-            String to = getStringDateTo();
-            createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
-        } catch (ParseException e) {
-            Log.d(TAG, "resfreshRecords() " + e.getMessage());
-            showPeriodInputError(this);
-        } catch (Exception e) {
-            showAccountNotExistsError(this);
-        }
+    protected void processControlAsyncTask(String kodpra, String from, String to) {
+        createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
     }
 
     /*@Override
@@ -121,6 +105,7 @@ public class RecordsChartActivity extends ChartActivity {
         }
     }
 
+    //TODO pridat filtr podle typu zakazky
     /*@Override
     protected String[] getSelectionArgs() {
         String[] args = new String[3];

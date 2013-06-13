@@ -1,7 +1,9 @@
 package imis.client.ui.fragments;
 
+import android.accounts.Account;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +12,8 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import imis.client.AppConsts;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.services.AttendanceGuardService;
 
@@ -113,11 +117,41 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private void applySettings() {
         Log.d(TAG, "applySettings()");
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String value = sharedPref.getString(KEY_PREF_SYNC_EVENTS, "0");
+        int periodEvents = Integer.valueOf(value);
+        value = sharedPref.getString(KEY_PREF_SYNC_WIDGETS, "0");
+        int periodWidgets = Integer.valueOf(value);
+        applySyncSetting(periodEvents, periodWidgets);
         boolean notifyArrive = sharedPref.getBoolean(KEY_PREF_NOTIFI_ARRIVE, false);
         boolean notifyLeave = sharedPref.getBoolean(KEY_PREF_NOTIFI_LEAVE, false);
-        String value = sharedPref.getString(KEY_PREF_NOTIFI_FREQ, "60");
+        value = sharedPref.getString(KEY_PREF_NOTIFI_FREQ, "60");
         int periodNotification = Integer.valueOf(value);
         applyNotificationSetting(notifyArrive, notifyLeave, periodNotification);
+    }
+
+    private void applySyncSetting(int periodEvents, int periodWidgets) {
+        Log.d(TAG, "applySyncSetting()" + "periodEvents = [" + periodEvents + "], periodWidgets = [" + periodWidgets + "]");
+        try {
+            Account account = AppUtil.getUserAccount(getActivity());
+            Log.d(TAG, "applySyncSetting() account " + account);
+            if (periodEvents != 0) {
+                ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY1, 1);
+                ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
+                ContentResolver.addPeriodicSync(account, AppConsts.AUTHORITY1, new Bundle(), periodEvents);
+            } else {
+                ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, false);
+            }
+            if (periodWidgets != 0) {
+                ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY2, 1);
+                ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY2, true);
+                ContentResolver.addPeriodicSync(account, AppConsts.AUTHORITY2, new Bundle(), periodWidgets);
+            } else {
+                ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY2, false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "applySyncSetting() exception");
+        }
     }
 
     private void applyNotificationSetting(boolean notifyArrive, boolean notifyLeave, int periodNotification) {
@@ -134,6 +168,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             am.set(AlarmManager.RTC, next, pi);
         }
     }
+
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

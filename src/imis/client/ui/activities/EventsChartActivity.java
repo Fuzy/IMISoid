@@ -12,17 +12,12 @@ import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
-import imis.client.model.Employee;
 import imis.client.model.Event;
-import imis.client.persistent.EmployeeManager;
 import imis.client.processor.DataProcessor;
 import imis.client.ui.ColorUtil;
 
-import java.text.ParseException;
 import java.util.*;
 
-import static imis.client.AppUtil.showAccountNotExistsError;
-import static imis.client.AppUtil.showPeriodInputError;
 import static imis.client.persistent.EventManager.EventQuery;
 
 /**
@@ -97,14 +92,14 @@ public class EventsChartActivity extends ChartActivity {
 
     }
 
-    @Override
+    /*@Override
     protected String[] getSelectionArgs() {
         String[] args = super.getSelectionArgs();
         Employee employee = EmployeeManager.getEmployeeOnKodpra(this, args[0]);
         args[0] = employee.getIcp();
         Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
         return args;
-    }
+    }*/
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
@@ -133,24 +128,11 @@ public class EventsChartActivity extends ChartActivity {
         return codes;
     }
 
-
     @Override
-    protected void processNetworkTask() {
-        Log.d(TAG, "processNetworkTask()");
+    protected void processControlAsyncTask(String kodpra, String from, String to) {
+        createTaskFragment(new GetListOfEvents(this, kodpra, from, to));
 
-        try {
-            String kodpra = getSelectedUser();
-            String from = getStringDateFrom();
-            String to = getStringDateTo();
-            createTaskFragment(new GetListOfEvents(this, kodpra, from, to));
-        } catch (ParseException e) {
-            Log.d(TAG, "resfreshRecords() " + e.getMessage());
-            showPeriodInputError(this);
-        } catch (Exception e) {
-            showAccountNotExistsError(this);
-        }
     }
-
 
     @Override
     protected void processDataQuery() {

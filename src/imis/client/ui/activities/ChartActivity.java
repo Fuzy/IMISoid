@@ -72,7 +72,6 @@ public abstract class ChartActivity extends ControlActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.record_list_activity_menu, menu);
         inflater.inflate(R.menu.switch_chart_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -80,9 +79,6 @@ public abstract class ChartActivity extends ControlActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.refresh:
-                processNetworkTask();
-                return true;
             case R.id.switchFragment:
                 switchFragment();
                 return true;
@@ -90,8 +86,6 @@ public abstract class ChartActivity extends ControlActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    protected abstract void processNetworkTask();
 
     protected void switchFragment() {
         Log.d(TAG, "switchFragment() num of existing ");

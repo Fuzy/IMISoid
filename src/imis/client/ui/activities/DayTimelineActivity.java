@@ -44,6 +44,7 @@ import static imis.client.AppUtil.showAccountNotExistsError;
 import static imis.client.AppUtil.showNetworkAccessUnavailable;
 import static imis.client.persistent.EventManager.EventQuery;
 
+
 public class DayTimelineActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {
 
@@ -210,6 +211,10 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         }
     }
 
+    @Override
+    protected void processAsyncTask() {
+        Log.d(TAG, "processAsyncTask()");
+    }
 
     private void refreshListOfEmployees() {
         Log.d(TAG, "refreshListOfEmployees()");

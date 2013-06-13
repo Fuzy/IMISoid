@@ -140,6 +140,7 @@
     <string name="error_perriod_set">Špatně zadané období</string>
     <string name="spinnerRecordType_title">Typ zakázky</string>
     <string name="selectEmp">Vyber zaměstnance</string>
+    <string name="noEmp">Není vybrán zaměstnanec</string>
     <string name="menu_color_info">Barvy</string>
     <string name="eventsType">Události docházky</string>
     <string name="recordsType">Zakázky</string>

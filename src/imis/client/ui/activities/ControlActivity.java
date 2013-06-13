@@ -2,7 +2,8 @@ package imis.client.ui.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.CursorWrapper;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -10,10 +11,15 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.exceptions.NotUserSelectedException;
 import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.persistent.EmployeeManager;
@@ -21,6 +27,10 @@ import imis.client.persistent.EmployeeManager;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static imis.client.AppUtil.showAccountNotExistsError;
+import static imis.client.AppUtil.showNotUserSelectedError;
+import static imis.client.AppUtil.showPeriodInputError;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,7 +60,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     private int selectedEditId = -1;
 
-//    protected String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP = "EMP";
+    //    protected String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP = "EMP";
     protected Map<String, String> selectionArgs = new HashMap<>();
 
     @Override
@@ -170,19 +180,30 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         switch (id) {
             case LOADER_EMPLOYEES:
                 Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
+                Cursor extendedCursor = mergeCursorWithEmptyItem(cursor);
                 String[] from = new String[]{Employee.COL_KODPRA};
                 int[] to = new int[]{android.R.id.text1};
                 adapter = new SimpleCursorAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,
-                        cursor, from, to, 0);
+                        extendedCursor, from, to, 0);
                 spinnerEmp.setAdapter(adapter);
                 selectionArgs.put(PAR_EMP, getSelectedUser());
                 break;
         }
     }
 
+    private Cursor mergeCursorWithEmptyItem(Cursor cursor) {
+        MatrixCursor extras = new MatrixCursor(cursor.getColumnNames());
+        String[] emptyEmp = new String[cursor.getColumnNames().length];
+        emptyEmp[Employee.IND_COL_KODPRA] = AppConsts.EMPTY_SPINNER_ITEM;
+        extras.addRow(emptyEmp);
+        Cursor[] cursors = {extras, cursor};
+        Cursor extendedCursor = new MergeCursor(cursors);
+        return extendedCursor;
+    }
+
     protected String getSelectedUser() {
-        CursorWrapper wrapper = (CursorWrapper) spinnerEmp.getSelectedItem();
-        return wrapper.getString(Employee.IND_COL_KODPRA);
+        MergeCursor selectedItem = (MergeCursor) spinnerEmp.getSelectedItem();
+        return selectedItem.getString(Employee.IND_COL_KODPRA);
     }
 
     private long getSelectedLongDateOrDefault() {
@@ -261,6 +282,24 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.record_list_activity_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                processAsyncTask();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         Log.d(TAG, "onItemSelected()");
         switch (adapterView.getId()) {
@@ -291,4 +330,27 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         }
 
     }
+
+    @Override
+    protected void processAsyncTask() {
+        try {
+            String kodpra = getSelectedUser();
+            if (kodpra.equals(AppConsts.EMPTY_SPINNER_ITEM))
+                throw new NotUserSelectedException(getString(R.string.noEmp));
+            String from = getStringDateFrom();
+            String to = getStringDateTo();
+            processControlAsyncTask(kodpra, from, to);
+        } catch (ParseException e) {
+            Log.d(TAG, "refreshRecords() " + e.getMessage());
+            showPeriodInputError(this);
+        } catch (NotUserSelectedException e) {//TODO ostatni to same
+            Log.d(TAG, "refreshRecords() " + e.getMessage());
+            showNotUserSelectedError(this, e.getMessage());
+        } catch (Exception e) {
+            Log.d(TAG, "refreshRecords() " + e.getMessage());
+            showAccountNotExistsError(this);
+        }
+    }
+
+    protected abstract void processControlAsyncTask(String kodpra, String from, String to);
 }
