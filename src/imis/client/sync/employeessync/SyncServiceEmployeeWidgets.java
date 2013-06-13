@@ -11,12 +11,12 @@ import android.util.Log;
  * Date: 24.5.13
  * Time: 21:07
  */
-public class SyncService2 extends Service {
-    private static final String TAG = SyncService2.class.getSimpleName();
+public class SyncServiceEmployeeWidgets extends Service {
+    private static final String TAG = SyncServiceEmployeeWidgets.class.getSimpleName();
 
     private static final Object sSyncAdapterLock = new Object();
 
-    private static SyncAdapter2 sSyncAdapter = null;
+    private static SyncAdapterEmployeeWidgets sSyncAdapter = null;
 
     @Override
     public void onCreate() {
@@ -24,7 +24,7 @@ public class SyncService2 extends Service {
         Log.d(TAG, "onCreate()");
         synchronized (sSyncAdapterLock) {
             if (sSyncAdapter == null) {
-                sSyncAdapter = new SyncAdapter2(getApplicationContext(), true);
+                sSyncAdapter = new SyncAdapterEmployeeWidgets(getApplicationContext(), true);
             }
         }
     }

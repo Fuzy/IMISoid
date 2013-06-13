@@ -30,7 +30,7 @@
 
         <!-- Vlastni poskytovatel obsahu -->
         <provider
-            android:name=".persistent.MyContentProvider1"
+            android:name=".persistent.MyContentProvider"
             android:authorities="imis.client.events.contentprovider"
             android:exported="false" >
         </provider>
@@ -51,7 +51,7 @@
 
         <!-- Sluzba synchronizace -->
         <service
-            android:name=".sync.eventssync.SyncService1"
+            android:name=".sync.eventssync.SyncServiceEvents"
             android:exported="true"
             android:permission="normal" >
             <intent-filter>

@@ -9,6 +9,7 @@ package imis.client;
 public class AppConsts {
     public static final String AUTHORITY1 = "imisoid.contentprovider1";
     public static final String AUTHORITY2 = "imisoid.contentprovider2";
+    public static final String AUTHORITY3 = "imisoid.contentprovider3";
 
     public static final String PREFS_NAME = "ImisoidPrefsFile";
     public static final String PREFS_EVENTS_COLOR = "ImisoidPrefsColors";

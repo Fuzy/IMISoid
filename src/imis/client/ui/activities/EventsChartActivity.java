@@ -92,15 +92,6 @@ public class EventsChartActivity extends ChartActivity {
 
     }
 
-    /*@Override
-    protected String[] getSelectionArgs() {
-        String[] args = super.getSelectionArgs();
-        Employee employee = EmployeeManager.getEmployeeOnKodpra(this, args[0]);
-        args[0] = employee.getIcp();
-        Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
-        return args;
-    }*/
-
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         Log.d(TAG, "onLoaderReset()");

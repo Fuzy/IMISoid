@@ -22,7 +22,7 @@ import java.util.*;
  */
 public class DataProcessor {
     private static final String TAG = DataProcessor.class.getSimpleName();
-    private static final long MS_IN_HOUR = 60L * 60L * 1000L;
+    private static final long MS_IN_HOUR = 60L * 60L * 1000L;//TODO na vice mistech
     private static final long MS_IN_MIN = 60L * 1000L;
     private static final long MS_IN_DAY = MS_IN_HOUR * 24L;
 
@@ -50,11 +50,10 @@ public class DataProcessor {
         Event startEvent, endEvent = null;
         Block block;
         List<Block> blocks = new ArrayList<>();
-
+        //TODO kazdou minutu by mel prijit refresh
         //TODO odladit, nektere jsou tam dvakrat
         while (cursor.moveToNext()) {
             startEvent = Event.cursorToEvent(cursor);
-
 
             if (startEvent.isDruhArrival()) {
                 endEvent = getNextEvent(cursor, Event.DRUH_LEAVE);
@@ -64,7 +63,6 @@ public class DataProcessor {
                 } else {
                     endEvent = null;
                 }
-
             }
 
             if (endEvent != null) {

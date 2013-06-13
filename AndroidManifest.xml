@@ -50,20 +50,11 @@
         <!--android:theme="@style/AppTheme"  -->
 
 
-        <!-- Content provider for events and records -->
+        <!-- Content provider for events, records and employees-->
         <provider
-                android:name=".persistent.MyContentProvider1"
-                android:authorities="imisoid.contentprovider1"
-                android:exported="false"
-                android:label="@string/sync_events">
-        </provider>
-
-        <!-- Content provider for employees -->
-        <provider
-                android:name=".persistent.MyContentProvider2"
-                android:authorities="imisoid.contentprovider2"
-                android:exported="false"
-                android:label="@string/sync_widgets">
+                android:name=".persistent.MyContentProvider"
+                android:authorities="imisoid.contentprovider1;imisoid.contentprovider2;imisoid.contentprovider3"
+                android:exported="false">
         </provider>
 
         <receiver android:name=".network.NetworkReceiver"
@@ -89,7 +80,7 @@
 
         <!-- Service for  synchronization of events -->
         <service
-                android:name=".sync.eventssync.SyncService1"
+                android:name=".sync.eventssync.SyncServiceEvents"
                 android:exported="true"
                 android:permission="normal">
             <intent-filter>
@@ -103,7 +94,7 @@
 
         <!-- Service for  synchronization of employees -->
         <service
-                android:name=".sync.employeessync.SyncService2"
+                android:name=".sync.employeessync.SyncServiceEmployeeWidgets"
                 android:exported="true"
                 android:permission="normal">
             <intent-filter>
@@ -113,6 +104,20 @@
             <meta-data
                     android:name="android.content.SyncAdapter"
                     android:resource="@xml/syncadapter2"/>
+        </service>
+
+       <!-- Service for  synchronization of employees -->
+        <service
+                android:name=".sync.employeessync.SyncServiceListOfEmployees"
+                android:exported="true"
+                android:permission="normal">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+
+            <meta-data
+                    android:name="android.content.SyncAdapter"
+                    android:resource="@xml/syncadapter_list_employees"/>
         </service>
 
         <service android:name=".services.AttendanceGuardService"

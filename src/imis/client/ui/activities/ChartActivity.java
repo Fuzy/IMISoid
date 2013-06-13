@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
@@ -218,7 +219,7 @@ public abstract class ChartActivity extends ControlActivity {
     @Override
     protected String[] getSelectionArgs() {
         String[] args = new String[3];
-        args[0] = selectionArgs.get(PAR_EMP);
+        args[0] = (selectionArgs.get(PAR_EMP).equals(AppConsts.EMPTY_SPINNER_ITEM) ? "" : selectionArgs.get(PAR_EMP)) ;
         args[1] = selectionArgs.get(PAR_FROM);
         args[2] = selectionArgs.get(PAR_TO);
         Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));

@@ -20,16 +20,15 @@ import org.apache.http.HttpStatus;
 
 import java.util.List;
 
-public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
-    private static final String TAG = SyncAdapter1.class.getSimpleName();
+public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
+    private static final String TAG = SyncAdapterEvents.class.getSimpleName();
     private final AccountManager accountManager;
     private final Context context;
     private final EventsSync sync;
 
 
-    public SyncAdapter1(Context context, boolean autoInitialize) {
+    public SyncAdapterEvents(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        Log.d(TAG, "SyncAdapter1()");
         this.context = context;
         accountManager = AccountManager.get(context);
         sync = new EventsSync(context);
@@ -38,7 +37,8 @@ public class SyncAdapter1 extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(TAG, "onPerformSync()");
+        Log.d(TAG,"onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
+                "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
 
         Result testResult = NetworkUtilities.testWebServiceAndDBAvailability();
         if (testResult.getStatusCode() == null || testResult.getStatusCode().value() != HttpStatus.SC_OK) {

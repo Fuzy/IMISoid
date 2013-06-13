@@ -105,17 +105,6 @@ public class RecordsChartActivity extends ChartActivity {
         }
     }
 
-    //TODO pridat filtr podle typu zakazky
-    /*@Override
-    protected String[] getSelectionArgs() {
-        String[] args = new String[3];
-        args[0] = selectionArgs.get(PAR_EMP);
-        args[1] = selectionArgs.get(PAR_FROM);
-        args[2] = selectionArgs.get(PAR_TO);
-        Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
-        return args;
-    }*/
-
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
     }

@@ -9,12 +9,12 @@ import android.util.Log;
  * Sluzba provadejici synchronizaci uctu. 
  *  
  */
-public class SyncService1 extends Service {
-  private static final String TAG = SyncService1.class.getSimpleName();
+public class SyncServiceEvents extends Service {
+  private static final String TAG = SyncServiceEvents.class.getSimpleName();
   
     private static final Object sSyncAdapterLock = new Object();
 
-    private static SyncAdapter1 sSyncAdapter = null;
+    private static SyncAdapterEvents sSyncAdapter = null;
 
     @Override
     public void onCreate() {
@@ -22,7 +22,7 @@ public class SyncService1 extends Service {
       Log.d(TAG, "onCreate()");
         synchronized (sSyncAdapterLock) {
             if (sSyncAdapter == null) {
-                sSyncAdapter = new SyncAdapter1(getApplicationContext(), true);
+                sSyncAdapter = new SyncAdapterEvents(getApplicationContext(), true);
             }
         }
     }

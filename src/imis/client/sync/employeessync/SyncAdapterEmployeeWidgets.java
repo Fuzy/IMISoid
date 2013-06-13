@@ -21,11 +21,11 @@ import java.util.List;
  * Date: 24.5.13
  * Time: 21:09
  */
-public class SyncAdapter2 extends AbstractThreadedSyncAdapter {
-    private static final String TAG = SyncAdapter2.class.getSimpleName();
+public class SyncAdapterEmployeeWidgets extends AbstractThreadedSyncAdapter {
+    private static final String TAG = SyncAdapterEmployeeWidgets.class.getSimpleName();
     private final Context context;
 
-    public SyncAdapter2(Context context, boolean autoInitialize) {
+    public SyncAdapterEmployeeWidgets(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         this.context = context;
     }
@@ -33,7 +33,9 @@ public class SyncAdapter2 extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s,
                               ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        Log.d(TAG, "onPerformSync()");
+        Log.d(TAG,"onPerformSync()" + "account = [" + account + "], bundle = [" + bundle + "], " +
+                "s = [" + s + "], contentProviderClient = [" + contentProviderClient + "], " +
+                "syncResult = [" + syncResult + "]");
 
         EmployeesSync sync = new EmployeesSync(context);
 

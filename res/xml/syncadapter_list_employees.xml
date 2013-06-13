@@ -2,7 +2,7 @@
 
 
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-              android:contentAuthority="imisoid.contentprovider2"
+              android:contentAuthority="imisoid.contentprovider3"
               android:accountType="imisoid"
               android:supportsUploading="false"
               android:userVisible="false"
