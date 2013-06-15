@@ -13,8 +13,8 @@ import android.widget.ListView;
  * Time: 17:29
  */
 public class RecordListFragment extends ListFragment {
-    private static final String TAG = "RecordListFragment";
-    OnDetailSelectedListener listener;
+    private static final String TAG = RecordListFragment.class.getSimpleName();
+    private OnItemSelectedListener listener;
 
     public RecordListFragment() {
     }
@@ -23,21 +23,21 @@ public class RecordListFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            listener = (OnDetailSelectedListener) activity;
+            listener = (OnItemSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnURLSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement " + listener.getClass().getSimpleName());
         }
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.d(TAG, "onListItemClick()");
-        listener.onDetailSelected(position);
+        listener.onItemSelected(position);
 
     }
 
-    public interface OnDetailSelectedListener {
-        public void onDetailSelected(int position);
+    public interface OnItemSelectedListener {
+        public void onItemSelected(int position);
     }
 
 

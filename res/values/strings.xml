@@ -172,5 +172,6 @@
     <string name="missing_arrive_event">Chybí příchod</string>
     <string name="missing_leave_event">Chybí odchod</string>
     <string name="missing_event_hint">Dotykem umožníte přidání události</string>
+    <string name="menu_alt_view">Alternativní zobrazení</string>
 
 </resources>

@@ -31,7 +31,7 @@ import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_LIST;
  * Time: 17:25
  */
 public class RecordListActivity extends ControlActivity implements
-        RecordListFragment.OnDetailSelectedListener {
+        RecordListFragment.OnItemSelectedListener {
     private static final String TAG = RecordListActivity.class.getSimpleName();
     private RecordsCursorAdapter adapter;
     private static final int LOADER_RECORDS = 0x08;
@@ -121,7 +121,7 @@ public class RecordListActivity extends ControlActivity implements
     }
 
     @Override
-    public void onDetailSelected(int position) {
+    public void onItemSelected(int position) {
         Record record = adapter.getItem(position);
         long id = record.get_id();
         startDetailActivity(id);

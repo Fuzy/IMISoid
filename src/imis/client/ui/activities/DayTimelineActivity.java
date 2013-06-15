@@ -1,10 +1,15 @@
 package imis.client.ui.activities;
 
 import android.accounts.Account;
-import android.content.*;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DataSetObservable;
+import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -12,31 +17,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.asynctasks.result.Result;
-import imis.client.model.Block;
 import imis.client.model.Event;
 import imis.client.model.Record;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.RecordManager;
-import imis.client.processor.DataProcessor;
-import imis.client.ui.BlockView;
-import imis.client.ui.BlocksLayout;
 import imis.client.ui.ColorUtil;
-import imis.client.ui.ObservableScrollView;
 import imis.client.ui.activities.util.ActivityConsts;
-import imis.client.ui.adapters.EventsArrayAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
+import imis.client.ui.fragments.DayTimelineBlocksFragment;
+import imis.client.ui.fragments.DayTimelineListFragment;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static imis.client.AppConsts.*;
@@ -45,16 +41,12 @@ import static imis.client.AppUtil.showNetworkAccessUnavailable;
 import static imis.client.persistent.EventManager.EventQuery;
 
 
-public class DayTimelineActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        OnItemClickListener, AdapterView.OnItemLongClickListener, ColorPickerDialog.OnColorChangedListener {
-
+public class DayTimelineActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>, ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
-    BroadcastReceiver _broadcastReceiver;
-    private BlocksLayout blocks;
-    private ObservableScrollView scroll;
-    private List<Block> blockList;
-    private EventsArrayAdapter adapter;
+
     private long date;// = 1364428800000L; //1364166000000L;//1364169600000L;
+    protected final DataSetObservable mDataSetObservable = new DataSetObservable();
+    private Cursor mCursor;
 
     private static final int LOADER_EVENTS = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
@@ -62,23 +54,14 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Log.d(TAG, "onCreate()");
+        Log.d(TAG, "onCreate()");
         getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
 
         // init UI
-        setContentView(R.layout.blocks_content);
-        scroll = (ObservableScrollView) findViewById(R.id.blocks_scroll);
-        blocks = (BlocksLayout) findViewById(R.id.blocks);
-        blocks.setOnItemClickListener(this);
-        blocks.setOnItemLongClickListener(this);
+        setContentView(R.layout.daytimeline);
 
-
-        // init adapter and underlying list
-        blockList = new ArrayList<>();
-        adapter = new EventsArrayAdapter(getApplicationContext(), -1, blockList);
-        blocks.setAdapter(adapter);
-
-        //changeDate(1364169600000L); //TODO toto je pro ladici ucely
+//        addDayTimelineBlocksFragment();
+        addDayTimelineListFragment();
 
         changeDate(AppUtil.todayInLong());
         Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
@@ -108,42 +91,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     @Override
-    protected void onStart() {
-
-        super.onStart();
-        _broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context ctx, Intent intent) {
-                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
-                    blocks.setVisibility(View.GONE);
-                    blocks.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-        registerReceiver(_broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
-    }
-
-
-    @Override
     protected void onResume() {
-        Log.d(TAG, "onResume()");
-        Log.d(TAG, "Events:\n" + EventManager.getAllEvents(getApplicationContext()));
         super.onResume();
-
-        /*try {  //TODO + dialog do AppUtil, ne onResume()!!!
-            String icp = AppUtil.getUserICP(this);
-        } catch (Exception e) {
-            AppUtil.showAccountNotExistsError(this);
-        }*/
-
-        setDateTitle(date);
-        scroll.post(new Runnable() {
-            public void run() {
-                //Log.d(TAG, "onResume() scroll.getBottom(): " + scroll.getBottom());
-                scroll.scrollTo(0, blocks.getBottom());
-            }
-        });
-
+        Log.d(TAG, "onResume() Events:\n" + EventManager.getAllEvents(getApplicationContext()));
     }
 
     @Override
@@ -151,13 +101,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         super.onPause();
         Log.d("DayTimelineActivity", "onPause()");
         saveColorSharedPreferences();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (_broadcastReceiver != null)
-            unregisterReceiver(_broadcastReceiver);
     }
 
     @Override
@@ -181,6 +124,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
                 return true;
             case R.id.menu_calendar:
                 startCalendarActivity();
+                return true;
+            case R.id.menu_alt_view:
+                addDayTimelineListFragment();
                 return true;
             case R.id.menu_records:
                 startRecordsListActivity();
@@ -209,6 +155,24 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void addDayTimelineListFragment() {
+        Log.d(TAG, "addDayTimelineListFragment()");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        DayTimelineListFragment listFragment = new DayTimelineListFragment();
+        ft.replace(R.id.dayTimeline, listFragment, "DayTimelineListFragment");
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
+
+    private void addDayTimelineBlocksFragment() {
+        Log.d(TAG, "addDayTimelineBlocksFragment()");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        DayTimelineBlocksFragment listFragment = new DayTimelineBlocksFragment();
+        ft.replace(R.id.dayTimeline, listFragment, "DayTimelineBlocksFragment");
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
     }
 
     @Override
@@ -267,36 +231,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     @Override
     public void onLoadFinished(Loader loader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished() rows: " + cursor.getCount() + " positon: " + cursor.getPosition());
-        resfreshAdaptersDataList(cursor);
-    }
-
-    private void resfreshAdaptersDataList(Cursor cursor) {
-        adapter.clear();
-        blockList = null;
-        blockList = DataProcessor.eventsToMapOfBlocks(cursor);
-        adapter.addAll(blockList);
-        adapter.notifyDataSetChanged();
-        blocks.setVisibility(View.GONE);
-        blocks.setVisibility(View.VISIBLE);
-        //Log.d(TAG, "onLoadFinished() blockList: " + blockList);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        BlockView block = (BlockView) view;
-        int arriveID = block.getArriveId(), leaveID = block.getLeaveId();
-        Log.d(TAG, "onItemClick() position: " + position + " id: " + id + " arriveID: " + arriveID
-                + " leaveID: " + leaveID);
-        startEditActivity(arriveID, leaveID);
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d("DayTimelineActivity", "onItemLongClick() position: " + position);
-        BlockView block = (BlockView) view;
-        DialogFragment dialog = new ColorPickerDialog(block.getType());
-        dialog.show(getSupportFragmentManager(), "ColorPickerDialog"); //TODO [rpc nejde support verze
-        return true;
+        mCursor = cursor;
+        mDataSetObservable.notifyChanged();
     }
 
     private void startInsertActivity() {
@@ -306,7 +242,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         startActivity(intent);
     }
 
-    private void startEditActivity(int arriveID, int leaveID) {
+    public void startEditActivity(int arriveID, int leaveID) {   //TODO frag
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.putExtra(ActivityConsts.ID_ARRIVE, arriveID);
         intent.putExtra(ActivityConsts.ID_LEAVE, leaveID);
@@ -383,8 +319,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     @Override
     public void colorChanged() {
-        blocks.setVisibility(View.GONE);
-        blocks.setVisibility(View.VISIBLE);
+        mDataSetObservable.notifyChanged();
     }
 
     private void loadNetworkSharedPreferences() {
@@ -455,7 +390,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private void changeDate(long date) {
         Log.d(TAG, "changeDate() date " + AppUtil.formatDate(date));
         this.date = date;
-        adapter.setDate(date);
+        setDateTitle(date);
         getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
     }
 
@@ -463,5 +398,17 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
 
+    }
+
+    public void registerDataSetObserver(DataSetObserver observer) {
+        mDataSetObservable.registerObserver(observer);
+    }
+
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        mDataSetObservable.unregisterObserver(observer);
+    }
+
+    public Cursor getCursor() {
+        return mCursor;
     }
 }

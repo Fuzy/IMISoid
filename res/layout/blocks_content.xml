@@ -27,32 +27,6 @@
         android:layout_height="wrap_content"
         class="imis.client.ui.BlocksLayout"
         iosched:columns="3" >
-<!--
-        <view
-            android:id="@id/blocks_ruler"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            class="imis.client.ui.TimeRulerView"
-            iosched:dividerColor="#22000000"
-            iosched:endHour="24"
-            iosched:headerWidth="@dimen/schedule_label_header_width"
-            iosched:horizontalDivider="true"
-            iosched:hourHeight="@dimen/schedule_hour_height"
-            iosched:labelColor="#000000"
-            iosched:labelPaddingLeft="@dimen/schedule_label_padding"
-            iosched:labelTextSize="@dimen/text_size_small"
-            iosched:startHour="0" />
-
-        <View
-            android:id="@id/blocks_now"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/now_bar" />-->
     </view>
 
-</view> <!-- android:layerType="software" -->
-
-
-
-
-<!-- android:id="@id/blocks_ruler" -->
+</view>

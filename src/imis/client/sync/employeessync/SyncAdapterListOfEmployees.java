@@ -29,5 +29,6 @@ public class SyncAdapterListOfEmployees extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "onPerformSync()" + "account = [" + account + "], bundle = [" + bundle + "], " +
                 "s = [" + s + "], contentProviderClient = [" + contentProviderClient + "], " +
                 "syncResult = [" + syncResult + "]");
+        //TODO dat sem aktualizaci seznamu zamestnancu
     }
 }

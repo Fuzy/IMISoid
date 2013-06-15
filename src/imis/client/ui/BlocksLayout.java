@@ -36,7 +36,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     private static final int INVALID_INDEX = -1;
     private Rect mRect;
 
-    //private EventsCursorAdapter mAdapter;
     private EventsArrayAdapter mAdapter;
     private TimeRulerView mRulerView = null;
     private View mNowView = null;
@@ -92,7 +91,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
         }
 
         if (AppUtil.belongsNowToDate(mAdapter.getDate())) {
-            mNowView.setVisibility(View.VISIBLE);
+            mNowView.setVisibility(View.VISIBLE);//TODO funguje?
         } else {
             mNowView.setVisibility(View.INVISIBLE);
         }
@@ -354,7 +353,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
         canvas.restore();
     }*/
 
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener { //TODO smazat
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             Log.d(TAG, "onScale()");

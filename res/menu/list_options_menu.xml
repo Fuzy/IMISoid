@@ -13,6 +13,9 @@
           android:icon="@drawable/ic_menu_my_calendar"
           android:title="@string/menu_calendar"
           android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/menu_alt_view"
+          android:title="@string/menu_alt_view"
+          android:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/menu_eventsChart"
           android:title="@string/menu_eventsChart"
           android:showAsAction="ifRoom|withText"/>

@@ -173,7 +173,7 @@ public class EventManager {
         public static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
         public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
         public static final String SELECTION_OLDER_THAN = Event.COL_DATUM + "<?";
-        public static final String SELECTION_DAY_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED;
+        public static final String SELECTION_DAY_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED;//TODO + user
         public static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
         public static final String SELECTION_ICP = Event.COL_ICP + " LIKE ? || '%' ";
         public static final String SELECTION_PERIOD = " ? <= " + Event.COL_DATUM + " and " + Event.COL_DATUM + " <= ? ";
