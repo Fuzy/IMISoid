@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
+import imis.client.R;
 import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Employee;
 
@@ -104,6 +106,7 @@ public class EmployeeManager {
         for (Employee employee : currentList) {
             deleteEvent(context, employee.get_id());
         }//TODO test
+        AppUtil.showInfo(context, context.getString(R.string.employees_act_ok));
     }
 
     public static Employee getEmployee(Context context, String icp) {

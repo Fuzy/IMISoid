@@ -11,6 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         <include layout="@layout/control_period_edit"/>
+        <include layout="@layout/control_period_buttons"/>
 
         <LinearLayout android:layout_height="wrap_content"
                       android:layout_width="wrap_content"

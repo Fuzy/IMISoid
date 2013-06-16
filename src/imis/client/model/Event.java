@@ -11,7 +11,7 @@ public class Event {
     // private static final String TAG = Event.class.getSimpleName();
     // sync
     @JsonIgnore
-    private int _id;//TODO long?
+    private int _id;
     private String server_id;
     @JsonIgnore
     private boolean dirty;
@@ -208,6 +208,7 @@ public class Event {
                 ", deleted=" + deleted +
                 ", icp='" + icp + '\'' +
                 ", datum=" + formatDate(datum) +
+                ", datum=" + datum +
                 ", kod_po='" + kod_po + '\'' +
                 ", druh='" + druh + '\'' +
                 ", cas=" + formatTime(cas) +

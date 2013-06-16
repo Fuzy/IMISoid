@@ -33,11 +33,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     private static Map<String, String> eventsFreq = new HashMap<>();
     private static Map<String, String> widgetsFreq = new HashMap<>();
+    private static Map<String, String> employeesFreq = new HashMap<>();
     private static Map<String, String> networkType = new HashMap<>();
     private static Map<String, String> notificationDelay = new HashMap<>();
     private static String KEY_PREF_NETWORK_TYPE;
     private static String KEY_PREF_SYNC_EVENTS;
     private static String KEY_PREF_SYNC_WIDGETS;
+    private static String KEY_PREF_SYNC_EMPLOYEES;
     private static String KEY_PREF_NOTIFI_ARRIVE;
     private static String KEY_PREF_NOTIFI_LEAVE;
     private static String KEY_PREF_NOTIFI_FREQ;
@@ -62,11 +64,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         KEY_PREF_NETWORK_TYPE = getResources().getString(R.string.prefSyncOnNetworkType);
         KEY_PREF_SYNC_EVENTS = getResources().getString(R.string.prefSyncEventsFrequency);
         KEY_PREF_SYNC_WIDGETS = getResources().getString(R.string.prefSyncWidgetsFrequency);
+        KEY_PREF_SYNC_EMPLOYEES = getResources().getString(R.string.prefSyncEmployeesFrequency);
         KEY_PREF_NOTIFI_ARRIVE = getResources().getString(R.string.prefNotificationArrive);
         KEY_PREF_NOTIFI_LEAVE = getResources().getString(R.string.prefNotificationLeave);
         KEY_PREF_NOTIFI_FREQ = getResources().getString(R.string.prefNotificationFrequency);
         KEYS_WITH_SUMMARIES = new String[]{KEY_PREF_NETWORK_TYPE, KEY_PREF_SYNC_EVENTS,
-                KEY_PREF_SYNC_WIDGETS, KEY_PREF_NOTIFI_FREQ};
+                KEY_PREF_SYNC_WIDGETS, KEY_PREF_SYNC_EMPLOYEES, KEY_PREF_NOTIFI_FREQ};
     }
 
     private void populateMaps() {
@@ -76,6 +79,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         String[] widgetsFreqAr = getResources().getStringArray(R.array.prefSyncWidgetsFrequency);
         String[] widgetsFreqValuesAr = getResources().getStringArray(R.array.prefSyncWidgetsFrequencyValues);
         populateMap(widgetsFreqValuesAr, widgetsFreqAr, widgetsFreq);
+        String[] employeesFreqAr = getResources().getStringArray(R.array.prefSyncEmployeesFrequency);
+        String[] employeesFreqValuesAr = getResources().getStringArray(R.array.prefSyncEmployeesFrequencyValues);
+        populateMap(employeesFreqValuesAr, employeesFreqAr, employeesFreq);
         String[] networkTypeAr = getResources().getStringArray(R.array.prefsyncNetworkType);
         String[] networkTypeValuesAr = getResources().getStringArray(R.array.prefsyncNetworkTypeValues);
         populateMap(networkTypeValuesAr, networkTypeAr, networkType);
@@ -121,7 +127,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         int periodEvents = Integer.valueOf(value);
         value = sharedPref.getString(KEY_PREF_SYNC_WIDGETS, "0");
         int periodWidgets = Integer.valueOf(value);
-        applySyncSetting(periodEvents, periodWidgets);
+        value = sharedPref.getString(KEY_PREF_SYNC_EMPLOYEES, "0");
+        int periodEmployees = Integer.valueOf(value);
+        applySyncSetting(periodEvents, periodWidgets, periodEmployees);
         boolean notifyArrive = sharedPref.getBoolean(KEY_PREF_NOTIFI_ARRIVE, false);
         boolean notifyLeave = sharedPref.getBoolean(KEY_PREF_NOTIFI_LEAVE, false);
         value = sharedPref.getString(KEY_PREF_NOTIFI_FREQ, "60");
@@ -129,24 +137,26 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         applyNotificationSetting(notifyArrive, notifyLeave, periodNotification);
     }
 
-    private void applySyncSetting(int periodEvents, int periodWidgets) {
-        Log.d(TAG, "applySyncSetting()" + "periodEvents = [" + periodEvents + "], periodWidgets = [" + periodWidgets + "]");
+    private void applySyncSetting(int periodEvents, int periodWidgets, int periodEmployees) {
+        Log.d(TAG, "applySyncSetting()" + "periodEvents = [" + periodEvents + "], periodWidgets = ["
+                + periodWidgets + "], periodEmployees = [" + periodEmployees + "]");
         try {
             Account account = AppUtil.getUserAccount(getActivity());
             Log.d(TAG, "applySyncSetting() account " + account);
             if (periodEvents != 0) {
-                ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY1, 1);
-                ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
                 ContentResolver.addPeriodicSync(account, AppConsts.AUTHORITY1, new Bundle(), periodEvents);
             } else {
-                ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, false);
+                ContentResolver.removePeriodicSync(account, AppConsts.AUTHORITY1, new Bundle());
             }
             if (periodWidgets != 0) {
-                ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY2, 1);
-                ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY2, true);
                 ContentResolver.addPeriodicSync(account, AppConsts.AUTHORITY2, new Bundle(), periodWidgets);
             } else {
-                ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY2, false);
+                ContentResolver.removePeriodicSync(account, AppConsts.AUTHORITY2, new Bundle());
+            }
+            if (periodEmployees != 0) {
+                ContentResolver.addPeriodicSync(account, AppConsts.AUTHORITY3, new Bundle(), periodEmployees);
+            } else {
+                ContentResolver.removePeriodicSync(account, AppConsts.AUTHORITY3, new Bundle());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -191,6 +201,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             summary = widgetsFreq.get(value);
         } else if (key.equals(KEY_PREF_NOTIFI_FREQ)) {
             summary = notificationDelay.get(value);
+        } else if (key.equals(KEY_PREF_SYNC_EMPLOYEES)) {
+            summary = employeesFreq.get(value);
         }
         connectionPref.setSummary(summary);
     }

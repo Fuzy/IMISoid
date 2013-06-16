@@ -32,7 +32,7 @@ public class RecordManager {
     }
 
     public static void addRecords(Context context, Record[] records) {
-        Log.d(TAG, "addRecords()");
+        Log.d(TAG, "addEvents()");
         for (Record record : records) {
             if (updateRecordOnServerId(context, record) == 0)
                 addRecord(context, record);

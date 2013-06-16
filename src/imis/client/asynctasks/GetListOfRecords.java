@@ -2,9 +2,8 @@ package imis.client.asynctasks;
 
 import android.content.Context;
 import android.util.Log;
-import imis.client.AppUtil;
-import imis.client.R;
 import imis.client.asynctasks.result.ResultList;
+import imis.client.asynctasks.util.AsyncUtil;
 import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Record;
 import imis.client.network.HttpClientFactory;
@@ -51,69 +50,25 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
             Record[] body = response.getBody();
             Log.d(TAG, "doInBackground() ok " + body);
             return new ResultList<Record>(response.getStatusCode(), body);
-        } catch (Exception e) { //ResourceAccessException
-            Log.d(TAG, e.getLocalizedMessage(), e);
-            return new ResultList<Record>(context.getString(R.string.service_unavailable));
+        } catch (Exception e) {
+            ResultList<Record> resultItem = AsyncUtil.processException(e, ResultList.class);
+            Log.d(TAG, "doInBackground() resultItem " + resultItem);
+            return resultItem;
         }
     }
 
     @Override
     protected void onPostExecute(ResultList<Record> resultList) {
 
-
-        /*Log.d(TAG, "onPostExecute() records " + Arrays.toString(records));
-        //TODO test data
-        records = new Record[2];
-
-        Record record = new Record();
-        record.setId("123");
-        record.setZc("I-VV-2013");
-        record.setCpolzak(5);
-        record.setCpozzak(11);
-        record.setKodpra("KDA");
-        record.setDatum(1364169600000L);
-        record.setStav_v("V");
-        record.setMnozstvi_odved(11111111);
-        record.setPoznamka("bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " +
-                "3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké 3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " + "\n" +
-                "                \"3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké 3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " + "\n"
-        );
-        record.setPozn_hl("poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
-        record.setPozn_ukol("poznamka ukol poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
-        records[0] = record;
-
-        Record record2 = new Record();
-        record2.setId("124");
-        record2.setZc("A-VV-2013");
-        record2.setCpolzak(5);
-        record2.setCpozzak(11);
-        record2.setKodpra("KDA");
-        record2.setDatum(1364169600000L);
-        record2.setStav_v("V");
-        record2.setMnozstvi_odved(11111111);
-        record2.setPoznamka("bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " +
-                "3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké 3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " + "\n" +
-                "                \"3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké 3 bylo těžké 0 bylo těžké 1 bylo těžké  2 bylo těžké " + "\n"
-        );
-        record2.setPozn_hl("poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
-        record2.setPozn_ukol("poznamka ukol poznamka hlavni poznamka hlavni poznamka hlavni poznamka hlavni");
-        records[1] = record2;*/
-
-
-        if (resultList.isUnknownErr()) {
-            Log.d(TAG, "onPostExecute() isUnknownErr");
-            AppUtil.showError(context, resultList.getMsg());
-        } else {
+        if (resultList.isOk() && !resultList.isEmpty()) {
+            Log.d(TAG, "onPostExecute() OK and not empty");
             Record[] records = resultList.getArray();
             if (records != null) {
                 RecordManager.addRecords(context, records);
                 Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(context));
-            } else {
-                Log.d(TAG, "onPostExecute() empty");
-                AppUtil.showInfo(context, context.getString(R.string.no_records));
             }
         }
 
-        super.onPostExecute(null);
+        super.onPostExecute(resultList);
     }
 }

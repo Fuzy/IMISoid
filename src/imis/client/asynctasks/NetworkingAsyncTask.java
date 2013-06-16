@@ -3,8 +3,11 @@ package imis.client.asynctasks;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import imis.client.AppUtil;
+import imis.client.R;
 import imis.client.asynctasks.result.Result;
 import imis.client.ui.fragments.TaskFragment;
+import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -33,12 +36,24 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
 
     @Override
     protected void onPostExecute(V v) {
+        Result result = (Result) v;
+        Log.d(TAG, "onPostExecute() result " + result);
 
-        Log.d(TAG, "onPostExecute()");
+        if (result.isOk()) {
+            if (result.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
+                AppUtil.showInfo(context, context.getString(R.string.no_records));
+            }
+        } else if (result.isUnknownErr()) {
+            AppUtil.showError(context, result.getMsg());
+        } else if (result.isServerError()) {
+            AppUtil.showError(context, context.getString(R.string.server_error));
+        } else if (result.isClientError()) {
+            AppUtil.showError(context, context.getString(R.string.client_error));
+        }
 
         if (mFragment != null) {
             Log.d(TAG, "onPostExecute() resultData " + v);
-            mFragment.taskFinished((Result)v);
+            mFragment.taskFinished((Result) v);
         }
 
         super.onPostExecute(null);

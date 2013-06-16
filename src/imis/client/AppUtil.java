@@ -3,11 +3,9 @@ package imis.client;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 import imis.client.authentication.AuthenticationConsts;
@@ -32,9 +30,10 @@ public class AppUtil {
 
     public static void showAccountNotExistsError(Context context) {
         Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_SHORT);
-        Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
+        /*Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
         intent.putExtra(Settings.EXTRA_AUTHORITIES, new String[]{AppConsts.AUTHORITY1, AppConsts.AUTHORITY2});
-        context.startActivity(intent);
+        context.startActivity(intent);*/
+        //TODO dialog s nabidkou na vytvoreni uctu
         toast.show();
     }
 
@@ -116,7 +115,7 @@ public class AppUtil {
         return time.getTimeInMillis();
     }
 
-    public static long todayInLong() {
+    public static long todayInLong() {//TODO tohle asi zpusobuje problemy, hodinu kolem pulnoci
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);

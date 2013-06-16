@@ -2,6 +2,8 @@ package imis.client.asynctasks;
 
 import android.content.Context;
 import android.util.Log;
+import imis.client.asynctasks.result.ResultList;
+import imis.client.asynctasks.util.AsyncUtil;
 import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Employee;
 import imis.client.network.HttpClientFactory;
@@ -12,7 +14,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Collections;
  * Date: 8.4.13
  * Time: 22:29
  */
-public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employee[]> {
+public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, ResultList<Employee>> {
     private static final String TAG = GetListOfEmployees.class.getSimpleName();
 
     public GetListOfEmployees(Context context, String... params) {
@@ -29,7 +30,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
     }
 
     @Override
-    protected Employee[] doInBackground(String... params) {
+    protected ResultList<Employee> doInBackground(String... params) {
         Log.d(TAG, "doInBackground()");
         String url, icp = "";
         if (params.length == 0) {
@@ -57,45 +58,27 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Employ
                     Employee[].class, icp);
             Employee[] body = response.getBody();
             Log.d(TAG, "doInBackground() body " + body);
-            return body;
-        } catch (Exception e) { //TODO predelat
-            Log.e(TAG, e.getLocalizedMessage(), e);
-            return null; //TODO err msg
+            return new ResultList<Employee>(response.getStatusCode(), body);
+        } catch (Exception e) {
+            ResultList<Employee> resultItem = AsyncUtil.processException(e, ResultList.class);
+            Log.d(TAG, "doInBackground() resultItem " + resultItem);
+            return resultItem;
         }
     }
 
     @Override
-    protected void onPostExecute(Employee[] employees) {
-        Log.d(TAG, "onPostExecute() employees " + Arrays.toString(employees));
-/*
-        Employee employee = new Employee();
-        employee.setIcp("123");
-        employee.setKodpra("KDA");
-        //employee.setSubordinate(false);
-        employee.setDatum(1364169600000L);
-        employee.setKod_po(Event.KOD_PO_ARRIVE_NORMAL);
-        employee.setDruh("P");
-        //employee.setWidgetId(-1);
-*/
+    protected void onPostExecute(ResultList<Employee> resultList) {
+//        Log.d(TAG, "onPostExecute() employees " + Arrays.toString(employees));
 
-/*
-        Employee employee2 = new Employee();
-        employee2.setIcp("124");
-        employee2.setKodpra("JSK");
-        //employee2.setSubordinate(false);
-        employee2.setDatum(1364169650000L);
-        employee2.setKod_po(Event.KOD_PO_LEAVE_LUNCH);
-        employee2.setDruh("O");
-        //employee2.setWidgetId(-1);
-*/
-
-        //employees = new Employee[]{employee, employee2};  //TODO pouze pro test
-        Log.d(TAG, "onPostExecute()");
-        if (employees != null) {
-            EmployeeManager.syncEmployees(context, employees);
-            //TODO synchronize list of employees
+        if (resultList.isOk() && !resultList.isEmpty()) {
+            Log.d(TAG, "onPostExecute() OK and not empty");
+            Employee[] employees = resultList.getArray();
+            if (employees != null) {
+                EmployeeManager.syncEmployees(context, employees);
+            }
         }
+
         Log.d(TAG, "onPostExecute() " + EmployeeManager.getAllEmployees(context));
-        super.onPostExecute(null);
+        super.onPostExecute(resultList);
     }
 }

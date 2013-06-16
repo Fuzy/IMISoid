@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
 import imis.client.model.Event;
 
 import java.util.ArrayList;
@@ -14,8 +15,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EventManager {
-    private static final String TAG = "EventManager";
+    private static final String TAG = EventManager.class.getSimpleName();
 
+    public static void addEvents(Context context, Event[] events) {
+        Log.d(TAG, "addEvents()");
+        for (Event event : events) {
+            if (updateEventOnServerId(context, event) == 0)
+                addEvent(context, event);
+        }
+    }
 
     public static int addEvent(Context context, Event event) {
         ContentValues values = event.asContentValues();
@@ -54,9 +62,13 @@ public class EventManager {
     }
 
     public static Event getLastEvent(Context context) {
-        Log.d(TAG, "getEvent()");
-        //TODO pouze udalosti uzivatele
-        return getEvent(context, EventQuery.SELECTION_LAST, null, EventQuery.ORDER_BY_LAST);
+        Log.d(TAG, "getLastEvent()");
+        try {
+            String icp = AppUtil.getUserICP(context);
+            return getEvent(context, EventQuery.SELECTION_USER_LAST, new String[]{icp}, EventQuery.ORDER_BY_LAST);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static Event getEvent(Context context, String rowid) {
@@ -164,7 +176,6 @@ public class EventManager {
     }
 
     final public static class EventQuery {
-
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + AppConsts.AUTHORITY1 + "/"
                 + MyDatabaseHelper.TABLE_EVENTS);
 
@@ -173,18 +184,20 @@ public class EventManager {
         public static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
         public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
         public static final String SELECTION_OLDER_THAN = Event.COL_DATUM + "<?";
-        public static final String SELECTION_DAY_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED;//TODO + user
-        public static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
         public static final String SELECTION_ICP = Event.COL_ICP + " LIKE ? || '%' ";
+        public static final String SELECTION_DAY_USER_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED + " and " + SELECTION_ICP;
+        public static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
         public static final String SELECTION_PERIOD = " ? <= " + Event.COL_DATUM + " and " + Event.COL_DATUM + " <= ? ";
         public static final String SELECTION_CHART = SELECTION_ICP + " and " + SELECTION_PERIOD + " and " + SELECTION_UNDELETED;
         public static final String SELECTION_LAST_ARRIVE = Event.COL_DRUH + "=P";
-        public static final String SELECTION_LAST = Event.COL_DATUM;
-        public static final String ORDER_BY_DATE = Event.COL_DATUM + " DESC";
-        public static final String ORDER_BY_TIME = Event.COL_CAS + " DESC";
-        public static final String ORDER_BY_DRUH = Event.COL_DRUH + "='O' DESC";
+        public static final String SELECTION_USER_LAST = Event.COL_DATUM + " and " + SELECTION_ICP;
+        public static final String ORDER_BY_DATE_DESC = Event.COL_DATUM + " DESC";
+        public static final String ORDER_BY_TIME_DESC = Event.COL_CAS + " DESC";
+        public static final String ORDER_BY_DATE_ASC = Event.COL_DATUM + " ASC";
+        public static final String ORDER_BY_TIME_ASC = Event.COL_CAS + " ASC";
+        public static final String ORDER_BY_DRUH = Event.COL_DRUH + "='O' DESC";//TODO pokud jsou 2 udalosti ve stejne minute
         public static final String ORDER_BY_ID = Event.COL_ID + " DESC";
-        public static final String ORDER_BY_LAST = ORDER_BY_DATE + ", " + ORDER_BY_TIME + ", " + ORDER_BY_ID + " LIMIT 1";
+        public static final String ORDER_BY_LAST = ORDER_BY_DATE_DESC + ", " + ORDER_BY_TIME_DESC + ", " + ORDER_BY_ID + " LIMIT 1";
+        public static final String ORDER_BY_DATE_TIME_ASC = ORDER_BY_DATE_ASC + ", " + ORDER_BY_TIME_ASC;
     }
-
 }

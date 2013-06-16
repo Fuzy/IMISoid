@@ -2,16 +2,18 @@ package imis.client.asynctasks;
 
 import android.content.Context;
 import android.util.Log;
+import imis.client.asynctasks.result.ResultList;
+import imis.client.asynctasks.util.AsyncUtil;
 import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Event;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
+import imis.client.persistent.EventManager;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -20,7 +22,7 @@ import java.util.Collections;
  * Date: 17.4.13
  * Time: 0:17
  */
-public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]> {
+public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultList<Event>> {
     private static final String TAG = GetListOfRecords.class.getSimpleName();
 
     public GetListOfEvents(Context context, String... params) {
@@ -28,7 +30,7 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]> 
     }
 
     @Override
-    protected Event[] doInBackground(String... params) {
+    protected ResultList<Event> doInBackground(String... params) {
         String kodpra = params[0], from = params[1], to = params[2];
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -43,24 +45,27 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, Event[]> 
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            Log.d(TAG, "doInBackground()");
             ResponseEntity<Event[]> response = restTemplate.exchange(NetworkUtilities.EVENTS_GET_URL, HttpMethod.GET, entity,
                     Event[].class, kodpra, from, to);
             Event[] body = response.getBody();
-            return body;
-        } catch (Exception e) {  //TODO predelat
-            Log.e(TAG, e.getLocalizedMessage(), e);
+            Log.d(TAG, "doInBackground() body " + body);
+            return new ResultList<Event>(response.getStatusCode(), body);
+        } catch (Exception e) {
+            ResultList<Event> resultItem = AsyncUtil.processException(e, ResultList.class);
+            Log.d(TAG, "doInBackground() resultItem " + resultItem);
+            return resultItem;
         }
-
-        return new Event[]{};
     }
 
     @Override
-    protected void onPostExecute(Event[] events) {
+    protected void onPostExecute(ResultList<Event> resultList) {
 
-        Log.d(TAG, "onPostExecute() events " + Arrays.toString(events));
+        if (resultList.isOk() && !resultList.isEmpty()) {
+            Log.d(TAG, "onPostExecute() OK and not empty");
+            Event[] events = resultList.getArray();
+            EventManager.addEvents(context, events);
+        }
 
-
-        super.onPostExecute(null);
+        super.onPostExecute(resultList);
     }
 }

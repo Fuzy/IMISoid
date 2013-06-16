@@ -25,6 +25,12 @@
                 android:entryValues="@array/prefSyncWidgetsFrequencyValues"
                 android:title="@string/sync_widgets"
                 android:defaultValue="@string/sync_widget_frequency_default"/>
+        <ListPreference
+                android:key="@string/prefSyncEmployeesFrequency"
+                android:entries="@array/prefSyncEmployeesFrequency"
+                android:entryValues="@array/prefSyncEmployeesFrequencyValues"
+                android:title="@string/sync_employees"
+                android:defaultValue="@string/sync_employees_frequency_default"/>
     </PreferenceCategory>
     <PreferenceCategory
             android:title="@string/pref_notification"

@@ -59,7 +59,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_editor);
         final Intent intent = getIntent();
-        date = intent.getLongExtra(Event.KEY_DATE, AppUtil.todayInLong());
+        date = intent.getLongExtra(Event.KEY_DATE, AppUtil.todayInLong());//TODO
         widgetIsSource = intent.getBooleanExtra(AppConsts.KEY_WIDGET_IS_SOURCE, false);
 
 //        Log.d(TAG, "onCreate date : " + date + "  " + EventManager.getAllEvents(getApplicationContext()));
@@ -84,7 +84,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
         arriveId = intent.getIntExtra(ActivityConsts.ID_ARRIVE, -1);
         leaveId = intent.getIntExtra(ActivityConsts.ID_LEAVE, -1);
-        loadEvents(arriveId, leaveId);
+        loadEvents(arriveId, leaveId);//TODO varianta pouze leave
 
         init();
         if (widgetIsSource) {
@@ -453,10 +453,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-
-        int spinnerId = parent.getId();//((Spinner) parent).getId();
-
-        switch (spinnerId) {
+        switch (parent.getId()) {
             case R.id.spinner_kod_po_arrive:
                 Log.d(TAG, "onItemSelected pos: " + pos + " id: " + id + " spinner: spinner_kod_po_arrive");
                 selectedArrive = pos;

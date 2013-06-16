@@ -26,7 +26,7 @@ import java.util.Collections;
  * Time: 19:29
  */
 public class EventsSync {
-    private static final String TAG = "EventsSync";
+    private static final String TAG = EventsSync.class.getSimpleName();
 
     private final Context context;
 
@@ -50,7 +50,7 @@ public class EventsSync {
                     HttpMethod.DELETE, entity, null, rowid);
             return new Result(response.getStatusCode());
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();     //TODO
             return new Result(e.getLocalizedMessage());
         }
     }
@@ -78,7 +78,7 @@ public class EventsSync {
             return new ResultList<Event>(response.getStatusCode(), events);
         } catch (Exception e) {
             Log.d(TAG, "getUserEvents() e " + e);
-            e.printStackTrace();
+            e.printStackTrace();      //TODO
             return new ResultList<Event>(e.getLocalizedMessage());
         }
     }
@@ -110,7 +110,7 @@ public class EventsSync {
         } catch (HttpClientErrorException e) {
             Log.d(TAG, "createEvent() HttpClientErrorException");
             return new Result(e.getStatusCode(), e.getResponseBodyAsString());
-        } catch (Exception e) {
+        } catch (Exception e) {  //TODO
             e.printStackTrace();
             return new Result();
         }
@@ -141,7 +141,7 @@ public class EventsSync {
             if (e instanceof HttpServerErrorException) {
                 HttpServerErrorException ex = (HttpServerErrorException) e;
                 return new Result(ex.getResponseBodyAsString());
-            }
+            }             //TODO
             return new Result();
         }
     }

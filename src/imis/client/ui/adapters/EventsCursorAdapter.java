@@ -2,6 +2,7 @@ package imis.client.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.LayerDrawable;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,5 +54,23 @@ public class EventsCursorAdapter extends CursorAdapter {
                 + " " + AppUtil.formatTime(event.getCas());
         tt.setText(time);
 
+        LayerDrawable buttonDrawable;
+        if (event.isError()) {
+            buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
+                    R.drawable.event_item_error);
+        } else if (event.isDirty()) {
+            buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
+                    R.drawable.event_item_dirty);
+        } else {
+            buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
+                    R.drawable.event_item_not_dirty);
+        }
+        view.setBackground(buttonDrawable);
+
+    }
+
+    @Override
+    public Event getItem(int position) {
+        return Event.cursorToEvent((Cursor) super.getItem(position));
     }
 }

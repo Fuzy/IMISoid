@@ -47,7 +47,7 @@ public class NetworkUtilities {//TODO asi jako nestaticka trida
     public static String EMPLOYEE_URL;
     public static String TEST_CONN_URL;
 
-    public static final String DOMAIN_DEFAULT = "10.0.0.2";//        //10.0.0.1
+    public static final String DOMAIN_DEFAULT = "10.0.0.2/test";//        //10.0.0.1
     public static final int PORT_DEFAULT = 8081;
 
     public static Result testWebServiceAndDBAvailability() {

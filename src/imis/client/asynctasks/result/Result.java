@@ -55,6 +55,10 @@ public class Result {
         return (statusCode != null && statusCode.value() >= 400 && statusCode.value() < 500);
     }
 
+    public boolean isOk() {
+        return (!isUnknownErr() && !isServerError() && !isClientError());
+    }
+
     @Override
     public String toString() {
         return "Result{" +

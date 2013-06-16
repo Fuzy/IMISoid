@@ -3,16 +3,14 @@ package imis.client.authentication;
 import android.content.Context;
 import android.util.Log;
 import imis.client.asynctasks.NetworkingAsyncTask;
-import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultItem;
+import imis.client.asynctasks.util.AsyncUtil;
 import imis.client.model.Employee;
 import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -52,10 +50,9 @@ public class AuthEmployee extends NetworkingAsyncTask<String, Void, ResultItem<E
             Employee employee = response.getBody();
             return new ResultItem<Employee>(response.getStatusCode(), employee);
         } catch (Exception e) {
-            e.printStackTrace();//TODO client error
-            ResultItem<Employee> item = processException(e, ResultItem.class);
-            Log.d(TAG, "doInBackground() item " + item);
-            return item;
+            ResultItem<Employee> resultItem = AsyncUtil.processException(e, ResultItem.class);
+            Log.d(TAG, "doInBackground() resultItem " + resultItem);
+            return resultItem;
         }
     }
 
@@ -64,33 +61,4 @@ public class AuthEmployee extends NetworkingAsyncTask<String, Void, ResultItem<E
         super.onPostExecute(employeeResult);
     }
 
-    private <T extends Result> T processException(Exception e, Class<T> type) {
-        T instance = null;
-        try {
-            if (e instanceof HttpClientErrorException) {
-                Log.d(TAG, "processException() HttpClientErrorException");
-                instance = type.getDeclaredConstructor(HttpStatus.class, String.class)
-                        .newInstance(((HttpClientErrorException) e).getStatusCode(), e.getLocalizedMessage());
-            } else if (e instanceof HttpServerErrorException) {
-                Log.d(TAG, "processException() HttpServerErrorException");
-                instance = type.getDeclaredConstructor(HttpStatus.class, String.class)
-                        .newInstance(((HttpServerErrorException) e).getStatusCode(), e.getLocalizedMessage());
-            } else {
-                instance = type.getDeclaredConstructor(String.class).newInstance(e.getLocalizedMessage());
-            }
-        } catch (Exception e1) {
-            e1.printStackTrace(); //TODO
-        }
-        return instance;
-    }
-
-
-            /*if (e instanceof HttpClientErrorException) {
-                Log.d(TAG, "doInBackground() HttpClientErrorException");
-                return new ResultItem<Employee>(((HttpClientErrorException) e).getStatusCode(), e.getLocalizedMessage());
-            } else if (e instanceof HttpServerErrorException) {
-                Log.d(TAG, "doInBackground() HttpServerErrorException");
-                return new ResultItem<Employee>(((HttpServerErrorException) e).getStatusCode(), e.getLocalizedMessage());
-            }
-            return new ResultItem<Employee>(e.getLocalizedMessage());*/
 }

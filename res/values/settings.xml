@@ -12,11 +12,11 @@
         <item>Nikdy (Manuálně)</item>
     </string-array>
     <string-array name="syncEventsFrequencyValues">
-        <item>1</item>
-        <item>5</item>
-        <item>15</item>
-        <item>30</item>
         <item>60</item>
+        <item>300</item>
+        <item>900</item>
+        <item>1800</item>
+        <item>3600</item>
         <item>0</item>
     </string-array>
     <string name="sync_events_frequency_default">0</string>
@@ -32,11 +32,11 @@
         <item>Nikdy</item>
     </string-array>
     <string-array name="prefSyncWidgetsFrequencyValues">
-        <item>1</item>
-        <item>5</item>
-        <item>15</item>
-        <item>30</item>
         <item>60</item>
+        <item>300</item>
+        <item>900</item>
+        <item>1800</item>
+        <item>3600</item>
         <item>0</item>
     </string-array>
     <string name="sync_widget_frequency_default">0</string>
@@ -63,9 +63,25 @@
         <item>60 min</item>
     </string-array>
     <string-array name="prefNotificationDelayValues">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
+        <item>900</item>
+        <item>1800</item>
+        <item>3600</item>
     </string-array>
+
+
+    <string name="prefSyncEmployeesFrequency">prefSyncEmployeesFrequency</string>
+    <string-array name="prefSyncEmployeesFrequency">
+        <item>Den</item>
+        <item>Týden</item>
+        <item>Měsíc</item>
+        <item>Nikdy (Manuálně)</item>
+    </string-array>
+    <string-array name="prefSyncEmployeesFrequencyValues">
+        <item>86400</item>
+        <item>604800</item>
+        <item>2678400</item>
+        <item>0</item>
+    </string-array>
+    <string name="sync_employees_frequency_default">0</string>
 
 </resources>

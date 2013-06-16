@@ -7,6 +7,7 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import imis.client.model.Event;
 import imis.client.ui.activities.DayTimelineActivity;
 import imis.client.ui.adapters.EventsCursorAdapter;
 
@@ -18,7 +19,6 @@ import imis.client.ui.adapters.EventsCursorAdapter;
  */
 public class DayTimelineListFragment extends ListFragment {
     private static final String TAG = DayTimelineListFragment.class.getSimpleName();
-    //TODO ikonka
 
     private DayTimelineActivity mActivity;
     private EventsCursorAdapter adapter;
@@ -45,6 +45,10 @@ public class DayTimelineListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.d(TAG, "onListItemClick()");
+        Event event = adapter.getItem(position);
+        Log.d(TAG, "onListItemClick() event " + event);
+//        mActivity.startEditActivity(arriveID, leaveID);
+        //TODO hledat souvisejici aktivitu v EventsCursorAdapter
     }
 
     private DataSetObserver mObserver = new DataSetObserver() {
@@ -54,7 +58,6 @@ public class DayTimelineListFragment extends ListFragment {
             adapter.swapCursor(mActivity.getCursor());
             Log.d(TAG, "onChanged() mActivity.getCursor() " +  mActivity.getCursor().getCount());
             Log.d(TAG, "onChanged() adapter " +  adapter.getCount());
-            setListAdapter(adapter);
         }
     };
 }

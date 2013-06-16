@@ -307,7 +307,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
                 Log.d(TAG, "onItemSelected() spinnerEmp");
                 selectionArgs.put(PAR_EMP, getSelectedUser());
                 processDataQuery();
-                break; //TODO grafove aktivity
+                break;
         }
 
     }
@@ -337,13 +337,13 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             String kodpra = getSelectedUser();
             if (kodpra.equals(AppConsts.EMPTY_SPINNER_ITEM))
                 throw new NotUserSelectedException(getString(R.string.noEmp));
-            String from = getStringDateFrom();
-            String to = getStringDateTo();
-            processControlAsyncTask(kodpra, from, to);
+            getStringDateFrom();
+            getStringDateTo();
+            processControlAsyncTask(kodpra, AppUtil.formatDate(dateFrom), AppUtil.formatDate(dateTo));
         } catch (ParseException e) {
             Log.d(TAG, "refreshRecords() " + e.getMessage());
             showPeriodInputError(this);
-        } catch (NotUserSelectedException e) {//TODO ostatni to same
+        } catch (NotUserSelectedException e) {
             Log.d(TAG, "refreshRecords() " + e.getMessage());
             showNotUserSelectedError(this, e.getMessage());
         } catch (Exception e) {

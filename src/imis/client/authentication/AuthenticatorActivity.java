@@ -3,6 +3,7 @@ package imis.client.authentication;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultItem;
@@ -77,6 +79,14 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         Bundle userdata = new Bundle();
         userdata.putString(AuthenticationConsts.KEY_ICP, icp);
         accountManager.addAccountExplicitly(account, password, userdata);
+
+        //TODO    test
+        ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY1, 1);
+        ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
+        ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY2, 1);
+        ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY2, true);
+        ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY3, 1);
+        ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY3, true);
 
         int inserted = EmployeeManager.addEmployee(this, employee);
         Log.d(TAG, "finishLogin() inserted " + inserted);
