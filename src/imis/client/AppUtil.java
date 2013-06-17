@@ -3,12 +3,11 @@ package imis.client;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
 import imis.client.authentication.AuthenticationConsts;
+import imis.client.ui.dialogs.AddAccountDialog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,13 +27,8 @@ public class AppUtil {
 
     private static final String TAG = AppUtil.class.getSimpleName();
 
-    public static void showAccountNotExistsError(Context context) {
-        Toast toast = Toast.makeText(context, R.string.no_account_set, Toast.LENGTH_SHORT);
-        /*Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
-        intent.putExtra(Settings.EXTRA_AUTHORITIES, new String[]{AppConsts.AUTHORITY1, AppConsts.AUTHORITY2});
-        context.startActivity(intent);*/
-        //TODO dialog s nabidkou na vytvoreni uctu
-        toast.show();
+    public static void showAccountNotExistsError(FragmentManager fragmentManager) {
+        new AddAccountDialog().show(fragmentManager, "AddAccountDialog");
     }
 
     public static void showNotUserSelectedError(Context context, String msg) {
@@ -57,20 +51,18 @@ public class AppUtil {
         toast.show();
     }
 
-    public static void showAccountAlreadyExists(final Context context) {
-       /* Toast toast = Toast.makeText(context, R.string.account_allready_exists, Toast.LENGTH_SHORT);
-        toast.show();*/
+    /*public static void showInfoMsgOutsideActivity(final Context context, final String message) {
         Looper.prepare();
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                Toast toast = Toast.makeText(context, R.string.account_allready_exists, Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
                 toast.show();
             }
         };
-        handler.sendEmptyMessage(0);//TODO je toto bezpecny kod
+        handler.sendEmptyMessage(0);
         Looper.loop();
-    }
+    }*/
 
     public static void showError(Context context, String msg) {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);

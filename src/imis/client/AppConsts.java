@@ -28,6 +28,9 @@ public class AppConsts {
     public static final String SHORTCUT_ADD_ACTION = "imis.client.widget.ADD_EVENT";
     public static final String KEY_WIDGET_IS_SOURCE = "widget";
 
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MSG = "msg";
+
     public static final String EMPTY_SPINNER_ITEM = "-";//TODO aplikovat vsude
 
 
@@ -35,4 +38,7 @@ public class AppConsts {
     public static final long MS_IN_MIN = 60L * 1000L;
 
     public final static String PREFS_CREDENTIALS = "AccountCredentials";
+
+
+    public static final String KEY_TYPE = "type";
 }

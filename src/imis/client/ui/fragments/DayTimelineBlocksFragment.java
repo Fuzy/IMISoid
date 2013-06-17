@@ -1,10 +1,6 @@
 package imis.client.ui.fragments;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -14,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.model.Block;
 import imis.client.processor.DataProcessor;
@@ -41,7 +38,7 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
     private List<Block> blockList;
     private EventsArrayAdapter adapter;
     private DayTimelineActivity mActivity;
-    private BroadcastReceiver minuteTickReceiver;
+//    private BroadcastReceiver minuteTickReceiver;
 
 
     private DataSetObserver mObserver = new DataSetObserver() {
@@ -85,6 +82,7 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
     void resfreshAdaptersDataList() {
         Log.d(TAG, "resfreshAdaptersDataList()");
         adapter.clear();
+        adapter.setDate(mActivity.getDate());
         blockList = null;
         blockList = DataProcessor.eventsToMapOfBlocks(mActivity.getCursor());
         adapter.addAll(blockList);
@@ -106,12 +104,15 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d("DayTimelineActivity", "onItemLongClick() position: " + position);
         BlockView block = (BlockView) view;
-        DialogFragment dialog = new ColorPickerDialog(block.getType());
+        DialogFragment dialog = new ColorPickerDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(AppConsts.KEY_TYPE, block.getType());
+        dialog.setArguments(bundle);
         dialog.show(getFragmentManager(), "ColorPickerDialog");
         return true;
     }
 
-    @Override
+    /*@Override
     public void onStart() {
 
         super.onStart();
@@ -133,7 +134,7 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
         super.onStop();
         if (minuteTickReceiver != null)
             mActivity.unregisterReceiver(minuteTickReceiver);
-    }
+    }*/
 
     @Override
     public void onResume() {

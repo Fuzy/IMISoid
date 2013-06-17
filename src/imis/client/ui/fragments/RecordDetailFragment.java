@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.*;
 import android.widget.TextView;
+import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Record;
@@ -22,7 +23,7 @@ import imis.client.ui.dialogs.ColorPickerDialog;
  * Time: 23:14
  */
 public class RecordDetailFragment extends Fragment {
-    private static final String TAG = "RecordDetailFragment";
+    private static final String TAG = RecordDetailFragment.class.getSimpleName();
 
     private View detail;
     private Record record;
@@ -84,7 +85,10 @@ public class RecordDetailFragment extends Fragment {
                 Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(50);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                DialogFragment dialog = new ColorPickerDialog(record.recordType());
+                DialogFragment dialog = new ColorPickerDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString(AppConsts.KEY_TYPE, record.recordType());
+                dialog.setArguments(bundle);
                 dialog.show(fm, "ColorPickerDialog");
                 return false;
             }

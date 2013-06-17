@@ -348,7 +348,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             showNotUserSelectedError(this, e.getMessage());
         } catch (Exception e) {
             Log.d(TAG, "refreshRecords() " + e.getMessage());
-            showAccountNotExistsError(this);
+            showAccountNotExistsError(getSupportFragmentManager());
         }
     }
 

@@ -1,5 +1,6 @@
 package imis.client.ui.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.ui.ColorUtil;
 
@@ -23,10 +25,6 @@ import imis.client.ui.ColorUtil;
  * Time: 13:59
  */
 public class ColorPickerDialog extends DialogFragment {
-
-    public ColorPickerDialog() {
-
-    }
 
     public interface OnColorChangedListener {
         void colorChanged();
@@ -240,8 +238,11 @@ public class ColorPickerDialog extends DialogFragment {
     }
 
 
-    public ColorPickerDialog(String type) {
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Bundle arguments = getArguments();
+        type = arguments.getString(AppConsts.KEY_TYPE);
         initialColor = ColorUtil.getColor(type);
-        this.type = type;
     }
 }

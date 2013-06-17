@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.model.Event;
 import imis.client.model.Record;
@@ -91,7 +92,10 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
     }
 
     private void showColorChangeDialog(String key) {
-        DialogFragment dialog = new ColorPickerDialog(key);
+        DialogFragment dialog = new ColorPickerDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(AppConsts.KEY_TYPE, key);
+        dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "ColorPickerDialog");
     }
 

@@ -101,7 +101,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         finish();
     }
     //TODO pridat menu nastaveni site
-    //TODO po vytvoreni uctu yobrayit nahled se sync
+    //TODO  zkontrolovat nejdriv sitove spojeni
 
     @Override
     public void onTaskFinished(Result result) {
@@ -131,7 +131,11 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
 
     private void showConfirmDialog() {
         String message = employee.getName() + " (" + employee.getKodpra() + ")";
-        DialogFragment deleteEventDialog = new AuthConfirmDialog(getString(R.string.auth_success), message);
+        DialogFragment deleteEventDialog = new AuthConfirmDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(AppConsts.KEY_TITLE, getString(R.string.auth_success));
+        bundle.putString(AppConsts.KEY_MSG, message);
+        deleteEventDialog.setArguments(bundle);
         deleteEventDialog.show(getSupportFragmentManager(), "AddEventDialog");
     }
 

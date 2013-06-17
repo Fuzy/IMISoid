@@ -65,18 +65,26 @@ public class DataProcessor {
                 }
             }
 
-            if (endEvent != null) {
+            boolean isTodayUnfinishedPresence = startEvent.isDruhArrival() && endEvent == null
+                    && startEvent.getCas() <= AppUtil.currentTimeInLong();//TODO pouze pro dnesek
+            Log.d(TAG, "eventsToMapOfBlocks() isUnfinishedPresence " + isTodayUnfinishedPresence);
+            if (isTodayUnfinishedPresence || endEvent != null) {
                 block = new Block();
                 block.setDate(startEvent.getDatum());
                 block.setStartTime(startEvent.getCas());
                 block.setArriveId(startEvent.get_id());
-                block.setEndTime((endEvent == null) ? -1 : endEvent.getCas());
-                block.setLeaveId((endEvent == null) ? -1 : endEvent.get_id());
+                if (endEvent != null) {
+                    block.setEndTime(endEvent.getCas());
+                    block.setLeaveId(endEvent.get_id());
+                } else {
+                    block.setEndTime(AppUtil.currentTimeInLong());
+                    block.setLeaveId(-1);
+                }
                 int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(startEvent.getKod_po());
                 if (index == -1) index = 6;
                 block.setKod_po(Event.KOD_PO_VALUES[index]);
-                block.setDirty(startEvent.isDirty() || endEvent.isDirty());
-                block.setError(startEvent.isError() || endEvent.isError());
+                block.setDirty(startEvent.isDirty() || (endEvent != null && endEvent.isDirty()));
+                block.setError(startEvent.isError() || (endEvent != null && endEvent.isError()));
                 Log.d(TAG, "eventsToMapOfBlocks() block " + block);
                 blocks.add(block);
             }

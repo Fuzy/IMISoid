@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 15:20
  */
 public class EventsArrayAdapter extends ArrayAdapter<Block> {
-    private long date = 0;//TODO je to treba?
+    private long date = 0;
 
     public EventsArrayAdapter(Context context, int textViewResourceId, List<Block> objects) {
         super(context, textViewResourceId, objects);

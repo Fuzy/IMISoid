@@ -1,10 +1,13 @@
 package imis.client.ui.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import imis.client.AppConsts;
 import imis.client.R;
 
 /**
@@ -14,6 +17,7 @@ import imis.client.R;
  * Time: 19:11
  */
 public class AuthConfirmDialog extends DialogFragment {
+    private static final String TAG = AuthConfirmDialog.class.getSimpleName();
     private String title;
     private String message;
 
@@ -21,9 +25,13 @@ public class AuthConfirmDialog extends DialogFragment {
         public void onConfirmClickPositiveClick();
     }
 
-    public AuthConfirmDialog(String title, String message) {
-        this.title = title;
-        this.message = message;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(TAG, "onAttach()");
+        Bundle arguments = getArguments();
+        title = arguments.getString(AppConsts.KEY_TITLE);
+        message = arguments.getString(AppConsts.KEY_MSG);
     }
 
     @Override

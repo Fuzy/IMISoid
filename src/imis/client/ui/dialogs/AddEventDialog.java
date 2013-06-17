@@ -1,10 +1,12 @@
 package imis.client.ui.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import imis.client.AppConsts;
 import imis.client.R;
 
 /**
@@ -18,11 +20,6 @@ public class AddEventDialog extends DialogFragment {
     private String title;
     private String message;
 
-    public AddEventDialog(String title, String message) {
-        this.title = title;
-        this.message = message;
-    }
-
     public interface AddEventDialogListener {
         public void onAddEventDialogPositiveClick();
 
@@ -30,6 +27,16 @@ public class AddEventDialog extends DialogFragment {
 
         public void onAddEventDialogNeutralClick();
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Bundle arguments = getArguments();
+        title = arguments.getString(AppConsts.KEY_TITLE);
+        message = arguments.getString(AppConsts.KEY_MSG);
+    }
+
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

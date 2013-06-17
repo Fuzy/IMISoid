@@ -141,6 +141,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Log.d(TAG, "applySyncSetting()" + "periodEvents = [" + periodEvents + "], periodWidgets = ["
                 + periodWidgets + "], periodEmployees = [" + periodEmployees + "]");
         try {
+            //TODO stejne to automaticky synchronizuje
             Account account = AppUtil.getUserAccount(getActivity());
             Log.d(TAG, "applySyncSetting() account " + account);
             if (periodEvents != 0) {

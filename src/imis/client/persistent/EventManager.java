@@ -157,6 +157,8 @@ public class EventManager {
         Log.d(TAG, "updateEvent() " + event);
         ContentValues values = event.asContentValues();
         values.put(Event.COL_DIRTY, true);
+        values.put(Event.COL_ERROR, false);
+        values.put(Event.COL_MSG, (String) null);
         return updateEvent(context, values, event.get_id());
     }
 

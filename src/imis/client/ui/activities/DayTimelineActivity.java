@@ -1,10 +1,7 @@
 package imis.client.ui.activities;
 
 import android.accounts.Account;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
@@ -48,6 +45,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private long date;// = 1364428800000L; //1364166000000L;//1364169600000L;
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
     private Cursor mCursor;
+    private BroadcastReceiver minuteTickReceiver;
+
 
     private static final int LOADER_EVENTS = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
@@ -102,6 +101,31 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         super.onPause();
         Log.d("DayTimelineActivity", "onPause()");
         saveColorSharedPreferences();
+    }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+        minuteTickReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context ctx, Intent intent) {
+                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
+                    Log.d(TAG, "onReceive()");
+                    if (getSupportLoaderManager().getLoader(LOADER_EVENTS) != null) {
+                        getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, DayTimelineActivity.this);
+                    }
+                }
+            }
+        };
+        registerReceiver(minuteTickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (minuteTickReceiver != null)
+            unregisterReceiver(minuteTickReceiver);
     }
 
     private void initFragment() {
@@ -229,7 +253,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             createTaskFragment(new GetListOfEmployees(this, icp));
         } catch (Exception e) {
             //TODO err msg
-            showAccountNotExistsError(this);
+            showAccountNotExistsError(getSupportFragmentManager());
         }
     }
 
@@ -249,10 +273,12 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
             boolean syncAutomatically = ContentResolver.getSyncAutomatically(account, AppConsts.AUTHORITY1);
             Log.d(TAG, "performSync() syncAutomatically " + syncAutomatically);*/
+            ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY1, 1);
+            ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
             ContentResolver.requestSync(account, AppConsts.AUTHORITY1, extras);
         } catch (Exception e) {
             e.printStackTrace();
-            showAccountNotExistsError(getApplication());//TODO err msg
+            showAccountNotExistsError(getSupportFragmentManager());
         }
     }
 
@@ -268,7 +294,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
                             EventQuery.SELECTION_DAY_USER_UNDELETED, new String[]{String.valueOf(date), icp}, EventQuery.ORDER_BY_DATE_TIME_ASC);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AppUtil.showAccountNotExistsError(this);
+                    AppUtil.showAccountNotExistsError(getSupportFragmentManager());
                     return null;
                 }
             default:
@@ -465,5 +491,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     public Cursor getCursor() {
         return mCursor;
+    }
+
+    public long getDate() {
+        return date;
     }
 }

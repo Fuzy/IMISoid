@@ -37,13 +37,14 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(TAG,"onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
+        Log.d(TAG, "onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
                 "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
-
+        //TODO bundle rozlisit volani z aktivity, poslat zpravu po skonceni
         Result testResult = NetworkUtilities.testWebServiceAndDBAvailability();
         if (testResult.getStatusCode() == null || testResult.getStatusCode().value() != HttpStatus.SC_OK) {
             Log.d(TAG, "onPerformSync() connection unavailable");
-            //AppUtil.showNetworkAccessUnavailable(context);//TODO spojeni vs nedostupny server
+            //AppUtil.showNetworkAccessUnavailable(context);//TODO spojeni vs nedostupny server, poslat zpravu po skonceni
+
             return;
         }
 
@@ -123,7 +124,9 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         ResultList getResult = sync.getUserEvents(icp, date, date);
         Log.d(TAG, "processDownloadEvents()" + "icp = [" + icp + "], date = [" + date + "]" + "getResult = [" + getResult + "]");
 
-        if (getResult.isUnknownErr()) {
+        if (getResult.isOk()) {
+//TODO            AppUtil.showInfoMsgOutsideActivity(context, context.getString(R.string.act_ok));
+        } else if (getResult.isUnknownErr()) {
             showUnknownError(getResult);
         } else if (getResult.isEmpty()) {
             Log.d(TAG, "onPerformSync() isEmpty");

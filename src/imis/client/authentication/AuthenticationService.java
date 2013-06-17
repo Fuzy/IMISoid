@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class AuthenticationService extends Service {
-  private static final String TAG = "AuthenticationService";
+  private static final String TAG = AuthenticationService.class.getSimpleName();
   private Authenticator authenticator;
 
   @Override

@@ -91,7 +91,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
         }
 
         if (AppUtil.belongsNowToDate(mAdapter.getDate())) {
-            mNowView.setVisibility(View.VISIBLE);//TODO funguje?
+            mNowView.setVisibility(View.VISIBLE);
         } else {
             mNowView.setVisibility(View.INVISIBLE);
         }
