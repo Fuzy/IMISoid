@@ -172,5 +172,6 @@
     <string name="menu_alt_view">Alternativní zobrazení</string>
     <string name="add_arrive">Přidat příchod</string>
     <string name="add_leave">Přidat odchod</string>
+    <string name="title_arrive_btn">Zadej příchod</string>
 
 </resources>

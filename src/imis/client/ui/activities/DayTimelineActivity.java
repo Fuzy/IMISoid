@@ -47,16 +47,14 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private Cursor mCursor;
     private BroadcastReceiver minuteTickReceiver;
 
-
     private static final int LOADER_EVENTS = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
 
     protected static final String FRAG_LIST = "DayTimelineListFragment",
-            FRAG_BLOCKS = "DayTimelineBlocksFragment";
-
-    private static final String FRAG_TAG = "fragment";
+            FRAG_BLOCKS = "DayTimelineBlocksFragment", KEY_FRAGMENT = "key_fragment";
     private String currentFragment;
-    //TODO save, restore
+    //TODO co s neukoncenou aktivitou v dochazce - JSA
+    //TODO upozornot na chybu v datech, sluzba + notifikace
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,14 +134,15 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         }
 
         if (currentFragment.equals(FRAG_LIST)) {
-            switchToDayTimelineBlocksFragment();
-        } else if (currentFragment.equals(FRAG_BLOCKS)) {
             switchToDayTimelineListFragment();
+        } else if (currentFragment.equals(FRAG_BLOCKS)) {
+            switchToDayTimelineBlocksFragment();
         }
     }
 
     private void switchToDayTimelineListFragment() {
         Log.d(TAG, "switchToDayTimelineListFragment()");
+        currentFragment = FRAG_LIST;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         DayTimelineListFragment listFragment = new DayTimelineListFragment();
         ft.replace(R.id.dayTimeline, listFragment, "DayTimelineListFragment");
@@ -156,6 +155,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private void switchToDayTimelineBlocksFragment() {
         Log.d(TAG, "switchToDayTimelineBlocksFragment()");
+        currentFragment = FRAG_BLOCKS;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         DayTimelineBlocksFragment listFragment = new DayTimelineBlocksFragment();
         ft.replace(R.id.dayTimeline, listFragment, "DayTimelineBlocksFragment");
@@ -252,7 +252,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             Log.d(TAG, "refreshListOfEmployees() icp " + icp);
             createTaskFragment(new GetListOfEmployees(this, icp));
         } catch (Exception e) {
-            //TODO err msg
             showAccountNotExistsError(getSupportFragmentManager());
         }
     }
@@ -311,7 +310,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     @Override
     public void onLoadFinished(Loader loader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished() rows: " + cursor.getCount() + " positon: " + cursor.getPosition());
-        mCursor = cursor;
+        setCursor(cursor);
         mDataSetObservable.notifyChanged();
     }
 
@@ -319,15 +318,22 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.dir/event.imisoid");
         intent.putExtra(Event.KEY_DATE, date);
+        Event event = getLastEvent();
+        if (event != null && event.isDruhArrival()) {
+            intent.putExtra(ActivityConsts.ID_ARRIVE, event.get_id());
+            intent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);
+        } else {
+            intent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_ARRIVE, true);
+        }
         startActivity(intent);
+        Log.d(TAG, "startInsertActivity() event " + event);
     }
 
-    public void startEditActivity(int arriveID, int leaveID) {   //TODO frag
+    public void startEditActivity(int arriveID, int leaveID) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.putExtra(ActivityConsts.ID_ARRIVE, arriveID);
         intent.putExtra(ActivityConsts.ID_LEAVE, leaveID);
         intent.setType("vnd.android.cursor.item/event.imisoid");
-        //intent.putExtra(Event.KEY_DATE, date);
         startActivity(intent);
     }
 
@@ -465,6 +471,23 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         editor.commit();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null) {
+            outState.putString(KEY_FRAGMENT, currentFragment);
+            Log.d(TAG, "onRestoreInstanceState() currentFragment " + currentFragment);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            currentFragment = savedInstanceState.getString(KEY_FRAGMENT);
+            Log.d(TAG, "onRestoreInstanceState() currentFragment " + currentFragment);
+        }
+    }
 
     private void changeDate(long date) {
         Log.d(TAG, "changeDate() date " + AppUtil.formatDate(date));
@@ -489,8 +512,18 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         mDataSetObservable.unregisterObserver(observer);
     }
 
-    public Cursor getCursor() {
+    public synchronized Cursor getCursor() {
         return mCursor;
+    }
+
+    private synchronized void setCursor(Cursor mCursor) {
+        this.mCursor = mCursor;
+    }
+
+    private synchronized Event getLastEvent() {
+        boolean success = mCursor.moveToLast();
+        Event event = (success) ? Event.cursorToEvent(mCursor) : null;
+        return event;
     }
 
     public long getDate() {

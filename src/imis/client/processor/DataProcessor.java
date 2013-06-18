@@ -2,6 +2,7 @@ package imis.client.processor;
 
 import android.database.Cursor;
 import android.util.Log;
+import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.PieChartSerie;
@@ -22,9 +23,7 @@ import java.util.*;
  */
 public class DataProcessor {
     private static final String TAG = DataProcessor.class.getSimpleName();
-    private static final long MS_IN_HOUR = 60L * 60L * 1000L;//TODO na vice mistech
-    private static final long MS_IN_MIN = 60L * 1000L;
-    private static final long MS_IN_DAY = MS_IN_HOUR * 24L;
+
 
     public static final String[] VALUES = new String[]
             {Event.KOD_PO_LEAVE_SERVICE, Event.KOD_PO_LEAVE_LUNCH, Event.KOD_PO_LEAVE_SUPPER};
@@ -52,6 +51,7 @@ public class DataProcessor {
         List<Block> blocks = new ArrayList<>();
         //TODO kazdou minutu by mel prijit refresh
         //TODO odladit, nektere jsou tam dvakrat
+        cursor.moveToPosition(-1);
         while (cursor.moveToNext()) {
             startEvent = Event.cursorToEvent(cursor);
 
@@ -120,7 +120,7 @@ public class DataProcessor {
             Log.d(TAG, "countPieChartData() value " + value);
 
 
-            serie = new PieChartSerie(kody_po.get(entry.getKey()), (double) (value / MS_IN_HOUR));
+            serie = new PieChartSerie(kody_po.get(entry.getKey()), (double) (value / AppConsts.MS_IN_HOUR));
             serie.setColor(ColorUtil.getColor(entry.getKey()));
             serie.setTime(AppUtil.formatTime(value));
             serie.setPercent((int) (((double) value / (double) total) * 100));
@@ -149,7 +149,7 @@ public class DataProcessor {
         PieChartSerie serie;
         for (Map.Entry<String, Long> entry : statistics.entrySet()) {
             value = entry.getValue();
-            serie = new PieChartSerie(entry.getKey(), (double) (value / MS_IN_HOUR));
+            serie = new PieChartSerie(entry.getKey(), (double) (value / AppConsts.MS_IN_HOUR));
             serie.setColor(ColorUtil.getColor(entry.getKey()));
             serie.setTime(AppUtil.formatTime(value));
             serie.setPercent((int) (((double) value / (double) total) * 100));
@@ -164,15 +164,10 @@ public class DataProcessor {
     public static StackedBarChartData countEventsStackedBarChartData(List<Block> blocks, List<String> codes,
                                                                      Map<String, String> kody_po, Map<String, String> selectionArgs) {
         StackedBarChartData chartData = new StackedBarChartData();
-        // count mix/ max
-        for (Block block : blocks) {//TODO min max datum z parametru dotazu
-           /* if (block.getDate() > chartData.getMaxDay()) chartData.setMaxDay(block.getDate());
-            if (block.getDate() < chartData.getMinDay()) chartData.setMinDay(block.getDate());*/
-            chartData.setMinDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_FROM)));
-            chartData.setMaxDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_TO)));
-        }
+        chartData.setMinDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_FROM)));
+        chartData.setMaxDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_TO)));
 
-        final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / MS_IN_DAY) + 1;
+        final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / AppConsts.MS_IN_DAY) + 1;
         Log.d(TAG, "countEventsStackedBarChartData() numOfDays " + numOfDays);
 
         Map<String, double[]> map = new HashMap<>();
@@ -180,8 +175,8 @@ public class DataProcessor {
         for (Block block : blocks) {
             String kod_po = block.getKod_po();
             if (codes.contains(kod_po) == false) continue; // Exclude not checked in checkbox
-            int index = (int) ((block.getDate() - chartData.getMinDay()) / MS_IN_DAY);
-            double amount = (double) ((block.getEndTime() - block.getStartTime()) / MS_IN_HOUR);
+            int index = (int) ((block.getDate() - chartData.getMinDay()) / AppConsts.MS_IN_DAY);
+            double amount = (double) ((block.getEndTime() - block.getStartTime()) / AppConsts.MS_IN_HOUR);
 
             // If not exists yet, create new array
             boolean contains = map.containsKey(kod_po);
@@ -229,14 +224,10 @@ public class DataProcessor {
         StackedBarChartData chartData = new StackedBarChartData();
         // count mix/ max
 
-        for (Record record : records) {//TODO min max datum z parametru dotazu
-           /* if (record.getDatum() < chartData.getMinDay()) chartData.setMinDay(record.getDatum());
-            if (record.getDatum() > chartData.getMaxDay()) chartData.setMaxDay(record.getDatum());*/
-            chartData.setMinDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_FROM)));
-            chartData.setMaxDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_TO)));
-        }
+        chartData.setMinDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_FROM)));
+        chartData.setMaxDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_TO)));
 
-        final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / MS_IN_DAY) + 1;
+        final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / AppConsts.MS_IN_DAY) + 1;
         Log.d(TAG, "countRecordsStackedBarChartData() numOfDays " + numOfDays);
 
         Map<String, double[]> map = new HashMap<>();
@@ -244,8 +235,8 @@ public class DataProcessor {
         for (Record record : records) {
             type = record.recordType();
             if (codes.contains(type) == false) continue; // Exclude not checked in checkbox
-            int index = (int) ((record.getDatum() - chartData.getMinDay()) / MS_IN_DAY);
-            double amount = (double) (record.getMnozstvi_odved() / MS_IN_HOUR);
+            int index = (int) ((record.getDatum() - chartData.getMinDay()) / AppConsts.MS_IN_DAY);
+            double amount = (double) (record.getMnozstvi_odved() / AppConsts.MS_IN_HOUR);
 
             // If not exists yet, create new array
             boolean contains = map.containsKey(type);
@@ -290,11 +281,25 @@ public class DataProcessor {
     }
 
 
-    private static Event getNextEvent(Cursor cursor, String druh) {
+    public static Event getNextEvent(Cursor cursor, String druh) {
         int initPos = cursor.getPosition();
 
         Event event = null;
         while (cursor.moveToNext()) {
+            event = Event.cursorToEvent(cursor);
+            if (event.getDruh().equals(druh))
+                break;
+            event = null;
+        }
+        cursor.moveToPosition(initPos);
+        return event;
+    }
+
+    public static Event getPrevEvent(Cursor cursor, String druh) {
+        int initPos = cursor.getPosition();
+
+        Event event = null;
+        while (cursor.moveToPrevious()) {
             event = Event.cursorToEvent(cursor);
             if (event.getDruh().equals(druh))
                 break;

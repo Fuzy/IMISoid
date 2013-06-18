@@ -112,29 +112,6 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
         return true;
     }
 
-    /*@Override
-    public void onStart() {
-
-        super.onStart();
-        minuteTickReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context ctx, Intent intent) {
-                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
-                    Log.d(TAG, "onReceive()");
-                    blocks.setVisibility(View.GONE);
-                    blocks.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-        mActivity.registerReceiver(minuteTickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (minuteTickReceiver != null)
-            mActivity.unregisterReceiver(minuteTickReceiver);
-    }*/
 
     @Override
     public void onResume() {

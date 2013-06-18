@@ -54,6 +54,25 @@ public class Event {
         this.poznamka = poznamka;
     }
 
+    public Event(Event other) {
+        this._id = other._id;
+        this.server_id = other.server_id;
+        this.dirty = other.dirty;
+        this.deleted = other.deleted;
+        this.error = other.error;
+        this.msg = other.msg;
+        this.icp = other.icp;
+        this.datum = other.datum;
+        this.kod_po = other.kod_po;
+        this.druh = other.druh;
+        this.cas = other.cas;
+        this.ic_obs = other.ic_obs;
+        this.typ = other.typ;
+        this.datum_zmeny = other.datum_zmeny;
+        this.poznamka = other.poznamka;
+    }
+
+
     public boolean isDirty() {
         return dirty;
     }
@@ -189,15 +208,38 @@ public class Event {
         this.poznamka = poznamka;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    /*@Override
-    public String toString() {
-        return "Event [_id=" + _id + ", server_id=" + server_id + ", dirty=" + dirty + ", deleted="
-                + deleted + ", icp=" + icp + ", datum=" + formatDate(datum) + ", datum=" + datum
-                + ", kod_po=" + kod_po
-                + ", druh=" + druh + ", cas=" + formatTime(cas) + ", ic_obs=" + ic_obs + ", typ=" + typ
-                + ", datum_zmeny=" + formatDate(datum_zmeny) + ", poznamka=" + poznamka + "]";
-    }*/
+        Event event = (Event) o;
+
+        if (_id != event._id) return false;
+        if (cas != event.cas) return false;
+        if (datum != event.datum) return false;
+        if (datum_zmeny != event.datum_zmeny) return false;
+        if (deleted != event.deleted) return false;
+        if (dirty != event.dirty) return false;
+        if (error != event.error) return false;
+        if (druh != null ? !druh.equals(event.druh) : event.druh != null) return false;
+        if (ic_obs != null ? !ic_obs.equals(event.ic_obs) : event.ic_obs != null) return false;
+        if (icp != null ? !icp.equals(event.icp) : event.icp != null) return false;
+        if (kod_po != null ? !kod_po.equals(event.kod_po) : event.kod_po != null) return false;
+        if (msg != null ? !msg.equals(event.msg) : event.msg != null) return false;
+        if (poznamka != null ? !poznamka.equals(event.poznamka) : event.poznamka != null) return false;
+        if (server_id != null ? !server_id.equals(event.server_id) : event.server_id != null) return false;
+        if (typ != null ? !typ.equals(event.typ) : event.typ != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = _id;
+        result = 31 * result + (int) (datum_zmeny ^ (datum_zmeny >>> 32));
+        return result;
+    }
 
     @Override
     public String toString() {

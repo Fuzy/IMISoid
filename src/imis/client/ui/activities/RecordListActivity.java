@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.Result;
@@ -177,7 +178,7 @@ public class RecordListActivity extends ControlActivity implements
 
     private String getSelectedType() {
         String type = (String) spinnerType.getSelectedItem();
-        if (type == null || type.equals("-")) type = "";
+        if (type == null || type.equals(AppConsts.EMPTY_SPINNER_ITEM)) type = "";
         Log.d(TAG, "getSelectedType() type " + type);
         return type;
     }

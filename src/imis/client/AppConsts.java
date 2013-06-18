@@ -31,14 +31,12 @@ public class AppConsts {
     public static final String KEY_TITLE = "title";
     public static final String KEY_MSG = "msg";
 
-    public static final String EMPTY_SPINNER_ITEM = "-";//TODO aplikovat vsude
+    public static final String EMPTY_SPINNER_ITEM = "-";
 
 
     public static final long MS_IN_HOUR = 60L * 60L * 1000L;
     public static final long MS_IN_MIN = 60L * 1000L;
-
-    public final static String PREFS_CREDENTIALS = "AccountCredentials";
-
+    public static final long MS_IN_DAY = MS_IN_HOUR * 24L;
 
     public static final String KEY_TYPE = "type";
 }
