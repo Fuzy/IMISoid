@@ -25,6 +25,12 @@ import imis.client.ui.ColorUtil;
  * Time: 13:59
  */
 public class ColorPickerDialog extends DialogFragment {
+    private static final String TAG = ColorPickerDialog.class.getSimpleName();
+    private ColorUtil colorUtil;
+
+    public ColorPickerDialog() {
+    }
+
 
     public interface OnColorChangedListener {
         void colorChanged();
@@ -209,7 +215,7 @@ public class ColorPickerDialog extends DialogFragment {
     }
 
     private void endDialogOnSelectedColor(int color) {
-        ColorUtil.setColor(type, color);
+        colorUtil.setColor(type, color);
 
         OnColorChangedListener activity = (OnColorChangedListener) getActivity();
         activity.colorChanged();
@@ -219,8 +225,8 @@ public class ColorPickerDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Log.d("ColorPickerDialog", "onCreateDialog()");
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());//getActivity() , R.style.AppTheme
-        builder.setTitle("Zvol barvu");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.color_dialog_title);
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.color_picker_dialog, null);
         FrameLayout frameLayout = (FrameLayout) layout.findViewById(R.id.color_picker_body);
@@ -243,6 +249,7 @@ public class ColorPickerDialog extends DialogFragment {
         super.onAttach(activity);
         Bundle arguments = getArguments();
         type = arguments.getString(AppConsts.KEY_TYPE);
-        initialColor = ColorUtil.getColor(type);
+        colorUtil = new ColorUtil(activity);
+        initialColor = colorUtil.getColor(type);
     }
 }

@@ -74,7 +74,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "onPerformSync() end");
 
         // Refresh shortcut widgets
-        ShortcutWidgetProvider.updateAllWidgets(context);
+        new ShortcutWidgetProvider().updateAllWidgets(context);
 
     }
 

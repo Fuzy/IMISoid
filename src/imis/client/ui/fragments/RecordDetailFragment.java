@@ -25,12 +25,14 @@ import imis.client.ui.dialogs.ColorPickerDialog;
 public class RecordDetailFragment extends Fragment {
     private static final String TAG = RecordDetailFragment.class.getSimpleName();
 
+    private ColorUtil colorUtil;
     private View detail;
     private Record record;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        colorUtil = new ColorUtil(getActivity());
         setHasOptionsMenu(true);
     }
 
@@ -74,7 +76,7 @@ public class RecordDetailFragment extends Fragment {
             tt = (TextView) detail.findViewById(R.id.note);
             tt.setText(record.getPoznamka());
             tt = (TextView) detail.findViewById(R.id.record_type);
-            tt.setBackgroundColor(ColorUtil.getColor(record.recordType()));
+            tt.setBackgroundColor(colorUtil.getColor(record.recordType()));
         }
 
         TextView tt = (TextView) detail.findViewById(R.id.record_type);

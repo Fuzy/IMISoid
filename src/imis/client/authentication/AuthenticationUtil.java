@@ -21,8 +21,8 @@ public class AuthenticationUtil {
             username = AppUtil.getUserUsername(context);
             password = AppUtil.getUserPassword(context);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;//TODO err msg
+            Log.e(TAG, e.getMessage(), e);
+            return null;//TODO test
         }
         Log.d(TAG, "doInBackground() username " + username);
         Log.d(TAG, "doInBackground() password " + password);

@@ -33,11 +33,12 @@ public class EventsChartActivity extends ChartActivity {
     private List<Block> blockList;
     private final Map<String, String> kody_po = new HashMap<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
+        colorUtil = new ColorUtil(getApplicationContext());
+
         initEventCodesAndDesc();
 
     }
@@ -52,7 +53,7 @@ public class EventsChartActivity extends ChartActivity {
 
     protected void addCheckBox(String kod_po) {
         int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(kod_po);
-        int color = ColorUtil.getColor(kod_po);
+        int color = colorUtil.getColor(kod_po);
         addCheckBox(index, color);
     }
 
@@ -134,14 +135,14 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     public PieChartData getPieChartData() {
         Log.d(TAG, "getPieChartData()");
-        PieChartData data = DataProcessor.countEventsPieChartData(blockList, getCheckedCodes(), kody_po);
+        PieChartData data = dataProcessor.countEventsPieChartData(blockList, getCheckedCodes(), kody_po);
         return data;
     }
 
     @Override
     public StackedBarChartData getStackedBarChartData() {
         Log.d(TAG, "getStackedBarChartData()");
-        StackedBarChartData data = DataProcessor.countEventsStackedBarChartData(blockList, getCheckedCodes(), kody_po, selectionArgs);
+        StackedBarChartData data = dataProcessor.countEventsStackedBarChartData(blockList, getCheckedCodes(), kody_po, selectionArgs);
         return data;
     }
 

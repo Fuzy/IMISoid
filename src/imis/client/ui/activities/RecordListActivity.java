@@ -149,9 +149,8 @@ public class RecordListActivity extends ControlActivity implements
 
         switch (adapterView.getId()) {
             case R.id.spinnerRecords:
-                Log.d(TAG, "onItemSelected() spinnerRecords");
                 selectionArgs.put(PAR_TYPE, getSelectedType());
-                processDataQuery(); //TODO co s tim?
+                processDataQuery();
                 break;
             default:
                 super.onItemSelected(adapterView, view, pos, l);

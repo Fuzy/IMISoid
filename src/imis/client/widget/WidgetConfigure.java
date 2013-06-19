@@ -129,7 +129,7 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
                 EmployeeManager.updateEmployeeWidgetId(this, empId, mAppWidgetId);
 
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-                WidgetProvider.updateAppWidget(this, appWidgetManager, mAppWidgetId);
+                new WidgetProvider().updateAppWidget(this, appWidgetManager, mAppWidgetId);
 
                 // Make sure we pass back the original appWidgetId
                 Intent resultValue = new Intent();

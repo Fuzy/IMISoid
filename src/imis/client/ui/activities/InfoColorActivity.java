@@ -28,12 +28,14 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
 
     private RecordsColorAdapter recordsAdapter;
     private EventsColorAdapter eventsAdapter;
+    private ColorUtil colorUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.color_info);
 
+        colorUtil = new ColorUtil(getApplicationContext());
         populateRecordTypeList();
         populateEventTypeList();
     }
@@ -56,7 +58,7 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
 
     private List<Map.Entry<String, Integer>> entryListForKeys(String[] keys) {
         Map<String, Integer> colors = new TreeMap<>();
-        colors.putAll(ColorUtil.getColors());
+        colors.putAll(colorUtil.getColors());
 
         Set<String> set = new HashSet<>();
         set.addAll(Arrays.asList(keys));

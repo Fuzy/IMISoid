@@ -39,13 +39,14 @@ public class BlockView extends View {
     private boolean dirty;
     private boolean error;
 
-
-
+    private ColorUtil colorUtil;
 
     public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime,
                      String type, boolean dirty, boolean error) {
         super(context);
         // Log.d(TAG, "BlockView()");
+        colorUtil = new ColorUtil(context);
+
 
         this.arriveId = arriveId;
         this.leaveId = leaveId;
@@ -55,14 +56,13 @@ public class BlockView extends View {
         this.dirty = dirty;
         this.error = error;
 
-        int accentColor = ColorUtil.getColor(type);
+        int accentColor = colorUtil.getColor(type);
         LayerDrawable buttonDrawable;
 
         if (error) {
             buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
                     R.drawable.btn_block_error);
-        }
-        else if (dirty) {
+        } else if (dirty) {
             buttonDrawable = (LayerDrawable) context.getResources().getDrawable(
                     R.drawable.btn_block_dirty);
         } else {
@@ -72,7 +72,6 @@ public class BlockView extends View {
         buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
         setBackground(buttonDrawable);
     }
-
 
 
     public int getArriveId() {

@@ -35,6 +35,7 @@ public class NetworkSettingsActivity extends AsyncActivity {
     private EditText editTextDomain, editTextPort;
     String domain = null;
     int port = -1;
+    //TODO save state
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,10 +132,6 @@ public class NetworkSettingsActivity extends AsyncActivity {
     private void refreshState() {
         Log.d("NetworkSettingsActivity", "refreshState()");
         if (domain.length() != 0 && domain != null) {
-            /*if (NetworkUtilities.isOnline(getApplicationContext()) == false) {
-                showNetworkAccessUnavailable(getApplication());
-                return;
-            }*/
             createTaskFragment(new TestConnection(this));
         }
     }

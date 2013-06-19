@@ -12,7 +12,6 @@ public class AppConsts {
     public static final String AUTHORITY3 = "imisoid.contentprovider3";
 
     public static final String PREFS_NAME = "ImisoidPrefsFile";
-    public static final String PREFS_EVENTS_COLOR = "ImisoidPrefsColors";
     public static final String KEY_DOMAIN = "DOMAIN";
     public static final String KEY_PORT = "PORT";
 

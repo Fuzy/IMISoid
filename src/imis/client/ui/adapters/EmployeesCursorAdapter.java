@@ -22,10 +22,12 @@ import imis.client.ui.ColorUtil;
 public class EmployeesCursorAdapter extends CursorAdapter {
     private static final String TAG = EmployeesCursorAdapter.class.getSimpleName();
     private LayoutInflater inflater;
+    private ColorUtil colorUtil;
 
     public EmployeesCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        colorUtil = new ColorUtil(context);
     }
 
     @Override
@@ -43,6 +45,6 @@ public class EmployeesCursorAdapter extends CursorAdapter {
         String last = employee.getDruh() + " " + AppUtil.formatEmpDate(employee.getDatum())
                 + " " + AppUtil.formatTime(employee.getCas());//TODO test null
         ((TextView) view.findViewById(R.id.emp_time)).setText(last);
-        view.findViewById(R.id.emp_kod_po).setBackgroundColor(ColorUtil.getColor(employee.getKod_po()));
+        view.findViewById(R.id.emp_kod_po).setBackgroundColor(colorUtil.getColor(employee.getKod_po()));
     }
 }

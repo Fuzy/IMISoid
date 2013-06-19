@@ -1,5 +1,6 @@
 package imis.client.processor;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import imis.client.AppConsts;
@@ -23,7 +24,12 @@ import java.util.*;
  */
 public class DataProcessor {
     private static final String TAG = DataProcessor.class.getSimpleName();
+    private ColorUtil colorUtil;
+    //TODO rozdelit tridu
 
+    public DataProcessor(Context context) {
+        colorUtil = new ColorUtil(context);
+    }
 
     public static final String[] VALUES = new String[]
             {Event.KOD_PO_LEAVE_SERVICE, Event.KOD_PO_LEAVE_LUNCH, Event.KOD_PO_LEAVE_SUPPER};
@@ -98,7 +104,7 @@ public class DataProcessor {
     }
 
 
-    public static PieChartData countEventsPieChartData(List<Block> blocks, List<String> codes, Map<String, String> kody_po) {
+    public PieChartData countEventsPieChartData(List<Block> blocks, List<String> codes, Map<String, String> kody_po) {
         PieChartData pieChartData = new PieChartData();
         long total = 0L;
 
@@ -121,7 +127,7 @@ public class DataProcessor {
 
 
             serie = new PieChartSerie(kody_po.get(entry.getKey()), (double) (value / AppConsts.MS_IN_HOUR));
-            serie.setColor(ColorUtil.getColor(entry.getKey()));
+            serie.setColor(colorUtil.getColor(entry.getKey()));
             serie.setTime(AppUtil.formatTime(value));
             serie.setPercent((int) (((double) value / (double) total) * 100));
             pieChartData.addSerie(serie);
@@ -131,7 +137,7 @@ public class DataProcessor {
         return pieChartData;
     }
 
-    public static PieChartData countRecordsPieChartData(List<Record> records, List<String> codes) {
+    public PieChartData countRecordsPieChartData(List<Record> records, List<String> codes) {
         Log.d(TAG, "countRecordsPieChartData()");
         PieChartData pieChartData = new PieChartData();
         long total = 0L;
@@ -150,7 +156,7 @@ public class DataProcessor {
         for (Map.Entry<String, Long> entry : statistics.entrySet()) {
             value = entry.getValue();
             serie = new PieChartSerie(entry.getKey(), (double) (value / AppConsts.MS_IN_HOUR));
-            serie.setColor(ColorUtil.getColor(entry.getKey()));
+            serie.setColor(colorUtil.getColor(entry.getKey()));
             serie.setTime(AppUtil.formatTime(value));
             serie.setPercent((int) (((double) value / (double) total) * 100));
             pieChartData.addSerie(serie);
@@ -161,8 +167,8 @@ public class DataProcessor {
         return pieChartData;
     }
 
-    public static StackedBarChartData countEventsStackedBarChartData(List<Block> blocks, List<String> codes,
-                                                                     Map<String, String> kody_po, Map<String, String> selectionArgs) {
+    public StackedBarChartData countEventsStackedBarChartData(List<Block> blocks, List<String> codes,
+                                                              Map<String, String> kody_po, Map<String, String> selectionArgs) {
         StackedBarChartData chartData = new StackedBarChartData();
         chartData.setMinDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_FROM)));
         chartData.setMaxDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_TO)));
@@ -203,7 +209,7 @@ public class DataProcessor {
             Log.d(TAG, "countEventsStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
             values.add(stringEntry.getValue());
             titles[ind] = kody_po.get(stringEntry.getKey());
-            colors[ind] = ColorUtil.getColor(stringEntry.getKey());
+            colors[ind] = colorUtil.getColor(stringEntry.getKey());
             ind++;
         }
 
@@ -220,7 +226,7 @@ public class DataProcessor {
         return chartData;
     }
 
-    public static StackedBarChartData countRecordsStackedBarChartData(List<Record> records, List<String> codes, Map<String, String> selectionArgs) {
+    public StackedBarChartData countRecordsStackedBarChartData(List<Record> records, List<String> codes, Map<String, String> selectionArgs) {
         StackedBarChartData chartData = new StackedBarChartData();
         // count mix/ max
 
@@ -262,7 +268,7 @@ public class DataProcessor {
             Log.d(TAG, "countEventsStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
             values.add(stringEntry.getValue());
             titles[ind] = stringEntry.getKey();
-            colors[ind] = ColorUtil.getColor(stringEntry.getKey());
+            colors[ind] = colorUtil.getColor(stringEntry.getKey());
             ind++;
         }
 

@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 
 public class NetworkUtilities {//TODO asi jako nestaticka trida
-    private static final String TAG = "NetworkUtilities";
+    private static final String TAG = NetworkUtilities.class.getSimpleName();
     private static final String SCHEME = "http://";
     private static final String BASE_PATH = "/Imisoid_WS/";
     private static final String EVENTS_PATH = "events";
@@ -82,6 +82,20 @@ public class NetworkUtilities {//TODO asi jako nestaticka trida
         if (!i.isAvailable())
             return false;
         return true;
+        /*boolean connected;
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String networkType = sharedPref.getString(AppConsts.KEY_NETWORK_TYPE, "WIFI");
+        Log.d(TAG, "onReceive() networkType " + networkType);
+        if (networkType.equals(AppConsts.NETWORK_TYPE_WIFI)) {
+            NetworkInfo networkInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            connected = networkInfo.isConnected();
+            Log.d(TAG, "onReceive() NETWORK_TYPE_WIFI " + connected);
+        } else  {
+            NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
+            connected = (networkInfo != null);
+            Log.d(TAG, "onReceive() NETWORK_TYPE_ANY " + connected);
+        }*/
+
     }
 
     public static void resetDomainAndPort(String domain, int port) {

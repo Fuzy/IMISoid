@@ -22,10 +22,13 @@ import imis.client.ui.ColorUtil;
 public class RecordsCursorAdapter extends CursorAdapter {
     private static final String TAG = "RecordsCursorAdapter";
     private LayoutInflater inflater;
+    private ColorUtil colorUtil;
+
 
     public RecordsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        colorUtil = new ColorUtil(context);
     }
 
 
@@ -60,6 +63,6 @@ public class RecordsCursorAdapter extends CursorAdapter {
         tt = (TextView) view.findViewById(R.id.note);
         tt.setText(poznamka);
         tt = (TextView) view.findViewById(R.id.record_type);
-        tt.setBackgroundColor(ColorUtil.getColor(record.recordType()));
+        tt.setBackgroundColor(colorUtil.getColor(record.recordType()));
     }
 }

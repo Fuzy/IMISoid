@@ -22,10 +22,13 @@ import java.util.Arrays;
 public class WidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = WidgetProvider.class.getSimpleName();
+    private ColorUtil colorUtil;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+        colorUtil = new ColorUtil(context);
+
         Log.d(TAG, "onUpdate() appWidgetIds " + Arrays.toString(appWidgetIds));
         //TODO urcite se mazou
         for (int i = 0; i < appWidgetIds.length; i++) {
@@ -34,9 +37,13 @@ public class WidgetProvider extends AppWidgetProvider {
         }
     }
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                       int appWidgetId) {
+    public void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                int appWidgetId) {
         Log.d(TAG, "updateAppWidget() appWidgetId " + appWidgetId);
+        if (colorUtil == null) {
+            colorUtil = new ColorUtil(context);
+        }
+
 
         // processAsyncTask widget
         Employee employee = EmployeeManager.getEmployee(context, appWidgetId);
@@ -48,7 +55,7 @@ public class WidgetProvider extends AppWidgetProvider {
             String last = employee.getDruh() + " " + AppUtil.formatEmpDate(employee.getDatum())
                     + " " + AppUtil.formatTime(employee.getCas());
             views.setTextViewText(R.id.emp_time, last);
-            views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorUtil.getColor(employee.getKod_po()));
+            views.setInt(R.id.emp_kod_po, "setBackgroundColor", colorUtil.getColor(employee.getKod_po()));
 
             // Tell the widget manager
             appWidgetManager.updateAppWidget(appWidgetId, views);

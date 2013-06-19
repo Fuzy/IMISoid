@@ -25,12 +25,14 @@ import java.util.Arrays;
  */
 public class ShortcutWidgetProvider extends AppWidgetProvider {
     private static final String TAG = ShortcutWidgetProvider.class.getSimpleName();
-    //TODO init color util
+    private ColorUtil colorUtil;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         Log.d(TAG, "onUpdate() appWidgetIds " + Arrays.toString(appWidgetIds));
+        colorUtil = new ColorUtil(context);
+
 
         for (int i = 0; i < appWidgetIds.length; i++) {
             int appWidgetId = appWidgetIds[i];
@@ -38,14 +40,14 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                        int appWidgetId) {
+    private void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                 int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.shortcut_widget);
 
         Event lastEvent = EventManager.getLastEvent(context);
         Log.d(TAG, "updateAppWidget() lastEvent " + lastEvent);
         if (lastEvent != null) {
-            views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorUtil.getColor(lastEvent.getKod_po()));
+            views.setInt(R.id.emp_kod_po, "setBackgroundColor", colorUtil.getColor(lastEvent.getKod_po()));
             String last = lastEvent.getDruh() + " " + AppUtil.formatEmpDate(lastEvent.getDatum())
                     + " " + AppUtil.formatTime(lastEvent.getCas());//TODO test null
             views.setTextViewText(R.id.emp_time, last);
@@ -65,7 +67,8 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
-    public static void updateAllWidgets(Context context) {
+    public void updateAllWidgets(Context context) {
+        colorUtil = new ColorUtil(context);
         AppWidgetManager man = AppWidgetManager.getInstance(context);
         int[] ids = man.getAppWidgetIds(
                 new ComponentName(context, ShortcutWidgetProvider.class));

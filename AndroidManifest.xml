@@ -58,13 +58,6 @@
                 android:label="@string/app_name">
         </provider>
 
-        <receiver android:name=".network.NetworkReceiver"
-                  android:exported="true">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
-        </receiver>
-
         <!-- Service for  authentication -->
         <service
                 android:name=".authentication.AuthenticationService"

@@ -80,7 +80,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         loadEvents(arriveId, leaveId);
         showToastIfErrors();
 
-        init();//TODO zdroj widget
+        init();
         boolean enableAddArrive = intent.getBooleanExtra(KEY_ENABLE_ADD_ARRIVE, false);
         if (enableAddArrive) enableAddArrive();
         boolean enableAddLeave = intent.getBooleanExtra(KEY_ENABLE_ADD_LEAVE, false);
@@ -231,7 +231,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     }
 
     private void refreshShortcutWidgets() {
-        ShortcutWidgetProvider.updateAllWidgets(this);
+        new ShortcutWidgetProvider().updateAllWidgets(this);
     }
 
     private void populateArriveFields() {

@@ -14,6 +14,8 @@ import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
+import imis.client.processor.DataProcessor;
+import imis.client.ui.ColorUtil;
 import imis.client.ui.fragments.PieChartFragment;
 import imis.client.ui.fragments.StackedBarFragment;
 import imis.client.ui.fragments.StatisticsFragment;
@@ -40,11 +42,17 @@ public abstract class ChartActivity extends ControlActivity {
     protected final List<CheckBox> checkBoxes = new ArrayList<>();
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
     protected final CheckBoxClickListener checkBoxClickListener = new CheckBoxClickListener();
+    protected DataProcessor dataProcessor;
+    protected ColorUtil colorUtil; //TODO mam to tu dvakrat
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chart_layout);
+        dataProcessor = new DataProcessor(getApplicationContext());
+        colorUtil = new ColorUtil(getApplicationContext());
         initControlPanel();
     }
 

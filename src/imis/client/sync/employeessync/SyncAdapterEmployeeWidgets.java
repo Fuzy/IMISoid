@@ -33,7 +33,7 @@ public class SyncAdapterEmployeeWidgets extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s,
                               ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        Log.d(TAG,"onPerformSync()" + "account = [" + account + "], bundle = [" + bundle + "], " +
+        Log.d(TAG, "onPerformSync()" + "account = [" + account + "], bundle = [" + bundle + "], " +
                 "s = [" + s + "], contentProviderClient = [" + contentProviderClient + "], " +
                 "syncResult = [" + syncResult + "]");
 
@@ -50,7 +50,7 @@ public class SyncAdapterEmployeeWidgets extends AbstractThreadedSyncAdapter {
                 Log.d(TAG, "onPerformSync()  updating widget Icp() " + employee.getIcp());
                 EmployeeManager.updateEmployeeOnIcp(context, employeeToSync.getItem());
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                WidgetProvider.updateAppWidget(context, appWidgetManager, employee.getWidgetId());
+                new WidgetProvider().updateAppWidget(context, appWidgetManager, employee.getWidgetId());
                 //TODO lze vyvolat aktualizaci vsech widgetu daneho typu
             }
 

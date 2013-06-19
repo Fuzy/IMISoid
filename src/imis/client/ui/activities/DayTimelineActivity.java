@@ -21,19 +21,16 @@ import imis.client.R;
 import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.asynctasks.result.Result;
 import imis.client.model.Event;
-import imis.client.model.Record;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.RecordManager;
-import imis.client.ui.ColorUtil;
 import imis.client.ui.activities.util.ActivityConsts;
 import imis.client.ui.dialogs.ColorPickerDialog;
 import imis.client.ui.fragments.DayTimelineBlocksFragment;
 import imis.client.ui.fragments.DayTimelineListFragment;
 
-import java.util.Map;
-
-import static imis.client.AppConsts.*;
+import static imis.client.AppConsts.KEY_DOMAIN;
+import static imis.client.AppConsts.KEY_PORT;
 import static imis.client.AppUtil.showAccountNotExistsError;
 import static imis.client.AppUtil.showNetworkAccessUnavailable;
 import static imis.client.persistent.EventManager.EventQuery;
@@ -44,7 +41,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private long date;// = 1364428800000L; //1364166000000L;//1364169600000L;
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
-    private Cursor mCursor;
+    private volatile Cursor mCursor;
     private BroadcastReceiver minuteTickReceiver;
 
     private static final int LOADER_EVENTS = 0x02;
@@ -69,7 +66,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
 
         loadNetworkSharedPreferences();
-        loadColorSharedPreferences();
 
         // delete old data
         deleteOldData();
@@ -98,7 +94,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     protected void onPause() {
         super.onPause();
         Log.d("DayTimelineActivity", "onPause()");
-        saveColorSharedPreferences();
+//        saveColorSharedPreferences();
+        //TODO ukladat bar nastaveni
     }
 
     @Override
@@ -413,62 +410,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         String domain = settings.getString(KEY_DOMAIN, NetworkUtilities.DOMAIN_DEFAULT);
         int port = (settings.getInt(KEY_PORT, NetworkUtilities.PORT_DEFAULT));
         NetworkUtilities.resetDomainAndPort(domain, port);
-    }
-
-    private void loadColorSharedPreferences() {
-        Log.d("DayTimelineActivity", "loadColorSharedPreferences()");
-        SharedPreferences settings = getSharedPreferences(PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
-        loadEventColors(settings);
-        loadRecordColors(settings);
-    }
-
-    private void loadEventColors(SharedPreferences settings) {
-        ColorUtil.setColor(Event.KOD_PO_ARRIVE_NORMAL, settings.getInt(Event.KOD_PO_ARRIVE_NORMAL,
-                getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_ARRIVE_PRIVATE, settings.getInt(Event.KOD_PO_ARRIVE_PRIVATE,
-                getResources().getColor(R.color.COLOR_PRESENT_PRIVATE_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_OTHERS, settings.getInt(Event.KOD_PO_OTHERS,
-                getResources().getColor(R.color.COLOR_PRESENT_OTHERS_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_LEAVE_SERVICE, settings.getInt(Event.KOD_PO_LEAVE_SERVICE,
-                getResources().getColor(R.color.COLOR_ABSENCE_SERVICE_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_LEAVE_LUNCH, settings.getInt(Event.KOD_PO_LEAVE_LUNCH,
-                getResources().getColor(R.color.COLOR_ABSENCE_LUNCH_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_LEAVE_SUPPER, settings.getInt(Event.KOD_PO_LEAVE_SUPPER,
-                getResources().getColor(R.color.COLOR_ABSENCE_SUPPER_DEFAULT)));
-        ColorUtil.setColor(Event.KOD_PO_LEAVE_MEDIC, settings.getInt(Event.KOD_PO_LEAVE_MEDIC,
-                getResources().getColor(R.color.COLOR_ABSENCE_MEDIC_DEFAULT)));
-    }
-
-    private void loadRecordColors(SharedPreferences settings) {
-        ColorUtil.setColor(Record.TYPE_A, settings.getInt(Record.TYPE_A,
-                getResources().getColor(R.color.COLOR_RECORD_A)));
-        ColorUtil.setColor(Record.TYPE_I, settings.getInt(Record.TYPE_I,
-                getResources().getColor(R.color.COLOR_RECORD_I)));
-        ColorUtil.setColor(Record.TYPE_J, settings.getInt(Record.TYPE_J,
-                getResources().getColor(R.color.COLOR_RECORD_J)));
-        ColorUtil.setColor(Record.TYPE_K, settings.getInt(Record.TYPE_K,
-                getResources().getColor(R.color.COLOR_RECORD_K)));
-        ColorUtil.setColor(Record.TYPE_O, settings.getInt(Record.TYPE_O,
-                getResources().getColor(R.color.COLOR_RECORD_O)));
-        ColorUtil.setColor(Record.TYPE_R, settings.getInt(Record.TYPE_R,
-                getResources().getColor(R.color.COLOR_RECORD_R)));
-        ColorUtil.setColor(Record.TYPE_S, settings.getInt(Record.TYPE_S,
-                getResources().getColor(R.color.COLOR_RECORD_S)));
-        ColorUtil.setColor(Record.TYPE_V, settings.getInt(Record.TYPE_V,
-                getResources().getColor(R.color.COLOR_RECORD_V)));
-        ColorUtil.setColor(Record.TYPE_W, settings.getInt(Record.TYPE_W,
-                getResources().getColor(R.color.COLOR_RECORD_W)));
-    }
-
-    private void saveColorSharedPreferences() {
-        Log.d("DayTimelineActivity", "saveColorSharedPreferences()");
-        SharedPreferences settings = getSharedPreferences(PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        Map<String, Integer> colorsEvents = ColorUtil.getColors();
-        for (Map.Entry<String, Integer> entry : colorsEvents.entrySet()) {
-            editor.putInt(entry.getKey(), entry.getValue().intValue());
-        }
-        editor.commit();
     }
 
     @Override
