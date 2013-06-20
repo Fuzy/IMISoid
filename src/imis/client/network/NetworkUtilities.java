@@ -1,9 +1,13 @@
 package imis.client.network;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import imis.client.AppConsts;
+import imis.client.R;
 import imis.client.asynctasks.result.Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -36,38 +40,27 @@ public class NetworkUtilities {
         }
     }
 
-    public static boolean isOnline(Context context) { //TODO nerozlisuje typ spojeni
+    public static boolean isOnline(Context context) {
+        boolean connected;
 
         ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo i = conMgr.getActiveNetworkInfo();
-        if (i == null)
-            return false;
-        if (!i.isConnected())
-            return false;
-        if (!i.isAvailable())
-            return false;
-        return true;
-        /*boolean connected;
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        String networkType = sharedPref.getString(AppConsts.KEY_NETWORK_TYPE, "WIFI");
-        Log.d(TAG, "onReceive() networkType " + networkType);
+        String networkType = sharedPref.getString(context.getString(R.string.prefSyncOnNetworkType), AppConsts.NETWORK_TYPE_WIFI);
         if (networkType.equals(AppConsts.NETWORK_TYPE_WIFI)) {
             NetworkInfo networkInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             connected = networkInfo.isConnected();
-            Log.d(TAG, "onReceive() NETWORK_TYPE_WIFI " + connected);
-        } else  {
+        } else {
             NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
             connected = (networkInfo != null);
-            Log.d(TAG, "onReceive() NETWORK_TYPE_ANY " + connected);
-        }*/
-
+        }
+        Log.d(TAG, "isOnline() networkType " + networkType + " connected " + connected);
+        return connected;
     }
 
     public static void applyDomainAndPort(Context context, String domain, int port, boolean isTest) {
         Log.d(TAG, "applyDomainAndPort()" + "domain = [" + domain + "], port = [" + port + "], isTest = [" + isTest + "]");
         String baseURI = NetworkConsts.SCHEME + domain + ":" + port + NetworkConsts.BASE_PATH;
-        if (isTest) baseURI = baseURI.concat(NetworkConsts.TEST_MODE);
+        if (isTest) baseURI = baseURI.concat(NetworkConsts.TEST_PATH);
         Log.d(TAG, "applyDomainAndPort() baseURI " + baseURI);
         NetworkConfig.setBaseURI(context, baseURI);
     }

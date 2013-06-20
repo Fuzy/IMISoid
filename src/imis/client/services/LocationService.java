@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import imis.client.R;
@@ -140,14 +141,16 @@ public class LocationService extends Service {
 
     private void loadWorkplaceSetting() throws PositionNotSetException {
         Log.d(TAG, "loadWorkplaceSetting()");
-        SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        if (!sharedPref.contains(KEY_LATITUDE) || !sharedPref.contains(KEY_LONGITUDE) || !sharedPref.contains(KEY_RADIUS)) {
+//        SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (!settings.contains(KEY_LATITUDE) || !settings.contains(KEY_LONGITUDE) || !settings.contains(KEY_RADIUS)) {
             throw new PositionNotSetException(context.getString(R.string.no_position_set));
         }
-        double latitude = (double) sharedPref.getFloat(KEY_LATITUDE, 0);
-        double longitude = (double) sharedPref.getFloat(KEY_LONGITUDE, 0);
+        double latitude = (double) settings.getFloat(KEY_LATITUDE, 0);
+        double longitude = (double) settings.getFloat(KEY_LONGITUDE, 0);
         workplace = new LatLng(latitude, longitude);
-        radius = sharedPref.getFloat(KEY_RADIUS, 0);
+        radius = settings.getFloat(KEY_RADIUS, 0);
         Log.d(TAG, "loadWorkplaceSetting() workplace " + workplace);
         Log.d(TAG, "loadWorkplaceSetting() radius " + radius);
     }

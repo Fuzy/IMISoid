@@ -11,7 +11,7 @@ import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Record;
-import imis.client.processor.DataProcessor;
+import imis.client.processor.RecordsProcessor;
 import imis.client.ui.ColorConfig;
 
 import java.util.ArrayList;
@@ -32,11 +32,13 @@ public class RecordsChartActivity extends ChartActivity {
 
     private static final int LOADER_RECORDS = 0x03;
     private List<Record> records = new ArrayList<>();
+    private RecordsProcessor processor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("RecordsChartActivity", "onCreate()");
         super.onCreate(savedInstanceState);
+        processor = new RecordsProcessor(getApplicationContext());
     }
 
     protected void addCheckBox(String kod_po) {
@@ -58,13 +60,13 @@ public class RecordsChartActivity extends ChartActivity {
 
     @Override
     public PieChartData getPieChartData() {
-        PieChartData data = dataProcessor.countRecordsPieChartData(records, getCheckedCodes());
+        PieChartData data = processor.countRecordsPieChartData(records, getCheckedCodes());
         return data;
     }
 
     @Override
     public StackedBarChartData getStackedBarChartData() {
-        StackedBarChartData data = dataProcessor.countRecordsStackedBarChartData(records, getCheckedCodes(), selectionArgs);
+        StackedBarChartData data = processor.countRecordsStackedBarChartData(records, getCheckedCodes(), selectionArgs);
         return data;
     }
 
@@ -96,7 +98,7 @@ public class RecordsChartActivity extends ChartActivity {
                     Record record = Record.cursorToRecord(cursor);
                     records.add(record);
                 }
-                String[] values = DataProcessor.recordsCodesInRecords(records);
+                String[] values = processor.recordsCodesInRecords(records);
                 initCheckBoxes(values);
                 mDataSetObservable.notifyChanged();
                 break;

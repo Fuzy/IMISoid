@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import imis.client.model.Event;
-import imis.client.processor.DataProcessor;
 import imis.client.ui.activities.DayTimelineActivity;
 import imis.client.ui.adapters.EventsCursorAdapter;
 
@@ -57,11 +56,11 @@ public class DayTimelineListFragment extends ListFragment {
         Cursor cursor = adapter.getCursor();
         if (actEvent.isDruhArrival()) {
             arriveId = actEvent.get_id();
-            scndEvent = DataProcessor.getNextEvent(cursor, Event.DRUH_LEAVE);
+            scndEvent = mActivity.getProcessor().getNextEvent(cursor, Event.DRUH_LEAVE);
             if (scndEvent != null) leaveId = scndEvent.get_id();
         } else if (actEvent.isDruhLeave()) {
             leaveId = actEvent.get_id();
-            scndEvent = DataProcessor.getPrevEvent(cursor, Event.DRUH_ARRIVAL);
+            scndEvent = mActivity.getProcessor().getPrevEvent(cursor, Event.DRUH_ARRIVAL);
             if (scndEvent != null) arriveId = scndEvent.get_id();
         }
        /* Log.d(TAG, "onListItemClick() actEvent " + actEvent);

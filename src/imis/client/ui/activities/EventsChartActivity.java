@@ -13,7 +13,7 @@ import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
 import imis.client.model.Event;
-import imis.client.processor.DataProcessor;
+import imis.client.processor.EventsProcessor;
 import imis.client.ui.ColorConfig;
 
 import java.util.*;
@@ -32,12 +32,14 @@ public class EventsChartActivity extends ChartActivity {
     private static final int LOADER_EVENTS = 0x03;
     private List<Block> blockList;
     private final Map<String, String> kody_po = new HashMap<>();
+    private EventsProcessor processor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
-
+        processor = new EventsProcessor(getApplicationContext());
         initEventCodesAndDesc();
 
     }
@@ -81,8 +83,8 @@ public class EventsChartActivity extends ChartActivity {
                 break;
             case LOADER_EVENTS:
                 Log.d(TAG, "onLoadFinished() LOADER_EVENTS");
-                blockList = DataProcessor.eventsToMapOfBlocks(cursor);
-                String[] values = DataProcessor.eventsCodesInBlocks(blockList);
+                blockList = processor.eventsToMapOfBlocks(cursor);
+                String[] values = processor.eventsCodesInBlocks(blockList);
                 initCheckBoxes(values);
                 mDataSetObservable.notifyChanged();
                 break;
@@ -135,14 +137,14 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     public PieChartData getPieChartData() {
         Log.d(TAG, "getPieChartData()");
-        PieChartData data = dataProcessor.countEventsPieChartData(blockList, getCheckedCodes(), kody_po);
+        PieChartData data = processor.countEventsPieChartData(blockList, getCheckedCodes(), kody_po);
         return data;
     }
 
     @Override
     public StackedBarChartData getStackedBarChartData() {
         Log.d(TAG, "getStackedBarChartData()");
-        StackedBarChartData data = dataProcessor.countEventsStackedBarChartData(blockList, getCheckedCodes(), kody_po, selectionArgs);
+        StackedBarChartData data = processor.countEventsStackedBarChartData(blockList, getCheckedCodes(), kody_po, selectionArgs);
         return data;
     }
 

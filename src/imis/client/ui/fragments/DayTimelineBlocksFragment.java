@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.model.Block;
-import imis.client.processor.DataProcessor;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
 import imis.client.ui.ObservableScrollView;
@@ -81,10 +80,10 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
 
     void resfreshAdaptersDataList() {
         Log.d(TAG, "resfreshAdaptersDataList()");
-        adapter.clear();
+        adapter.clear();  //TODO exception
         adapter.setDate(mActivity.getDate());
         blockList = null;
-        blockList = DataProcessor.eventsToMapOfBlocks(mActivity.getCursor());
+        blockList = mActivity.getProcessor().eventsToMapOfBlocks(mActivity.getCursor());
         adapter.addAll(blockList);
         adapter.notifyDataSetChanged();
         blocks.setVisibility(View.GONE);

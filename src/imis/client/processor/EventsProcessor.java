@@ -10,7 +10,6 @@ import imis.client.data.graph.PieChartSerie;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
 import imis.client.model.Event;
-import imis.client.model.Record;
 import imis.client.ui.ColorConfig;
 import imis.client.ui.activities.ControlActivity;
 
@@ -22,21 +21,19 @@ import java.util.*;
  * Date: 10.4.13
  * Time: 14:15
  */
-public class DataProcessor {
-    private static final String TAG = DataProcessor.class.getSimpleName();
-    //    private ColorConfig colorConfig;
+public class EventsProcessor {
+    private static final String TAG = EventsProcessor.class.getSimpleName();
+
     private Context context;
-    //TODO rozdelit tridu
 
-
-    public DataProcessor(Context context) {
+    public EventsProcessor(Context context) {
         this.context = context;
     }
 
-    public static final String[] VALUES = new String[]
+    public final String[] VALUES = new String[]
             {Event.KOD_PO_LEAVE_SERVICE, Event.KOD_PO_LEAVE_LUNCH, Event.KOD_PO_LEAVE_SUPPER};
 
-    public static String[] eventsCodesInBlocks(List<Block> blocks) {
+    public String[] eventsCodesInBlocks(List<Block> blocks) {
         Set<String> codes = new HashSet<>();
         for (Block block : blocks) {
             codes.add(block.getKod_po());
@@ -44,21 +41,19 @@ public class DataProcessor {
         return codes.toArray(new String[]{});
     }
 
-    public static String[] recordsCodesInRecords(List<Record> records) {
+    /*public static String[] recordsCodesInRecords(List<Record> records) {
         Set<String> codes = new HashSet<>();
         for (Record record : records) {
             codes.add(record.recordType());
         }
         return codes.toArray(new String[]{});
-    }
+    }*/
 
-    public static List<Block> eventsToMapOfBlocks(Cursor cursor) {
+    public List<Block> eventsToMapOfBlocks(Cursor cursor) {
         Log.d(TAG, "eventsToMapOfBlocks()");
         Event startEvent, endEvent = null;
         Block block;
         List<Block> blocks = new ArrayList<>();
-        //TODO kazdou minutu by mel prijit refresh
-        //TODO odladit, nektere jsou tam dvakrat
         cursor.moveToPosition(-1);
         while (cursor.moveToNext()) {
             startEvent = Event.cursorToEvent(cursor);
@@ -74,7 +69,8 @@ public class DataProcessor {
             }
 
             boolean isTodayUnfinishedPresence = startEvent.isDruhArrival() && endEvent == null
-                    && startEvent.getCas() <= AppUtil.currentTimeInLong();//TODO pouze pro dnesek
+                    && startEvent.getCas() <= AppUtil.currentTimeInLong()
+                    && startEvent.getDatum() == AppUtil.todayInLong();//TODO test
             Log.d(TAG, "eventsToMapOfBlocks() isUnfinishedPresence " + isTodayUnfinishedPresence);
             if (isTodayUnfinishedPresence || endEvent != null) {
                 block = new Block();
@@ -139,7 +135,7 @@ public class DataProcessor {
         return pieChartData;
     }
 
-    public PieChartData countRecordsPieChartData(List<Record> records, List<String> codes) {
+    /*public PieChartData countRecordsPieChartData(List<Record> records, List<String> codes) {
         Log.d(TAG, "countRecordsPieChartData()");
         PieChartData pieChartData = new PieChartData();
         long total = 0L;
@@ -167,7 +163,7 @@ public class DataProcessor {
         pieChartData.setTotal(AppUtil.formatTime(total));
         Log.d(TAG, "countRecordsPieChartData() pieChartData " + pieChartData);
         return pieChartData;
-    }
+    }*/
 
     public StackedBarChartData countEventsStackedBarChartData(List<Block> blocks, List<String> codes,
                                                               Map<String, String> kody_po, Map<String, String> selectionArgs) {
@@ -228,7 +224,7 @@ public class DataProcessor {
         return chartData;
     }
 
-    public StackedBarChartData countRecordsStackedBarChartData(List<Record> records, List<String> codes, Map<String, String> selectionArgs) {
+   /* public StackedBarChartData countRecordsStackedBarChartData(List<Record> records, List<String> codes, Map<String, String> selectionArgs) {
         StackedBarChartData chartData = new StackedBarChartData();
         // count mix/ max
 
@@ -286,10 +282,10 @@ public class DataProcessor {
                 + AppUtil.formatAbbrDate(chartData.getMinDay()) + " max" + AppUtil.formatAbbrDate(chartData.getMaxDay()));
 
         return chartData;
-    }
+    }*/
 
 
-    public static Event getNextEvent(Cursor cursor, String druh) {
+    public Event getNextEvent(Cursor cursor, String druh) {
         int initPos = cursor.getPosition();
 
         Event event = null;
@@ -303,7 +299,7 @@ public class DataProcessor {
         return event;
     }
 
-    public static Event getPrevEvent(Cursor cursor, String druh) {
+    public Event getPrevEvent(Cursor cursor, String druh) {
         int initPos = cursor.getPosition();
 
         Event event = null;

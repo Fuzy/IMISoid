@@ -24,6 +24,7 @@ import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.RecordManager;
+import imis.client.processor.EventsProcessor;
 import imis.client.ui.activities.util.ActivityConsts;
 import imis.client.ui.dialogs.ColorPickerDialog;
 import imis.client.ui.fragments.DayTimelineBlocksFragment;
@@ -50,6 +51,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private String currentFragment;
     //TODO co s neukoncenou aktivitou v dochazce - JSA
     //TODO upozornot na chybu v datech, sluzba + notifikace
+    private EventsProcessor processor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
         changeDate(AppUtil.todayInLong());
         Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
+        processor = new EventsProcessor(getApplicationContext());
 
         // delete old data
         deleteOldData();
@@ -450,5 +453,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     public long getDate() {
         return date;
+    }
+
+    public EventsProcessor getProcessor() {
+        return processor;
     }
 }

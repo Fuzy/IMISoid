@@ -48,7 +48,6 @@ public class CalendarActivity extends Activity {
         @Override
         public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
             Calendar cal = Calendar.getInstance();
-            //cal.setTimeZone(TimeZone.getTimeZone("UTC")); //TODO zimni vs letni cas?
             cal.setTimeInMillis(0);
             cal.set(year, month, dayOfMonth);
 

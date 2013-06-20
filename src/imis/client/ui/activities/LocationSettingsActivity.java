@@ -2,11 +2,12 @@ package imis.client.ui.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.*;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -18,8 +19,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.*;
 import imis.client.R;
-
-import java.util.Map;
 
 import static imis.client.AppConsts.*;
 
@@ -132,23 +131,23 @@ public class LocationSettingsActivity extends FragmentActivity {
     }
 
     private void savePosition() {
-        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+//        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        SharedPreferences.Editor editor = settings.edit();
         editor.putFloat(KEY_LATITUDE, (float) position.latitude);
         editor.putFloat(KEY_LONGITUDE, (float) position.longitude);
         editor.putFloat(KEY_RADIUS, (float) circle.getRadius());
         editor.putInt(KEY_SEEK_POS, seekPos);
         editor.commit();
-
-        //TODO smazat
-        Map<String, ?> all = sharedPref.getAll();
-        Log.d(TAG, "savePosition() all " + all);
         finish();
     }
 
     private int loadSeekPosition() {
-        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        int anInt = sharedPref.getInt(KEY_SEEK_POS, 0);
+//        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        int anInt = settings.getInt(KEY_SEEK_POS, 0);
         return anInt;
     }
 

@@ -27,10 +27,10 @@ public class NetworkSettingsActivity extends AsyncActivity {
     private ImageView imageWebService, imageDatabase;
     private EditText editTextDomain, editTextPort;
     private String domain = null;
-    private int port = -1;
+    private int port = -1, code = -1;
     private boolean isTest = false;
-    //TODO save state
     private static final int IND_DOMAIN = 3, IND_PORT = 4, IND_TEST = 6;
+    private static final String KEY_DOMAIN = "key_domain", KEY_PORT = "key_port", KEY_CODE = "key_code";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,11 @@ public class NetworkSettingsActivity extends AsyncActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void extractBaseURI() {
         String baseUri = NetworkConfig.getBaseURI(this);
         if (baseUri != null) {
@@ -66,7 +71,7 @@ public class NetworkSettingsActivity extends AsyncActivity {
             if (split.length > IND_PORT) parsePort(split[IND_PORT]);
             if (split.length > IND_TEST) isTest = split[IND_TEST].equals(NetworkConsts.TEST_MODE);
 
-            String domainText = (isTest) ? domain.concat("/" + NetworkConsts.TEST_MODE) : domain;
+            String domainText = (isTest) ? domain.concat( NetworkConsts.TEST_PATH) : domain;
             isTest = false;
             editTextDomain.setText(domainText);
             editTextPort.setText(Integer.toString(port));
@@ -77,11 +82,13 @@ public class NetworkSettingsActivity extends AsyncActivity {
         Log.d("NetworkSettingsActivity", "testIPandPort() domain: " + domain + " port: " + port);
         readDomainAndPort();
         NetworkUtilities.applyDomainAndPort(this, domain, port, isTest);
-        refreshState();
+        if (domain.length() != 0 && domain != null) {
+            processAsyncTask();
+        }
     }
 
     private void readDomainAndPort() {
-        parseDomain(domain = editTextDomain.getText().toString());
+        parseDomain(editTextDomain.getText().toString());
         parsePort(editTextPort.getText().toString());
     }
 
@@ -121,16 +128,9 @@ public class NetworkSettingsActivity extends AsyncActivity {
     }*/
 
 
-    private void refreshState() {
-        Log.d("NetworkSettingsActivity", "refreshState()");
-        if (domain.length() != 0 && domain != null) {
-            createTaskFragment(new TestConnection(this));
-        }
-    }
-
     @Override
     protected void processAsyncTask() {
-        Log.d(TAG, "processAsyncTask()");
+        createTaskFragment(new TestConnection(this));
     }
 
     private void setImageAsReachable(ImageView imageView) {
@@ -163,12 +163,32 @@ public class NetworkSettingsActivity extends AsyncActivity {
 
     @Override
     public void onTaskFinished(Result result) {
-        int code = -1;
         if (result.getStatusCode() != null) {
             code = result.getStatusCode().value();
         }
-        Log.d(TAG, "onTaskFinished() code " + code);
         setIconsOfAvailability(code);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null) {
+            outState.putString(KEY_DOMAIN, editTextDomain.getText().toString());
+            outState.putString(KEY_PORT, editTextPort.getText().toString());
+            outState.putInt(KEY_CODE, code);
+
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            editTextDomain.setText(savedInstanceState.getString(KEY_DOMAIN));
+            editTextPort.setText(savedInstanceState.getString(KEY_PORT));
+            code = savedInstanceState.getInt(KEY_CODE);
+            setIconsOfAvailability(code);
+        }
     }
 }
 
