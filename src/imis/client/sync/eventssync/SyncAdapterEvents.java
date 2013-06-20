@@ -40,7 +40,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
                 "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
         //TODO bundle rozlisit volani z aktivity, poslat zpravu po skonceni
-        Result testResult = NetworkUtilities.testWebServiceAndDBAvailability();
+        Result testResult = NetworkUtilities.testWebServiceAndDBAvailability(context);
         if (testResult.getStatusCode() == null || testResult.getStatusCode().value() != HttpStatus.SC_OK) {
             Log.d(TAG, "onPerformSync() connection unavailable");
             //AppUtil.showNetworkAccessUnavailable(context);//TODO spojeni vs nedostupny server, poslat zpravu po skonceni

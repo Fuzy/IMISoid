@@ -13,7 +13,7 @@ import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
-import imis.client.ui.ColorUtil;
+import imis.client.ui.ColorConfig;
 
 import java.util.Arrays;
 
@@ -25,13 +25,13 @@ import java.util.Arrays;
  */
 public class ShortcutWidgetProvider extends AppWidgetProvider {
     private static final String TAG = ShortcutWidgetProvider.class.getSimpleName();
-    private ColorUtil colorUtil;
+//    private ColorConfig colorConfig;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         Log.d(TAG, "onUpdate() appWidgetIds " + Arrays.toString(appWidgetIds));
-        colorUtil = new ColorUtil(context);
+//        colorConfig = new ColorConfig(context);
 
 
         for (int i = 0; i < appWidgetIds.length; i++) {
@@ -47,7 +47,7 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
         Event lastEvent = EventManager.getLastEvent(context);
         Log.d(TAG, "updateAppWidget() lastEvent " + lastEvent);
         if (lastEvent != null) {
-            views.setInt(R.id.emp_kod_po, "setBackgroundColor", colorUtil.getColor(lastEvent.getKod_po()));
+            views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorConfig.getColor(context, lastEvent.getKod_po()));
             String last = lastEvent.getDruh() + " " + AppUtil.formatEmpDate(lastEvent.getDatum())
                     + " " + AppUtil.formatTime(lastEvent.getCas());//TODO test null
             views.setTextViewText(R.id.emp_time, last);
@@ -68,7 +68,7 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
     }
 
     public void updateAllWidgets(Context context) {
-        colorUtil = new ColorUtil(context);
+//        colorConfig = new ColorConfig(context);
         AppWidgetManager man = AppWidgetManager.getInstance(context);
         int[] ids = man.getAppWidgetIds(
                 new ComponentName(context, ShortcutWidgetProvider.class));

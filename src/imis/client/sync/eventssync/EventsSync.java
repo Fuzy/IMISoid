@@ -46,7 +46,7 @@ public class EventsSync {
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
 
         try {
-            ResponseEntity response = restTemplate.exchange(NetworkUtilities.EVENTS_DELETE_URL,
+            ResponseEntity response = restTemplate.exchange(NetworkUtilities.getEventsDeleteURL(context),
                     HttpMethod.DELETE, entity, null, rowid);
             return new Result(response.getStatusCode());
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class EventsSync {
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            ResponseEntity<Event[]> response = restTemplate.exchange(NetworkUtilities.EVENTS_GET_URL,
+            ResponseEntity<Event[]> response = restTemplate.exchange(NetworkUtilities.getEventsGetURL(context),
                     HttpMethod.GET, entity, Event[].class, icp, strFrom, strTo);
             Event[] events = response.getBody();
             Log.d(TAG, "getUserEvents() events " + events);
@@ -98,7 +98,7 @@ public class EventsSync {
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            ResponseEntity response = restTemplate.exchange(NetworkUtilities.EVENTS_URL, HttpMethod.POST, entity, null);
+            ResponseEntity response = restTemplate.exchange(NetworkUtilities.getEventsCreateURL(context), HttpMethod.POST, entity, null);
             URI location = response.getHeaders().getLocation();
             String path = location.getPath();
             event.setServer_id(path.substring(location.getPath().lastIndexOf('/') + 1));
@@ -132,7 +132,7 @@ public class EventsSync {
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            ResponseEntity response = restTemplate.exchange(NetworkUtilities.EVENTS_UPDATE_URL, HttpMethod.PUT,
+            ResponseEntity response = restTemplate.exchange(NetworkUtilities.getEventsUpdateURL(context), HttpMethod.PUT,
                     entity, null, event.getServer_id());
             return new Result(response.getStatusCode());
 

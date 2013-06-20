@@ -34,9 +34,9 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
         Log.d(TAG, "doInBackground()");
         String url, icp = "";
         if (params.length == 0) {
-            url = NetworkUtilities.EMPLOYEES_EVENTS_URL;
+            url = NetworkUtilities.getEmployeesGetEventsURL(context);
         } else {
-            url = NetworkUtilities.EMPLOYEES_URL;
+            url = NetworkUtilities.getEmployeesGetURL(context);
             icp = params[0];
         }
 

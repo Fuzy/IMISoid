@@ -10,7 +10,7 @@ import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.model.Event;
 import imis.client.model.Record;
-import imis.client.ui.ColorUtil;
+import imis.client.ui.ColorConfig;
 import imis.client.ui.adapters.EventsColorAdapter;
 import imis.client.ui.adapters.RecordsColorAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
@@ -28,14 +28,14 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
 
     private RecordsColorAdapter recordsAdapter;
     private EventsColorAdapter eventsAdapter;
-    private ColorUtil colorUtil;
+//    private ColorConfig colorConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.color_info);
 
-        colorUtil = new ColorUtil(getApplicationContext());
+//        colorConfig = new ColorConfig(getApplicationContext());
         populateRecordTypeList();
         populateEventTypeList();
     }
@@ -58,7 +58,7 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
 
     private List<Map.Entry<String, Integer>> entryListForKeys(String[] keys) {
         Map<String, Integer> colors = new TreeMap<>();
-        colors.putAll(colorUtil.getColors());
+        colors.putAll(ColorConfig.getColors(getApplicationContext()));
 
         Set<String> set = new HashSet<>();
         set.addAll(Arrays.asList(keys));

@@ -20,7 +20,7 @@ public class TestConnection extends NetworkingAsyncTask<Void, Void, Result> {
 
     @Override
     protected Result doInBackground(Void... objects) {
-        return NetworkUtilities.testWebServiceAndDBAvailability();
+        return NetworkUtilities.testWebServiceAndDBAvailability(context);
     }
 
     @Override

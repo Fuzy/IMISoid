@@ -29,8 +29,6 @@ import imis.client.ui.dialogs.ColorPickerDialog;
 import imis.client.ui.fragments.DayTimelineBlocksFragment;
 import imis.client.ui.fragments.DayTimelineListFragment;
 
-import static imis.client.AppConsts.KEY_DOMAIN;
-import static imis.client.AppConsts.KEY_PORT;
 import static imis.client.AppUtil.showAccountNotExistsError;
 import static imis.client.AppUtil.showNetworkAccessUnavailable;
 import static imis.client.persistent.EventManager.EventQuery;
@@ -65,8 +63,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         changeDate(AppUtil.todayInLong());
         Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
 
-        loadNetworkSharedPreferences();
-
         // delete old data
         deleteOldData();
     }
@@ -88,14 +84,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         super.onResume();
         Log.d(TAG, "onResume() Events:\n" + EventManager.getAllEvents(getApplicationContext()));
         initFragment();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("DayTimelineActivity", "onPause()");
-//        saveColorSharedPreferences();
-        //TODO ukladat bar nastaveni
     }
 
     @Override
@@ -404,13 +392,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         mDataSetObservable.notifyChanged();
     }
 
-    private void loadNetworkSharedPreferences() {
-        Log.d(TAG, "loadNetworkSharedPreferences()");
-        SharedPreferences settings = getSharedPreferences(AppConsts.PREFS_NAME, Context.MODE_PRIVATE);
-        String domain = settings.getString(KEY_DOMAIN, NetworkUtilities.DOMAIN_DEFAULT);
-        int port = (settings.getInt(KEY_PORT, NetworkUtilities.PORT_DEFAULT));
-        NetworkUtilities.resetDomainAndPort(domain, port);
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

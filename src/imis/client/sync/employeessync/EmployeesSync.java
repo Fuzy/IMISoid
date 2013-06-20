@@ -29,7 +29,7 @@ public class EmployeesSync {
         this.context = context;
     }
 
-    public ResultItem<Employee> getEmployeeLastEvent(final String icp) {//TODO predelat na item
+    public ResultItem<Employee> getEmployeeLastEvent(final String icp) {
         Log.d(TAG, "getUserEvents() icp: " + icp );
 
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -43,7 +43,7 @@ public class EmployeesSync {
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            ResponseEntity<Employee> response = restTemplate.exchange(NetworkUtilities.EMPLOYEE_EVENT_URL,
+            ResponseEntity<Employee> response = restTemplate.exchange(NetworkUtilities.getEmployeesGetEventURL(context),
                     HttpMethod.GET, entity, Employee.class, icp);
             Employee employee = response.getBody();
             return new ResultItem<Employee>(response.getStatusCode(), employee);

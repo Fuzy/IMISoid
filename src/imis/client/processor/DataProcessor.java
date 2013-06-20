@@ -11,7 +11,7 @@ import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
 import imis.client.model.Event;
 import imis.client.model.Record;
-import imis.client.ui.ColorUtil;
+import imis.client.ui.ColorConfig;
 import imis.client.ui.activities.ControlActivity;
 
 import java.util.*;
@@ -24,11 +24,13 @@ import java.util.*;
  */
 public class DataProcessor {
     private static final String TAG = DataProcessor.class.getSimpleName();
-    private ColorUtil colorUtil;
+    //    private ColorConfig colorConfig;
+    private Context context;
     //TODO rozdelit tridu
 
+
     public DataProcessor(Context context) {
-        colorUtil = new ColorUtil(context);
+        this.context = context;
     }
 
     public static final String[] VALUES = new String[]
@@ -127,7 +129,7 @@ public class DataProcessor {
 
 
             serie = new PieChartSerie(kody_po.get(entry.getKey()), (double) (value / AppConsts.MS_IN_HOUR));
-            serie.setColor(colorUtil.getColor(entry.getKey()));
+            serie.setColor(ColorConfig.getColor(context, entry.getKey()));
             serie.setTime(AppUtil.formatTime(value));
             serie.setPercent((int) (((double) value / (double) total) * 100));
             pieChartData.addSerie(serie);
@@ -156,7 +158,7 @@ public class DataProcessor {
         for (Map.Entry<String, Long> entry : statistics.entrySet()) {
             value = entry.getValue();
             serie = new PieChartSerie(entry.getKey(), (double) (value / AppConsts.MS_IN_HOUR));
-            serie.setColor(colorUtil.getColor(entry.getKey()));
+            serie.setColor(ColorConfig.getColor(context, entry.getKey()));
             serie.setTime(AppUtil.formatTime(value));
             serie.setPercent((int) (((double) value / (double) total) * 100));
             pieChartData.addSerie(serie);
@@ -209,7 +211,7 @@ public class DataProcessor {
             Log.d(TAG, "countEventsStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
             values.add(stringEntry.getValue());
             titles[ind] = kody_po.get(stringEntry.getKey());
-            colors[ind] = colorUtil.getColor(stringEntry.getKey());
+            colors[ind] = ColorConfig.getColor(context, stringEntry.getKey());
             ind++;
         }
 
@@ -268,7 +270,7 @@ public class DataProcessor {
             Log.d(TAG, "countEventsStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
             values.add(stringEntry.getValue());
             titles[ind] = stringEntry.getKey();
-            colors[ind] = colorUtil.getColor(stringEntry.getKey());
+            colors[ind] = ColorConfig.getColor(context, stringEntry.getKey());
             ind++;
         }
 

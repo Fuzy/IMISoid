@@ -12,45 +12,11 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-
-public class NetworkUtilities {//TODO asi jako nestaticka trida
+public class NetworkUtilities {
     private static final String TAG = NetworkUtilities.class.getSimpleName();
-    private static final String SCHEME = "http://";
-    private static final String BASE_PATH = "/Imisoid_WS/";
-    private static final String EVENTS_PATH = "events";
-    private static final String EVENTS_DELETE_PATH = "events/{rowid}";
-    private static final String EVENTS_UPDATE_PATH = "events/{rowid}";
-    private static final String EVENTS_GET_PATH = "events/{icp}?from={from}&to={to}";
-    private static final String RECORDS_PATH = "records/{kodpra}?from={from}&to={to}";
-    private static final String EMPLOYEE_PATH = "employee/{icp}";
-    private static final String EMPLOYEES_PATH = "employees/{icp}";
-    private static final String EMPLOYEES_EVENTS_PATH = "employees/lastevents";
-    private static final String EMPLOYEE_EVENT_PATH = "employees/lastevent/{icp}";
-    private static final String TEST_PATH = "test/";
-    private static final String TEST_MODE = "test";
-    private static final String TEST_CONN = "testconnection";
 
-    private static String DOMAIN = null;
-    private static int PORT = -1;
-    private static boolean isTest = false;
-    private static boolean isConnected = false;
-    public static String BASE_URL;
-    public static String EVENTS_DELETE_URL;
-    public static String EVENTS_UPDATE_URL;
-    public static String EVENTS_GET_URL;
-    public static String EVENTS_URL;
-    public static String RECORDS_URL;
-    public static String EMPLOYEES_URL;
-    public static String EMPLOYEES_EVENTS_URL;
-    public static String EMPLOYEE_EVENT_URL;
-    public static String EMPLOYEE_URL;
-    public static String TEST_CONN_URL;
 
-    public static final String DOMAIN_DEFAULT = "10.0.0.2/test";//        //10.0.0.1
-    public static final int PORT_DEFAULT = 8081;
-
-    public static Result testWebServiceAndDBAvailability() {
+    public static Result testWebServiceAndDBAvailability(Context context) {
         HttpHeaders requestHeaders = new HttpHeaders();
         org.springframework.http.HttpEntity<Object> entity = new org.springframework.http.HttpEntity<>(requestHeaders);
 
@@ -58,7 +24,7 @@ public class NetworkUtilities {//TODO asi jako nestaticka trida
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
 
         try {
-            ResponseEntity response = restTemplate.exchange(TEST_CONN_URL, HttpMethod.GET, entity,
+            ResponseEntity response = restTemplate.exchange(getTestURL(context), HttpMethod.GET, entity,
                     null);
             return new Result(response.getStatusCode());
         } catch (Exception e) {
@@ -98,57 +64,52 @@ public class NetworkUtilities {//TODO asi jako nestaticka trida
 
     }
 
-    public static void resetDomainAndPort(String domain, int port) {
-        Log.d("NetworkUtilities", "resetDomainAndPort()");
-        BASE_URL = parseBaseURL(domain, port);
-        Log.d(TAG, "resetDomainAndPort() BASE_URL " + BASE_URL);
-        EVENTS_URL = BASE_URL + EVENTS_PATH;
-        EVENTS_DELETE_URL = BASE_URL + EVENTS_DELETE_PATH;
-        EVENTS_UPDATE_URL = BASE_URL + EVENTS_UPDATE_PATH;
-        EVENTS_GET_URL = BASE_URL + EVENTS_GET_PATH;
-        RECORDS_URL = BASE_URL + RECORDS_PATH;
-        EMPLOYEES_URL = BASE_URL + EMPLOYEES_PATH;
-        EMPLOYEES_EVENTS_URL = BASE_URL + EMPLOYEES_EVENTS_PATH;
-        EMPLOYEE_EVENT_URL = BASE_URL + EMPLOYEE_EVENT_PATH;
-        EMPLOYEE_URL = BASE_URL + EMPLOYEE_PATH;
-        TEST_CONN_URL = BASE_URL + TEST_CONN;
-        Log.d(TAG, "resetDomainAndPort() TEST_CONN_URL " + TEST_CONN_URL);
+    public static void applyDomainAndPort(Context context, String domain, int port, boolean isTest) {
+        Log.d(TAG, "applyDomainAndPort()" + "domain = [" + domain + "], port = [" + port + "], isTest = [" + isTest + "]");
+        String baseURI = NetworkConsts.SCHEME + domain + ":" + port + NetworkConsts.BASE_PATH;
+        if (isTest) baseURI = baseURI.concat(NetworkConsts.TEST_MODE);
+        Log.d(TAG, "applyDomainAndPort() baseURI " + baseURI);
+        NetworkConfig.setBaseURI(context, baseURI);
     }
 
-    private static String parseBaseURL(String domain, int port) {
-        String[] splits = domain.split("/");
-        Log.d(TAG,"parseBaseURL() splits " + Arrays.toString(splits));
-        DOMAIN = splits[0];
-        PORT = port;
-
-        isTest = false;
-        if (splits.length > 1 && splits[1].equals(TEST_MODE)) isTest = true;
-
-        StringBuilder baseURL = new StringBuilder(SCHEME + DOMAIN + ":" + PORT + BASE_PATH);
-        if (isTest) baseURL.append(TEST_PATH);
-        return baseURL.toString();
+    public static String getTestURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.TEST_CONN;
     }
 
-
-    private static String getPortAsString(int port) {
-        return String.valueOf(port);
+    public static String getEventsCreateURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EVENTS_CREATE_PATH;
     }
 
-    public static String getDomainOrDefault() {
-        StringBuilder s = new StringBuilder((DOMAIN == null) ? DOMAIN_DEFAULT : DOMAIN);
-        if (isTest) s.append("/" + TEST_MODE);
-        return s.toString();
+    public static String getEventsDeleteURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EVENTS_DELETE_PATH;
     }
 
-    public static String getPortOrDefault() {
-        return (PORT == -1) ? getPortAsString(PORT_DEFAULT) : getPortAsString(PORT);
+    public static String getEventsUpdateURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EVENTS_UPDATE_PATH;
     }
 
-    public static boolean isConnected() {
-        return isConnected;
+    public static String getEventsGetURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EVENTS_GET_PATH;
     }
 
-    public static void setConnected(boolean connected) {
-        isConnected = connected;
+    public static String getRecordsGetURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.RECORDS_GET_PATH;
     }
+
+    public static String getEmployeeGetURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EMPLOYEE_GET_PATH;
+    }
+
+    public static String getEmployeesGetURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EMPLOYEES_GET_PATH;
+    }
+
+    public static String getEmployeesGetEventsURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EMPLOYEES_GET_EVENTS_PATH;
+    }
+
+    public static String getEmployeesGetEventURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EMPLOYEES_GET_EVENT_PATH;
+    }
+
 }

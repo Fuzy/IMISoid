@@ -45,7 +45,7 @@ public class AuthEmployee extends NetworkingAsyncTask<String, Void, ResultItem<E
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            ResponseEntity<Employee> response = restTemplate.exchange(NetworkUtilities.EMPLOYEE_URL,
+            ResponseEntity<Employee> response = restTemplate.exchange(NetworkUtilities.getEmployeeGetURL(context),
                     HttpMethod.GET, entity, Employee.class, icp);
             Employee employee = response.getBody();
             return new ResultItem<Employee>(response.getStatusCode(), employee);

@@ -45,7 +45,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            ResponseEntity<Record[]> response = restTemplate.exchange(NetworkUtilities.RECORDS_URL, HttpMethod.GET, entity,
+            ResponseEntity<Record[]> response = restTemplate.exchange(NetworkUtilities.getRecordsGetURL(context), HttpMethod.GET, entity,
                     Record[].class, kodpra, from, to);
             Record[] body = response.getBody();
             Log.d(TAG, "doInBackground() ok " + body);

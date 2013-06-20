@@ -1,5 +1,6 @@
 package imis.client.ui.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -13,7 +14,7 @@ import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Record;
-import imis.client.ui.ColorUtil;
+import imis.client.ui.ColorConfig;
 import imis.client.ui.dialogs.ColorPickerDialog;
 
 /**
@@ -25,15 +26,22 @@ import imis.client.ui.dialogs.ColorPickerDialog;
 public class RecordDetailFragment extends Fragment {
     private static final String TAG = RecordDetailFragment.class.getSimpleName();
 
-    private ColorUtil colorUtil;
+//    private ColorConfig colorConfig;
+    private Context context;
     private View detail;
     private Record record;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        colorUtil = new ColorUtil(getActivity());
+//        colorConfig = new ColorConfig(getActivity());
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        context = activity;
     }
 
     @Override
@@ -76,7 +84,7 @@ public class RecordDetailFragment extends Fragment {
             tt = (TextView) detail.findViewById(R.id.note);
             tt.setText(record.getPoznamka());
             tt = (TextView) detail.findViewById(R.id.record_type);
-            tt.setBackgroundColor(colorUtil.getColor(record.recordType()));
+            tt.setBackgroundColor(ColorConfig.getColor(context,record.recordType()));
         }
 
         TextView tt = (TextView) detail.findViewById(R.id.record_type);

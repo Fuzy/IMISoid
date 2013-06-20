@@ -3,14 +3,10 @@ package imis.client.ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.Log;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.model.Event;
-import imis.client.model.Record;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,34 +15,38 @@ import java.util.Map;
  * Date: 4.4.13
  * Time: 17:52
  */
-public class ColorUtil {
-    private static final String TAG = ColorUtil.class.getSimpleName();
-    private Context context;
+public class ColorConfig {
+    /*private static final String TAG = ColorConfig.class.getSimpleName();
+    private static Context context;
 
     private static final String PREFS_EVENTS_COLOR = "ImisoidPrefsColors";
     private static final Map<String, Integer> colors = new HashMap<>();
     private static boolean isLoaded = false;
 
-    public Map<String, Integer> getColors() {
+    public static synchronized Map<String, Integer> getColors() {
         return colors;
     }
 
-    public ColorUtil(Context context) {
+    public ColorConfig(Context context) {
         this.context = context;
-        Log.d(TAG, "ColorUtil() isLoaded " + isLoaded);
+        Log.d(TAG, "ColorConfig() isLoaded " + isLoaded);
     }
 
     public void setColor(String key, int value) {
         List<String> eventCodes = Arrays.asList(Event.KOD_PO_VALUES);
         List<String> recordCodes = Arrays.asList(Record.TYPE_VALUES);
         if (eventCodes.indexOf(key) == -1 && recordCodes.indexOf(key) == -1) key = Event.KOD_PO_OTHERS;
-        colors.put(key, value);
+        internalSetColor(key, value);
         if (isLoaded) {
             saveColors();
         }
     }
 
-    public int getColor(String key) {
+    private static synchronized void internalSetColor(String key, int value) {
+        colors.put(key, value);
+    }
+
+    public static int getColor(String key) {
         if (!isLoaded) {
             loadColors();
         }
@@ -54,14 +54,18 @@ public class ColorUtil {
         List<String> eventCodes = Arrays.asList(Event.KOD_PO_VALUES);
         List<String> recordCodes = Arrays.asList(Record.TYPE_VALUES);
         if (eventCodes.indexOf(key) == -1 && recordCodes.indexOf(key) == -1) key = Event.KOD_PO_OTHERS;
-        Integer value = colors.get(key);
+        Integer value = internalGetColor(key);
         if (value == null) {
             return Color.GRAY;
         }
         return value;
     }
 
-    public void loadColors() {
+    private static synchronized int internalGetColor(String key) {
+        return colors.get(key);
+    }
+
+    public static void loadColors() {
         Log.d(TAG, "loadColors()");
         SharedPreferences settings = context.getSharedPreferences(PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
         loadEventColors(settings);
@@ -75,7 +79,7 @@ public class ColorUtil {
         saveColorSharedPreferences(settings);
     }
 
-    private void loadEventColors(SharedPreferences settings) {
+    private static void loadEventColors(SharedPreferences settings) {
         setColor(Event.KOD_PO_ARRIVE_NORMAL, settings.getInt(Event.KOD_PO_ARRIVE_NORMAL,
                 context.getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT)));
         setColor(Event.KOD_PO_ARRIVE_PRIVATE, settings.getInt(Event.KOD_PO_ARRIVE_PRIVATE,
@@ -92,7 +96,7 @@ public class ColorUtil {
                 context.getResources().getColor(R.color.COLOR_ABSENCE_MEDIC_DEFAULT)));
     }
 
-    private void loadRecordColors(SharedPreferences settings) {
+    private static void loadRecordColors(SharedPreferences settings) {
         setColor(Record.TYPE_A, settings.getInt(Record.TYPE_A,
                 context.getResources().getColor(R.color.COLOR_RECORD_A)));
         setColor(Record.TYPE_I, settings.getInt(Record.TYPE_I,
@@ -121,6 +125,33 @@ public class ColorUtil {
             editor.putInt(entry.getKey(), entry.getValue().intValue());
         }
         editor.commit();
+    }*/
+
+    public static int getDefault(Context context, String key) {
+        //TODO dodelat
+        if (key.equals(Event.KOD_PO_ARRIVE_NORMAL)) {
+            return context.getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT);
+        } else {
+            return Color.GRAY;
+        }
+    }
+
+    public static int getColor(Context context, String key) {
+        SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
+        int color = settings.getInt(key, ColorConfig.getDefault(context, key));
+        return color;
+    }
+
+    public static void setColor(Context context, String key, int color) {
+        SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(key, color);
+        editor.apply();
+    }
+
+    public static Map<String, Integer> getColors(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
+        return (Map<String, Integer>) settings.getAll();
     }
 
 }

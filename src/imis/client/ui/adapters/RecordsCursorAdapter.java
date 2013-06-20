@@ -11,7 +11,7 @@ import android.widget.TextView;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Record;
-import imis.client.ui.ColorUtil;
+import imis.client.ui.ColorConfig;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,13 +22,13 @@ import imis.client.ui.ColorUtil;
 public class RecordsCursorAdapter extends CursorAdapter {
     private static final String TAG = "RecordsCursorAdapter";
     private LayoutInflater inflater;
-    private ColorUtil colorUtil;
+//    private ColorConfig colorConfig;
 
 
     public RecordsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        colorUtil = new ColorUtil(context);
+//        colorConfig = new ColorConfig(context);
     }
 
 
@@ -63,6 +63,6 @@ public class RecordsCursorAdapter extends CursorAdapter {
         tt = (TextView) view.findViewById(R.id.note);
         tt.setText(poznamka);
         tt = (TextView) view.findViewById(R.id.record_type);
-        tt.setBackgroundColor(colorUtil.getColor(record.recordType()));
+        tt.setBackgroundColor(ColorConfig.getColor(context, record.recordType()));
     }
 }

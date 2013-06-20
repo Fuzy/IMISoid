@@ -14,7 +14,7 @@ import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
 import imis.client.model.Event;
 import imis.client.processor.DataProcessor;
-import imis.client.ui.ColorUtil;
+import imis.client.ui.ColorConfig;
 
 import java.util.*;
 
@@ -37,7 +37,6 @@ public class EventsChartActivity extends ChartActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
-        colorUtil = new ColorUtil(getApplicationContext());
 
         initEventCodesAndDesc();
 
@@ -53,7 +52,7 @@ public class EventsChartActivity extends ChartActivity {
 
     protected void addCheckBox(String kod_po) {
         int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(kod_po);
-        int color = colorUtil.getColor(kod_po);
+        int color = ColorConfig.getColor(this, kod_po);
         addCheckBox(index, color);
     }
 
@@ -65,6 +64,7 @@ public class EventsChartActivity extends ChartActivity {
             case LOADER_EVENTS:
                 return new CursorLoader(this, EventQuery.CONTENT_URI,
                         null, EventQuery.SELECTION_CHART, getSelectionArgs(), null);
+            //TODO asi problem s dotazem - parametr zamestnanec
             default:
                 return super.onCreateLoader(i, bundle);
         }

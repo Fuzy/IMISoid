@@ -45,7 +45,7 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultLis
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
         try {
-            ResponseEntity<Event[]> response = restTemplate.exchange(NetworkUtilities.EVENTS_GET_URL, HttpMethod.GET, entity,
+            ResponseEntity<Event[]> response = restTemplate.exchange(NetworkUtilities.getEventsGetURL(context), HttpMethod.GET, entity,
                     Event[].class, kodpra, from, to);
             Event[] body = response.getBody();
             Log.d(TAG, "doInBackground() body " + body);

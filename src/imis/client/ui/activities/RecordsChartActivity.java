@@ -12,6 +12,7 @@ import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Record;
 import imis.client.processor.DataProcessor;
+import imis.client.ui.ColorConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +41,7 @@ public class RecordsChartActivity extends ChartActivity {
 
     protected void addCheckBox(String kod_po) {
         int index = Arrays.asList(Record.TYPE_VALUES).indexOf(kod_po);
-        int color = colorUtil.getColor(kod_po);
+        int color = ColorConfig.getColor(this, kod_po);
         addCheckBox(index, color);
     }
 

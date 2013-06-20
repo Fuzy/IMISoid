@@ -16,7 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import imis.client.AppConsts;
 import imis.client.R;
-import imis.client.ui.ColorUtil;
+import imis.client.ui.ColorConfig;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +26,8 @@ import imis.client.ui.ColorUtil;
  */
 public class ColorPickerDialog extends DialogFragment {
     private static final String TAG = ColorPickerDialog.class.getSimpleName();
-    private ColorUtil colorUtil;
+    //    private ColorConfig colorConfig;
+    private Context context;
 
     public ColorPickerDialog() {
     }
@@ -215,7 +216,7 @@ public class ColorPickerDialog extends DialogFragment {
     }
 
     private void endDialogOnSelectedColor(int color) {
-        colorUtil.setColor(type, color);
+        ColorConfig.setColor(context, type, color);
 
         OnColorChangedListener activity = (OnColorChangedListener) getActivity();
         activity.colorChanged();
@@ -247,9 +248,10 @@ public class ColorPickerDialog extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        context = activity;
+
         Bundle arguments = getArguments();
         type = arguments.getString(AppConsts.KEY_TYPE);
-        colorUtil = new ColorUtil(activity);
-        initialColor = colorUtil.getColor(type);
+        initialColor = ColorConfig.getColor(context, type);
     }
 }

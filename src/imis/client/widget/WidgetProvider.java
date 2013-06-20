@@ -3,13 +3,15 @@ package imis.client.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
+import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
-import imis.client.ui.ColorUtil;
+import imis.client.ui.ColorConfig;
 
 import java.util.Arrays;
 
@@ -22,12 +24,12 @@ import java.util.Arrays;
 public class WidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = WidgetProvider.class.getSimpleName();
-    private ColorUtil colorUtil;
+//    private ColorConfig colorConfig;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        colorUtil = new ColorUtil(context);
+//        colorConfig = new ColorConfig(context);
 
         Log.d(TAG, "onUpdate() appWidgetIds " + Arrays.toString(appWidgetIds));
         //TODO urcite se mazou
@@ -40,9 +42,9 @@ public class WidgetProvider extends AppWidgetProvider {
     public void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         Log.d(TAG, "updateAppWidget() appWidgetId " + appWidgetId);
-        if (colorUtil == null) {
-            colorUtil = new ColorUtil(context);
-        }
+//        if (colorConfig == null) {
+//            colorConfig = new ColorConfig(context);
+//        }
 
 
         // processAsyncTask widget
@@ -55,7 +57,9 @@ public class WidgetProvider extends AppWidgetProvider {
             String last = employee.getDruh() + " " + AppUtil.formatEmpDate(employee.getDatum())
                     + " " + AppUtil.formatTime(employee.getCas());
             views.setTextViewText(R.id.emp_time, last);
-            views.setInt(R.id.emp_kod_po, "setBackgroundColor", colorUtil.getColor(employee.getKod_po()));
+            SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
+            int color = settings.getInt(employee.getKod_po(), ColorConfig.getDefault(context, employee.getKod_po()));
+            views.setInt(R.id.emp_kod_po, "setBackgroundColor", color);
 
             // Tell the widget manager
             appWidgetManager.updateAppWidget(appWidgetId, views);
