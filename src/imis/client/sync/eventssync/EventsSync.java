@@ -2,7 +2,7 @@ package imis.client.sync.eventssync;
 
 import android.content.Context;
 import android.util.Log;
-import imis.client.AppUtil;
+import imis.client.TimeUtil;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.authentication.AuthenticationUtil;
@@ -33,6 +33,7 @@ public class EventsSync {
     public EventsSync(Context context) {
         this.context = context;
     }
+    //TODO sync result
 
     public Result deleteEvent(final String rowid) {
         Log.d(TAG, "delete() rowid: " + rowid);
@@ -56,8 +57,8 @@ public class EventsSync {
     }
 
     public ResultList<Event> getUserEvents(final String icp, final long from, final long to) {
-        String strFrom = AppUtil.formatDate(from);
-        String strTo = AppUtil.formatDate(to);
+        String strFrom = TimeUtil.formatDate(from);
+        String strTo = TimeUtil.formatDate(to);
         Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo: " + strTo);
 
         HttpHeaders requestHeaders = new HttpHeaders();

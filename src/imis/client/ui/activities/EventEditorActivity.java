@@ -12,9 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
-import imis.client.AppConsts;
-import imis.client.AppUtil;
-import imis.client.R;
+import imis.client.*;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
 import imis.client.ui.activities.util.ActivityConsts;
@@ -60,11 +58,11 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_editor);
         final Intent intent = getIntent();
-        date = intent.getLongExtra(Event.KEY_DATE, AppUtil.todayInLong());
+        date = intent.getLongExtra(Event.KEY_DATE, TimeUtil.todayInLong());
         widgetIsSource = intent.getBooleanExtra(AppConsts.KEY_WIDGET_IS_SOURCE, false);
 
 //        Log.d(TAG, "onCreate date : " + date + "  " + EventManager.getAllEvents(getApplicationContext()));
-        Log.d(TAG, "onCreate() intent " + intent.getAction() + " date: " + date + " date: " + AppUtil.formatAbbrDate(date));
+        Log.d(TAG, "onCreate() intent " + intent.getAction() + " date: " + date + " date: " + TimeUtil.formatAbbrDate(date));
 
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -119,11 +117,11 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
         if (isArrive) {
             title = getString(R.string.add_arrive);
-            time = AppUtil.formatTime(arriveEvent.getCas());
+            time = TimeUtil.formatTime(arriveEvent.getCas());
             desc = spinnerKod_poArrive.getSelectedItem().toString();
         } else {
             title = getString(R.string.add_leave);
-            time = AppUtil.formatTime(leaveEvent.getCas());
+            time = TimeUtil.formatTime(leaveEvent.getCas());
             desc = spinnerKod_poLeave.getSelectedItem().toString();
 
         }
@@ -375,12 +373,12 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private void setImplicitEventValues(Event event) {
         event.setDirty(true);
-        event.setDatum_zmeny(AppUtil.todayInLong());
+        event.setDatum_zmeny(TimeUtil.todayInLong());
         event.setTyp(Event.TYPE_ORIG);
         event.setDatum(date);
         try {
-            String kod = AppUtil.getUserUsername(this);
-            String icp = AppUtil.getUserICP(this);
+            String kod = AccountUtil.getUserUsername(this);
+            String icp = AccountUtil.getUserICP(this);
             event.setIcp(icp);
             event.setIc_obs(kod);
         } catch (Exception e) {

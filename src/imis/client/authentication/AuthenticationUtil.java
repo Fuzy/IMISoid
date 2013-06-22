@@ -2,7 +2,7 @@ package imis.client.authentication;
 
 import android.content.Context;
 import android.util.Log;
-import imis.client.AppUtil;
+import imis.client.AccountUtil;
 import org.springframework.http.HttpAuthentication;
 import org.springframework.http.HttpBasicAuthentication;
 
@@ -18,8 +18,8 @@ public class AuthenticationUtil {
     public static HttpAuthentication createAuthHeader(Context context) {
         String username, password;
         try {
-            username = AppUtil.getUserUsername(context);
-            password = AppUtil.getUserPassword(context);
+            username = AccountUtil.getUserUsername(context);
+            password = AccountUtil.getUserPassword(context);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             return null;//TODO test

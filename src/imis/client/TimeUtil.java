@@ -1,0 +1,105 @@
+package imis.client;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: Martin Kadlec
+ * Date: 22.6.13
+ * Time: 14:27
+ */
+public class TimeUtil {
+    private static final String TAG = TimeUtil.class.getSimpleName();
+
+    private static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
+    private static final DateFormat dfAbbr = new SimpleDateFormat("d.M.");//"d.M.yy"
+    private static final DateFormat dfTime;
+
+    static {
+        dfTime = new SimpleDateFormat("HH:mm");
+        dfTime.setTimeZone(TimeZone.getTimeZone("Etc/GMT"));
+    }
+
+    public static long currentTimeInLong() {
+        Calendar rightNow = Calendar.getInstance();
+        Calendar time = Calendar.getInstance();
+        time.setTimeInMillis(0);
+        time.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY));
+        time.set(Calendar.MINUTE, rightNow.get(Calendar.MINUTE));
+        return time.getTimeInMillis();
+    }
+
+    public static long todayInLong() {//TODO tohle asi zpusobuje problemy, hodinu kolem pulnoci
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis();
+    }
+
+    public static boolean belongsNowToDate(long date) {
+        Calendar now = Calendar.getInstance();
+        Calendar theDate = Calendar.getInstance();
+        theDate.setTimeInMillis(date);
+        return now.get(Calendar.YEAR) == theDate.get(Calendar.YEAR)
+                && now.get(Calendar.DAY_OF_YEAR) == theDate.get(Calendar.DAY_OF_YEAR);
+    }
+
+    public static String formatDate(long date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(date);
+        return df.format(cal.getTime());
+    }
+
+    public static String formatAbbrDate(long date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(date);
+        return dfAbbr.format(cal.getTime());
+    }
+
+    public static String formatEmpDate(long date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(date);
+        return dfAbbr.format(cal.getTime());
+    }
+
+    public static String formatTime(long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time);
+        return dfTime.format(cal.getTime());
+    }
+
+    public static void validateDate(String date) throws ParseException {
+        dfAbbr.parse(date);
+    }
+
+    public static long getFirstDateOfMonth(long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return cal.getTimeInMillis();
+    }
+
+    public static long getLastDateOfMonth(long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return cal.getTimeInMillis();
+    }
+
+    public static long getStartDateOfPreviousMonth() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.add(Calendar.MONTH, -1);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return cal.getTimeInMillis();
+    }
+}

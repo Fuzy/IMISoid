@@ -1,18 +1,9 @@
 package imis.client;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.widget.Toast;
-import imis.client.authentication.AuthenticationConsts;
 import imis.client.ui.dialogs.AddAccountDialog;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,12 +11,11 @@ import java.util.Calendar;
  * Date: 9.4.13
  * Time: 16:25
  */
-public class AppUtil {
+public class AppUtil {/*
     public static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
     public static final DateFormat dfAbbr = new SimpleDateFormat("d.M.");//"d.M.yy"
-    public static final DateFormat dfTime = new SimpleDateFormat("HH:mm");
+    public static final DateFormat dfTime = new SimpleDateFormat("HH:mm");*/
 
-    private static final String TAG = AppUtil.class.getSimpleName();
 
     public static void showAccountNotExistsError(FragmentManager fragmentManager) {
         new AddAccountDialog().show(fragmentManager, "AddAccountDialog");
@@ -51,19 +41,6 @@ public class AppUtil {
         toast.show();
     }
 
-    /*public static void showInfoMsgOutsideActivity(final Context context, final String message) {
-        Looper.prepare();
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        };
-        handler.sendEmptyMessage(0);
-        Looper.loop();
-    }*/
-
     public static void showError(Context context, String msg) {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.show();
@@ -72,112 +49,6 @@ public class AppUtil {
     public static void showInfo(Context context, String msg) {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.show();
-    }
-
-    public static String getUserPassword(Context context) throws Exception {
-        AccountManager accountManager = AccountManager.get(context);
-        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
-        return accountManager.getPassword(accounts[0]);
-    }
-
-    public static String getUserUsername(Context context) throws Exception {
-        AccountManager accountManager = AccountManager.get(context);
-        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
-        return accounts[0].name;
-    }
-
-    public static String getUserICP(Context context) throws Exception {
-        AccountManager accountManager = AccountManager.get(context);
-        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
-        return accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
-    }
-
-    public static Account getUserAccount(Context context) throws Exception {
-        AccountManager accountManager = AccountManager.get(context);
-        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
-        return accounts[0];
-    }
-
-    public static long currentTimeInLong() {
-        Calendar rightNow = Calendar.getInstance();
-        Calendar time = Calendar.getInstance();
-        time.setTimeInMillis(0);
-        time.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY));
-        time.set(Calendar.MINUTE, rightNow.get(Calendar.MINUTE));
-        return time.getTimeInMillis();
-    }
-
-    public static long todayInLong() {//TODO tohle asi zpusobuje problemy, hodinu kolem pulnoci
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis();
-    }
-
-    public static boolean belongsNowToDate(long date) {
-        Calendar now = Calendar.getInstance();
-        Calendar theDate = Calendar.getInstance();
-        theDate.setTimeInMillis(date);
-        return now.get(Calendar.YEAR) == theDate.get(Calendar.YEAR)
-                && now.get(Calendar.DAY_OF_YEAR) == theDate.get(Calendar.DAY_OF_YEAR);
-    }
-
-    public static String formatDate(long date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(date);
-        return df.format(cal.getTime());
-    }
-
-    public static String formatAbbrDate(long date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(date);
-        return dfAbbr.format(cal.getTime());
-    }
-
-    public static String formatEmpDate(long date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(date);
-        return dfAbbr.format(cal.getTime());
-    }
-
-    public static String formatTime(long time) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(time);
-        return dfTime.format(cal.getTime());
-    }
-
-    public static void validateDate(String date) throws ParseException {
-        dfAbbr.parse(date);
-    }
-
-    public static long getFirstDateOfMonth(long time) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(time);
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-        Log.d(TAG, "getFirstDateOfMonth() cal.getTimeInMillis() " + formatAbbrDate(cal.getTimeInMillis()));
-        return cal.getTimeInMillis();
-    }
-
-    public static long getLastDateOfMonth(long time) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(time);
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        Log.d(TAG, "getLastDateOfMonth() cal.getTimeInMillis() " + formatAbbrDate(cal.getTimeInMillis()));
-        return cal.getTimeInMillis();
-    }
-
-    public static long getStartDateOfPreviousMonth() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.add(Calendar.MONTH, -1);
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-        Log.d(TAG, "getStartDateOfPreviousMonth() cal.getTimeInMillis() " + formatAbbrDate(cal.getTimeInMillis()));
-        return cal.getTimeInMillis();
     }
 
 }

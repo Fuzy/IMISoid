@@ -184,7 +184,7 @@
 
 
         <!-- Widget for employees -->
-        <receiver android:name=".widget.WidgetProvider"
+        <receiver android:name=".widget.EmployeeWidgetProvider"
                   android:label="@string/widget_label_employees">
             <meta-data android:name="android.appwidget.provider"
                        android:resource="@xml/employees_widget_provider"/>

@@ -2,7 +2,6 @@ package imis.client.ui.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,15 +24,13 @@ import java.util.List;
  * Time: 22:54
  */
 public class PieChartFragment extends ChartFragment {
-    private static final String TAG = "PieChartFragment";
+    private static final String TAG = PieChartFragment.class.getSimpleName();
 
     private CategorySeries mSeries = new CategorySeries("");
     private DefaultRenderer mRenderer;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView()");
         if (container == null) {
             return null;
         }
@@ -44,11 +41,9 @@ public class PieChartFragment extends ChartFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "onActivityCreated()");
     }
 
     protected void displayContent() {
-        Log.d(TAG, "displayContent()");
         PieChartData pieChartData = mActivity.getPieChartData();
         clearGraph();
         prepareGraph(pieChartData);
@@ -67,11 +62,10 @@ public class PieChartFragment extends ChartFragment {
     }
 
     private void prepareGraph(PieChartData pieChartData) {
-        Log.d(TAG, "prepareGraph() pieChartData " + pieChartData);
-        List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
-        for (PieChartSerie eventsGraphSerie : eventsGraphSeries) {
-            mSeries.add(eventsGraphSerie.getLabel(), eventsGraphSerie.getAmount());
-            addSeriesRenderer(eventsGraphSerie.getColor());
+        List<PieChartSerie> series = pieChartData.getEventsGraphSeries();
+        for (PieChartSerie serie : series) {
+            mSeries.add(serie.getLabel() + "(" + serie.getPercent() + "%)", serie.getAmount());
+            addSeriesRenderer(serie.getColor());
         }
 
         LinearLayout layout = (LinearLayout) mChartContainerView;
@@ -83,14 +77,12 @@ public class PieChartFragment extends ChartFragment {
     }
 
     private void addSeriesRenderer(int color) {
-        Log.d(TAG, "addSeriesRenderer() color " + color);
         SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
         renderer.setColor(color);
         mRenderer.addSeriesRenderer(renderer);
     }
 
     private void clearGraph() {
-        Log.d(TAG, "clearGraph()");
         mSeries.clear();
         mRenderer = null;
         initRenderer();

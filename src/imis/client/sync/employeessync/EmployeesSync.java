@@ -3,6 +3,8 @@ package imis.client.sync.employeessync;
 import android.content.Context;
 import android.util.Log;
 import imis.client.asynctasks.result.ResultItem;
+import imis.client.asynctasks.result.ResultList;
+import imis.client.asynctasks.util.AsyncUtil;
 import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Employee;
 import imis.client.network.HttpClientFactory;
@@ -30,7 +32,7 @@ public class EmployeesSync {
     }
 
     public ResultItem<Employee> getEmployeeLastEvent(final String icp) {
-        Log.d(TAG, "getUserEvents() icp: " + icp );
+        Log.d(TAG, "getUserEvents() icp: " + icp);
 
         HttpHeaders requestHeaders = new HttpHeaders();
         HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
@@ -48,8 +50,36 @@ public class EmployeesSync {
             Employee employee = response.getBody();
             return new ResultItem<Employee>(response.getStatusCode(), employee);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultItem<Employee>(e.getLocalizedMessage());
+            ResultItem<Employee> resultItem = AsyncUtil.processException(e, ResultItem.class);
+            Log.d(TAG, "getEmployeeLastEvent() resultItem " + resultItem);
+            return resultItem;
+        }
+    }
+
+    public ResultList<Employee> getListOfEmployees() {
+        Log.d(TAG, "getListOfEmployees()");
+
+        HttpHeaders requestHeaders = new HttpHeaders();
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
+        requestHeaders.setAuthorization(authHeader);
+        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
+
+        //Create a Rest template
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
+        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+        try {
+            ResponseEntity<Employee[]> response = restTemplate.exchange(NetworkUtilities.getEmployeesGetURL(context),
+                    HttpMethod.GET, entity, Employee[].class);
+            Employee[] body = response.getBody();
+            Log.d(TAG, "doInBackground() body " + body);
+            return new ResultList<Employee>(response.getStatusCode(), body);
+        } catch (Exception e) {
+            ResultList<Employee> resultList = AsyncUtil.processException(e, ResultList.class);
+            Log.d(TAG, "doInBackground() resultList " + resultList);
+            return resultList;
         }
     }
 }

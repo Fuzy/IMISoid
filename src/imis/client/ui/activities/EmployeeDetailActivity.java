@@ -20,6 +20,7 @@ public class EmployeeDetailActivity extends Activity {
     private static final String TAG = EmployeeDetailActivity.class.getSimpleName();
     private Employee employee;
     private ImageButton favButton;
+    //TODO vice info
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class EmployeeDetailActivity extends Activity {
         setContentView(R.layout.employee_profile);
 
         long id = getIntent().getLongExtra(Employee.COL_ID, -1);
-        employee = EmployeeManager.getEmployee(this, id);
+        employee = EmployeeManager.getEmployeeOnId(this, id);
         Log.d(TAG, "onCreate() employee " + employee);
         populateEmployeeFields();
     }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import imis.client.AppConsts;
-import imis.client.AppUtil;
+import imis.client.TimeUtil;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.PieChartSerie;
 import imis.client.data.graph.StackedBarChartData;
@@ -41,14 +41,6 @@ public class EventsProcessor {
         return codes.toArray(new String[]{});
     }
 
-    /*public static String[] recordsCodesInRecords(List<Record> records) {
-        Set<String> codes = new HashSet<>();
-        for (Record record : records) {
-            codes.add(record.recordType());
-        }
-        return codes.toArray(new String[]{});
-    }*/
-
     public List<Block> eventsToMapOfBlocks(Cursor cursor) {
         Log.d(TAG, "eventsToMapOfBlocks()");
         Event startEvent, endEvent = null;
@@ -69,8 +61,8 @@ public class EventsProcessor {
             }
 
             boolean isTodayUnfinishedPresence = startEvent.isDruhArrival() && endEvent == null
-                    && startEvent.getCas() <= AppUtil.currentTimeInLong()
-                    && startEvent.getDatum() == AppUtil.todayInLong();//TODO test
+                    && startEvent.getCas() <= TimeUtil.currentTimeInLong()
+                    && startEvent.getDatum() == TimeUtil.todayInLong();
             Log.d(TAG, "eventsToMapOfBlocks() isUnfinishedPresence " + isTodayUnfinishedPresence);
             if (isTodayUnfinishedPresence || endEvent != null) {
                 block = new Block();
@@ -81,7 +73,7 @@ public class EventsProcessor {
                     block.setEndTime(endEvent.getCas());
                     block.setLeaveId(endEvent.get_id());
                 } else {
-                    block.setEndTime(AppUtil.currentTimeInLong());
+                    block.setEndTime(TimeUtil.currentTimeInLong());
                     block.setLeaveId(-1);
                 }
                 int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(startEvent.getKod_po());
@@ -101,7 +93,6 @@ public class EventsProcessor {
         return blocks;
     }
 
-
     public PieChartData countEventsPieChartData(List<Block> blocks, List<String> codes, Map<String, String> kody_po) {
         PieChartData pieChartData = new PieChartData();
         long total = 0L;
@@ -113,57 +104,24 @@ public class EventsProcessor {
             total += amount;
             long count = statistics.containsKey(block.getKod_po()) ? statistics.get(block.getKod_po()) : 0;
             statistics.put(block.getKod_po(), count + amount);
-            Log.d(TAG, "countPieChartData() count + amount " + (count + amount));
         }
-
 
         long value;
         PieChartSerie serie;
         for (Map.Entry<String, Long> entry : statistics.entrySet()) {
             value = entry.getValue();
-            Log.d(TAG, "countPieChartData() value " + value);
-
-
-            serie = new PieChartSerie(kody_po.get(entry.getKey()), (double) (value / AppConsts.MS_IN_HOUR));
+            double amount = (double) value / (double) AppConsts.MS_IN_HOUR;
+            serie = new PieChartSerie(kody_po.get(entry.getKey()), amount);
             serie.setColor(ColorConfig.getColor(context, entry.getKey()));
-            serie.setTime(AppUtil.formatTime(value));
-            serie.setPercent((int) (((double) value / (double) total) * 100));
+            serie.setTime(TimeUtil.formatTime(value));
+            int percent = (int) (((double) value / (double) total) * 100);
+            serie.setPercent(percent);
             pieChartData.addSerie(serie);
         }
-        Log.d(TAG, "countPieChartData() total " + total);
-        pieChartData.setTotal(AppUtil.formatTime(total));
+        pieChartData.setTotal(TimeUtil.formatTime(total));
+        Log.d(TAG, "countEventsPieChartData() pieChartData " + pieChartData);
         return pieChartData;
     }
-
-    /*public PieChartData countRecordsPieChartData(List<Record> records, List<String> codes) {
-        Log.d(TAG, "countRecordsPieChartData()");
-        PieChartData pieChartData = new PieChartData();
-        long total = 0L;
-
-        Map<String, Long> statistics = new HashMap<>();
-        for (Record record : records) {
-            if (codes.contains(record.recordType()) == false) continue; // Exclude not checked in checkbox
-            long amount = record.getMnozstvi_odved();
-            total += amount;
-            long count = statistics.containsKey(record.recordType()) ? statistics.get(record.recordType()) : 0;
-            statistics.put(record.recordType(), count + amount);
-        }
-
-        long value;
-        PieChartSerie serie;
-        for (Map.Entry<String, Long> entry : statistics.entrySet()) {
-            value = entry.getValue();
-            serie = new PieChartSerie(entry.getKey(), (double) (value / AppConsts.MS_IN_HOUR));
-            serie.setColor(ColorConfig.getColor(context, entry.getKey()));
-            serie.setTime(AppUtil.formatTime(value));
-            serie.setPercent((int) (((double) value / (double) total) * 100));
-            pieChartData.addSerie(serie);
-        }
-
-        pieChartData.setTotal(AppUtil.formatTime(total));
-        Log.d(TAG, "countRecordsPieChartData() pieChartData " + pieChartData);
-        return pieChartData;
-    }*/
 
     public StackedBarChartData countEventsStackedBarChartData(List<Block> blocks, List<String> codes,
                                                               Map<String, String> kody_po, Map<String, String> selectionArgs) {
@@ -180,7 +138,8 @@ public class EventsProcessor {
             String kod_po = block.getKod_po();
             if (codes.contains(kod_po) == false) continue; // Exclude not checked in checkbox
             int index = (int) ((block.getDate() - chartData.getMinDay()) / AppConsts.MS_IN_DAY);
-            double amount = (double) ((block.getEndTime() - block.getStartTime()) / AppConsts.MS_IN_HOUR);
+            double amount = ((double) (block.getEndTime() - block.getStartTime()) / (double) AppConsts.MS_IN_HOUR);
+            Log.d(TAG, "countEventsStackedBarChartData() amount " + amount);
 
             // If not exists yet, create new array
             boolean contains = map.containsKey(kod_po);
@@ -220,70 +179,9 @@ public class EventsProcessor {
             Log.d(TAG, "countEventsStackedBarChartData() value " + Arrays.toString(value));
         }
         Log.d(TAG, "countEventsStackedBarChartData() min "
-                + AppUtil.formatAbbrDate(chartData.getMinDay()) + " max" + AppUtil.formatAbbrDate(chartData.getMaxDay()));
+                + TimeUtil.formatAbbrDate(chartData.getMinDay()) + " max" + TimeUtil.formatAbbrDate(chartData.getMaxDay()));
         return chartData;
     }
-
-   /* public StackedBarChartData countRecordsStackedBarChartData(List<Record> records, List<String> codes, Map<String, String> selectionArgs) {
-        StackedBarChartData chartData = new StackedBarChartData();
-        // count mix/ max
-
-        chartData.setMinDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_FROM)));
-        chartData.setMaxDay(Long.valueOf(selectionArgs.get(ControlActivity.PAR_TO)));
-
-        final int numOfDays = (int) ((chartData.getMaxDay() - chartData.getMinDay()) / AppConsts.MS_IN_DAY) + 1;
-        Log.d(TAG, "countRecordsStackedBarChartData() numOfDays " + numOfDays);
-
-        Map<String, double[]> map = new HashMap<>();
-        String type;
-        for (Record record : records) {
-            type = record.recordType();
-            if (codes.contains(type) == false) continue; // Exclude not checked in checkbox
-            int index = (int) ((record.getDatum() - chartData.getMinDay()) / AppConsts.MS_IN_DAY);
-            double amount = (double) (record.getMnozstvi_odved() / AppConsts.MS_IN_HOUR);
-
-            // If not exists yet, create new array
-            boolean contains = map.containsKey(type);
-            if (contains == false) {
-                double[] values = new double[numOfDays];
-                map.put(type, values);
-            }
-
-            // Update value
-            double[] vaDoubles = map.get(type);
-            double oldValue = vaDoubles[index];
-            vaDoubles[index] += oldValue + amount;
-            if (vaDoubles[index] > chartData.getyMax()) chartData.setyMax(vaDoubles[index]);
-        }
-
-        int size = map.size();
-        int ind = 0;
-        List<double[]> values = new ArrayList<>(size);
-        String[] titles = new String[size];
-        int[] colors = new int[size];
-
-        for (Map.Entry<String, double[]> stringEntry : map.entrySet()) {
-            Log.d(TAG, "countEventsStackedBarChartData() " + Arrays.toString(stringEntry.getValue()));
-            values.add(stringEntry.getValue());
-            titles[ind] = stringEntry.getKey();
-            colors[ind] = ColorConfig.getColor(context, stringEntry.getKey());
-            ind++;
-        }
-
-        chartData.setValues(values);
-        chartData.setTitles(titles);
-        chartData.setColors(colors);
-
-        Log.d(TAG, "countRecordsStackedBarChartData() titles " + Arrays.toString(titles));
-        for (double[] value : values) {
-            Log.d(TAG, "countRecordsStackedBarChartData() value " + Arrays.toString(value));
-        }
-        Log.d(TAG, "countRecordsStackedBarChartData() min "
-                + AppUtil.formatAbbrDate(chartData.getMinDay()) + " max" + AppUtil.formatAbbrDate(chartData.getMaxDay()));
-
-        return chartData;
-    }*/
-
 
     public Event getNextEvent(Cursor cursor, String druh) {
         int initPos = cursor.getPosition();

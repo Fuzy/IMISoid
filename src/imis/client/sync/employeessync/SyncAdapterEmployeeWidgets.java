@@ -11,7 +11,7 @@ import android.util.Log;
 import imis.client.asynctasks.result.ResultItem;
 import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
-import imis.client.widget.WidgetProvider;
+import imis.client.widget.EmployeeWidgetProvider;
 
 import java.util.List;
 
@@ -50,10 +50,11 @@ public class SyncAdapterEmployeeWidgets extends AbstractThreadedSyncAdapter {
                 Log.d(TAG, "onPerformSync()  updating widget Icp() " + employee.getIcp());
                 EmployeeManager.updateEmployeeOnIcp(context, employeeToSync.getItem());
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                new WidgetProvider().updateAppWidget(context, appWidgetManager, employee.getWidgetId());
-                //TODO lze vyvolat aktualizaci vsech widgetu daneho typu
+                new EmployeeWidgetProvider().updateAppWidget(context, appWidgetManager, employee.getWidgetId());
             }
 
         }
     }
+
+
 }

@@ -3,7 +3,7 @@ package imis.client.processor;
 import android.content.Context;
 import android.util.Log;
 import imis.client.AppConsts;
-import imis.client.AppUtil;
+import imis.client.TimeUtil;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.PieChartSerie;
 import imis.client.data.graph.StackedBarChartData;
@@ -52,7 +52,7 @@ public class RecordsProcessor {
             type = record.recordType();
             if (codes.contains(type) == false) continue; // Exclude not checked in checkbox
             int index = (int) ((record.getDatum() - chartData.getMinDay()) / AppConsts.MS_IN_DAY);
-            double amount = (double) (record.getMnozstvi_odved() / AppConsts.MS_IN_HOUR);
+            double amount = (double) record.getMnozstvi_odved() / (double) AppConsts.MS_IN_HOUR;
 
             // If not exists yet, create new array
             boolean contains = map.containsKey(type);
@@ -91,7 +91,7 @@ public class RecordsProcessor {
             Log.d(TAG, "countRecordsStackedBarChartData() value " + Arrays.toString(value));
         }
         Log.d(TAG, "countRecordsStackedBarChartData() min "
-                + AppUtil.formatAbbrDate(chartData.getMinDay()) + " max" + AppUtil.formatAbbrDate(chartData.getMaxDay()));
+                + TimeUtil.formatAbbrDate(chartData.getMinDay()) + " max" + TimeUtil.formatAbbrDate(chartData.getMaxDay()));
 
         return chartData;
     }
@@ -114,14 +114,16 @@ public class RecordsProcessor {
         PieChartSerie serie;
         for (Map.Entry<String, Long> entry : statistics.entrySet()) {
             value = entry.getValue();
-            serie = new PieChartSerie(entry.getKey(), (double) (value / AppConsts.MS_IN_HOUR));
+            double amount = (double) value / (double) AppConsts.MS_IN_HOUR;
+            serie = new PieChartSerie(entry.getKey(), amount);
             serie.setColor(ColorConfig.getColor(context, entry.getKey()));
-            serie.setTime(AppUtil.formatTime(value));
-            serie.setPercent((int) (((double) value / (double) total) * 100));
+            serie.setTime(TimeUtil.formatTime(value));
+            int percent = (int) (((double) value / (double) total) * 100);
+            serie.setPercent(percent);
             pieChartData.addSerie(serie);
         }
 
-        pieChartData.setTotal(AppUtil.formatTime(total));
+        pieChartData.setTotal(TimeUtil.formatTime(total));
         Log.d(TAG, "countRecordsPieChartData() pieChartData " + pieChartData);
         return pieChartData;
     }

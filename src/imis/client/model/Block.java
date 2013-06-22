@@ -1,6 +1,6 @@
 package imis.client.model;
 
-import static imis.client.AppUtil.formatTime;
+import static imis.client.TimeUtil.formatTime;
 
 /**
  * Created with IntelliJ IDEA.

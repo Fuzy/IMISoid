@@ -12,8 +12,8 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import imis.client.AccountUtil;
 import imis.client.AppConsts;
-import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.services.AttendanceGuardService;
 
@@ -142,7 +142,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 + periodWidgets + "], periodEmployees = [" + periodEmployees + "]");
         try {
             //TODO stejne to automaticky synchronizuje
-            Account account = AppUtil.getUserAccount(getActivity());
+            Account account = AccountUtil.getUserAccount(getActivity());
             Log.d(TAG, "applySyncSetting() account " + account);
             if (periodEvents != 0) {
                 ContentResolver.addPeriodicSync(account, AppConsts.AUTHORITY1, new Bundle(), periodEvents);

@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.model.Event;
 
 import java.util.Arrays;
@@ -50,8 +50,8 @@ public class EventsCursorAdapter extends CursorAdapter {
         String type = event.getDruh() + " " + description;
         tt.setText(type);
         tt = (TextView) view.findViewById(R.id.event_time);
-        String time = AppUtil.formatEmpDate(event.getDatum())
-                + " " + AppUtil.formatTime(event.getCas());
+        String time = TimeUtil.formatEmpDate(event.getDatum())
+                + " " + TimeUtil.formatTime(event.getCas());
         tt.setText(time);
 
         LayerDrawable buttonDrawable;

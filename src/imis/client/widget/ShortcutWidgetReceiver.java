@@ -1,5 +1,6 @@
 package imis.client.widget;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,13 +29,17 @@ public class ShortcutWidgetReceiver extends BroadcastReceiver {
         if (lastEvent != null && lastEvent.isDruhArrival()) {
             startIntent.putExtra(ActivityConsts.ID_ARRIVE, lastEvent.get_id());
             startIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);
-        }  else {
+        } else {
             startIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_ARRIVE, true);
         }
         startIntent.putExtra(AppConsts.KEY_WIDGET_IS_SOURCE, true);
         startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startIntent.setType("vnd.android.cursor.dir/event.imisoid");
         context.startActivity(startIntent);
-        //TODO smazat notifikaci
+        //TODO test
+        NotificationManager manager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancelAll();
     }
+
 }

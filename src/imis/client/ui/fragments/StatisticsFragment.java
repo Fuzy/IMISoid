@@ -1,8 +1,6 @@
 package imis.client.ui.fragments;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +18,11 @@ import java.util.List;
  * Time: 17:32
  */
 public class StatisticsFragment extends ChartFragment {
-    private static final String TAG = "StatisticsFragment";
-
+    private static final String TAG = StatisticsFragment.class.getSimpleName();
     private TextView statsTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView()");
         if (container == null) {
             return null;
         }
@@ -45,8 +41,7 @@ public class StatisticsFragment extends ChartFragment {
         PieChartData pieChartData = mActivity.getPieChartData();
         List<PieChartSerie> eventsGraphSeries = pieChartData.getEventsGraphSeries();
         StringBuilder output = new StringBuilder();
-        Resources res = mActivity.getResources();  //TODO hodilo null
-        String total = res.getString(R.string.stats_event_tot) + " " + pieChartData.getTotal();
+        String total = getString(R.string.stats_event_tot) + " " + pieChartData.getTotal();
         output.append(total + "\n");
 
         for (PieChartSerie serie : eventsGraphSeries) {

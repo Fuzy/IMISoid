@@ -2,7 +2,7 @@ package imis.client.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import imis.client.AppUtil;
+import imis.client.TimeUtil;
 
 public class Record {
     private int _id;
@@ -186,7 +186,7 @@ public class Record {
 
     @Override
     public String toString() {
-        return "Record [id=" + id + ", datum=" + datum + ", datum=" + AppUtil.formatAbbrDate(datum) + ", kodpra=" + kodpra + ", zc=" + zc
+        return "Record [id=" + id + ", datum=" + datum + ", datum=" + TimeUtil.formatAbbrDate(datum) + ", kodpra=" + kodpra + ", zc=" + zc
                 + ", stav_v=" + stav_v + ", cpolzak=" + cpolzak + ", cpozzak=" + cpozzak
                 + ", mnozstvi_odved=" + mnozstvi_odved + ", pozn_hl=" + pozn_hl + ", pozn_ukol="
                 + pozn_ukol + ", poznamka=" + poznamka + "]";

@@ -17,8 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import imis.client.AppConsts;
-import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.exceptions.NotUserSelectedException;
 import imis.client.model.Employee;
 import imis.client.model.Event;
@@ -28,9 +28,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static imis.client.AppUtil.showAccountNotExistsError;
-import static imis.client.AppUtil.showNotUserSelectedError;
-import static imis.client.AppUtil.showPeriodInputError;
+import static imis.client.AppUtil.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -83,7 +81,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         dateDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDateToSelectedField(AppUtil.todayInLong());
+                setDateToSelectedField(TimeUtil.todayInLong());
                 processDataQuery();
             }
         });
@@ -98,7 +96,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         dateDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDay(AppUtil.todayInLong());
+                setDay(TimeUtil.todayInLong());
                 processDataQuery();
             }
         });
@@ -113,7 +111,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         dateMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setMonth(AppUtil.todayInLong());
+                setMonth(TimeUtil.todayInLong());
                 processDataQuery();
             }
         });
@@ -129,7 +127,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     }
 
     private void initSelectionValues() {
-        setMonth(AppUtil.todayInLong());
+        setMonth(TimeUtil.todayInLong());
 
     }
 
@@ -167,7 +165,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         switch (i) {
             case LOADER_EMPLOYEES:
                 return new CursorLoader(getApplicationContext(), EmployeeManager.EmployeeQuery.CONTENT_URI,
-                        null, null, null, null);//TODO razeni na prvnim miste sebe
+                        null, null, null, EmployeeManager.EmployeeQuery.ORDER_BY);
             default:
                 return null;
         }
@@ -212,7 +210,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         } else if (selectedEditId == R.id.dateToEdit) {
             return dateTo;
         } else {
-            return AppUtil.todayInLong();
+            return TimeUtil.todayInLong();
         }
 
     }
@@ -227,13 +225,13 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     protected String getStringDateFrom() throws ParseException {
         String date = dateFromEdit.getText().toString();
-        AppUtil.validateDate(date);
+        TimeUtil.validateDate(date);
         return date;
     }
 
     protected String getStringDateTo() throws ParseException {
         String date = dateToEdit.getText().toString();
-        AppUtil.validateDate(date);
+        TimeUtil.validateDate(date);
         return date;
     }
 
@@ -257,8 +255,8 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     protected void setMonth(long date) {
         Log.d(TAG, "setMonth() date " + date);
-        long start = AppUtil.getFirstDateOfMonth(date);
-        long end = AppUtil.getLastDateOfMonth(date);
+        long start = TimeUtil.getFirstDateOfMonth(date);
+        long end = TimeUtil.getLastDateOfMonth(date);
         setFromDate(start);
         setToDate(end);
     }
@@ -267,7 +265,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         selectionArgs.put(PAR_FROM, String.valueOf(date));
         dateFrom = date;
         Log.d(TAG, "setFromDate() date " + date);
-        String from = AppUtil.formatAbbrDate(date);
+        String from = TimeUtil.formatAbbrDate(date);
         Log.d(TAG, "setFromDate() from " + from);
         dateFromEdit.setText(from);
     }
@@ -276,7 +274,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         selectionArgs.put(PAR_TO, String.valueOf(date));
         dateTo = date;
         Log.d(TAG, "setToDate() date " + date);
-        String to = AppUtil.formatAbbrDate(date);
+        String to = TimeUtil.formatAbbrDate(date);
         Log.d(TAG, "setToDate() to " + to);
         dateToEdit.setText(to);
     }
@@ -339,7 +337,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
                 throw new NotUserSelectedException(getString(R.string.noEmp));
             getStringDateFrom();
             getStringDateTo();
-            processControlAsyncTask(kodpra, AppUtil.formatDate(dateFrom), AppUtil.formatDate(dateTo));
+            processControlAsyncTask(kodpra, TimeUtil.formatDate(dateFrom), TimeUtil.formatDate(dateTo));
         } catch (ParseException e) {
             Log.d(TAG, "refreshRecords() " + e.getMessage());
             showPeriodInputError(this);

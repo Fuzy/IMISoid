@@ -24,11 +24,10 @@ import static imis.client.ui.activities.util.GraphUtil.*;
  * Time: 18:38
  */
 public class StackedBarFragment extends ChartFragment {
-    private static final String TAG = "StackedBarFragment";
+    private static final String TAG = StackedBarFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView()");
         if (container == null) {
             return null;
         }
@@ -37,15 +36,14 @@ public class StackedBarFragment extends ChartFragment {
     }
 
     protected void displayContent() {
-        Log.d(TAG, "displayContent()");
         StackedBarChartData chartData = mActivity.getStackedBarChartData();
         clearGraph();
         prepareGraph(chartData);
     }
 
     private void prepareGraph(StackedBarChartData chartData) {
-        XYMultipleSeriesRenderer renderer = buildBarRenderer(chartData.getColors());  //TODO
-        setChartSettings(renderer, "Události docházky pro daný den", "Den", "Čas", 0.5,
+        XYMultipleSeriesRenderer renderer = buildBarRenderer(chartData.getColors());
+        setChartSettings(renderer, "Události docházky pro daný den", "Den", "Čas[h]", 0.5,
                 12.5, 0, (chartData.getyMax() * 1.1), Color.GRAY, Color.LTGRAY);
         renderer.setXLabels(12);
         renderer.setYLabels(10);
@@ -54,7 +52,6 @@ public class StackedBarFragment extends ChartFragment {
         renderer.setPanEnabled(true, false);
         renderer.setZoomRate(1.1f);
         renderer.setBarSpacing(0.5f);
-        Log.d(TAG, "prepareGraph() renderer minX " + renderer.getXAxisMin());
         GraphicalView mChartView = ChartFactory.getBarChartView(mActivity, buildBarDataset(chartData.getTitles(),
                 chartData.getValues()), renderer,
                 BarChart.Type.STACKED);
@@ -65,7 +62,6 @@ public class StackedBarFragment extends ChartFragment {
     }
 
     private void clearGraph() {
-        Log.d(TAG, "clearGraph()");
         LinearLayout layout = (LinearLayout) mChartContainerView;
         layout.removeAllViews();
     }

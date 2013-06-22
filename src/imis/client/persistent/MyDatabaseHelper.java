@@ -10,7 +10,6 @@ import imis.client.model.Record;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "MyDatabaseHelper";
-    // TODO osetrit delky vstupu?
     private static final String DATABASE_NAME = "imisoid.db";
     private static final int DATABASE_VERSION = 1;
 

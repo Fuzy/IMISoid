@@ -8,12 +8,11 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
-import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.ui.adapters.EventsArrayAdapter;
 
 public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
@@ -33,7 +32,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     private int touchStartX, touchStartY;
 
     private Runnable longPressRunnable;
-    private ScaleGestureDetector scaleDetector;
     private float scaleFactor = 1.f;
 
 
@@ -48,7 +46,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     public BlocksLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         Log.d(TAG, "BlocksLayout()");
-        scaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BlocksLayout, defStyle,
                 0);
@@ -75,7 +72,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
             addViewInLayout(mNowView, -1, mNowView.getLayoutParams());
         }
 
-        if (AppUtil.belongsNowToDate(mAdapter.getDate())) {
+        if (TimeUtil.belongsNowToDate(mAdapter.getDate())) {
             mNowView.setVisibility(View.VISIBLE);
         } else {
             mNowView.setVisibility(View.INVISIBLE);
@@ -203,8 +200,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
             return false;
         }
 
-        scaleDetector.onTouchEvent(event);
-
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 startTouch(event);
@@ -308,47 +303,5 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
             //Log.d("BlocksLayout", "child i=" + index + " " + child.toString() + " id: " + child.getId());
         }
     }
-/*
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        Log.d(TAG, "onDraw()");
 
-        canvas.save();
-        canvas.translate(touchStartX, touchStartY);
-        canvas.scale(scaleFactor, scaleFactor);
-        for (int index = 0; index < getChildCount(); index++) {
-            View child = getChildAt(index);
-            child.draw(canvas);
-        }
-        canvas.restore();
-    }*/
-
-    /*@Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
-        Log.d(TAG, "dispatchDraw()");
-        canvas.save();
-        //canvas.translate(touchStartX, touchStartY);
-        canvas.scale(scaleFactor, scaleFactor);
-        for (int index = 0; index < getChildCount(); index++) {
-            View child = getChildAt(index);
-            child.draw(canvas);
-        }
-        canvas.restore();
-    }*/
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener { //TODO smazat
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            Log.d(TAG, "onScale()");
-            scaleFactor *= detector.getScaleFactor();
-
-            // Don't let the object get too small or too large.
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
-
-            invalidate();
-            return true;
-        }
-    }
 }

@@ -6,8 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import imis.client.AccountUtil;
 import imis.client.AppConsts;
-import imis.client.AppUtil;
 import imis.client.model.Event;
 
 import java.util.ArrayList;
@@ -64,9 +64,10 @@ public class EventManager {
     public static Event getLastEvent(Context context) {
         Log.d(TAG, "getLastEvent()");
         try {
-            String icp = AppUtil.getUserICP(context);
+            String icp = AccountUtil.getUserICP(context);
             return getEvent(context, EventQuery.SELECTION_USER_LAST, new String[]{icp}, EventQuery.ORDER_BY_LAST);
         } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage());
             return null;
         }
     }
@@ -181,25 +182,24 @@ public class EventManager {
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + AppConsts.AUTHORITY1 + "/"
                 + MyDatabaseHelper.TABLE_EVENTS);
 
+        private static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
+        private static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
+        private static final String SELECTION_OLDER_THAN = Event.COL_DATUM + "<?";
+        private static final String SELECTION_ICP = Event.COL_ICP + " LIKE ? || '%' ";
+        private static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
+        private static final String SELECTION_PERIOD = " ? <= " + Event.COL_DATUM + " and " + Event.COL_DATUM + " <= ? ";
+        private static final String SELECTION_USER_LAST = Event.COL_DATUM + " and " + SELECTION_ICP;
+        private static final String ORDER_BY_DATE_DESC = Event.COL_DATUM + " DESC";
+        private static final String ORDER_BY_TIME_DESC = Event.COL_CAS + " DESC";
+        private static final String ORDER_BY_DATE_ASC = Event.COL_DATUM + " ASC";
+        private static final String ORDER_BY_TIME_ASC = Event.COL_CAS + " ASC";
+        private static final String ORDER_BY_ID = Event.COL_ID + " DESC";
+        private static final String ORDER_BY_LAST = ORDER_BY_DATE_DESC + ", " + ORDER_BY_TIME_DESC + ", " + ORDER_BY_ID + " LIMIT 1";
+
         public static final String SELECTION_ID = Event.COL_ID + "=?";
         public static final String SELECTION_DIRTY = Event.COL_DIRTY + "=1";
-        public static final String SELECTION_UNDELETED = Event.COL_DELETED + "=0";
-        public static final String SELECTION_DATUM = Event.COL_DATUM + "=?";
-        public static final String SELECTION_OLDER_THAN = Event.COL_DATUM + "<?";
-        public static final String SELECTION_ICP = Event.COL_ICP + " LIKE ? || '%' ";
         public static final String SELECTION_DAY_USER_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED + " and " + SELECTION_ICP;
-        public static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
-        public static final String SELECTION_PERIOD = " ? <= " + Event.COL_DATUM + " and " + Event.COL_DATUM + " <= ? ";
         public static final String SELECTION_CHART = SELECTION_ICP + " and " + SELECTION_PERIOD + " and " + SELECTION_UNDELETED;
-        public static final String SELECTION_LAST_ARRIVE = Event.COL_DRUH + "=P";
-        public static final String SELECTION_USER_LAST = Event.COL_DATUM + " and " + SELECTION_ICP;
-        public static final String ORDER_BY_DATE_DESC = Event.COL_DATUM + " DESC";
-        public static final String ORDER_BY_TIME_DESC = Event.COL_CAS + " DESC";
-        public static final String ORDER_BY_DATE_ASC = Event.COL_DATUM + " ASC";
-        public static final String ORDER_BY_TIME_ASC = Event.COL_CAS + " ASC";
-        public static final String ORDER_BY_DRUH = Event.COL_DRUH + "='O' DESC";//TODO pokud jsou 2 udalosti ve stejne minute
-        public static final String ORDER_BY_ID = Event.COL_ID + " DESC";
-        public static final String ORDER_BY_LAST = ORDER_BY_DATE_DESC + ", " + ORDER_BY_TIME_DESC + ", " + ORDER_BY_ID + " LIMIT 1";
         public static final String ORDER_BY_DATE_TIME_ASC = ORDER_BY_DATE_ASC + ", " + ORDER_BY_TIME_ASC;
     }
 }

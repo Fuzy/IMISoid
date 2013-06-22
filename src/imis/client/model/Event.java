@@ -2,10 +2,8 @@ package imis.client.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import imis.client.AppUtil;
+import imis.client.TimeUtil;
 import org.codehaus.jackson.annotate.JsonIgnore;
-
-import static imis.client.AppUtil.*;
 
 public class Event {
     // private static final String TAG = Event.class.getSimpleName();
@@ -35,7 +33,7 @@ public class Event {
 
 
     public Event() {
-        this.setCas(AppUtil.currentTimeInLong());
+        this.setCas(TimeUtil.currentTimeInLong());
     }
 
     public Event(boolean dirty, boolean deleted, String icp, long datum, String kod_po, String druh,
@@ -249,14 +247,14 @@ public class Event {
                 ", dirty=" + dirty +
                 ", deleted=" + deleted +
                 ", icp='" + icp + '\'' +
-                ", datum=" + formatDate(datum) +
+                ", datum=" + TimeUtil.formatDate(datum) +
                 ", datum=" + datum +
                 ", kod_po='" + kod_po + '\'' +
                 ", druh='" + druh + '\'' +
-                ", cas=" + formatTime(cas) +
+                ", cas=" + TimeUtil.formatTime(cas) +
                 ", ic_obs='" + ic_obs + '\'' +
                 ", typ='" + typ + '\'' +
-                ", datum_zmeny=" + formatDate(datum_zmeny) +
+                ", datum_zmeny=" + TimeUtil.formatDate(datum_zmeny) +
                 ", poznamka='" + poznamka + '\'' +
                 ", error=" + error +
                 ", msg='" + msg + '\'' +

@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
+import imis.client.asynctasks.result.ResultList;
+import imis.client.model.Employee;
+import imis.client.persistent.EmployeeManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +32,17 @@ public class SyncAdapterListOfEmployees extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "onPerformSync()" + "account = [" + account + "], bundle = [" + bundle + "], " +
                 "s = [" + s + "], contentProviderClient = [" + contentProviderClient + "], " +
                 "syncResult = [" + syncResult + "]");
-        //TODO dat sem aktualizaci seznamu zamestnancu
+        EmployeesSync sync = new EmployeesSync(context);
+        ResultList<Employee> resultList = sync.getListOfEmployees();
+        if (resultList.isOk() && !resultList.isEmpty()) {
+            Log.d(TAG, "onPostExecute() OK and not empty");
+            Employee[] employees = resultList.getArray();
+            if (employees != null) {
+                EmployeeManager.syncEmployees(context, employees);
+            }
+        } else if (!resultList.isOk()) {
+            //TODO sync result
+        }
     }
+
 }

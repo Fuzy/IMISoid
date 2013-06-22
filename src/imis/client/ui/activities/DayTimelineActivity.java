@@ -15,9 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import imis.client.AppConsts;
-import imis.client.AppUtil;
-import imis.client.R;
+import imis.client.*;
 import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.asynctasks.result.Result;
 import imis.client.model.Event;
@@ -62,8 +60,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         // init UI
         setContentView(R.layout.daytimeline);
 
-        changeDate(AppUtil.todayInLong());
-        Log.d(TAG, "onCreate() date: " + AppUtil.formatDate(date));
+        changeDate(TimeUtil.todayInLong());
+        Log.d(TAG, "onCreate() date: " + TimeUtil.formatDate(date));
         processor = new EventsProcessor(getApplicationContext());
 
         // delete old data
@@ -71,7 +69,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     private void deleteOldData() {
-        long milestone = AppUtil.getStartDateOfPreviousMonth();
+        long milestone = TimeUtil.getStartDateOfPreviousMonth();
         int countOfEvents = EventManager.deleteEventsOlderThan(this, milestone);
         int countOfRecords = RecordManager.deleteRecordsOlderThan(this, milestone);
         Log.d(TAG, "deleteOldData() count " + countOfEvents);
@@ -79,7 +77,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     private void setDateTitle(long date) {
-        setTitle(AppUtil.formatDate(date));
+        setTitle(TimeUtil.formatDate(date));
     }
 
     @Override
@@ -236,7 +234,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private void refreshListOfEmployees() {
         Log.d(TAG, "refreshListOfEmployees()");
         try {
-            String icp = AppUtil.getUserICP(this);
+            String icp = AccountUtil.getUserICP(this);
             Log.d(TAG, "refreshListOfEmployees() icp " + icp);
             createTaskFragment(new GetListOfEmployees(this, icp));
         } catch (Exception e) {
@@ -254,7 +252,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         Bundle extras = new Bundle();
         extras.putLong(Event.KEY_DATE, date);
         try {
-            Account account = AppUtil.getUserAccount(this);
+            Account account = AccountUtil.getUserAccount(this);
             /*int isSyncable = ContentResolver.getIsSyncable(account, AppConsts.AUTHORITY1);
             Log.d(TAG, "performSync() isSyncable " + isSyncable);
             ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
@@ -275,7 +273,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         switch (i) {
             case LOADER_EVENTS:
                 try {
-                    String icp = AppUtil.getUserICP(this);
+                    String icp = AccountUtil.getUserICP(this);
                     Log.d(TAG, "onCreateLoader() icp " + icp);
                     return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI, null,
                             EventQuery.SELECTION_DAY_USER_UNDELETED, new String[]{String.valueOf(date), icp}, EventQuery.ORDER_BY_DATE_TIME_ASC);
@@ -415,7 +413,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     private void changeDate(long date) {
-        Log.d(TAG, "changeDate() date " + AppUtil.formatDate(date));
+        Log.d(TAG, "changeDate() date " + TimeUtil.formatDate(date));
         this.date = date;
         setDateTitle(date);
         if (getSupportLoaderManager().getLoader(LOADER_EVENTS) != null) {

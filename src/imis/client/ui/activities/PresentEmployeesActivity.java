@@ -49,7 +49,7 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                CursorWrapper wrapper = (CursorWrapper)  adapter.getItem(i);
+                CursorWrapper wrapper = (CursorWrapper) adapter.getItem(i);
                 long id = wrapper.getLong(Employee.IND_COL_ID);
                 Log.d(TAG, "onItemClick() id " + id);
                 startDetailActivity(id);
@@ -57,14 +57,14 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
         });
 
         getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
-
+        processAsyncTask();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader()");
         return new CursorLoader(getApplicationContext(), CONTENT_URI,
-                null, null, null, ORDER_BY); //TODO razeni
+                null, null, null, ORDER_BY);
     }
 
     @Override
@@ -93,21 +93,18 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                refresh();
+                processAsyncTask();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void refresh() {
-        Log.d(TAG, "processAsyncTask()");
-        createTaskFragment(new GetListOfEmployees(this));
-    }
 
     @Override
     protected void processAsyncTask() {
         Log.d(TAG, "processAsyncTask()");
+        createTaskFragment(new GetListOfEmployees(this));
     }
 
     public void startDetailActivity(long id) {
@@ -120,5 +117,8 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
     @Override
     public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
+        if (getSupportLoaderManager().getLoader(LOADER_EMPLOYEES) != null) {
+            getSupportLoaderManager().restartLoader(LOADER_EMPLOYEES, null, this);
+        }
     }
 }

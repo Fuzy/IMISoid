@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.model.Employee;
 import imis.client.ui.ColorConfig;
 
@@ -42,8 +42,8 @@ public class EmployeesCursorAdapter extends CursorAdapter {
 
         String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
         ((TextView) view.findViewById(R.id.emp_kodpra)).setText(name);
-        String last = employee.getDruh() + " " + AppUtil.formatEmpDate(employee.getDatum())
-                + " " + AppUtil.formatTime(employee.getCas());//TODO test null
+        String last = employee.getDruh() + " " + TimeUtil.formatEmpDate(employee.getDatum())
+                + " " + TimeUtil.formatTime(employee.getCas());//TODO test null
         ((TextView) view.findViewById(R.id.emp_time)).setText(last);
         view.findViewById(R.id.emp_kod_po).setBackgroundColor(ColorConfig.getColor(context, employee.getKod_po()));
     }

@@ -1,18 +1,17 @@
 package imis.client.persistent;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import imis.client.AccountUtil;
 import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
-import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Employee;
+import imis.client.widget.EmployeeWidgetProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +24,7 @@ import java.util.List;
  * Time: 18:03
  */
 public class EmployeeManager {
-    private static final String TAG = "EmployeeManager";
+    private static final String TAG = EmployeeManager.class.getSimpleName();
 
     public static int addEmployee(Context context, Employee employee) {
         Log.d(TAG, "addEmployee() " + employee);
@@ -46,7 +45,7 @@ public class EmployeeManager {
 
     public static int updateEmployeeOnIcp(Context context, Employee employee) {
         Log.d(TAG, "updateEmployeeOnIcp()" + "employee = [" + employee + "]");
-        Employee employee1 = EmployeeManager.getEmployee(context, employee.getIcp());
+        Employee employee1 = EmployeeManager.getEmployeeOnIcp(context, employee.getIcp());
         if (employee1 == null) return 0;
         ContentValues values = employee.asContentValues();
         return updateEmployee(context, values, employee1.get_id());
@@ -68,7 +67,7 @@ public class EmployeeManager {
 
     public static int resetEmployeeWidgetId(Context context, int widgetId) {
         Log.d(TAG, "resetEmployeeWidgetId()" + "widgetId = [" + widgetId + "]");
-        Employee employee = EmployeeManager.getEmployee(context, widgetId);
+        Employee employee = EmployeeManager.getEmployeeOnWidgetId(context, widgetId);
         if (employee == null) return 0;
         long id = employee.get_id();
         ContentValues values = new ContentValues();
@@ -79,58 +78,64 @@ public class EmployeeManager {
     public static void syncEmployees(Context context, Employee[] employees) {
         Log.d(TAG, "syncEmployees() employees " + Arrays.toString(employees));
         List<Employee> currentList = getAllEmployees(context);
-        Log.d(TAG, "syncEmployees() currentList " + currentList.size());
-        AccountManager accountManager = AccountManager.get(context);
-        Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
-        try {
-            String icp = accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
-            Employee user = new Employee();
-            user.setIcp(icp);
-            currentList.remove(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Log.d(TAG, "syncEmployees() currentList " + currentList.size());
-
 
         for (Employee employee : employees) {
-            Log.d(TAG, "syncEmployees() employee " + employee);
             if (EmployeeManager.updateEmployeeOnIcp(context, employee) == 0)
                 EmployeeManager.addEmployee(context, employee);
 
             currentList.remove(employee);
         }
-        Log.d(TAG, "syncEmployees() currentList " + currentList.size());
+
         // delete all which has not been actualised
         for (Employee employee : currentList) {
-            deleteEvent(context, employee.get_id());
-        }//TODO test
+            deleteEmployee(context, employee.get_id());
+        }
+        markUser(context);
         AppUtil.showInfo(context, context.getString(R.string.employees_act_ok));
+
+        //update all employees widget
+        new EmployeeWidgetProvider().updateAllWidgets(context);
     }
 
-    public static Employee getEmployee(Context context, String icp) {
-        Log.d(TAG, "getEmployee()" + "icp = [" + icp + "]");
+    private static void markUser(Context context) {
+        Log.d(TAG, "markUser()");
+        try {
+            String icp = AccountUtil.getUserICP(context);
+            Employee employee = getEmployeeOnIcp(context, icp);
+            if (employee != null) {
+                int id = employee.get_id();
+                ContentValues values = new ContentValues();
+                values.put(Employee.COL_USER, true);
+                int i = updateEmployee(context, values, id);
+                Log.d(TAG, "markUser() icp " + icp + " markUser() i " + i);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+    }
+
+    public static Employee getEmployeeOnIcp(Context context, String icp) {
+        Log.d(TAG, "getEmployeeOnId()" + "icp = [" + icp + "]");
         return getEmployee(context, EmployeeQuery.SELECTION_ICP, new String[]{String.valueOf(icp)});
     }
 
-    public static Employee getEmployee(Context context, int widgetId) {
-        Log.d(TAG, "getEmployee()" + "widgetId = [" + widgetId + "]");
+    public static Employee getEmployeeOnWidgetId(Context context, int widgetId) {
+        Log.d(TAG, "getEmployeeOnId()" + "widgetId = [" + widgetId + "]");
         return getEmployee(context, EmployeeQuery.SELECTION_WIDGET_ID, new String[]{String.valueOf(widgetId)});
     }
 
-    public static Employee getEmployee(Context context, long id) {
-        Log.d(TAG, "getEmployee()" + "id = [" + id + "]");
+    public static Employee getEmployeeOnId(Context context, long id) {
+        Log.d(TAG, "getEmployeeOnId()" + "id = [" + id + "]");
         return getEmployee(context, EmployeeQuery.SELECTION_ID, new String[]{String.valueOf(id)});
     }
 
-    public static Employee getEmployeeOnKodpra(Context context, String kodpra) {
-        Log.d(TAG, "getEmployee()" + "kodpra = [" + kodpra + "]");
-        return getEmployee(context, EmployeeQuery.SELECTION_KODPRA, new String[]{kodpra});
-    }
+    /*public static Employee getEmployeeOnKodpra(Context context, String kodpra) {
+        Log.d(TAG, "getEmployeeOnId()" + "kodpra = [" + kodpra + "]");
+        return getEmployeeOnId(context, EmployeeQuery.SELECTION_KODPRA, new String[]{kodpra});
+    }*/
 
     private static Employee getEmployee(Context context, String selection, String[] selectionArgs) {
-        Log.d(TAG, "getEmployee()" + "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
+        Log.d(TAG, "getEmployeeOnId()" + "selection = [" + selection + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(EmployeeQuery.CONTENT_URI, null,
                 selection, selectionArgs, null);
@@ -165,7 +170,7 @@ public class EmployeeManager {
         return employees;
     }
 
-    public static int deleteEvent(Context context, long id) {
+    public static int deleteEmployee(Context context, long id) {
         Log.d(TAG, "delete()" + "id = [" + id + "]");
         Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(id));
         ContentResolver resolver = context.getContentResolver();
@@ -177,18 +182,17 @@ public class EmployeeManager {
         public static final Uri CONTENT_URI = Uri.parse(Consts.SCHEME + AppConsts.AUTHORITY2 + "/"
                 + MyDatabaseHelper.TABLE_EMPLOYEES);
 
-        public static final String SELECTION_ICP = Employee.COL_ICP + "=?";
-        public static final String SELECTION_ID = Employee.COL_ID + "=?";
-        public static final String SELECTION_KODPRA = Employee.COL_KODPRA + "=?";
-        public static final String SELECTION_WIDGET_ID = Employee.COL_WIDGET_ID + "=?";
-        public static final String SELECTION_WIDGET_NOT_NULL = Employee.COL_WIDGET_ID + " is not null";
+        private static final String SELECTION_ICP = Employee.COL_ICP + "=?";
+        private static final String SELECTION_ID = Employee.COL_ID + "=?";
+        //        private static final String SELECTION_KODPRA = Employee.COL_KODPRA + "=?";
+        private static final String SELECTION_WIDGET_ID = Employee.COL_WIDGET_ID + "=?";
+        private static final String SELECTION_WIDGET_NOT_NULL = Employee.COL_WIDGET_ID + " is not null";
 
-        public static final String ORDER_BY_USER = Employee.COL_USER + "=1 DESC";
-        public static final String ORDER_BY_PRESENT = Employee.COL_DRUH + "='P' DESC";
-        public static final String ORDER_BY_FAV = Employee.COL_FAV + "=1 DESC";
-        public static final String ORDER_BY_KOD = Employee.COL_KODPRA + " ASC";
+        private static final String ORDER_BY_USER = Employee.COL_USER + "=1 DESC";
+        private static final String ORDER_BY_PRESENT = Employee.COL_DRUH + "='P' DESC";
+        private static final String ORDER_BY_FAV = Employee.COL_FAV + "=1 DESC";
+        private static final String ORDER_BY_KOD = Employee.COL_KODPRA + " ASC";
         public static final String ORDER_BY = ORDER_BY_USER + "," + ORDER_BY_PRESENT +
                 "," + ORDER_BY_FAV + "," + ORDER_BY_KOD;
-
     }
 }

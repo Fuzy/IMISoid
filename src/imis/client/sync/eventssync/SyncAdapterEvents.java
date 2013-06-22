@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
-import imis.client.AppUtil;
+import imis.client.TimeUtil;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.authentication.AuthenticationConsts;
@@ -69,7 +69,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
 
         // download all events for period and user
         String icp = accountManager.getUserData(account, AuthenticationConsts.KEY_ICP);
-        long date = extras.getLong(Event.KEY_DATE, AppUtil.todayInLong());
+        long date = extras.getLong(Event.KEY_DATE, TimeUtil.todayInLong());
         processDownloadEvents(icp, date);
         Log.d(TAG, "onPerformSync() end");
 

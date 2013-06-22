@@ -40,7 +40,6 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
             icp = params[0];
         }
 
-
         HttpHeaders requestHeaders = new HttpHeaders();
         HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
         requestHeaders.setAuthorization(authHeader);

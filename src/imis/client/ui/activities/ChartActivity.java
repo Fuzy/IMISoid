@@ -41,8 +41,6 @@ public abstract class ChartActivity extends ControlActivity {
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
     protected final CheckBoxClickListener checkBoxClickListener = new CheckBoxClickListener();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +51,6 @@ public abstract class ChartActivity extends ControlActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume()");
         initFragment();
     }
 
@@ -69,7 +66,6 @@ public abstract class ChartActivity extends ControlActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         currentFragment = savedInstanceState.getString(FRAG_TAG);
-        Log.d(TAG, "onRestoreInstanceState() currentFragment " + currentFragment);
     }
 
     @Override
@@ -91,7 +87,6 @@ public abstract class ChartActivity extends ControlActivity {
     }
 
     protected void switchFragment() {
-        Log.d(TAG, "switchFragment() num of existing ");
         if (getSupportFragmentManager().findFragmentByTag(FRAG_STATS) != null) {
             removeFragment(FRAG_STATS);
             switchToPieChartFragment();
@@ -106,7 +101,6 @@ public abstract class ChartActivity extends ControlActivity {
     }
 
     private void initFragment() {
-        Log.d(TAG, "initFragment() current " + currentFragment);
         if (currentFragment == null) {
             switchToPieChartFragment();
             return;
@@ -123,7 +117,6 @@ public abstract class ChartActivity extends ControlActivity {
 
     protected void removeFragment(String tag) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-        Log.d(TAG, "removeFragment() fragment " + fragment.getTag());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.remove(fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -131,7 +124,6 @@ public abstract class ChartActivity extends ControlActivity {
     }
 
     protected void switchToStackedBarFragment() {
-        Log.d(TAG, "switchToStackedBarFragment()");
         currentFragment = FRAG_STACK;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         StackedBarFragment barFragment = new StackedBarFragment();
@@ -141,7 +133,6 @@ public abstract class ChartActivity extends ControlActivity {
     }
 
     protected void switchToPieChartFragment() {
-        Log.d(TAG, "switchToPieChartFragment()");
         currentFragment = FRAG_PIE;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         PieChartFragment pieFragment = new PieChartFragment();
@@ -151,7 +142,6 @@ public abstract class ChartActivity extends ControlActivity {
     }
 
     protected void switchToStatisticsFragment() {
-        Log.d(TAG, "switchToStatisticsFragment()");
         currentFragment = FRAG_STATS;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         StatisticsFragment statsFragment = new StatisticsFragment();
@@ -202,7 +192,6 @@ public abstract class ChartActivity extends ControlActivity {
     }
 
     protected void refreshCurrentFragment() {
-        Log.d(TAG, "refreshCurrentFragment()");
         mDataSetObservable.notifyChanged();
     }
 

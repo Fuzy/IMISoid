@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.model.Record;
 import imis.client.ui.ColorConfig;
 
@@ -53,7 +53,7 @@ public class RecordsCursorAdapter extends CursorAdapter {
         String cpolzak = (record.getCpolzak() == null) ? "" : "" + record.getCpolzak().intValue();
         String cpozzak = (record.getCpozzak() == null) ? "" : "" + record.getCpozzak().intValue();
         String identification = zc + "/" + cpolzak + "/" + cpozzak;
-        String odvedeno = AppUtil.formatTime(record.getMnozstvi_odved());
+        String odvedeno = TimeUtil.formatTime(record.getMnozstvi_odved());
         String poznamka = record.getPoznamka();
 
         TextView tt = (TextView) view.findViewById(R.id.recordIdentification);
