@@ -11,11 +11,8 @@ import imis.client.ui.dialogs.AddAccountDialog;
  * Date: 9.4.13
  * Time: 16:25
  */
-public class AppUtil {/*
-    public static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
-    public static final DateFormat dfAbbr = new SimpleDateFormat("d.M.");//"d.M.yy"
-    public static final DateFormat dfTime = new SimpleDateFormat("HH:mm");*/
-
+public class AppUtil {
+    private static final String TAG = AppUtil.class.getSimpleName();
 
     public static void showAccountNotExistsError(FragmentManager fragmentManager) {
         new AddAccountDialog().show(fragmentManager, "AddAccountDialog");
@@ -32,7 +29,7 @@ public class AppUtil {/*
     }
 
     public static void showNetworkAccessUnavailable(Context context) {
-        Toast toast = Toast.makeText(context, R.string.network_unavailable, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(context, R.string.connection_unavailable, Toast.LENGTH_SHORT);
         toast.show();
     }
 
@@ -47,7 +44,7 @@ public class AppUtil {/*
     }
 
     public static void showInfo(Context context, String msg) {
-        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
         toast.show();
     }
 

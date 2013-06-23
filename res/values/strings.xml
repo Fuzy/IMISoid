@@ -112,7 +112,7 @@
     <string name="delete_event">Smazat událost</string>
     <string name="title_editing">Editace</string>
     <string name="test_connection">Testuji spojení...</string>
-    <string name="network_unavailable">Zkontrolujte dostupnost síťového připojení</string>
+    <string name="connection_unavailable">Spojení se nezdařilo</string>
     <string name="service_unavailable">Služba není dostupná</string>
     <string name="no_records">Těmto parametrům nevyhovují žádné záznamy</string>
     <string name="no_account_set_title">Neeexistuje účet</string>

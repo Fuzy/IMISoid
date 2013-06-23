@@ -5,6 +5,7 @@ import android.util.Log;
 import imis.client.TimeUtil;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultList;
+import imis.client.asynctasks.util.AsyncUtil;
 import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Event;
 import imis.client.network.HttpClientFactory;
@@ -12,8 +13,6 @@ import imis.client.network.NetworkUtilities;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -29,11 +28,11 @@ public class EventsSync {
     private static final String TAG = EventsSync.class.getSimpleName();
 
     private final Context context;
+    public static final String KEY_SYNC_RESULT = "KEY_SYNC_RESULT";
 
     public EventsSync(Context context) {
         this.context = context;
     }
-    //TODO sync result
 
     public Result deleteEvent(final String rowid) {
         Log.d(TAG, "delete() rowid: " + rowid);
@@ -51,8 +50,8 @@ public class EventsSync {
                     HttpMethod.DELETE, entity, null, rowid);
             return new Result(response.getStatusCode());
         } catch (Exception e) {
-            e.printStackTrace();     //TODO
-            return new Result(e.getLocalizedMessage());
+            Result result = AsyncUtil.processException(e, Result.class);
+            return result;
         }
     }
 
@@ -78,9 +77,8 @@ public class EventsSync {
             Log.d(TAG, "getUserEvents() events " + events);
             return new ResultList<Event>(response.getStatusCode(), events);
         } catch (Exception e) {
-            Log.d(TAG, "getUserEvents() e " + e);
-            e.printStackTrace();      //TODO
-            return new ResultList<Event>(e.getLocalizedMessage());
+            ResultList<Event> resultList = AsyncUtil.processException(e, ResultList.class);
+            return resultList;
         }
     }
 
@@ -105,15 +103,9 @@ public class EventsSync {
             event.setServer_id(path.substring(location.getPath().lastIndexOf('/') + 1));
             Log.d(TAG, "createEvent() event uri : " + location.getPath());
             return new Result(response.getStatusCode());
-        } catch (HttpServerErrorException e) {
-            Log.d(TAG, "createEvent() HttpServerErrorException");
-            return new Result(e.getStatusCode(), e.getResponseBodyAsString());
-        } catch (HttpClientErrorException e) {
-            Log.d(TAG, "createEvent() HttpClientErrorException");
-            return new Result(e.getStatusCode(), e.getResponseBodyAsString());
-        } catch (Exception e) {  //TODO
-            e.printStackTrace();
-            return new Result();
+        } catch (Exception e) {
+            Result result = AsyncUtil.processException(e, Result.class);
+            return result;
         }
 
     }
@@ -136,14 +128,9 @@ public class EventsSync {
             ResponseEntity response = restTemplate.exchange(NetworkUtilities.getEventsUpdateURL(context), HttpMethod.PUT,
                     entity, null, event.getServer_id());
             return new Result(response.getStatusCode());
-
         } catch (Exception e) {
-            e.printStackTrace();
-            if (e instanceof HttpServerErrorException) {
-                HttpServerErrorException ex = (HttpServerErrorException) e;
-                return new Result(ex.getResponseBodyAsString());
-            }             //TODO
-            return new Result();
+            Result result = AsyncUtil.processException(e, Result.class);
+            return result;
         }
     }
 

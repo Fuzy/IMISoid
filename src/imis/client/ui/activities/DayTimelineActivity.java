@@ -23,6 +23,7 @@ import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.RecordManager;
 import imis.client.processor.EventsProcessor;
+import imis.client.sync.eventssync.EventsSync;
 import imis.client.ui.activities.util.ActivityConsts;
 import imis.client.ui.dialogs.ColorPickerDialog;
 import imis.client.ui.fragments.DayTimelineBlocksFragment;
@@ -40,6 +41,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
     private volatile Cursor mCursor;
     private BroadcastReceiver minuteTickReceiver;
+    private BroadcastReceiver syncResultReceiver;
 
     private static final int LOADER_EVENTS = 0x02;
     private static final int CALENDAR_ACTIVITY_CODE = 1;
@@ -103,13 +105,26 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             }
         };
         registerReceiver(minuteTickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+
+        syncResultReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String stats = intent.getStringExtra(EventsSync.KEY_SYNC_RESULT);
+                Log.d(TAG, "onReceive() stats " + stats);
+                AppUtil.showInfo(DayTimelineActivity.this, stats);
+            }
+        };
+        registerReceiver(syncResultReceiver, new IntentFilter(AppConsts.SYNC_RESULT_ACTION));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (minuteTickReceiver != null)
+        try {
             unregisterReceiver(minuteTickReceiver);
+            unregisterReceiver(syncResultReceiver);
+        } catch (Exception e) {
+        }
     }
 
     private void initFragment() {
@@ -253,13 +268,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         extras.putLong(Event.KEY_DATE, date);
         try {
             Account account = AccountUtil.getUserAccount(this);
-            /*int isSyncable = ContentResolver.getIsSyncable(account, AppConsts.AUTHORITY1);
-            Log.d(TAG, "performSync() isSyncable " + isSyncable);
-            ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
-            boolean syncAutomatically = ContentResolver.getSyncAutomatically(account, AppConsts.AUTHORITY1);
-            Log.d(TAG, "performSync() syncAutomatically " + syncAutomatically);*/
-            ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY1, 1);
-            ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
             ContentResolver.requestSync(account, AppConsts.AUTHORITY1, extras);
         } catch (Exception e) {
             e.printStackTrace();
@@ -427,6 +435,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     }
 
+
     public void registerDataSetObserver(DataSetObserver observer) {
         mDataSetObservable.registerObserver(observer);
     }
@@ -456,4 +465,18 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     public EventsProcessor getProcessor() {
         return processor;
     }
+
+
+   /* class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_SYNC_EVENTS:
+                    Log.d(TAG, "handleMessage() " + msg.toString());
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }*/
 }

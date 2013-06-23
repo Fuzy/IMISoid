@@ -59,9 +59,9 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
             Log.d(TAG, "doInBackground() body " + body);
             return new ResultList<Employee>(response.getStatusCode(), body);
         } catch (Exception e) {
-            ResultList<Employee> resultItem = AsyncUtil.processException(e, ResultList.class);
-            Log.d(TAG, "doInBackground() resultItem " + resultItem);
-            return resultItem;
+            ResultList<Employee> resultList = AsyncUtil.processException(e, ResultList.class);
+            Log.d(TAG, "doInBackground() resultList " + resultList);
+            return resultList;
         }
     }
 

@@ -22,12 +22,10 @@ import imis.client.ui.ColorConfig;
 public class EmployeesCursorAdapter extends CursorAdapter {
     private static final String TAG = EmployeesCursorAdapter.class.getSimpleName();
     private LayoutInflater inflater;
-//    private ColorConfig colorConfig;
 
     public EmployeesCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        colorConfig = new ColorConfig(context);
     }
 
     @Override
@@ -42,9 +40,11 @@ public class EmployeesCursorAdapter extends CursorAdapter {
 
         String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
         ((TextView) view.findViewById(R.id.emp_kodpra)).setText(name);
-        String last = employee.getDruh() + " " + TimeUtil.formatEmpDate(employee.getDatum())
-                + " " + TimeUtil.formatTime(employee.getCas());//TODO test null
-        ((TextView) view.findViewById(R.id.emp_time)).setText(last);
+        StringBuilder last = new StringBuilder();
+        if (employee.getDruh() != null) last.append(employee.getDruh() + " ");
+        if (employee.getDatum() != null) last.append(TimeUtil.formatEmpDate(employee.getDatum()));
+        if (employee.getCas() != null) last.append(TimeUtil.formatTime(employee.getCas()));
+        ((TextView) view.findViewById(R.id.emp_time)).setText(last.toString());
         view.findViewById(R.id.emp_kod_po).setBackgroundColor(ColorConfig.getColor(context, employee.getKod_po()));
     }
 }

@@ -2,12 +2,11 @@ package imis.client.sync.eventssync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.content.AbstractThreadedSyncAdapter;
-import android.content.ContentProviderClient;
-import android.content.Context;
-import android.content.SyncResult;
+import android.content.*;
 import android.os.Bundle;
 import android.util.Log;
+import imis.client.AppConsts;
+import imis.client.R;
 import imis.client.TimeUtil;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultList;
@@ -26,7 +25,6 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
     private final Context context;
     private final EventsSync sync;
 
-
     public SyncAdapterEvents(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         this.context = context;
@@ -39,118 +37,130 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.d(TAG, "onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
                 "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
-        //TODO bundle rozlisit volani z aktivity, poslat zpravu po skonceni
+        SyncStats stats = new SyncStats();
+
+        boolean isManual = false;
+        if (extras.containsKey(Event.KEY_DATE)) {
+            Log.d(TAG, "onPerformSync() manual");
+            isManual = true;
+        }
+
+
         Result testResult = NetworkUtilities.testWebServiceAndDBAvailability(context);
         if (testResult.getStatusCode() == null || testResult.getStatusCode().value() != HttpStatus.SC_OK) {
             Log.d(TAG, "onPerformSync() connection unavailable");
-            //AppUtil.showNetworkAccessUnavailable(context);//TODO spojeni vs nedostupny server, poslat zpravu po skonceni
-
+            if (isManual) sendMessageToActivity(context.getString(R.string.connection_unavailable));
+            syncResult.delayUntil = (System.currentTimeMillis() + AppConsts.MS_IN_MIN) / 1000L;
+            ContentResolver.requestSync(account, authority, extras);
             return;
         }
-
         // get local changes
         List<Event> dirtyEvents = EventManager.getDirtyEvents(context);
+        Log.d(TAG, "onPerformSync() dirtyEvents " + dirtyEvents.size());
         for (Event event : dirtyEvents) {
 
             if (event.isDeleted()) {
                 //deleting
-                processDeleteEvent(event);
+                processDeleteEvent(event, stats);
             } else if (event.hasServer_id()) {
                 // updating
                 EventManager.markEventAsNoError(context, event.get_id());
-                processUpdateEvent(event);
+                processUpdateEvent(event, stats);
             } else if (event.hasServer_id() == false) {
                 // creating
                 EventManager.markEventAsNoError(context, event.get_id());
-                processCreateEvent(event);
+                processCreateEvent(event, stats);
             }
 
         }
 
-        // download all events for period and user
+        // Download all events for period and user
         String icp = accountManager.getUserData(account, AuthenticationConsts.KEY_ICP);
         long date = extras.getLong(Event.KEY_DATE, TimeUtil.todayInLong());
-        processDownloadEvents(icp, date);
-        Log.d(TAG, "onPerformSync() end");
+        processDownloadEvents(icp, date, stats);
+
+        if (isManual) {
+            // Send statistics to calling actvitity
+            sendMessageToActivity(countStatistics(stats));
+        }
 
         // Refresh shortcut widgets
         new ShortcutWidgetProvider().updateAllWidgets(context);
 
+        Log.d(TAG, "onPerformSync() end");
     }
 
-    private void processDeleteEvent(Event event) {
+    private void sendMessageToActivity(String msg) {
+        Intent i = new Intent(AppConsts.SYNC_RESULT_ACTION).putExtra(EventsSync.KEY_SYNC_RESULT, msg);
+        context.sendBroadcast(i);
+    }
+
+    private String countStatistics(SyncStats stats) {
+        StringBuilder st = new StringBuilder();
+        st.append("Statistiky:\n");
+        st.append("Smazáno: " + stats.getDeleted() + "/" + stats.getDeleteAttempt() + "\n");
+        st.append("Vytvořeno: " + stats.getCreated() + "/" + stats.getCreatedAttempt() + "\n");
+        st.append("Upraveno: " + stats.getUpdated() + "/" + stats.getUpdateAttempt() + "\n");
+        if (stats.isDownloadErr()) {
+            st.append("Staženo: Chyba" + stats.getDownErrMsg() + "\n");
+        } else {
+            st.append("Staženo: " + stats.getDownloaded() + "\n");
+        }
+        return st.toString();
+    }
+
+    private void processDeleteEvent(Event event, SyncStats stats) {
         Result deleteResult = sync.deleteEvent(event.getServer_id());
         Log.d(TAG, "processDeleteEvent()" + "event = [" + event + "]" + "deleteResult = [" + deleteResult + "]");
-        if (deleteResult.isUnknownErr()) {
-            showUnknownError(deleteResult);
-        } else if (deleteResult.isServerError()) {
-            showServerError(deleteResult);
-        } else if (deleteResult.getStatusCode().value() == HttpStatus.SC_OK) {
+        stats.incDeletedAttempt();
+        if (deleteResult.getStatusCode().value() == HttpStatus.SC_OK) {
             EventManager.deleteEventOnId(context, event.get_id());
+            stats.incDeleted();
         }
     }
 
-    private void processUpdateEvent(Event event) {
+    private void processUpdateEvent(Event event, SyncStats stats) {
         Result updateResult = sync.updateEvent(event);
         Log.d(TAG, "processUpdateEvent()" + "event = [" + event + "]" + "updateResult = [" + updateResult + "]");
-
-        if (updateResult.isUnknownErr()) {
-            showUnknownError(updateResult);
-        } else if (updateResult.isServerError()) {
-            showServerError(updateResult);
-        } else if (updateResult.isClientError()) {
+        stats.incUpdatedAttempt();
+        if (updateResult.isClientError()) {
             EventManager.markEventAsError(context, event.get_id(), updateResult.getMsg());
         } else if (updateResult.getStatusCode().value() == HttpStatus.SC_ACCEPTED) {
             EventManager.markEventAsSynced(context, event.get_id());
+            stats.incUpdated();
         }
     }
 
-    private void processCreateEvent(Event event) {
+    private void processCreateEvent(Event event, SyncStats stats) {
         Result createResult = sync.createEvent(event);
         Log.d(TAG, "processCreateEvent()" + "event = [" + event + "]" + "createResult = [" + createResult + "]");
-        if (createResult.isUnknownErr()) {
-            showUnknownError(createResult);
-        } else if (createResult.isServerError()) {
-            showServerError(createResult);
-        } else if (createResult.isClientError()) {
+        stats.incCreatedAttempt();
+        if (createResult.isClientError()) {
             EventManager.markEventAsError(context, event.get_id(), createResult.getMsg());
         } else if (createResult.getStatusCode().value() == HttpStatus.SC_CREATED) {
             EventManager.updateEventServerId(context, event.get_id(), event.getServer_id());
             EventManager.markEventAsSynced(context, event.get_id());
+            stats.incCreated();
         }
     }
 
-    private void processDownloadEvents(final String icp, final long date) {
-        ResultList getResult = sync.getUserEvents(icp, date, date);
+    private void processDownloadEvents(final String icp, final long date, SyncStats stats) {
+        ResultList<Event> getResult = sync.getUserEvents(icp, date, date);
         Log.d(TAG, "processDownloadEvents()" + "icp = [" + icp + "], date = [" + date + "]" + "getResult = [" + getResult + "]");
 
         if (getResult.isOk()) {
-//TODO            AppUtil.showInfoMsgOutsideActivity(context, context.getString(R.string.act_ok));
-        } else if (getResult.isUnknownErr()) {
-            showUnknownError(getResult);
-        } else if (getResult.isEmpty()) {
-            Log.d(TAG, "onPerformSync() isEmpty");
-        } else if (!getResult.isEmpty()) {
-            for (Event event : (Event[]) getResult.getArray()) {
-                if (EventManager.updateEventOnServerId(context, event) == 0) EventManager.addEvent(context, event);
+            if (getResult.isEmpty()) {
+                Log.d(TAG, "onPerformSync() isEmpty");
+            } else if (!getResult.isEmpty()) {
+                for (Event event : getResult.getArray()) {
+                    if (EventManager.updateEventOnServerId(context, event) == 0) EventManager.addEvent(context, event);
+                }
+                stats.setDownloaded(getResult.getArray().length);
             }
-            Log.d(TAG, "onPerformSync() events length: " + getResult.getArray().length);
+        } else {
+            stats.setDownloadErr(true);
+            stats.setDownErrMsg(getResult.getMsg());
         }
-    }
-
-    private void showUnknownError(Result result) {
-        Log.d(TAG, "showUnknownError() result " + result);
-        //TODO
-    }
-
-    private void showServerError(Result result) {
-        Log.d(TAG, "showServerError() result " + result);
-        //TODO
-    }
-
-    private void showClientError(Result result) {
-        Log.d(TAG, "showClientError() result " + result);
-        //TODO
     }
 
 

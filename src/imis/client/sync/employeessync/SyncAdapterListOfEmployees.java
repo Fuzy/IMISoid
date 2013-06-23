@@ -1,15 +1,16 @@
 package imis.client.sync.employeessync;
 
 import android.accounts.Account;
-import android.content.AbstractThreadedSyncAdapter;
-import android.content.ContentProviderClient;
-import android.content.Context;
-import android.content.SyncResult;
+import android.content.*;
 import android.os.Bundle;
 import android.util.Log;
+import imis.client.AppConsts;
+import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.model.Employee;
+import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EmployeeManager;
+import org.apache.http.HttpStatus;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,11 +28,19 @@ public class SyncAdapterListOfEmployees extends AbstractThreadedSyncAdapter {
     }
 
     @Override
-    public void onPerformSync(Account account, Bundle bundle, String s,
-                              ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        Log.d(TAG, "onPerformSync()" + "account = [" + account + "], bundle = [" + bundle + "], " +
-                "s = [" + s + "], contentProviderClient = [" + contentProviderClient + "], " +
-                "syncResult = [" + syncResult + "]");
+    public void onPerformSync(Account account, Bundle extras, String authority,
+                              ContentProviderClient provider, SyncResult syncResult) {
+        Log.d(TAG, "onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
+                "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
+
+        Result testResult = NetworkUtilities.testWebServiceAndDBAvailability(context);
+        if (testResult.getStatusCode() == null || testResult.getStatusCode().value() != HttpStatus.SC_OK) {
+            Log.d(TAG, "onPerformSync() connection unavailable");
+            syncResult.delayUntil = (System.currentTimeMillis() + AppConsts.MS_IN_MIN) / 1000L;
+            ContentResolver.requestSync(account, authority, extras);
+            return;
+        }
+
         EmployeesSync sync = new EmployeesSync(context);
         ResultList<Employee> resultList = sync.getListOfEmployees();
         if (resultList.isOk() && !resultList.isEmpty()) {
@@ -40,8 +49,6 @@ public class SyncAdapterListOfEmployees extends AbstractThreadedSyncAdapter {
             if (employees != null) {
                 EmployeeManager.syncEmployees(context, employees);
             }
-        } else if (!resultList.isOk()) {
-            //TODO sync result
         }
     }
 
