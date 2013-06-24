@@ -37,7 +37,6 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
     private List<Block> blockList;
     private EventsArrayAdapter adapter;
     private DayTimelineActivity mActivity;
-//    private BroadcastReceiver minuteTickReceiver;
 
 
     private DataSetObserver mObserver = new DataSetObserver() {
@@ -80,14 +79,17 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
 
     void resfreshAdaptersDataList() {
         Log.d(TAG, "resfreshAdaptersDataList()");
-        adapter.clear();  //TODO exception
+        if (adapter == null) return;
+        adapter.clear();
         adapter.setDate(mActivity.getDate());
         blockList = null;
-        blockList = mActivity.getProcessor().eventsToMapOfBlocks(mActivity.getCursor());
-        adapter.addAll(blockList);
-        adapter.notifyDataSetChanged();
+        if (mActivity.getCursor() != null) {
+            blockList = mActivity.getProcessor().eventsToMapOfBlocks(mActivity.getCursor());
+            adapter.addAll(blockList);
+            adapter.notifyDataSetChanged();
+        }
         blocks.setVisibility(View.GONE);
-        blocks.setVisibility(View.VISIBLE); //TODO test
+        blocks.setVisibility(View.VISIBLE); //TODO test, co bey toho?
     }
 
     @Override
@@ -111,15 +113,4 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
         return true;
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-                scroll.post(new Runnable() {
-            public void run() {
-                //Log.d(TAG, "onResume() scroll.getBottom(): " + scroll.getBottom());
-                scroll.scrollTo(0, blocks.getBottom());          //TODO test
-            }
-        });
-    }
 }

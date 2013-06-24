@@ -63,20 +63,13 @@ public class DayTimelineListFragment extends ListFragment {
             scndEvent = mActivity.getProcessor().getPrevEvent(cursor, Event.DRUH_ARRIVAL);
             if (scndEvent != null) arriveId = scndEvent.get_id();
         }
-       /* Log.d(TAG, "onListItemClick() actEvent " + actEvent);
-        Log.d(TAG, "onListItemClick() scndEvent " + scndEvent);
-        Log.d(TAG, "startEditActivity() arriveId " + arriveId);
-        Log.d(TAG, "startEditActivity() leaveId " + leaveId);*/
         mActivity.startEditActivity(arriveId, leaveId);
     }
 
     private DataSetObserver mObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
-            Log.d(TAG, "onChanged()");
             adapter.swapCursor(mActivity.getCursor());
-            Log.d(TAG, "onChanged() mActivity.getCursor() " + mActivity.getCursor().getCount());
-            Log.d(TAG, "onChanged() adapter " + adapter.getCount());
         }
     };
 }

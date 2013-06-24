@@ -16,12 +16,11 @@ public class NetworkConsts {
     public static final String EVENTS_GET_PATH = EVENTS_PATH + "/{icp}?from={from}&to={to}";
     private static final String RECORDS_PATH = "/records";
     public static final String RECORDS_GET_PATH = RECORDS_PATH + "/{kodpra}?from={from}&to={to}";
-    private static final String EMPLOYEE_PATH = "/employee";
     private static final String EMPLOYEES_PATH = "/employees";
-    public static final String EMPLOYEE_GET_PATH = EMPLOYEE_PATH + "/{icp}";
-    public static final String EMPLOYEES_GET_PATH = EMPLOYEES_PATH + "/{icp}";
+    public static final String EMPLOYEE_GET_PATH = EMPLOYEES_PATH + "/{icp}";
+    public static final String EMPLOYEES_GET_PATH = EMPLOYEES_PATH + "/all/{icp}";
     public static final String EMPLOYEES_GET_EVENTS_PATH = EMPLOYEES_PATH + "/lastevents";
-    public static final String EMPLOYEES_GET_EVENT_PATH = EMPLOYEES_PATH + "/lastevent/{icp}";
+    public static final String EMPLOYEES_GET_EVENT_PATH = EMPLOYEES_PATH + "/lastevents/{icp}";
     public static final String TEST_PATH =  "/test";
     public static final String TEST_MODE = "test";
     public static final String TEST_CONN = "/testconnection";

@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
-
+    //TODO menu z jedne polozky
 
     private static Map<String, String> eventsFreq = new HashMap<>();
     private static Map<String, String> widgetsFreq = new HashMap<>();

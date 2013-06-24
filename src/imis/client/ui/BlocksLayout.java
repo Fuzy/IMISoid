@@ -32,7 +32,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     private int touchStartX, touchStartY;
 
     private Runnable longPressRunnable;
-    private float scaleFactor = 1.f;
 
 
     public BlocksLayout(Context context) {
@@ -161,11 +160,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
         right = getWidth();
         mNowView.layout(left, top, right, bottom);
 
-    }
-
-
-    public int getPosOflastBlock() {
-        return 0; // TODO vrati pozici kam se ma nastavait scroll
     }
 
     @Override

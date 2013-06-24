@@ -33,7 +33,7 @@ public class Event {
 
 
     public Event() {
-        this.setCas(TimeUtil.currentTimeInLong());
+        this.setCas(TimeUtil.currentDayTimeInLong());
     }
 
     public Event(boolean dirty, boolean deleted, String icp, long datum, String kod_po, String druh,
@@ -252,6 +252,7 @@ public class Event {
                 ", kod_po='" + kod_po + '\'' +
                 ", druh='" + druh + '\'' +
                 ", cas=" + TimeUtil.formatTime(cas) +
+                ", cas=" + cas +
                 ", ic_obs='" + ic_obs + '\'' +
                 ", typ='" + typ + '\'' +
                 ", datum_zmeny=" + TimeUtil.formatDate(datum_zmeny) +

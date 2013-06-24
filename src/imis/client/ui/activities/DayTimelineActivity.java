@@ -19,7 +19,6 @@ import imis.client.*;
 import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.asynctasks.result.Result;
 import imis.client.model.Event;
-import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
 import imis.client.persistent.RecordManager;
 import imis.client.processor.EventsProcessor;
@@ -30,7 +29,6 @@ import imis.client.ui.fragments.DayTimelineBlocksFragment;
 import imis.client.ui.fragments.DayTimelineListFragment;
 
 import static imis.client.AppUtil.showAccountNotExistsError;
-import static imis.client.AppUtil.showNetworkAccessUnavailable;
 import static imis.client.persistent.EventManager.EventQuery;
 
 
@@ -57,12 +55,13 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
 
         // init UI
         setContentView(R.layout.daytimeline);
 
-        changeDate(TimeUtil.todayInLong());
+        changeDate(TimeUtil.todayDateInLong());
+
+        getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
         Log.d(TAG, "onCreate() date: " + TimeUtil.formatDate(date));
         processor = new EventsProcessor(getApplicationContext());
 
@@ -216,7 +215,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
                 startRecordsListActivity();
                 return true;
             case R.id.menu_employeesList:
-                refreshListOfEmployees();
+                processAsyncTask();
                 return true;
             case R.id.menu_employeesPresent:
                 startPresentEmployeesActivity();
@@ -243,34 +242,42 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     @Override
     protected void processAsyncTask() {
-        Log.d(TAG, "processAsyncTask()");
+        String icp = null;
+        try {
+            icp = AccountUtil.getUserICP(this);
+            createTaskFragment(new GetListOfEmployees(this, icp));
+        } catch (Exception e) {
+            showAccountNotExistsError(getSupportFragmentManager());
+
+        }
     }
 
-    private void refreshListOfEmployees() {
+   /* private void refreshListOfEmployees() {
         Log.d(TAG, "refreshListOfEmployees()");
         try {
             String icp = AccountUtil.getUserICP(this);
             Log.d(TAG, "refreshListOfEmployees() icp " + icp);
-            createTaskFragment(new GetListOfEmployees(this, icp));
+//            createTaskFragment(new GetListOfEmployees(this, icp));
         } catch (Exception e) {
+            Log.d(TAG, "refreshListOfEmployees() showAccountNotExistsError");
             showAccountNotExistsError(getSupportFragmentManager());
         }
-    }
+    }*/
 
     private void performSync() {
         Log.d(TAG, "onOptionsItemSelected sync request");
 
-        if (!NetworkUtilities.isOnline(getApplication())) {
+       /* if (!NetworkUtilities.isOnline(getApplication())) {
             showNetworkAccessUnavailable(getApplication());
             return;
-        }
+        }*/
         Bundle extras = new Bundle();
         extras.putLong(Event.KEY_DATE, date);
         try {
             Account account = AccountUtil.getUserAccount(this);
             ContentResolver.requestSync(account, AppConsts.AUTHORITY1, extras);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d(TAG, "performSync() showAccountNotExistsError");
             showAccountNotExistsError(getSupportFragmentManager());
         }
     }
@@ -286,8 +293,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
                     return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI, null,
                             EventQuery.SELECTION_DAY_USER_UNDELETED, new String[]{String.valueOf(date), icp}, EventQuery.ORDER_BY_DATE_TIME_ASC);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    AppUtil.showAccountNotExistsError(getSupportFragmentManager());
                     return null;
                 }
             default:
@@ -309,6 +314,16 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     private void startInsertActivity() {
+        // Check if user exists
+        try {
+            AccountUtil.getUserUsername(this);
+            AccountUtil.getUserICP(this);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            AppUtil.showAccountNotExistsError(getSupportFragmentManager());
+            return;
+        }
+
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.dir/event.imisoid");
         intent.putExtra(Event.KEY_DATE, date);
@@ -344,27 +359,21 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private void startRecordsChartActivity() {
         Intent intent = new Intent(this, RecordsChartActivity.class);
-        Log.d("DayTimelineActivity", "startRecordsChartActivity() intent " + intent);
-        //intent.putExtra("date", date);
         startActivity(intent);
     }
 
     private void startRecordsListActivity() {
         Intent intent = new Intent(this, RecordListActivity.class);
-        Log.d("DayTimelineActivity", "startRecordsChartActivity() intent " + intent);
-        //intent.putExtra("date", date);
         startActivity(intent);
     }
 
     private void startPresentEmployeesActivity() {
         Intent intent = new Intent(this, PresentEmployeesActivity.class);
-        Log.d("DayTimelineActivity", "startPresentEmployeesActivity() intent " + intent);
         startActivity(intent);
     }
 
     private void startEventsChartActivity() {
         Intent intent = new Intent(this, EventsChartActivity.class);
-        Log.d("DayTimelineActivity", "startEventsChartActivity() intent " + intent);
         startActivity(intent);
     }
 
@@ -453,6 +462,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     private synchronized Event getLastEvent() {
+        if (mCursor == null) return null;
         boolean success = mCursor.moveToLast();
         Event event = (success) ? Event.cursorToEvent(mCursor) : null;
         return event;
@@ -466,17 +476,4 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         return processor;
     }
 
-
-   /* class IncomingHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_SYNC_EVENTS:
-                    Log.d(TAG, "handleMessage() " + msg.toString());
-                    break;
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-    }*/
 }

@@ -51,7 +51,7 @@ public class LocationSettingsActivity extends FragmentActivity {
         map.setOnMapClickListener(myMapClickListener);
 
         SeekBar seekBar = (SeekBar) findViewById(R.id.seek);
-        seekBar.setOnSeekBarChangeListener(onSeekBarChangeListener);//TODO init
+        seekBar.setOnSeekBarChangeListener(onSeekBarChangeListener);
         seekPos = loadSeekPosition();
         seekBar.setProgress(seekPos);
 

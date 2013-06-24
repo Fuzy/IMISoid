@@ -91,7 +91,8 @@ public class EmployeeManager {
             deleteEmployee(context, employee.get_id());
         }
         markUser(context);
-        AppUtil.showInfo(context, context.getString(R.string.employees_act_ok));
+        int size = employees.length;
+        AppUtil.showInfo(context, context.getString(R.string.employees_act_ok) + size);
 
         //update all employees widget
         new EmployeeWidgetProvider().updateAllWidgets(context);

@@ -16,6 +16,7 @@ import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.Result;
+import imis.client.model.Employee;
 import imis.client.model.Record;
 import imis.client.ui.adapters.RecordsCursorAdapter;
 import imis.client.ui.fragments.RecordListFragment;
@@ -60,8 +61,6 @@ public class RecordListActivity extends ControlActivity implements
         spinnerType.setOnItemSelectedListener(this);
 
         addListFragment();
-
-        initSelectionValues();
     }
 
     private void addListFragment() {
@@ -73,11 +72,6 @@ public class RecordListActivity extends ControlActivity implements
 
         adapter = new RecordsCursorAdapter(getApplicationContext(), null, -1);
         listFragment.setListAdapter(adapter);
-    }
-
-
-    private void initSelectionValues() {
-        selectionArgs.put(PAR_TYPE, "");
     }
 
     @Override
@@ -117,8 +111,8 @@ public class RecordListActivity extends ControlActivity implements
     }
 
     @Override
-    protected void processControlAsyncTask(String kodpra, String from, String to) {
-        createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
+    protected void processControlAsyncTask(Employee emp, String from, String to) {
+        createTaskFragment(new GetListOfRecords(this, emp.getKodpra(), from, to));
     }
 
     @Override
@@ -161,8 +155,10 @@ public class RecordListActivity extends ControlActivity implements
     @Override
     protected String[] getSelectionArgs() {
         String[] args = new String[4];
-        args[0] = selectionArgs.get(PAR_TYPE);
-        args[1] = selectionArgs.get(PAR_EMP);
+        String type = selectionArgs.get(PAR_TYPE);
+        args[0] = (type == null) ? "" : type;
+        String kodpra = selectionArgs.get(PAR_EMP_KOD);
+        args[1] = (kodpra == null) ? "" : kodpra;
         args[2] = selectionArgs.get(PAR_FROM);
         args[3] = selectionArgs.get(PAR_TO);
         Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));

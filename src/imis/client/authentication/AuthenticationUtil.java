@@ -22,10 +22,10 @@ public class AuthenticationUtil {
             password = AccountUtil.getUserPassword(context);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            return null;//TODO test
+            return null;
         }
-        Log.d(TAG, "doInBackground() username " + username);
-        Log.d(TAG, "doInBackground() password " + password);
+        Log.d(TAG, "createAuthHeader() username " + username);
+        Log.d(TAG, "createAuthHeader() password " + password);
 
         return new HttpBasicAuthentication(username, password);
     }

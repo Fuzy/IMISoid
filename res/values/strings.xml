@@ -99,7 +99,7 @@
     <string name="login_activity_loginfail_text_both">Chybné uživatelské jméno nebo heslo.</string>
     <string name="ui_activity_authenticating">Authentikace\u2026</string>
     <string name="menu_refresh">Aktualizovat</string>
-    <string name="employees_act_ok">Seznam zaměstnanců úspěšně aktualizován</string>
+    <string name="employees_act_ok">"Seznam zaměstnanců úspěšně aktualizován, záznamů: "</string>
     <string name="act_ok">Aktualizováno</string>
     <string name="menu_records">Výkazy</string>
     <string name="ok">Ok</string>
@@ -113,6 +113,8 @@
     <string name="title_editing">Editace</string>
     <string name="test_connection">Testuji spojení...</string>
     <string name="connection_unavailable">Spojení se nezdařilo</string>
+    <string name="device_is_offline">Zařízení není připojeno k síti</string>
+    <string name="connection_unavailable_desc">Přejete si změnit nastavení připojení?</string>
     <string name="service_unavailable">Služba není dostupná</string>
     <string name="no_records">Těmto parametrům nevyhovují žádné záznamy</string>
     <string name="no_account_set_title">Neeexistuje účet</string>

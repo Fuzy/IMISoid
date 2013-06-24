@@ -20,6 +20,7 @@ import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
 import imis.client.ui.activities.AsyncActivity;
 import imis.client.ui.dialogs.AuthConfirmDialog;
+import imis.client.ui.dialogs.SetNetworkDialog;
 
 public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmDialog.AuthConfirmDialogListener {
     private static final String TAG = AuthenticatorActivity.class.getSimpleName();
@@ -31,10 +32,6 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
 
     private String icp = null, password = null;
     private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
-    //    private static final String AUTHORITY1 = AuthenticationConsts.AUTHORITY1;
-    /*private static final String AUTH_TOKEN = AuthenticationConsts.AUTH_TOKEN;
-    public static final String PARAM_PASSWORD = "password", PARAM_USERNAME = "username",
-            PARAM_AUTHTOKEN_TYPE = "authtokenType";*/
     private AccountManager accountManager;
     private TextView mMessage;
     private EditText passwordEdit, icpEdit;
@@ -63,8 +60,8 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
     @Override
     protected void onResume() {
         super.onResume();
-        icpEdit.setText("TST");//TODO smazat
-        passwordEdit.setText("TST");
+        icpEdit.setText("");
+        passwordEdit.setText("");
     }
 
     private void initLayoutComponents() {
@@ -80,7 +77,6 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         userdata.putString(AuthenticationConsts.KEY_ICP, icp);
         accountManager.addAccountExplicitly(account, password, userdata);
 
-        //TODO    test
         ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY1, 1);
         ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);
         ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY2, 1);
@@ -100,8 +96,6 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         setResult(RESULT_OK, intent);
         finish();
     }
-    //TODO pridat menu nastaveni site
-    //TODO  zkontrolovat nejdriv sitove spojeni
 
     @Override
     public void onTaskFinished(Result result) {
@@ -116,15 +110,18 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         if (employeeResult.isUnknownErr()) {
             Log.d(TAG, "onTaskFinished() isUnknownErr");
             mMessage.setText(getText(R.string.unknown_error));
+            new SetNetworkDialog().show(getSupportFragmentManager(), "SetNetworkDialog");
         } else if (employeeResult.isServerError()) {
             Log.d(TAG, "onTaskFinished() isServerError");
             mMessage.setText(getText(R.string.server_error));
         } else if (employeeResult.isClientError()) {
             Log.d(TAG, "onTaskFinished() isClientError");
             mMessage.setText(getText(R.string.login_activity_loginfail_text_both));
-        } else {
-            Log.d(TAG, "onTaskFinished() OK");
+        } else if (!employeeResult.isEmpty()) {
+            Log.d(TAG, "onTaskFinished() not empty");
             showConfirmDialog();
+        } else {
+            mMessage.setText(getText(R.string.unknown_error));
         }
 
     }
@@ -146,13 +143,13 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         if (TextUtils.isEmpty(icp)) {
             mMessage.setText(getText(R.string.login_activity_loginfail_text_icpmissing));
         } else {
-            createTaskFragment(new AuthEmployee(this, icp, password));
+            processAsyncTask();
         }
     }
 
     @Override
     protected void processAsyncTask() {
-        Log.d(TAG, "processAsyncTask()");
+        createTaskFragment(new AuthEmployee(this, icp, password));
     }
 
     @Override

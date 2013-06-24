@@ -99,7 +99,7 @@ public class LocationService extends Service {
 
     private void notifyIfEventMissing() {
         Log.d(TAG, "notifyIfEventMissing()");
-        Event event = EventManager.getLastEvent(getApplicationContext());//TODO osetrit prazdnou db
+        Event event = EventManager.getLastEvent(getApplicationContext());
         if (event == null) {
             Log.d(TAG, "notifyIfEventMissing() event " + event);
             return;

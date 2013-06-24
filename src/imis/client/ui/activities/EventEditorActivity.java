@@ -58,7 +58,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_editor);
         final Intent intent = getIntent();
-        date = intent.getLongExtra(Event.KEY_DATE, TimeUtil.todayInLong());
+        date = intent.getLongExtra(Event.KEY_DATE, TimeUtil.todayDateInLong());
         widgetIsSource = intent.getBooleanExtra(AppConsts.KEY_WIDGET_IS_SOURCE, false);
 
 //        Log.d(TAG, "onCreate date : " + date + "  " + EventManager.getAllEvents(getApplicationContext()));
@@ -172,17 +172,18 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     }
 
     private void setTimePickerToNow(TimePicker timePicker) {
-        Time time = new Time();
-        time.setToNow();
-        timePicker.setCurrentHour(time.hour);
-        timePicker.setCurrentMinute(time.minute);
+        long l = TimeUtil.currentDayTimeInLong();
+        long hours = (l / AppConsts.MS_IN_HOUR);
+        timePicker.setCurrentHour((int) hours);
+        long mins = (l - hours * AppConsts.MS_IN_HOUR) / AppConsts.MS_IN_MIN;
+        timePicker.setCurrentMinute((int) mins);
     }
 
     private void setTimePickerToTime(TimePicker timePicker, long millis) {
-        Time time = new Time();
-        time.set(millis);
-        timePicker.setCurrentHour(time.hour);
-        timePicker.setCurrentMinute(time.minute);
+        long hours = (millis / AppConsts.MS_IN_HOUR);
+        timePicker.setCurrentHour((int) hours);
+        long mins = (millis - hours * AppConsts.MS_IN_HOUR) / AppConsts.MS_IN_MIN;
+        timePicker.setCurrentMinute((int) mins);
     }
 
     private void prepareSpinners() {
@@ -317,17 +318,14 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void saveArriveEvent() {
         if (arriveEvent != null) {
             actualizeArriveEvent();
-
+            Log.d(TAG, "saveArriveEvent() arriveEvent " + arriveEvent);
             if (origArriveEvent == null || !arriveEvent.equals(origArriveEvent)) {
-                Log.d(TAG, "saveArriveEvent() ukladam");
 
                 if (arriveEvent.get_id() == 0) {
-                    Log.d(TAG, "saveArriveEvent() new");
                     setImplicitEventValues(arriveEvent);
                     arriveEvent.setDruh(Event.DRUH_ARRIVAL);
                     arriveId = EventManager.addEvent(getApplicationContext(), arriveEvent);
                 } else {
-                    Log.d(TAG, "saveArriveEvent() update");
                     EventManager.updateEvent(getApplicationContext(), arriveEvent);
                 }
             }
@@ -350,15 +348,12 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             actualizeLeaveEvent();
 
             if (origLeaveEvent == null || !leaveEvent.equals(origLeaveEvent)) {
-                Log.d(TAG, "saveLeaveEvent() ukladam");
 
                 if (leaveEvent.get_id() == 0) {
-                    Log.d(TAG, "saveLeaveEvent() new");
                     setImplicitEventValues(leaveEvent);
                     leaveEvent.setDruh(Event.DRUH_LEAVE);
                     leaveId = EventManager.addEvent(getApplicationContext(), leaveEvent);
                 } else {
-                    Log.d(TAG, "saveLeaveEvent() update");
                     EventManager.updateEvent(getApplicationContext(), leaveEvent);
                 }
             }
@@ -373,7 +368,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private void setImplicitEventValues(Event event) {
         event.setDirty(true);
-        event.setDatum_zmeny(TimeUtil.todayInLong());
+        event.setDatum_zmeny(TimeUtil.todayDateInLong());
         event.setTyp(Event.TYPE_ORIG);
         event.setDatum(date);
         try {
@@ -383,7 +378,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             event.setIc_obs(kod);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            AppUtil.showAccountNotExistsError(getSupportFragmentManager());
+            AppUtil.showAccountNotExistsError(getSupportFragmentManager());//TODO
             finish();
         }
     }
@@ -392,7 +387,8 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         Time time = new Time();
         time.hour = picker.getCurrentHour();
         time.minute = picker.getCurrentMinute();
-        return time.toMillis(true);
+        long timeInMs = time.hour * AppConsts.MS_IN_HOUR + time.minute * AppConsts.MS_IN_MIN;
+        return timeInMs;
     }
 
     @Override

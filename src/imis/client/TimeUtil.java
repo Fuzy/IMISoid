@@ -1,5 +1,7 @@
 package imis.client;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,21 +26,19 @@ public class TimeUtil {
         dfTime.setTimeZone(TimeZone.getTimeZone("Etc/GMT"));
     }
 
-    public static long currentTimeInLong() {
-        Calendar rightNow = Calendar.getInstance();
-        Calendar time = Calendar.getInstance();
-        time.setTimeInMillis(0);
-        time.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY));
-        time.set(Calendar.MINUTE, rightNow.get(Calendar.MINUTE));
-        return time.getTimeInMillis();
+    public static long currentDayTimeInLong() {
+        Calendar now = Calendar.getInstance();
+        long timeInMs = now.get(Calendar.HOUR_OF_DAY) * AppConsts.MS_IN_HOUR + now.get(Calendar.MINUTE) * AppConsts.MS_IN_MIN;
+        return timeInMs;
     }
 
-    public static long todayInLong() {//TODO tohle asi zpusobuje problemy, hodinu kolem pulnoci
+    public static long todayDateInLong() {//TODO test
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
+        Log.d(TAG, "todayDateInLong() cal " + cal);
         return cal.getTimeInMillis();
     }
 

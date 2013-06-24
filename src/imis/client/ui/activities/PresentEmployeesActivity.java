@@ -103,7 +103,6 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
 
     @Override
     protected void processAsyncTask() {
-        Log.d(TAG, "processAsyncTask()");
         createTaskFragment(new GetListOfEmployees(this));
     }
 

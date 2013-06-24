@@ -12,6 +12,7 @@ import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
 import imis.client.model.Block;
+import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.processor.EventsProcessor;
 import imis.client.ui.ColorConfig;
@@ -41,7 +42,6 @@ public class EventsChartActivity extends ChartActivity {
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
         processor = new EventsProcessor(getApplicationContext());
         initEventCodesAndDesc();
-
     }
 
     private void initEventCodesAndDesc() {
@@ -66,7 +66,6 @@ public class EventsChartActivity extends ChartActivity {
             case LOADER_EVENTS:
                 return new CursorLoader(this, EventQuery.CONTENT_URI,
                         null, EventQuery.SELECTION_CHART, getSelectionArgs(), null);
-            //TODO asi problem s dotazem - parametr zamestnanec
             default:
                 return super.onCreateLoader(i, bundle);
         }
@@ -93,6 +92,17 @@ public class EventsChartActivity extends ChartActivity {
                 break;
         }
 
+    }
+
+    @Override
+    protected String[] getSelectionArgs() {
+        String[] args = new String[3];
+        String icp = selectionArgs.get(PAR_EMP_ICP);
+        args[0] = (icp == null) ? "" : icp;
+        args[1] = selectionArgs.get(PAR_FROM);
+        args[2] = selectionArgs.get(PAR_TO);
+        Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
+        return args;
     }
 
     @Override
@@ -123,8 +133,8 @@ public class EventsChartActivity extends ChartActivity {
     }
 
     @Override
-    protected void processControlAsyncTask(String kodpra, String from, String to) {
-        createTaskFragment(new GetListOfEvents(this, kodpra, from, to));
+    protected void processControlAsyncTask(Employee emp, String from, String to) {
+        createTaskFragment(new GetListOfEvents(this, emp.getIcp(), from, to));
 
     }
 
@@ -152,6 +162,5 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
-        //TODO
     }
 }

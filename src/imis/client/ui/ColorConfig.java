@@ -18,7 +18,8 @@ import java.util.Map;
  */
 public class ColorConfig {
 
-    public static int getDefault(Context context, String key) {
+    public static int getDefault(Context context, String key) { //TODO key null
+        if (key == null) return Color.GRAY;
         if (key.equals(Event.KOD_PO_ARRIVE_NORMAL)) {
             return context.getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT);
         } else if (key.equals(Event.KOD_PO_ARRIVE_PRIVATE)) {

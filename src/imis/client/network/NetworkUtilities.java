@@ -9,11 +9,11 @@ import android.util.Log;
 import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.result.Result;
+import imis.client.asynctasks.util.AsyncUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class NetworkUtilities {
@@ -21,6 +21,10 @@ public class NetworkUtilities {
 
 
     public static Result testWebServiceAndDBAvailability(Context context) {
+        if (!isOnline(context)) {
+            return new Result(context.getString(R.string.device_is_offline));
+        }
+
         HttpHeaders requestHeaders = new HttpHeaders();
         org.springframework.http.HttpEntity<Object> entity = new org.springframework.http.HttpEntity<>(requestHeaders);
 
@@ -32,11 +36,8 @@ public class NetworkUtilities {
                     null);
             return new Result(response.getStatusCode());
         } catch (Exception e) {
-            if (e instanceof HttpServerErrorException) {
-                HttpServerErrorException exp = (HttpServerErrorException) e;
-                return new Result(exp.getStatusCode(), exp.getStatusText());
-            }
-            return new Result();
+            Result result = AsyncUtil.processException(e, Result.class);
+            return result;
         }
     }
 

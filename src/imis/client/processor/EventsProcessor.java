@@ -61,8 +61,8 @@ public class EventsProcessor {
             }
 
             boolean isTodayUnfinishedPresence = startEvent.isDruhArrival() && endEvent == null
-                    && startEvent.getCas() <= TimeUtil.currentTimeInLong()
-                    && startEvent.getDatum() == TimeUtil.todayInLong();
+                    && startEvent.getCas() <= TimeUtil.currentDayTimeInLong()
+                    && startEvent.getDatum() == TimeUtil.todayDateInLong();
             Log.d(TAG, "eventsToMapOfBlocks() isUnfinishedPresence " + isTodayUnfinishedPresence);
             if (isTodayUnfinishedPresence || endEvent != null) {
                 block = new Block();
@@ -73,7 +73,7 @@ public class EventsProcessor {
                     block.setEndTime(endEvent.getCas());
                     block.setLeaveId(endEvent.get_id());
                 } else {
-                    block.setEndTime(TimeUtil.currentTimeInLong());
+                    block.setEndTime(TimeUtil.currentDayTimeInLong());
                     block.setLeaveId(-1);
                 }
                 int index = Arrays.asList(Event.KOD_PO_VALUES).indexOf(startEvent.getKod_po());

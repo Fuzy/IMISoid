@@ -10,6 +10,7 @@ import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
 import imis.client.data.graph.StackedBarChartData;
+import imis.client.model.Employee;
 import imis.client.model.Record;
 import imis.client.processor.RecordsProcessor;
 import imis.client.ui.ColorConfig;
@@ -48,8 +49,8 @@ public class RecordsChartActivity extends ChartActivity {
     }
 
     @Override
-    protected void processControlAsyncTask(String kodpra, String from, String to) {
-        createTaskFragment(new GetListOfRecords(this, kodpra, from, to));
+    protected void processControlAsyncTask(Employee emp, String from, String to) {
+        createTaskFragment(new GetListOfRecords(this, emp.getKodpra(), from, to));
     }
 
     /*@Override
@@ -105,6 +106,17 @@ public class RecordsChartActivity extends ChartActivity {
             default:
                 super.onLoadFinished(cursorLoader, cursor);
         }
+    }
+
+    @Override
+    protected String[] getSelectionArgs() {
+        String[] args = new String[3];
+        String kodpra = selectionArgs.get(PAR_EMP_KOD);
+        args[0] = (kodpra == null) ? "" : kodpra;
+        args[1] = selectionArgs.get(PAR_FROM);
+        args[2] = selectionArgs.get(PAR_TO);
+        Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
+        return args;
     }
 
     @Override

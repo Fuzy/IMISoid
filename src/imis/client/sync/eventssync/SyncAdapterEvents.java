@@ -45,7 +45,6 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
             isManual = true;
         }
 
-
         Result testResult = NetworkUtilities.testWebServiceAndDBAvailability(context);
         if (testResult.getStatusCode() == null || testResult.getStatusCode().value() != HttpStatus.SC_OK) {
             Log.d(TAG, "onPerformSync() connection unavailable");
@@ -76,7 +75,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
 
         // Download all events for period and user
         String icp = accountManager.getUserData(account, AuthenticationConsts.KEY_ICP);
-        long date = extras.getLong(Event.KEY_DATE, TimeUtil.todayInLong());
+        long date = extras.getLong(Event.KEY_DATE, TimeUtil.todayDateInLong());
         processDownloadEvents(icp, date, stats);
 
         if (isManual) {

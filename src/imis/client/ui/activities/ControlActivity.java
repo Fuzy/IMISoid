@@ -40,7 +40,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         AdapterView.OnItemSelectedListener {
     private static final String TAG = ControlActivity.class.getSimpleName();
 
-    public static final String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP = "EMP";
+    public static final String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP_ICP = "EMP_ICP", PAR_EMP_KOD = "EMP_KOD";
     private static final int CALENDAR_ACTIVITY_DATE_CODE = 0;
     private static final int CALENDAR_ACTIVITY_DAY_CODE = 1;
     private static final int CALENDAR_ACTIVITY_MONTH_CODE = 2;
@@ -58,7 +58,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     private int selectedEditId = -1;
 
-    //    protected String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP = "EMP";
+    //    protected String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP_ICP = "EMP";
     protected Map<String, String> selectionArgs = new HashMap<>();
 
     @Override
@@ -81,7 +81,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         dateDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDateToSelectedField(TimeUtil.todayInLong());
+                setDateToSelectedField(TimeUtil.todayDateInLong());
                 processDataQuery();
             }
         });
@@ -96,7 +96,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         dateDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDay(TimeUtil.todayInLong());
+                setDay(TimeUtil.todayDateInLong());
                 processDataQuery();
             }
         });
@@ -111,7 +111,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         dateMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setMonth(TimeUtil.todayInLong());
+                setMonth(TimeUtil.todayDateInLong());
                 processDataQuery();
             }
         });
@@ -127,7 +127,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     }
 
     private void initSelectionValues() {
-        setMonth(TimeUtil.todayInLong());
+        setMonth(TimeUtil.todayDateInLong());
 
     }
 
@@ -183,8 +183,19 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
                 int[] to = new int[]{android.R.id.text1};
                 adapter = new SimpleCursorAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,
                         extendedCursor, from, to, 0);
+                adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+                    @Override
+                    public boolean setViewValue(View view, Cursor cursor, int i) {
+                        Log.d(TAG, "setViewValue() icp " + cursor.getString(Employee.IND_COL_ICP));
+                        if (cursor.isNull(Employee.IND_COL_ICP)) return false;
+                        String value = (cursor.isNull(i)) ? cursor.getString(Employee.IND_COL_ICP) : cursor.getString(i);
+                        ((TextView) view).setText(value);
+                        return true;
+                    }
+                });
                 spinnerEmp.setAdapter(adapter);
-                selectionArgs.put(PAR_EMP, getSelectedUser());
+                selectionArgs.put(PAR_EMP_ICP, getSelectedUser().getIcp());
+                selectionArgs.put(PAR_EMP_KOD, getSelectedUser().getKodpra());
                 break;
         }
     }
@@ -199,9 +210,11 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         return extendedCursor;
     }
 
-    protected String getSelectedUser() {
+    protected Employee getSelectedUser() {
         MergeCursor selectedItem = (MergeCursor) spinnerEmp.getSelectedItem();
-        return selectedItem.getString(Employee.IND_COL_KODPRA);
+        Employee employee = Employee.cursorToEmployee(selectedItem);
+        Log.d(TAG, "getSelectedUser() employee " + employee);
+        return employee;
     }
 
     private long getSelectedLongDateOrDefault() {
@@ -210,7 +223,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         } else if (selectedEditId == R.id.dateToEdit) {
             return dateTo;
         } else {
-            return TimeUtil.todayInLong();
+            return TimeUtil.todayDateInLong();
         }
 
     }
@@ -303,7 +316,8 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         switch (adapterView.getId()) {
             case R.id.spinnerEmp:
                 Log.d(TAG, "onItemSelected() spinnerEmp");
-                selectionArgs.put(PAR_EMP, getSelectedUser());
+                selectionArgs.put(PAR_EMP_ICP, getSelectedUser().getIcp());
+                selectionArgs.put(PAR_EMP_KOD, getSelectedUser().getKodpra());
                 processDataQuery();
                 break;
         }
@@ -332,12 +346,12 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     @Override
     protected void processAsyncTask() {
         try {
-            String kodpra = getSelectedUser();
-            if (kodpra.equals(AppConsts.EMPTY_SPINNER_ITEM))
+            Employee employee = getSelectedUser();
+            if (employee.getKodpra().equals(AppConsts.EMPTY_SPINNER_ITEM))
                 throw new NotUserSelectedException(getString(R.string.noEmp));
             getStringDateFrom();
             getStringDateTo();
-            processControlAsyncTask(kodpra, TimeUtil.formatDate(dateFrom), TimeUtil.formatDate(dateTo));
+            processControlAsyncTask(getSelectedUser(), TimeUtil.formatDate(dateFrom), TimeUtil.formatDate(dateTo));
         } catch (ParseException e) {
             Log.d(TAG, "refreshRecords() " + e.getMessage());
             showPeriodInputError(this);
@@ -350,5 +364,5 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         }
     }
 
-    protected abstract void processControlAsyncTask(String kodpra, String from, String to);
+    protected abstract void processControlAsyncTask(Employee emp, String from, String to);
 }
