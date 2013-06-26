@@ -9,17 +9,7 @@
             android:id="@+id/emp_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="50sp"
-            android:layout_centerInParent="true"
-            android:includeFontPadding="false">
-    </TextView>
-
-    <TextView
-            android:id="@+id/emp_kodpra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="50sp"
-            android:layout_centerInParent="true"
+            android:textSize="20sp"
             android:includeFontPadding="false">
     </TextView>
 
@@ -28,5 +18,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"/>
+
+    <TextView
+            android:id="@+id/emp_kod_po"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:includeFontPadding="false">
+    </TextView>
+
+    <TextView
+            android:id="@+id/emp_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:includeFontPadding="false">
+        <!--    android:textSize="20sp"-->
+    </TextView>
 
 </LinearLayout>

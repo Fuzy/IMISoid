@@ -21,7 +21,7 @@ import java.util.List;
  * Time: 18:38
  */
 public class RecordManager {
-    private static final String TAG = "RecordManager";
+    private static final String TAG = RecordManager.class.getSimpleName();
 
     public static int addRecord(Context context, Record record) {
         Log.d(TAG, "addRecord() " + record);
@@ -42,6 +42,11 @@ public class RecordManager {
     public static int deleteRecordsOlderThan(Context context, long date) {
         Log.d(TAG, "deleteRecordsOlderThan()" + "date = [" + date + "]");
         return delete(context, RecordQuery.SELECTION_OLDER_THAN, new String[]{String.valueOf(date)});
+    }
+
+   public static int deleteRecordsOnKodpra(Context context, String kodpra) {
+       Log.d(TAG,"deleteRecordsOnKodpra()" + "kodpra = [" + kodpra + "]");
+        return delete(context, RecordQuery.SELECTION_KODPRA, new String[]{kodpra});
     }
 
     public static int delete(Context context, String where, String[] selectionArgs){

@@ -38,7 +38,6 @@ public class RecordListActivity extends ControlActivity implements
     private RecordsCursorAdapter adapter;
     private static final int LOADER_RECORDS = 0x08;
     private static final int DETAIL_ACTIVITY_CODE = 1;
-
     private String[] typesArray;
     protected Spinner spinnerType;
     private final String PAR_TYPE = "TYPE";
@@ -143,7 +142,7 @@ public class RecordListActivity extends ControlActivity implements
 
         switch (adapterView.getId()) {
             case R.id.spinnerRecords:
-                selectionArgs.put(PAR_TYPE, getSelectedType());
+                selectionArgs.put(PAR_TYPE, (String) spinnerType.getSelectedItem());
                 processDataQuery();
                 break;
             default:
@@ -156,9 +155,9 @@ public class RecordListActivity extends ControlActivity implements
     protected String[] getSelectionArgs() {
         String[] args = new String[4];
         String type = selectionArgs.get(PAR_TYPE);
-        args[0] = (type == null) ? "" : type;
+        args[0] = (type == null || type.equals(AppConsts.EMPTY_SPINNER_ITEM)) ? "" : type;
         String kodpra = selectionArgs.get(PAR_EMP_KOD);
-        args[1] = (kodpra == null) ? "" : kodpra;
+        args[1] = (kodpra == null || kodpra.equals(AppConsts.EMPTY_SPINNER_ITEM)) ? "" : kodpra;
         args[2] = selectionArgs.get(PAR_FROM);
         args[3] = selectionArgs.get(PAR_TO);
         Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));
@@ -169,13 +168,6 @@ public class RecordListActivity extends ControlActivity implements
     protected void processDataQuery() {
         Log.d(TAG, "processDataQuery()");
         getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
-    }
-
-    private String getSelectedType() {
-        String type = (String) spinnerType.getSelectedItem();
-        if (type == null || type.equals(AppConsts.EMPTY_SPINNER_ITEM)) type = "";
-        Log.d(TAG, "getSelectedType() type " + type);
-        return type;
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.CheckBox;
+import imis.client.AppConsts;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
@@ -112,7 +113,7 @@ public class RecordsChartActivity extends ChartActivity {
     protected String[] getSelectionArgs() {
         String[] args = new String[3];
         String kodpra = selectionArgs.get(PAR_EMP_KOD);
-        args[0] = (kodpra == null) ? "" : kodpra;
+        args[0] = (kodpra == null || kodpra.equals(AppConsts.EMPTY_SPINNER_ITEM)) ? "" : kodpra;
         args[1] = selectionArgs.get(PAR_FROM);
         args[2] = selectionArgs.get(PAR_TO);
         Log.d(TAG, "getSelectionArgs() args " + Arrays.toString(args));

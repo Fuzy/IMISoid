@@ -65,7 +65,7 @@ public class EventsChartActivity extends ChartActivity {
         switch (i) {
             case LOADER_EVENTS:
                 return new CursorLoader(this, EventQuery.CONTENT_URI,
-                        null, EventQuery.SELECTION_CHART, getSelectionArgs(), null);
+                        null, EventQuery.SELECTION_CHART, getSelectionArgs(), EventQuery.ORDER_BY_DATE_TIME_ASC);
             default:
                 return super.onCreateLoader(i, bundle);
         }
@@ -81,7 +81,7 @@ public class EventsChartActivity extends ChartActivity {
                 getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
                 break;
             case LOADER_EVENTS:
-                Log.d(TAG, "onLoadFinished() LOADER_EVENTS");
+                Log.d(TAG, "onLoadFinished() LOADER_EVENT size " + cursor.getCount());
                 blockList = processor.eventsToMapOfBlocks(cursor);
                 String[] values = processor.eventsCodesInBlocks(blockList);
                 initCheckBoxes(values);

@@ -104,9 +104,9 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private void showToastIfErrors() {
         StringBuilder errMsg = new StringBuilder();
-        if (arriveEvent != null && arriveEvent.getMsg() != null)
+        if (arriveEvent != null && arriveEvent.isError() && arriveEvent.getMsg() != null)
             errMsg.append(getString(R.string.title_arrive_err) + arriveEvent.getMsg() + "\n");
-        if (leaveEvent != null && leaveEvent.getMsg() != null)
+        if (leaveEvent != null && leaveEvent.isError() && leaveEvent.getMsg() != null)
             errMsg.append(getString(R.string.title_leave_err) + leaveEvent.getMsg() + "\n");
         if (errMsg.length() != 0) Toast.makeText(getApplication(), errMsg, Toast.LENGTH_LONG).show();
     }
@@ -372,13 +372,13 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         event.setTyp(Event.TYPE_ORIG);
         event.setDatum(date);
         try {
-            String kod = AccountUtil.getUserUsername(this);
-            String icp = AccountUtil.getUserICP(this);
+//            String kod = AccountUtil.getUserUsername(this);
+            String icp = AccountUtil.getUserUsername(this);
             event.setIcp(icp);
-            event.setIc_obs(kod);
+//            event.setIc_obs(kod);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            AppUtil.showAccountNotExistsError(getSupportFragmentManager());//TODO
+            AppUtil.showAccountNotExistsError(getSupportFragmentManager());
             finish();
         }
     }

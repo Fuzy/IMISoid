@@ -49,7 +49,7 @@ public class EmployeeWidgetProvider extends AppWidgetProvider {
                     + " " + TimeUtil.formatTime(employee.getCas());
             views.setTextViewText(R.id.emp_time, last);
             SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
-            int color = settings.getInt(employee.getKod_po(), ColorConfig.getDefault(context, employee.getKod_po()));
+            int color = settings.getInt(employee.getKod_po(), ColorConfig.getColor(context, employee.getKod_po()));
             views.setInt(R.id.emp_kod_po, "setBackgroundColor", color);
 
             // Tell the widget manager

@@ -62,6 +62,21 @@
                   android:layout_marginLeft="10dip"/>
 
         <TextView
+                android:text="@string/record_detail_kodpra"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginBottom="5dip"/>
+
+        <TextView android:id="@+id/recordKodpra"
+                  android:textSize="16sp"
+                  android:textStyle="bold"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dip"/>
+
+        <TextView
                 android:text="@string/record_detail_date"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_width="wrap_content"

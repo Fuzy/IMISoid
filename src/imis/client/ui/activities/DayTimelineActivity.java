@@ -49,6 +49,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private String currentFragment;
     //TODO co s neukoncenou aktivitou v dochazce - JSA
     //TODO upozornot na chybu v datech, sluzba + notifikace
+    //TODO scroll na posledni udalost
     private EventsProcessor processor;
 
     @Override
@@ -244,7 +245,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     protected void processAsyncTask() {
         String icp = null;
         try {
-            icp = AccountUtil.getUserICP(this);
+            icp = AccountUtil.getUserUsername(this);
             createTaskFragment(new GetListOfEmployees(this, icp));
         } catch (Exception e) {
             showAccountNotExistsError(getSupportFragmentManager());
@@ -288,7 +289,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         switch (i) {
             case LOADER_EVENTS:
                 try {
-                    String icp = AccountUtil.getUserICP(this);
+                    String icp = AccountUtil.getUserUsername(this);
                     Log.d(TAG, "onCreateLoader() icp " + icp);
                     return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI, null,
                             EventQuery.SELECTION_DAY_USER_UNDELETED, new String[]{String.valueOf(date), icp}, EventQuery.ORDER_BY_DATE_TIME_ASC);
@@ -317,7 +318,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         // Check if user exists
         try {
             AccountUtil.getUserUsername(this);
-            AccountUtil.getUserICP(this);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             AppUtil.showAccountNotExistsError(getSupportFragmentManager());

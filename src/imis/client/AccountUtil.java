@@ -25,11 +25,11 @@ public class AccountUtil {
         return accounts[0].name;
     }
 
-    public static String getUserICP(Context context) throws Exception {
+    /*public static String getUserICP(Context context) throws Exception {
         AccountManager accountManager = AccountManager.get(context);
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);
         return accountManager.getUserData(accounts[0], AuthenticationConsts.KEY_ICP);
-    }
+    }*/
 
     public static Account getUserAccount(Context context) throws Exception {
         AccountManager accountManager = AccountManager.get(context);

@@ -10,7 +10,6 @@ import imis.client.R;
 import imis.client.TimeUtil;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultList;
-import imis.client.authentication.AuthenticationConsts;
 import imis.client.model.Event;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EventManager;
@@ -74,7 +73,8 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         }
 
         // Download all events for period and user
-        String icp = accountManager.getUserData(account, AuthenticationConsts.KEY_ICP);
+        String icp = account.name;
+        //accountManager.getUserData(account, AuthenticationConsts.KEY_ICP);
         long date = extras.getLong(Event.KEY_DATE, TimeUtil.todayDateInLong());
         processDownloadEvents(icp, date, stats);
 

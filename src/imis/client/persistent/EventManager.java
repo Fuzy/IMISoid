@@ -43,6 +43,11 @@ public class EventManager {
         return delete(context, EventQuery.SELECTION_OLDER_THAN, new String[]{String.valueOf(date)});
     }
 
+    public static int deleteEventsOnIcp(Context context, String icp) {
+        Log.d(TAG,"deleteEventsOnIcp()" + "icp = [" + icp + "]");
+        return delete(context, EventQuery.SELECTION_ICP, new String[]{icp});
+    }
+
     public static int delete(Context context, String where, String[] selectionArgs) {
         Log.d(TAG, "delete()" + "where = [" + where + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
@@ -64,7 +69,7 @@ public class EventManager {
     public static Event getLastEvent(Context context) {
         Log.d(TAG, "getLastEvent()");
         try {
-            String icp = AccountUtil.getUserICP(context);
+            String icp = AccountUtil.getUserUsername(context);
             return getEvent(context, EventQuery.SELECTION_USER_LAST, new String[]{icp}, EventQuery.ORDER_BY_LAST);
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());

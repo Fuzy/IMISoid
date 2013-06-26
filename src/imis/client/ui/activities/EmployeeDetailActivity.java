@@ -7,8 +7,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.model.Employee;
 import imis.client.persistent.EmployeeManager;
+
+import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,13 +23,17 @@ public class EmployeeDetailActivity extends Activity {
     private static final String TAG = EmployeeDetailActivity.class.getSimpleName();
     private Employee employee;
     private ImageButton favButton;
-    //TODO vice info
+    private String[] kody_po_values, kody_po_desc;
+    //TODO vyhledat v seznamu kontaktu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         setContentView(R.layout.employee_profile);
+
+        kody_po_values = getResources().getStringArray(R.array.kody_po_values);
+        kody_po_desc = getResources().getStringArray(R.array.kody_po_desc);
 
         long id = getIntent().getLongExtra(Employee.COL_ID, -1);
         employee = EmployeeManager.getEmployeeOnId(this, id);
@@ -35,10 +42,13 @@ public class EmployeeDetailActivity extends Activity {
     }
 
     private void populateEmployeeFields() {
-        TextView kodPra = (TextView) findViewById(R.id.emp_kodpra);
-        kodPra.setText(employee.getKodpra());
-        TextView name = (TextView) findViewById(R.id.emp_name);
-        name.setText(employee.getName());
+        //TODO null nepovine hodnoty
+        //TODO layout
+        String name = employee.getName() + "(" + employee.getKodpra() + ")";
+        ((TextView) findViewById(R.id.emp_name)).setText(name);
+        int i = Arrays.asList(kody_po_values).indexOf(employee.getKod_po());
+        ((TextView) findViewById(R.id.emp_kod_po)).setText(kody_po_desc[i]);
+        ((TextView) findViewById(R.id.emp_time)).setText(TimeUtil.formatTime(employee.getCas()));
 
         favButton = (ImageButton) findViewById(R.id.emp_favorite);
         if (employee.isFav()) {

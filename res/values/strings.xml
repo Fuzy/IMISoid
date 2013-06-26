@@ -176,5 +176,6 @@
     <string name="add_leave">Přidat odchod</string>
     <string name="title_arrive_btn">Zadej příchod</string>
     <string name="color_dialog_title">Zvol barvu</string>
+    <string name="record_detail_kodpra">Pracovník</string>
 
 </resources>

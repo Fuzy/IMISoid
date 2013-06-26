@@ -36,6 +36,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
     private TextView mMessage;
     private EditText passwordEdit, icpEdit;
     private Employee employee = null;
+    //TODO pri spusteni nastaveni se vymaze ICP
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -72,10 +73,10 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
 
     private void finishLogin() {
         Log.d(TAG, "finishLogin()");
-        final Account account = new Account(icp, ACCOUNT_TYPE);
+        final Account account = new Account(icp, ACCOUNT_TYPE);/*
         Bundle userdata = new Bundle();
-        userdata.putString(AuthenticationConsts.KEY_ICP, icp);
-        accountManager.addAccountExplicitly(account, password, userdata);
+        userdata.putString(AuthenticationConsts.KEY_ICP, icp);*/
+        accountManager.addAccountExplicitly(account, password, null);
 
         ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY1, 1);
         ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY1, true);

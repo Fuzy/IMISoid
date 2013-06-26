@@ -8,8 +8,6 @@ import imis.client.R;
 import imis.client.model.Event;
 import imis.client.model.Record;
 
-import java.util.Map;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Martin Kadlec
@@ -18,7 +16,7 @@ import java.util.Map;
  */
 public class ColorConfig {
 
-    public static int getDefault(Context context, String key) { //TODO key null
+    private static int getDefault(Context context, String key) { //TODO key null
         if (key == null) return Color.GRAY;
         if (key.equals(Event.KOD_PO_ARRIVE_NORMAL)) {
             return context.getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT);
@@ -68,11 +66,6 @@ public class ColorConfig {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(key, color);
         editor.apply();
-    }
-
-    public static Map<String, Integer> getColors(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
-        return (Map<String, Integer>) settings.getAll();
     }
 
 }

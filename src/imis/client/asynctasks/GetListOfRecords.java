@@ -51,21 +51,27 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
             Log.d(TAG, "doInBackground() ok " + body);
             return new ResultList<Record>(response.getStatusCode(), body);
         } catch (Exception e) {
-            ResultList<Record> resultItem = AsyncUtil.processException(e, ResultList.class);
-            Log.d(TAG, "doInBackground() resultItem " + resultItem);
-            return resultItem;
+            ResultList<Record> resultList = AsyncUtil.processException(e, ResultList.class);
+            Log.d(TAG, "doInBackground() resultList " + resultList);
+            return resultList;
         }
     }
 
     @Override
     protected void onPostExecute(ResultList<Record> resultList) {
 
-        if (resultList.isOk() && !resultList.isEmpty()) {
-            Log.d(TAG, "onPostExecute() OK and not empty");
-            Record[] records = resultList.getArray();
-            if (records != null) {
-                RecordManager.addRecords(context, records);
-                Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(context));
+        if (resultList.isOk()) {
+            Log.d(TAG, "onPostExecute() OK");
+            String kodpra = params[0];
+            RecordManager.deleteRecordsOnKodpra(context, kodpra);
+
+            if (!resultList.isEmpty()) {
+                Log.d(TAG, "onPostExecute() OK and not empty");
+                Record[] records = resultList.getArray();
+                if (records != null) {
+                    RecordManager.addRecords(context, records);
+                    Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(context));
+                }
             }
         }
 

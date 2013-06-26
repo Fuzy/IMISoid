@@ -15,7 +15,9 @@ import imis.client.ui.adapters.EventsColorAdapter;
 import imis.client.ui.adapters.RecordsColorAdapter;
 import imis.client.ui.dialogs.ColorPickerDialog;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,20 +30,23 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
 
     private RecordsColorAdapter recordsAdapter;
     private EventsColorAdapter eventsAdapter;
-//    private ColorConfig colorConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.color_info);
 
-//        colorConfig = new ColorConfig(getApplicationContext());
         populateRecordTypeList();
-        populateEventTypeList();
+       populateEventTypeList();
     }
 
     private void populateRecordTypeList() {
-        final List<Map.Entry<String, Integer>> list = entryListForKeys(Record.TYPE_VALUES);
+        final List<Map.Entry<String, Integer>> list = new ArrayList<>();
+        for (int i = 0; i < Record.TYPE_VALUES.length; i++) {
+            String typeValue = Record.TYPE_VALUES[i];
+            MyEntry<String, Integer> entry = new MyEntry<String, Integer>(typeValue, ColorConfig.getColor(this, typeValue));
+            list.add(entry);
+        }
         recordsAdapter = new RecordsColorAdapter(this, -1, list);
         ListView recordsList = (ListView) findViewById(R.id.recordTypeList);
         recordsList.setAdapter(recordsAdapter);
@@ -49,21 +54,16 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
     }
 
     private void populateEventTypeList() {
-        final List<Map.Entry<String, Integer>> list = entryListForKeys(Event.KOD_PO_VALUES);
+        final List<Map.Entry<String, Integer>> list = new ArrayList<>();
+        for (int i = 0; i < Event.KOD_PO_VALUES.length; i++) {
+            String typeValue = Event.KOD_PO_VALUES[i];
+            MyEntry<String, Integer> entry = new MyEntry<String, Integer>(typeValue, ColorConfig.getColor(this, typeValue));
+            list.add(entry);
+        }
         eventsAdapter = new EventsColorAdapter(this, -1, list);
         ListView recordsList = (ListView) findViewById(R.id.eventstypeList);
         recordsList.setAdapter(eventsAdapter);
         recordsList.setOnItemLongClickListener(new MyOnLongItemClickListener());
-    }
-
-    private List<Map.Entry<String, Integer>> entryListForKeys(String[] keys) {
-        Map<String, Integer> colors = new TreeMap<>();
-        colors.putAll(ColorConfig.getColors(getApplicationContext()));
-
-        Set<String> set = new HashSet<>();
-        set.addAll(Arrays.asList(keys));
-        colors.keySet().retainAll(set);
-        return new ArrayList<Map.Entry<String, Integer>>(colors.entrySet());
     }
 
     @Override
@@ -99,6 +99,33 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
         bundle.putString(AppConsts.KEY_TYPE, key);
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "ColorPickerDialog");
+    }
+
+    final class MyEntry<K, V> implements Map.Entry<K, V> {
+        private final K key;
+        private V value;
+
+        public MyEntry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(V value) {
+            V old = this.value;
+            this.value = value;
+            return old;
+        }
     }
 
 }
