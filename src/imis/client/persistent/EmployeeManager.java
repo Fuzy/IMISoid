@@ -185,9 +185,9 @@ public class EmployeeManager {
 
         private static final String SELECTION_ICP = Employee.COL_ICP + "=?";
         private static final String SELECTION_ID = Employee.COL_ID + "=?";
-        //        private static final String SELECTION_KODPRA = Employee.COL_KODPRA + "=?";
         private static final String SELECTION_WIDGET_ID = Employee.COL_WIDGET_ID + "=?";
         private static final String SELECTION_WIDGET_NOT_NULL = Employee.COL_WIDGET_ID + " is not null";
+        public static final String SELECTION_SUBORDINATES = Employee.COL_SUB + "=1";
 
         private static final String ORDER_BY_USER = Employee.COL_USER + "=1 DESC";
         private static final String ORDER_BY_PRESENT = Employee.COL_DRUH + "='P' DESC";
@@ -195,5 +195,6 @@ public class EmployeeManager {
         private static final String ORDER_BY_KOD = Employee.COL_KODPRA + " ASC";
         public static final String ORDER_BY = ORDER_BY_USER + "," + ORDER_BY_PRESENT +
                 "," + ORDER_BY_FAV + "," + ORDER_BY_KOD;
+
     }
 }

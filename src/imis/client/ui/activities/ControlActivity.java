@@ -49,16 +49,15 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     private SimpleCursorAdapter adapter;
     private final MyOnFocusChangeListener focusListener = new MyOnFocusChangeListener();
+    protected final SubordinateClickListener checkBoxClickListener = new SubordinateClickListener();
 
     protected Spinner spinnerEmp;
     protected ImageButton dateDateButton, dateMonthButton, dateDayButton;
     protected EditText dateFromEdit, dateToEdit;
 
     protected long dateFrom, dateTo;
-
+    private CheckBox subOnly;  //TODO napoveda polozky
     private int selectedEditId = -1;
-
-    //    protected String PAR_FROM = "FROM", PAR_TO = "TO", PAR_EMP_ICP = "EMP";
     protected Map<String, String> selectionArgs = new HashMap<>();
 
     @Override
@@ -71,6 +70,8 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     protected void initControlPanel() {
         spinnerEmp = (Spinner) findViewById(R.id.spinnerEmp);
         spinnerEmp.setOnItemSelectedListener(this);
+        subOnly = (CheckBox) findViewById(R.id.subOnly);
+        subOnly.setOnClickListener(checkBoxClickListener);
         dateFromEdit = (EditText) findViewById(R.id.dateFromEdit);
         dateFromEdit.setOnFocusChangeListener(focusListener);
         dateFromEdit.setInputType(InputType.TYPE_NULL);
@@ -128,7 +129,6 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     private void initSelectionValues() {
         setMonth(TimeUtil.todayDateInLong());
-
     }
 
     private void startCalendarActivity(long actual, int code) {
@@ -162,10 +162,15 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.d(TAG, "onCreateLoader()");
+
         switch (i) {
             case LOADER_EMPLOYEES:
+                String selection = null;
+                if (subOnly != null && subOnly.isChecked()) {
+                    selection = EmployeeManager.EmployeeQuery.SELECTION_SUBORDINATES;
+                }
                 return new CursorLoader(getApplicationContext(), EmployeeManager.EmployeeQuery.CONTENT_URI,
-                        null, null, null, EmployeeManager.EmployeeQuery.ORDER_BY);
+                        null, selection, null, EmployeeManager.EmployeeQuery.ORDER_BY);
             default:
                 return null;
         }
@@ -341,6 +346,15 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             Log.d(TAG, "onFocusChange() view " + view + " b " + b);
         }
 
+    }
+
+    private class SubordinateClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Log.d(TAG, "onClick()");
+            getSupportLoaderManager().restartLoader(LOADER_EMPLOYEES, null, ControlActivity.this);
+        }
     }
 
     @Override

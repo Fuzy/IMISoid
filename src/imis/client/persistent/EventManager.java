@@ -54,6 +54,12 @@ public class EventManager {
         return resolver.delete(EventQuery.CONTENT_URI, where, selectionArgs);
     }
 
+    public static int deleteUserNotDirtyEvents(Context context, String icp) {
+        Log.d(TAG, "deleteUserNotDirtyEvents()");
+        return delete(context, EventQuery.SELECTION_USER_NOT_DIRTY, new String[]{icp});
+
+    }
+
     /*public static int deleteAllEvents(Context context) {
         Log.d(TAG, "deleteAllEvents()");
         Uri uri = EventQuery.CONTENT_URI;
@@ -96,9 +102,9 @@ public class EventManager {
     }
 
 
-    public static List<Event> getDirtyEvents(Context context) {
-        Log.d(TAG, "getDirtyEvents()");
-        return getEvents(context, EventQuery.SELECTION_DIRTY);
+    public static List<Event> getUserDirtyEvents(Context context) {
+        Log.d(TAG, "getUserDirtyEvents()");
+        return getEvents(context, EventQuery.SELECTION_USER_DIRTY);
     }
 
     public static List<Event> getAllEvents(Context context) {
@@ -202,7 +208,8 @@ public class EventManager {
         private static final String ORDER_BY_LAST = ORDER_BY_DATE_DESC + ", " + ORDER_BY_TIME_DESC + ", " + ORDER_BY_ID + " LIMIT 1";
 
         public static final String SELECTION_ID = Event.COL_ID + "=?";
-        public static final String SELECTION_DIRTY = Event.COL_DIRTY + "=1";
+        public static final String SELECTION_USER_DIRTY = Event.COL_DIRTY + "=1"+ " and " + SELECTION_ICP;
+        public static final String SELECTION_USER_NOT_DIRTY = Event.COL_DIRTY + "=0"+ " and " + SELECTION_ICP;
         public static final String SELECTION_DAY_USER_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED + " and " + SELECTION_ICP;
         public static final String SELECTION_CHART = SELECTION_ICP + " and " + SELECTION_PERIOD + " and " + SELECTION_UNDELETED;
         public static final String ORDER_BY_DATE_TIME_ASC = ORDER_BY_DATE_ASC + ", " + ORDER_BY_TIME_ASC;

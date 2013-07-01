@@ -10,7 +10,7 @@ public class NetworkConsts {
     public static final String SCHEME = "http://";
     public static final String BASE_PATH = "/Imisoid_WS";
     private static final String EVENTS_PATH = "/events";
-    public static final String EVENTS_CREATE_PATH = "/events";
+    public static final String EVENTS_CREATE_PATH = EVENTS_PATH;
     public static final String EVENTS_DELETE_PATH = EVENTS_PATH + "/{rowid}";
     public static final String EVENTS_UPDATE_PATH = EVENTS_PATH + "/{rowid}";
     public static final String EVENTS_GET_PATH = EVENTS_PATH + "/{icp}?from={from}&to={to}";

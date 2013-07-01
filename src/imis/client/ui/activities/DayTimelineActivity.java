@@ -50,6 +50,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     //TODO co s neukoncenou aktivitou v dochazce - JSA
     //TODO upozornot na chybu v datech, sluzba + notifikace
     //TODO scroll na posledni udalost
+    //TODO tab layout pro alternativni zobrazeni
+    //TODO menu s obrazky
     private EventsProcessor processor;
 
     @Override
