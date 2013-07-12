@@ -2,6 +2,7 @@ package imis.client.asynctasks;
 
 import android.content.Context;
 import android.util.Log;
+import imis.client.AppConsts;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.asynctasks.util.AsyncUtil;
 import imis.client.authentication.AuthenticationUtil;
@@ -15,6 +16,8 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,28 +36,56 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
     protected ResultList<Record> doInBackground(String... params) {
         String kodpra = params[0], from = params[1], to = params[2];
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
-        requestHeaders.setAuthorization(authHeader);
-        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
+        ResultList<Record> resultList;
+        HttpEntity<Object> entity;
+        RestTemplate restTemplate;
+        Map<String, Object> statistics = new HashMap<String, Object>();
 
-        //Create a Rest template
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
-        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
-
+        // Get list of records
+        entity = prepareEntity();
+        restTemplate = prepareRestTemplate();
         try {
             ResponseEntity<Record[]> response = restTemplate.exchange(NetworkUtilities.getRecordsGetURL(context), HttpMethod.GET, entity,
                     Record[].class, kodpra, from, to);
             Record[] body = response.getBody();
             Log.d(TAG, "doInBackground() ok " + body);
-            return new ResultList<Record>(response.getStatusCode(), body);
+            resultList = new ResultList<Record>(response.getStatusCode(), body);
         } catch (Exception e) {
-            ResultList<Record> resultList = AsyncUtil.processException(e, ResultList.class);
-            Log.d(TAG, "doInBackground() resultList " + resultList);
+            resultList = AsyncUtil.processException(context, e, ResultList.class);
             return resultList;
         }
+
+        entity = prepareEntity();
+        restTemplate = prepareRestTemplate();
+        try {
+            ResponseEntity<Long> response = restTemplate.exchange(NetworkUtilities.getRecordsTimeGetURL(context), HttpMethod.GET, entity,
+                    Long.class, kodpra, from, to);
+            long body = response.getBody();
+            Log.d(TAG, "doInBackground() ok " + body);
+            statistics.put(AppConsts.SUM_RECORDS_TIME, body);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        resultList.setStatistics(statistics);
+        Log.d(TAG, "doInBackground() resultList " + resultList);
+        return resultList;
+    }
+
+    private RestTemplate prepareRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
+        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+        return restTemplate;
+    }
+
+    private HttpEntity<Object> prepareEntity() {
+        HttpHeaders requestHeaders = new HttpHeaders();
+        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
+        requestHeaders.setAuthorization(authHeader);
+        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
+        return entity;
     }
 
     @Override

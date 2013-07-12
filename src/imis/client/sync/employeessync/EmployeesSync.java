@@ -50,7 +50,7 @@ public class EmployeesSync {
             Employee employee = response.getBody();
             return new ResultItem<Employee>(response.getStatusCode(), employee);
         } catch (Exception e) {
-            ResultItem<Employee> resultItem = AsyncUtil.processException(e, ResultItem.class);
+            ResultItem<Employee> resultItem = AsyncUtil.processException(context, e, ResultItem.class);
             Log.d(TAG, "getEmployeeLastEvent() resultItem " + resultItem);
             return resultItem;
         }
@@ -77,7 +77,7 @@ public class EmployeesSync {
             Log.d(TAG, "doInBackground() body " + body);
             return new ResultList<Employee>(response.getStatusCode(), body);
         } catch (Exception e) {
-            ResultList<Employee> resultList = AsyncUtil.processException(e, ResultList.class);
+            ResultList<Employee> resultList = AsyncUtil.processException(context, e, ResultList.class);
             Log.d(TAG, "doInBackground() resultList " + resultList);
             return resultList;
         }

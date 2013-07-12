@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import imis.client.AppConsts;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.asynctasks.GetListOfRecords;
 import imis.client.asynctasks.result.Result;
 import imis.client.model.Employee;
@@ -22,6 +24,7 @@ import imis.client.ui.adapters.RecordsCursorAdapter;
 import imis.client.ui.fragments.RecordListFragment;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import static imis.client.persistent.RecordManager.RecordQuery.CONTENT_URI;
 import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_LIST;
@@ -39,14 +42,15 @@ public class RecordListActivity extends ControlActivity implements
     private static final int LOADER_RECORDS = 0x08;
     private static final int DETAIL_ACTIVITY_CODE = 1;
     private String[] typesArray;
-    protected Spinner spinnerType;
+    private Spinner spinnerType;
+    private TextView recordsStats, eventsStats;
     private final String PAR_TYPE = "TYPE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        setContentView(R.layout.records);
+        setContentView(R.layout.records);//TODO layout pro stats
         initControlPanel();
 
         Resources r = getResources();
@@ -58,6 +62,9 @@ public class RecordListActivity extends ControlActivity implements
                 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typesArray);
         spinnerType.setAdapter(spinnerArrayAdapter);
         spinnerType.setOnItemSelectedListener(this);
+
+        recordsStats = (TextView) findViewById(R.id.recordsStats);
+        eventsStats = (TextView) findViewById(R.id.eventsStats);
 
         addListFragment();
     }
@@ -168,11 +175,24 @@ public class RecordListActivity extends ControlActivity implements
     protected void processDataQuery() {
         Log.d(TAG, "processDataQuery()");
         getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
+        recordsStats.setText("");
+        eventsStats.setText("");
     }
 
     @Override
     public void onTaskFinished(Result result) {
-        Log.d(TAG, "onTaskFinished()");
+        Log.d(TAG, "onTaskFinished()" + "result = [" + result + "]");
+        Map<String, Object> statistics = result.getStatistics();
+        if (statistics != null) {
+            if (statistics.containsKey(AppConsts.SUM_EVENTS_TIME)) {
+                long eventsSum = (long) statistics.get(AppConsts.SUM_EVENTS_TIME);
+                eventsStats.setText(TimeUtil.formatTime(eventsSum));
+            }
+            if (statistics.containsKey(AppConsts.SUM_RECORDS_TIME)) {
+                long recordsSum = (long) statistics.get(AppConsts.SUM_RECORDS_TIME);
+                recordsStats.setText(TimeUtil.formatTime(recordsSum));
+            }
+        }
     }
 
 }

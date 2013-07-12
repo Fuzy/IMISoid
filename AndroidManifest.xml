@@ -10,24 +10,24 @@
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+   <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+   <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
-    <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+   <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
+   <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+   <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+   <uses-permission android:name="android.permission.VIBRATE"/>
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-    <permission
-            android:name="imis.client.permission.MAPS_RECEIVE"
-            android:protectionLevel="signature"/>
-    <uses-permission android:name="imis.client.permission.MAPS_RECEIVE"/>
-    <!--  
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+   <permission
+           android:name="imis.client.permission.MAPS_RECEIVE"
+           android:protectionLevel="signature"/>
+   <uses-permission android:name="imis.client.permission.MAPS_RECEIVE"/>
+   <!--
+   <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+   <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 -->
 
     <uses-feature
@@ -156,9 +156,7 @@
         <!-- Aktivita pro authentikaci -->
         <activity
                 android:name=".authentication.AuthenticatorActivity"
-                android:excludeFromRecents="true"
-                android:configChanges="orientation"
-                >
+                android:excludeFromRecents="true">
             <!--
             android:theme="@android:style/Theme.Dialog"
                 No intent-filter here! This activities is only ever launched by

@@ -19,6 +19,11 @@
                 android:entryValues="@array/syncEventsFrequencyValues"
                 android:title="@string/sync_events"
                 android:defaultValue="@string/sync_events_frequency_default"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/pref_act_period"
+            android:key="pref_act_period">
         <ListPreference
                 android:key="@string/prefSyncWidgetsFrequency"
                 android:entries="@array/prefSyncWidgetsFrequency"
@@ -34,7 +39,7 @@
     </PreferenceCategory>
     <PreferenceCategory
             android:title="@string/pref_notification"
-            android:key="pref_notification_period">
+            android:key="pref_notification">
         <CheckBoxPreference
                 android:key="@string/prefNotificationArrive"
                 android:title="@string/pref_notification_arrive"
@@ -51,5 +56,21 @@
                 android:entryValues="@array/prefNotificationDelayValues"
                 android:title="@string/pref_notification_freq"
                 android:defaultValue="@string/pref_notification_default"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/pref_misc"
+            android:key="pref_notification_period">
+        <Preference android:title="@string/menu_network">
+            <intent android:targetClass="imis.client.ui.activities.NetworkSettingsActivity"
+                    android:targetPackage="imis.client"/>
+        </Preference>
+        <Preference android:title="@string/menu_color_info">
+            <intent android:targetClass="imis.client.ui.activities.InfoColorActivity"
+                    android:targetPackage="imis.client"/>
+        </Preference>
+        <Preference android:title="@string/pref_location">
+            <intent android:targetClass="imis.client.ui.activities.LocationSettingsActivity"
+                    android:targetPackage="imis.client"/>
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

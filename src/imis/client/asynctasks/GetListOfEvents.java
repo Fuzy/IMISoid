@@ -51,7 +51,7 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultLis
             Event[] body = response.getBody();
             return new ResultList<Event>(response.getStatusCode(), body);
         } catch (Exception e) {
-            ResultList<Event> resultItem = AsyncUtil.processException(e, ResultList.class);
+            ResultList<Event> resultItem = AsyncUtil.processException(context,e, ResultList.class);
             return resultItem;
         }
     }

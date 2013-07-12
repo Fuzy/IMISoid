@@ -33,17 +33,17 @@
     <item android:id="@+id/menu_employeesPresent"
           android:title="@string/menu_employees_present"
           android:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/network_settings"
+   <!-- <item android:id="@+id/settings_network"
           android:icon="@drawable/ic_menu_settings_holo_light"
           android:title="@string/menu_network"
-          android:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/info_color"
+          android:showAsAction="ifRoom|withText"/>-->
+   <!-- <item android:id="@+id/settings_color"
           android:title="@string/menu_color_info"
-          android:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/sync_settings"
+          android:showAsAction="ifRoom|withText"/>-->
+    <item android:id="@+id/settings"
           android:title="@string/sync_settings"
           android:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/location_settings"
+    <!--<item android:id="@+id/location_settings"
           android:title="@string/location_settings"
-          android:showAsAction="ifRoom|withText"/>
+          android:showAsAction="ifRoom|withText"/>-->
 </menu>

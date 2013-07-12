@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 import imis.client.R;
 
-public class Authenticator extends AbstractAccountAuthenticator {
-    private static final String TAG = Authenticator.class.getSimpleName();
+public class AccountAuthenticator extends AbstractAccountAuthenticator {
+    private static final String TAG = AccountAuthenticator.class.getSimpleName();
 
     // Authentication Service context
     private final Context context;
 
-    public Authenticator(Context context) {
+    public AccountAuthenticator(Context context) {
         super(context);
-        Log.d(TAG, "Authenticator()");
+        Log.d(TAG, "AccountAuthenticator()");
         this.context = context;
     }
 

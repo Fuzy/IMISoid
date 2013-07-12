@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.*;
+import imis.client.AppUtil;
 import imis.client.R;
 
 import static imis.client.AppConsts.*;
@@ -131,7 +132,10 @@ public class LocationSettingsActivity extends FragmentActivity {
     }
 
     private void savePosition() {
-//        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        if (position == null || circle == null) {
+            AppUtil.showError(this, getString(R.string.position_error));
+            return;
+        }
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         SharedPreferences.Editor editor = settings.edit();
@@ -144,7 +148,6 @@ public class LocationSettingsActivity extends FragmentActivity {
     }
 
     private int loadSeekPosition() {
-//        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         int anInt = settings.getInt(KEY_SEEK_POS, 0);

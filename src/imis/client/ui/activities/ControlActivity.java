@@ -354,6 +354,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         public void onClick(View view) {
             Log.d(TAG, "onClick()");
             getSupportLoaderManager().restartLoader(LOADER_EMPLOYEES, null, ControlActivity.this);
+            processDataQuery();
         }
     }
 

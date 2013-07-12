@@ -50,7 +50,8 @@ public class AuthEmployee extends NetworkingAsyncTask<String, Void, ResultItem<E
             Employee employee = response.getBody();
             return new ResultItem<Employee>(response.getStatusCode(), employee);
         } catch (Exception e) {
-            ResultItem<Employee> resultItem = AsyncUtil.processException(e, ResultItem.class);
+            @SuppressWarnings("unchecked")
+            ResultItem<Employee> resultItem = AsyncUtil.processException(context,e, ResultItem.class);
             Log.d(TAG, "doInBackground() resultItem " + resultItem);
             return resultItem;
         }

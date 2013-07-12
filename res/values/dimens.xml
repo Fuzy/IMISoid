@@ -15,6 +15,7 @@
   -->
 <resources>
     <dimen name="empMargin">3dp</dimen>
+    <dimen name="statsMargin">15dp</dimen>
 
     <!-- UI elements -->
     <!--<dimen name="colorstrip_height">6dp</dimen>

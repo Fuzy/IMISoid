@@ -7,19 +7,19 @@ import android.util.Log;
 
 public class AuthenticationService extends Service {
   private static final String TAG = AuthenticationService.class.getSimpleName();
-  private Authenticator authenticator;
+  private AccountAuthenticator accountAuthenticator;
 
   @Override
   public void onCreate() {
     super.onCreate();
     Log.d(TAG, "onCreate()");
-    authenticator = new Authenticator(this);
+    accountAuthenticator = new AccountAuthenticator(this);
   }
 
   @Override
   public IBinder onBind(Intent intent) {
     Log.d(TAG, "onBind()" + intent);
-    return authenticator.getIBinder();
+    return accountAuthenticator.getIBinder();
   }
 
 }

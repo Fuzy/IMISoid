@@ -91,7 +91,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         // Now we tell our caller, could be the Android Account Manager or even our own application
         // that the process was successful
         final Intent intent = new Intent();
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, icp);
+        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, icp);//TODO pryc
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);

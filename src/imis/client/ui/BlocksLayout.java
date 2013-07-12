@@ -71,9 +71,12 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
             addViewInLayout(mNowView, -1, mNowView.getLayoutParams());
         }
 
+        Log.d(TAG, "ensureChildren() mAdapter.getDate() " + mAdapter.getDate());
         if (TimeUtil.belongsNowToDate(mAdapter.getDate())) {
+            Log.d(TAG, "ensureChildren() VISIBLE");
             mNowView.setVisibility(View.VISIBLE);
         } else {
+            Log.d(TAG, "ensureChildren() INVISIBLE");
             mNowView.setVisibility(View.INVISIBLE);
         }
 
@@ -153,13 +156,12 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
         }
 
         //position now view
-        final long now = System.currentTimeMillis();
+        final long now = TimeUtil.currentDayTimeInLong();
         top = mRulerView.getTimeVerticalOffset(now);
         bottom = top + mNowView.getMeasuredHeight();
         left = 0;
         right = getWidth();
         mNowView.layout(left, top, right, bottom);
-
     }
 
     @Override

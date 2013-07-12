@@ -52,6 +52,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     //TODO scroll na posledni udalost
     //TODO tab layout pro alternativni zobrazeni
     //TODO menu s obrazky
+    //TODO logo
     private EventsProcessor processor;
 
     @Override
@@ -205,9 +206,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             case R.id.sync_button:
                 performSync();
                 return true;
-            case R.id.network_settings:
+            /*case R.id.settings_network:
                 startNetworkSettingActivity();
-                return true;
+                return true;*/
             case R.id.menu_calendar:
                 startCalendarActivity();
                 return true;
@@ -229,15 +230,15 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             case R.id.menu_recordsChart:
                 startRecordsChartActivity();
                 return true;
-            case R.id.info_color:
+           /* case R.id.settings_color:
                 startColorInfoActivity();
-                return true;
-            case R.id.sync_settings:
+                return true;*/
+            case R.id.settings:
                 startSyncSettingsActivity();
                 return true;
-            case R.id.location_settings:
+           /* case R.id.location_settings:
                 startLocationSettingsActivity();
-                return true;
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -348,10 +349,10 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         startActivity(intent);
     }
 
-    private void startNetworkSettingActivity() {
+    /*private void startNetworkSettingActivity() {
         Intent intent = new Intent(this, NetworkSettingsActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     private void startCalendarActivity() {
         Intent intent = new Intent(this, CalendarActivity.class);
@@ -379,20 +380,20 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         startActivity(intent);
     }
 
-    private void startColorInfoActivity() {
+   /* private void startColorInfoActivity() {
         Intent intent = new Intent(this, InfoColorActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     private void startSyncSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
-    private void startLocationSettingsActivity() {
+   /* private void startLocationSettingsActivity() {
         Intent intent = new Intent(this, LocationSettingsActivity.class);
         startActivity(intent);
-    }
+    }*/
 
 
     @Override

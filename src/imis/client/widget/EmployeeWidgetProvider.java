@@ -5,9 +5,9 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
-import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.TimeUtil;
 import imis.client.model.Employee;
@@ -48,7 +48,8 @@ public class EmployeeWidgetProvider extends AppWidgetProvider {
             String last = employee.getDruh() + " " + TimeUtil.formatEmpDate(employee.getDatum())
                     + " " + TimeUtil.formatTime(employee.getCas());
             views.setTextViewText(R.id.emp_time, last);
-            SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+            //context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
             int color = settings.getInt(employee.getKod_po(), ColorConfig.getColor(context, employee.getKod_po()));
             views.setInt(R.id.emp_kod_po, "setBackgroundColor", color);
 

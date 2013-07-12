@@ -350,7 +350,7 @@ public class Event {
     private static int COL_NUM_ERROR = 13;
     private static int COL_NUM_MSG = 14;
 
-    public static final String JSON_SERVER_ID = "si";//TODO uspora dat
+    public static final String JSON_SERVER_ID = "si";
     public static final String JSON_DELETED = "de";
     public static final String JSON_SYNC = "sy";
 

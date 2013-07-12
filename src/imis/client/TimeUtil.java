@@ -32,7 +32,7 @@ public class TimeUtil {
         return timeInMs;
     }
 
-    public static long todayDateInLong() {//TODO casovy posun, datum jako long
+    public static long todayDateInLong() {//TODO BUG!!! casovy posun, datum jako long
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);

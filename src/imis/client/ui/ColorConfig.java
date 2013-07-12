@@ -3,7 +3,7 @@ package imis.client.ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import imis.client.AppConsts;
+import android.preference.PreferenceManager;
 import imis.client.R;
 import imis.client.model.Event;
 import imis.client.model.Record;
@@ -16,7 +16,7 @@ import imis.client.model.Record;
  */
 public class ColorConfig {
 
-    private static int getDefault(Context context, String key) { //TODO key null
+    private static int getDefault(Context context, String key) {
         if (key == null) return Color.GRAY;
         if (key.equals(Event.KOD_PO_ARRIVE_NORMAL)) {
             return context.getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT);
@@ -56,13 +56,15 @@ public class ColorConfig {
     }
 
     public static int getColor(Context context, String key) {
-        SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        //context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
         int color = settings.getInt(key, ColorConfig.getDefault(context, key));
         return color;
     }
 
     public static void setColor(Context context, String key, int color) {
-        SharedPreferences settings = context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        //context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(key, color);
         editor.apply();

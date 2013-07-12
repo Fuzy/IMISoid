@@ -2,6 +2,8 @@ package imis.client.asynctasks.result;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Martin Kadlec
@@ -12,6 +14,7 @@ public class Result {
     protected HttpStatus statusCode;
     protected String msg;
     protected boolean unknownErr;
+    protected Map<String, Object> statistics;
 
     public Result() {
         this.unknownErr = true;
@@ -43,6 +46,14 @@ public class Result {
         return msg;
     }
 
+    public Map<String, Object> getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(Map<String, Object> statistics) {
+        this.statistics = statistics;
+    }
+
     public boolean isUnknownErr() {
         return unknownErr;
     }
@@ -58,13 +69,13 @@ public class Result {
     public boolean isOk() {
         return (!isUnknownErr() && !isServerError() && !isClientError());
     }
-
+/*
     @Override
     public String toString() {
         return "Result{" +
                 "statusCode=" + statusCode +
                 ", msg='" + msg + '\'' +
                 ", unknownErr=" + unknownErr +
-                '}';
-    }
+                ", statistics=" + ((statistics == null) ? null : statistics.keySet()) + '}';
+    }*/
 }

@@ -50,7 +50,7 @@ public class EventsSync {
                     HttpMethod.DELETE, entity, null, rowid);
             return new Result(response.getStatusCode());
         } catch (Exception e) {
-            Result result = AsyncUtil.processException(e, Result.class);
+            Result result = AsyncUtil.processException(context, e, Result.class);
             return result;
         }
     }
@@ -77,7 +77,7 @@ public class EventsSync {
             Log.d(TAG, "getUserEvents() events " + events);
             return new ResultList<Event>(response.getStatusCode(), events);
         } catch (Exception e) {
-            ResultList<Event> resultList = AsyncUtil.processException(e, ResultList.class);
+            ResultList<Event> resultList = AsyncUtil.processException(context, e, ResultList.class);
             return resultList;
         }
     }
@@ -104,7 +104,7 @@ public class EventsSync {
             Log.d(TAG, "createEvent() event uri : " + location.getPath());
             return new Result(response.getStatusCode());
         } catch (Exception e) {
-            Result result = AsyncUtil.processException(e, Result.class);
+            Result result = AsyncUtil.processException(context, e, Result.class);
             return result;
         }
 
@@ -129,7 +129,7 @@ public class EventsSync {
                     entity, null, event.getServer_id());
             return new Result(response.getStatusCode());
         } catch (Exception e) {
-            Result result = AsyncUtil.processException(e, Result.class);
+            Result result = AsyncUtil.processException(context, e, Result.class);
             return result;
         }
     }

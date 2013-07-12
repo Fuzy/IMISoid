@@ -29,8 +29,6 @@ import java.util.Map;
  */
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
-    //TODO menu z jedne polozky
-    //TODO neplest synchronizaci a aktualizaci
 
     private static Map<String, String> eventsFreq = new HashMap<>();
     private static Map<String, String> widgetsFreq = new HashMap<>();
@@ -123,17 +121,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     private void applySettings() {
         Log.d(TAG, "applySettings()");
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String value = sharedPref.getString(KEY_PREF_SYNC_EVENTS, "0");
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String value = settings.getString(KEY_PREF_SYNC_EVENTS, "0");
         int periodEvents = Integer.valueOf(value);
-        value = sharedPref.getString(KEY_PREF_SYNC_WIDGETS, "0");
+        value = settings.getString(KEY_PREF_SYNC_WIDGETS, "0");
         int periodWidgets = Integer.valueOf(value);
-        value = sharedPref.getString(KEY_PREF_SYNC_EMPLOYEES, "0");
+        value = settings.getString(KEY_PREF_SYNC_EMPLOYEES, "0");
         int periodEmployees = Integer.valueOf(value);
         applySyncSetting(periodEvents, periodWidgets, periodEmployees);
-        boolean notifyArrive = sharedPref.getBoolean(KEY_PREF_NOTIFI_ARRIVE, false);
-        boolean notifyLeave = sharedPref.getBoolean(KEY_PREF_NOTIFI_LEAVE, false);
-        value = sharedPref.getString(KEY_PREF_NOTIFI_FREQ, "60");
+        boolean notifyArrive = settings.getBoolean(KEY_PREF_NOTIFI_ARRIVE, false);
+        boolean notifyLeave = settings.getBoolean(KEY_PREF_NOTIFI_LEAVE, false);
+        value = settings.getString(KEY_PREF_NOTIFI_FREQ, "60");
         int periodNotification = Integer.valueOf(value);
         applyNotificationSetting(notifyArrive, notifyLeave, periodNotification);
     }

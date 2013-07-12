@@ -25,6 +25,7 @@ public class AccountUtil {
         return accounts[0].name;
     }
 
+    //TODO smazat zbytecne komenty
     /*public static String getUserICP(Context context) throws Exception {
         AccountManager accountManager = AccountManager.get(context);
         Account[] accounts = accountManager.getAccountsByType(AuthenticationConsts.ACCOUNT_TYPE);

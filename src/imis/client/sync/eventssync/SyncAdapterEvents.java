@@ -1,7 +1,6 @@
 package imis.client.sync.eventssync;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.*;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,14 +19,12 @@ import java.util.List;
 
 public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapterEvents.class.getSimpleName();
-    private final AccountManager accountManager;
     private final Context context;
     private final EventsSync sync;
 
     public SyncAdapterEvents(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         this.context = context;
-        accountManager = AccountManager.get(context);
         sync = new EventsSync(context);
     }
 
@@ -37,7 +34,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
                 "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
         SyncStats stats = new SyncStats();
-
+        //TODO zvazit predelani s vyuzitim ContentProviderClient
         boolean isManual = false;
         if (extras.containsKey(Event.KEY_DATE)) {
             Log.d(TAG, "onPerformSync() manual");

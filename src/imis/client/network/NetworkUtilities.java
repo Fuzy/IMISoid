@@ -36,7 +36,7 @@ public class NetworkUtilities {
                     null);
             return new Result(response.getStatusCode());
         } catch (Exception e) {
-            Result result = AsyncUtil.processException(e, Result.class);
+            Result result = AsyncUtil.processException(context, e, Result.class);
             return result;
         }
     }
@@ -88,6 +88,10 @@ public class NetworkUtilities {
 
     public static String getRecordsGetURL(Context context) {
         return NetworkConfig.getBaseURI(context) + NetworkConsts.RECORDS_GET_PATH;
+    }
+
+    public static String getRecordsTimeGetURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.RECORDS_TIME_GET_PATH;
     }
 
     public static String getEmployeeGetURL(Context context) {

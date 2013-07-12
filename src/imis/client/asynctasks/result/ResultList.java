@@ -41,6 +41,6 @@ public class ResultList<T> extends Result {
                 ", msg='" + msg + '\'' +
                 ", unknownErr=" + unknownErr +
                 ", array=" + Arrays.toString(array) +
-                '}';
+                ", statistics=" + ((statistics == null) ? null : statistics.keySet()) + '}';
     }
 }

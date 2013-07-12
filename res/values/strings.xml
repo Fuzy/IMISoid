@@ -163,6 +163,7 @@
     <string name="server_error">Chyba serveru</string>
     <string name="client_error">Chyba klienta</string>
     <string name="unknown_error">Neznámá chyba</string>
+    <string name="position_error">Nebyla načtena pozice</string>
     <string name="auth_success">Vytvořen účet pro synchronizaci</string>
     <string name="account_allready_exists">Účet již existuje</string>
     <string name="pref_notification_freq">Perioda</string>
@@ -177,5 +178,10 @@
     <string name="title_arrive_btn">Zadej příchod</string>
     <string name="color_dialog_title">Zvol barvu</string>
     <string name="record_detail_kodpra">Pracovník</string>
+    <string name="recordsStats">Výk:</string>
+    <string name="eventsStats">" Doch:"</string>
+    <string name="pref_act_period">Perioda aktualizace</string>
+    <string name="pref_misc">Ostatní</string>
+    <string name="pref_location">Umístění</string>
 
 </resources>

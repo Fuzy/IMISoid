@@ -66,10 +66,7 @@ public class TimeRulerView extends View {
      * milliseconds since epoch).
      */
     public int getTimeVerticalOffset(long timeMillis) {
-    /*Time time = new Time();
-    time.set(timeMillis);*/
-
-        final int minutes = (int) (timeMillis / AppConsts.MS_IN_MIN);//((time.hour - mStartHour) * 60) + time.minute;
+        final int minutes = (int) (timeMillis / AppConsts.MS_IN_MIN);
         return (minutes * mHourHeight) / 60;
     }
 
