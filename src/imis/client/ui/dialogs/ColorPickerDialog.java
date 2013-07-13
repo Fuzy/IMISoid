@@ -26,7 +26,6 @@ import imis.client.ui.ColorConfig;
  */
 public class ColorPickerDialog extends DialogFragment {
     private static final String TAG = ColorPickerDialog.class.getSimpleName();
-    //    private ColorConfig colorConfig;
     private Context context;
 
     public ColorPickerDialog() {

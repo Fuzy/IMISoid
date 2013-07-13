@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.TimeUtil;
 import imis.client.exceptions.NotUserSelectedException;
@@ -56,7 +57,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     protected EditText dateFromEdit, dateToEdit;
 
     protected long dateFrom, dateTo;
-    private CheckBox subOnly;  //TODO napoveda polozky
+    private CheckBox subOnly;
     private int selectedEditId = -1;
     protected Map<String, String> selectionArgs = new HashMap<>();
 
@@ -72,6 +73,14 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         spinnerEmp.setOnItemSelectedListener(this);
         subOnly = (CheckBox) findViewById(R.id.subOnly);
         subOnly.setOnClickListener(checkBoxClickListener);
+        subOnly.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AppUtil.vibrate(ControlActivity.this);
+                AppUtil.showInfo(ControlActivity.this, getString(R.string.only_sub));
+                return true;
+            }
+        });
         dateFromEdit = (EditText) findViewById(R.id.dateFromEdit);
         dateFromEdit.setOnFocusChangeListener(focusListener);
         dateFromEdit.setInputType(InputType.TYPE_NULL);

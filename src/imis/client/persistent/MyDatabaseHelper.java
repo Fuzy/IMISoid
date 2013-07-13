@@ -9,7 +9,7 @@ import imis.client.model.Event;
 import imis.client.model.Record;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
-    private static final String TAG = "MyDatabaseHelper";
+    private static final String TAG = MyDatabaseHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "imisoid.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -134,7 +134,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(CREATE_EVENTS_TABLE);
         database.execSQL(CREATE_RECORDS_TABLE);
         database.execSQL(CREATE_EMPLOYEES_TABLE);
-       // insertEventsTestData(database);
+        // insertEventsTestData(database);
     }
 
     @Override

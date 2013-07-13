@@ -37,7 +37,7 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
         setContentView(R.layout.color_info);
 
         populateRecordTypeList();
-       populateEventTypeList();
+        populateEventTypeList();
     }
 
     private void populateRecordTypeList() {

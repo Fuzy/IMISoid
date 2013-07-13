@@ -53,6 +53,11 @@
         <artifactId>achartengine</artifactId>
         <version>1.1.0</version>
     </dependency>
+    <dependency>
+        <groupId>org.appkilt</groupId>
+        <artifactId>appkilt</artifactId>
+        <version>1.0.0</version>
+    </dependency>
 
 
 

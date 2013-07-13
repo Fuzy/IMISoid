@@ -1,6 +1,7 @@
 package imis.client;
 
 import android.content.Context;
+import android.os.Vibrator;
 import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 import imis.client.ui.dialogs.AddAccountDialog;
@@ -46,6 +47,12 @@ public class AppUtil {
     public static void showInfo(Context context, String msg) {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    public static void vibrate(Context context) {
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
     }
 
 }

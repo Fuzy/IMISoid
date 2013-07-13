@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.appkilt.client.AppKilt;
 import imis.client.*;
 import imis.client.asynctasks.GetListOfEmployees;
 import imis.client.asynctasks.result.Result;
@@ -50,8 +51,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     //TODO co s neukoncenou aktivitou v dochazce - JSA
     //TODO upozornot na chybu v datech, sluzba + notifikace
     //TODO scroll na posledni udalost
-    //TODO tab layout pro alternativni zobrazeni
-    //TODO menu s obrazky
     //TODO logo
     private EventsProcessor processor;
 
@@ -85,12 +84,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         setTitle(TimeUtil.formatDate(date));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume() Events:\n" + EventManager.getAllEvents(getApplicationContext()));
-        initFragment();
-    }
 
     @Override
     public void onStart() {
@@ -118,6 +111,22 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             }
         };
         registerReceiver(syncResultReceiver, new IntentFilter(AppConsts.SYNC_RESULT_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        AppKilt.onUpdateableActivityPause();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() Events:\n" + EventManager.getAllEvents(getApplicationContext()));
+        initFragment();
+        AppKilt.onUpdateableActivityResume(this);
     }
 
     @Override

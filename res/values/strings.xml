@@ -173,6 +173,7 @@
     <string name="missing_leave_event">Chybí odchod</string>
     <string name="missing_event_hint">Dotykem umožníte přidání události</string>
     <string name="menu_alt_view">Alternativní zobrazení</string>
+    <string name="only_sub">Pouze podřízení/všichni</string>
     <string name="add_arrive">Přidat příchod</string>
     <string name="add_leave">Přidat odchod</string>
     <string name="title_arrive_btn">Zadej příchod</string>

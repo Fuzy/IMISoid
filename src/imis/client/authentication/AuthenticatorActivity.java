@@ -36,7 +36,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
     private TextView mMessage;
     private EditText passwordEdit, icpEdit;
     private Employee employee = null;
-    //TODO pri spusteni nastaveni se vymaze ICP
+    private static final String KEY_ICP = "key_icp", KEY_PASSWORD = "key_password";
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -61,8 +61,6 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
     @Override
     protected void onResume() {
         super.onResume();
-        icpEdit.setText("");
-        passwordEdit.setText("");
     }
 
     private void initLayoutComponents() {
@@ -91,7 +89,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         // Now we tell our caller, could be the Android Account Manager or even our own application
         // that the process was successful
         final Intent intent = new Intent();
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, icp);//TODO pryc
+        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, icp);
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
@@ -192,5 +190,23 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
     @Override
     public void onConfirmClickPositiveClick() {
         finishLogin();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            icpEdit.setText(savedInstanceState.getString(KEY_ICP));
+            passwordEdit.setText(savedInstanceState.getString(KEY_PASSWORD));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null) {
+            outState.putString(KEY_ICP, icpEdit.getText().toString());
+            outState.putString(KEY_PASSWORD, passwordEdit.getText().toString());
+        }
     }
 }

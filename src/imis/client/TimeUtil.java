@@ -50,25 +50,29 @@ public class TimeUtil {
                 && now.get(Calendar.DAY_OF_YEAR) == theDate.get(Calendar.DAY_OF_YEAR);
     }
 
-    public static String formatDate(long date) {
+    public static String formatDate(Long date) {
+        if (date == null) return "";
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
         return df.format(cal.getTime());
     }
 
-    public static String formatAbbrDate(long date) {
+    public static String formatAbbrDate(Long date) {
+        if (date == null) return "";
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
         return dfAbbr.format(cal.getTime());
     }
 
-    public static String formatEmpDate(long date) {
+    public static String formatEmpDate(Long date) {
+        if (date == null) return "";
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
         return dfAbbr.format(cal.getTime());
     }
 
-    public static String formatTime(long time) {
+    public static String formatTime(Long time) {
+        if (time == null) return "";
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(time);
         return dfTime.format(cal.getTime());

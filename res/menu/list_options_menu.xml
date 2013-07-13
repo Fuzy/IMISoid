@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Menu pri zobrazeni seznamu ukolu -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_add"
           android:icon="@drawable/ic_menu_add"
@@ -33,13 +33,13 @@
     <item android:id="@+id/menu_employeesPresent"
           android:title="@string/menu_employees_present"
           android:showAsAction="ifRoom|withText"/>
-   <!-- <item android:id="@+id/settings_network"
-          android:icon="@drawable/ic_menu_settings_holo_light"
-          android:title="@string/menu_network"
-          android:showAsAction="ifRoom|withText"/>-->
-   <!-- <item android:id="@+id/settings_color"
-          android:title="@string/menu_color_info"
-          android:showAsAction="ifRoom|withText"/>-->
+    <!-- <item android:id="@+id/settings_network"
+           android:icon="@drawable/ic_menu_settings_holo_light"
+           android:title="@string/menu_network"
+           android:showAsAction="ifRoom|withText"/>-->
+    <!-- <item android:id="@+id/settings_color"
+           android:title="@string/menu_color_info"
+           android:showAsAction="ifRoom|withText"/>-->
     <item android:id="@+id/settings"
           android:title="@string/sync_settings"
           android:showAsAction="ifRoom|withText"/>

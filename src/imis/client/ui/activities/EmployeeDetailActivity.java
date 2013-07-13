@@ -24,7 +24,6 @@ public class EmployeeDetailActivity extends Activity {
     private Employee employee;
     private ImageButton favButton;
     private String[] kody_po_values, kody_po_desc;
-    //TODO vyhledat v seznamu kontaktu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +41,13 @@ public class EmployeeDetailActivity extends Activity {
     }
 
     private void populateEmployeeFields() {
-        //TODO null nepovine hodnoty
         //TODO layout
         String name = employee.getName() + "(" + employee.getKodpra() + ")";
         ((TextView) findViewById(R.id.emp_name)).setText(name);
         int i = Arrays.asList(kody_po_values).indexOf(employee.getKod_po());
-        ((TextView) findViewById(R.id.emp_kod_po)).setText(kody_po_desc[i]);
+        if (i != -1) {
+            ((TextView) findViewById(R.id.emp_kod_po)).setText(kody_po_desc[i]);
+        }
         ((TextView) findViewById(R.id.emp_time)).setText(TimeUtil.formatTime(employee.getCas()));
 
         favButton = (ImageButton) findViewById(R.id.emp_favorite);

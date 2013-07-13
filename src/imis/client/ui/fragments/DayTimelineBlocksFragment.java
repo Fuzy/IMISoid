@@ -89,7 +89,7 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
             adapter.notifyDataSetChanged();
         }
         blocks.setVisibility(View.GONE);
-        blocks.setVisibility(View.VISIBLE); //TODO test, co bey toho?
+        blocks.setVisibility(View.VISIBLE);
     }
 
     @Override
