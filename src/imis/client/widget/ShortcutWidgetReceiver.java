@@ -36,9 +36,9 @@ public class ShortcutWidgetReceiver extends BroadcastReceiver {
         startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startIntent.setType("vnd.android.cursor.dir/event.imisoid");
         context.startActivity(startIntent);
-        //TODO test
-        NotificationManager manager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // delete notification if exists
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancelAll();
     }
 

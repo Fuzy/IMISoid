@@ -18,7 +18,7 @@ public class AuthenticationUtil {
     public static HttpAuthentication createAuthHeader(Context context) {
         String username, password;
         try {
-            username = AccountUtil.getUserUsername(context);
+            username = AccountUtil.getUserICP(context);
             password = AccountUtil.getUserPassword(context);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);

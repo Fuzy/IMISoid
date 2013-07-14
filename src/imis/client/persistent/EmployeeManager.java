@@ -101,7 +101,7 @@ public class EmployeeManager {
     private static void markUser(Context context) {
         Log.d(TAG, "markUser()");
         try {
-            String icp = AccountUtil.getUserUsername(context);
+            String icp = AccountUtil.getUserICP(context);
             Employee employee = getEmployeeOnIcp(context, icp);
             if (employee != null) {
                 int id = employee.get_id();

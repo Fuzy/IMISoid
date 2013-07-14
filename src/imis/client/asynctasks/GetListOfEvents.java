@@ -62,7 +62,7 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultLis
         if (resultList.isOk()) {
             Log.d(TAG, "onPostExecute() OK");
             try {
-                String userIcp = AccountUtil.getUserUsername(context);
+                String userIcp = AccountUtil.getUserICP(context);
                 String icp = params[0];
                 if (!userIcp.equals(icp)) {
                     Log.d(TAG, "onPostExecute() deleteing " + icp);

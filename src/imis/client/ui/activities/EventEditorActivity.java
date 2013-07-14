@@ -52,7 +52,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private TimePicker arriveTime, leaveTime;
     private Button arriveBtn, leaveBtn;
     private LinearLayout arriveLayout, leaveLayout;
-
+    //TODO mazani
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -372,8 +372,8 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         event.setTyp(Event.TYPE_ORIG);
         event.setDatum(date);
         try {
-//            String kod = AccountUtil.getUserUsername(this);
-            String icp = AccountUtil.getUserUsername(this);
+//            String kod = AccountUtil.getUserICP(this);
+            String icp = AccountUtil.getUserICP(this);
             event.setIcp(icp);
 //            event.setIc_obs(kod);
         } catch (Exception e) {

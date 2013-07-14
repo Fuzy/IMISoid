@@ -75,7 +75,7 @@ public class EventManager {
     public static Event getLastEvent(Context context) {
         Log.d(TAG, "getLastEvent()");
         try {
-            String icp = AccountUtil.getUserUsername(context);
+            String icp = AccountUtil.getUserICP(context);
             return getEvent(context, EventQuery.SELECTION_USER_LAST, new String[]{icp}, EventQuery.ORDER_BY_LAST);
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());

@@ -45,7 +45,7 @@ public class RecordListActivity extends ControlActivity implements
     private Spinner spinnerType;
     private TextView recordsStats, eventsStats;
     private final String PAR_TYPE = "TYPE";
-
+    //TODO stats
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import imis.client.AppConsts;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.model.Block;
 import imis.client.ui.BlockView;
 import imis.client.ui.BlocksLayout;
@@ -55,6 +56,13 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
         mActivity.registerDataSetObserver(mObserver);
     }
 
+    /*@Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume()");
+        mActivity.performScroll();
+    }*/
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
@@ -90,6 +98,7 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
         }
         blocks.setVisibility(View.GONE);
         blocks.setVisibility(View.VISIBLE);
+        mActivity.performScroll();
     }
 
     @Override
@@ -111,6 +120,13 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
         dialog.setArguments(bundle);
         dialog.show(getFragmentManager(), "ColorPickerDialog");
         return true;
+    }
+
+    public void scrollTo() {
+        int y = (int) (((double) TimeUtil.currentDayTimeInLong() / (double) AppConsts.MS_IN_DAY) * blocks.getHeight());
+        y -= blocks.getHeight() / 4;
+        y = (y < 0) ? 0 : y;
+        scroll.scrollTo(0, y);
     }
 
 }

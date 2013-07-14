@@ -36,7 +36,7 @@ public class LocationSettingsActivity extends FragmentActivity {
     private LatLng position;
     private Circle circle;
     private Marker marker;
-
+   //TODO nastavena pozice je prepsana novou
     private final float ZOOM = 18f;
     private final double RADIUS = 10.0, MIN_RADIUS = 5.0;
     private int seekPos;

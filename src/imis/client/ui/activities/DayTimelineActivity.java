@@ -36,7 +36,7 @@ import static imis.client.persistent.EventManager.EventQuery;
 public class DayTimelineActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>, ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
 
-    private long date;// = 1364428800000L; //1364166000000L;//1364169600000L;
+    private long date;
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
     private volatile Cursor mCursor;
     private BroadcastReceiver minuteTickReceiver;
@@ -48,10 +48,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     protected static final String FRAG_LIST = "DayTimelineListFragment",
             FRAG_BLOCKS = "DayTimelineBlocksFragment", KEY_FRAGMENT = "key_fragment";
     private String currentFragment;
-    //TODO co s neukoncenou aktivitou v dochazce - JSA
-    //TODO upozornot na chybu v datech, sluzba + notifikace
-    //TODO scroll na posledni udalost
     //TODO logo
+    //TODO smazat zbytecne komenty
     private EventsProcessor processor;
 
     @Override
@@ -97,6 +95,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
                     if (getSupportLoaderManager().getLoader(LOADER_EVENTS) != null) {
                         getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, DayTimelineActivity.this);
                     }
+                    performScroll();
                 }
             }
         };
@@ -113,10 +112,16 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         registerReceiver(syncResultReceiver, new IntentFilter(AppConsts.SYNC_RESULT_ACTION));
     }
 
+    public void performScroll() {
+        DayTimelineBlocksFragment fragment = (DayTimelineBlocksFragment) getSupportFragmentManager().findFragmentByTag(FRAG_BLOCKS);
+        if (fragment != null) {
+            fragment.scrollTo();
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-
         AppKilt.onUpdateableActivityPause();
     }
 
@@ -215,9 +220,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             case R.id.sync_button:
                 performSync();
                 return true;
-            /*case R.id.settings_network:
-                startNetworkSettingActivity();
-                return true;*/
             case R.id.menu_calendar:
                 startCalendarActivity();
                 return true;
@@ -239,15 +241,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             case R.id.menu_recordsChart:
                 startRecordsChartActivity();
                 return true;
-           /* case R.id.settings_color:
-                startColorInfoActivity();
-                return true;*/
             case R.id.settings:
                 startSyncSettingsActivity();
                 return true;
-           /* case R.id.location_settings:
-                startLocationSettingsActivity();
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -257,7 +253,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     protected void processAsyncTask() {
         String icp = null;
         try {
-            icp = AccountUtil.getUserUsername(this);
+            icp = AccountUtil.getUserICP(this);
             createTaskFragment(new GetListOfEmployees(this, icp));
         } catch (Exception e) {
             showAccountNotExistsError(getSupportFragmentManager());
@@ -265,25 +261,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         }
     }
 
-   /* private void refreshListOfEmployees() {
-        Log.d(TAG, "refreshListOfEmployees()");
-        try {
-            String icp = AccountUtil.getUserICP(this);
-            Log.d(TAG, "refreshListOfEmployees() icp " + icp);
-//            createTaskFragment(new GetListOfEmployees(this, icp));
-        } catch (Exception e) {
-            Log.d(TAG, "refreshListOfEmployees() showAccountNotExistsError");
-            showAccountNotExistsError(getSupportFragmentManager());
-        }
-    }*/
-
     private void performSync() {
         Log.d(TAG, "onOptionsItemSelected sync request");
 
-       /* if (!NetworkUtilities.isOnline(getApplication())) {
-            showNetworkAccessUnavailable(getApplication());
-            return;
-        }*/
         Bundle extras = new Bundle();
         extras.putLong(Event.KEY_DATE, date);
         try {
@@ -301,7 +281,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         switch (i) {
             case LOADER_EVENTS:
                 try {
-                    String icp = AccountUtil.getUserUsername(this);
+                    String icp = AccountUtil.getUserICP(this);
                     Log.d(TAG, "onCreateLoader() icp " + icp);
                     return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI, null,
                             EventQuery.SELECTION_DAY_USER_UNDELETED, new String[]{String.valueOf(date), icp}, EventQuery.ORDER_BY_DATE_TIME_ASC);
@@ -329,7 +309,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private void startInsertActivity() {
         // Check if user exists
         try {
-            AccountUtil.getUserUsername(this);
+            AccountUtil.getUserICP(this);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             AppUtil.showAccountNotExistsError(getSupportFragmentManager());
@@ -358,11 +338,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         startActivity(intent);
     }
 
-    /*private void startNetworkSettingActivity() {
-        Intent intent = new Intent(this, NetworkSettingsActivity.class);
-        startActivity(intent);
-    }*/
-
     private void startCalendarActivity() {
         Intent intent = new Intent(this, CalendarActivity.class);
         intent.putExtra(Event.KEY_DATE, date);
@@ -389,21 +364,10 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         startActivity(intent);
     }
 
-   /* private void startColorInfoActivity() {
-        Intent intent = new Intent(this, InfoColorActivity.class);
-        startActivity(intent);
-    }*/
-
     private void startSyncSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
-
-   /* private void startLocationSettingsActivity() {
-        Intent intent = new Intent(this, LocationSettingsActivity.class);
-        startActivity(intent);
-    }*/
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -453,9 +417,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     @Override
     public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
-
     }
-
 
     public void registerDataSetObserver(DataSetObserver observer) {
         mDataSetObservable.registerObserver(observer);

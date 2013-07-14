@@ -1,11 +1,7 @@
 package imis.client.ui.fragments;
 
 import android.accounts.Account;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -29,7 +25,7 @@ import java.util.Map;
  */
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
-
+    //TODO popisky
     private static Map<String, String> eventsFreq = new HashMap<>();
     private static Map<String, String> widgetsFreq = new HashMap<>();
     private static Map<String, String> employeesFreq = new HashMap<>();
@@ -166,16 +162,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private void applyNotificationSetting(boolean notifyArrive, boolean notifyLeave, int periodNotification) {
         Log.d(TAG, "applyNotificationSetting()" + "notifyArrive = [" + notifyArrive + "], notifyLeave = [" + notifyLeave + "], periodNotification = [" + periodNotification + "]");
         AttendanceGuardService.cancelAllIntents(getActivity());
-        if (notifyArrive || notifyLeave) {
-            Intent intent = new Intent(getActivity(), AttendanceGuardService.class);
-            intent.putExtra(AttendanceGuardService.ARRIVE, notifyArrive);
-            intent.putExtra(AttendanceGuardService.LEAVE, notifyLeave);
-            intent.putExtra(AttendanceGuardService.PERIOD, periodNotification);
-            PendingIntent pi = PendingIntent.getService(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager am = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
-            long next = System.currentTimeMillis() + periodNotification;// * AppConsts.MS_IN_MIN; //TODO
-            am.set(AlarmManager.RTC, next, pi);
-        }
+        AttendanceGuardService.startAttendanceCheck(getActivity(), notifyArrive, notifyLeave, periodNotification);
     }
 
 

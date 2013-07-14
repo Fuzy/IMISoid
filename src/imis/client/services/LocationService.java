@@ -52,12 +52,11 @@ public class LocationService extends Service {
     private void listenForLocation() {
         try {
             loadWorkplaceSetting();
+            listenForCurrentPosition();
         } catch (PositionNotSetException e) {
             e.printStackTrace();
-            Log.d(TAG, "listenForLocation() PositionNotSetException");
-            //TODO return a err notifikace
+            Notifications.showPositionNotSetNotification(context);
         }
-        loadCurrentPosition();
     }
 
     @Override
@@ -79,9 +78,11 @@ public class LocationService extends Service {
             current = new LatLng(location.getLatitude(), location.getLongitude());
             locationManager.removeUpdates(locationListener);
             notifyIfEventMissing();
-            //TODO jsem nebo nejsem na pracovisti
+            Intent intent = new Intent(context, AttendanceGuardService.class);
+            intent.putExtras(bundle);
+            Log.d(TAG, "onLocationChanged() bundle " + bundle);
+            AttendanceGuardService.planNextIntent(context, intent);
             stopSelf();
-            //TODO cekat ne lepsi odhad presnost
         }
 
         @Override
@@ -107,14 +108,24 @@ public class LocationService extends Service {
 
         boolean onWorkplace = isCurrentPositionOnWorkplace();
 
-        if (bundle.getBoolean(AttendanceGuardService.ARRIVE)) {
+        if (bundle.getBoolean(ARRIVE) && onWorkplace) {
             // check for missing arrive event
-            if (onWorkplace && event.isDruhLeave()) Notifications.showMissingArriveNotification(context);
+            if (event.isDruhLeave() && bundle.getBoolean(ARRIVE_SCND_HIT)) {
+                Notifications.showMissingArriveNotification(context);
+                bundle.putBoolean(ARRIVE_SCND_HIT, false);
+            } else {
+                bundle.putBoolean(ARRIVE_SCND_HIT, true);
+            }
         }
 
-        if (bundle.getBoolean(AttendanceGuardService.LEAVE)) {
+        if (bundle.getBoolean(LEAVE) && !onWorkplace) {
             // check for missing leave event
-            if (!onWorkplace && event.isDruhArrival()) Notifications.showMissingLeaveNotification(context);
+            if (event.isDruhArrival() && bundle.getBoolean(LEAVE_SCND_HIT)) {
+                Notifications.showMissingLeaveNotification(context);
+                bundle.putBoolean(LEAVE_SCND_HIT, false);
+            } else {
+                bundle.putBoolean(LEAVE_SCND_HIT, true);
+            }
 
         }
         Log.d(TAG, "notifyIfEventMissing() currentPositionOnWorkplace " + onWorkplace);
@@ -140,8 +151,6 @@ public class LocationService extends Service {
     }
 
     private void loadWorkplaceSetting() throws PositionNotSetException {
-        Log.d(TAG, "loadWorkplaceSetting()");
-//        SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (!settings.contains(KEY_LATITUDE) || !settings.contains(KEY_LONGITUDE) || !settings.contains(KEY_RADIUS)) {
@@ -151,12 +160,9 @@ public class LocationService extends Service {
         double longitude = (double) settings.getFloat(KEY_LONGITUDE, 0);
         workplace = new LatLng(latitude, longitude);
         radius = settings.getFloat(KEY_RADIUS, 0);
-        Log.d(TAG, "loadWorkplaceSetting() workplace " + workplace);
-        Log.d(TAG, "loadWorkplaceSetting() radius " + radius);
     }
 
-    private void loadCurrentPosition() {
-        Log.d(TAG, "loadCurrentPosition()");
+    private void listenForCurrentPosition() {
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         // Register the listener with the Location Manager to receive location updates
