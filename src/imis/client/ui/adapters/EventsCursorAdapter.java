@@ -51,7 +51,7 @@ public class EventsCursorAdapter extends CursorAdapter {
         tt.setText(type);
         tt = (TextView) view.findViewById(R.id.event_time);
         String time = TimeUtil.formatEmpDate(event.getDatum())
-                + " " + TimeUtil.formatTime(event.getCas());
+                + " " + TimeUtil.formatTimeInNonLimitHour(event.getCas());
         tt.setText(time);
 
         LayerDrawable buttonDrawable;

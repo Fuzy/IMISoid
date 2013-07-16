@@ -1,6 +1,6 @@
 package imis.client.model;
 
-import static imis.client.TimeUtil.formatTime;
+import static imis.client.TimeUtil.formatTimeInNonLimitHour;
 
 /**
  * Created with IntelliJ IDEA.
@@ -89,8 +89,8 @@ public class Block {
     public String toString() {
         return "Block{" +
                 "date=" + date +
-                ", startTime=" + formatTime(startTime) +
-                ", endTime=" + formatTime(endTime) +
+                ", startTime=" + formatTimeInNonLimitHour(startTime) +
+                ", endTime=" + formatTimeInNonLimitHour(endTime) +
                 ", arriveId=" + arriveId +
                 ", leaveId=" + leaveId +
                 ", kod_po='" + kod_po + '\'' +

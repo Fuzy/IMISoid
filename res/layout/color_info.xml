@@ -7,22 +7,24 @@
 
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:text="@string/eventsType"/>
+              android:text="@string/eventsType"
+              android:textSize="20sp"/>
 
     <ListView android:id="@+id/eventstypeList"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
     </ListView>
 
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:text="@string/recordsType"/>
+              android:text="@string/recordsType"
+              android:textSize="20sp"/>
 
     <ListView android:id="@+id/recordTypeList"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
     </ListView>
 
 </LinearLayout>

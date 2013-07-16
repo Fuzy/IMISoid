@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.TimeUtil;
 import imis.client.asynctasks.GetListOfRecords;
@@ -43,14 +44,15 @@ public class RecordListActivity extends ControlActivity implements
     private static final int DETAIL_ACTIVITY_CODE = 1;
     private String[] typesArray;
     private Spinner spinnerType;
-    private TextView recordsStats, eventsStats;
+    private TextView stats;
     private final String PAR_TYPE = "TYPE";
-    //TODO stats
+    private Map<String, Object> statistics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        setContentView(R.layout.records);//TODO layout pro stats
+        setContentView(R.layout.records);
         initControlPanel();
 
         Resources r = getResources();
@@ -63,10 +65,20 @@ public class RecordListActivity extends ControlActivity implements
         spinnerType.setAdapter(spinnerArrayAdapter);
         spinnerType.setOnItemSelectedListener(this);
 
-        recordsStats = (TextView) findViewById(R.id.recordsStats);
-        eventsStats = (TextView) findViewById(R.id.eventsStats);
+        stats = (TextView) findViewById(R.id.stats);
+        stats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showToastWithStats();
+            }
+        });
 
         addListFragment();
+    }
+
+    private void showToastWithStats() {
+        AppUtil.showInfo(this, getStatsDetailedMessage());
+
     }
 
     private void addListFragment() {
@@ -175,24 +187,53 @@ public class RecordListActivity extends ControlActivity implements
     protected void processDataQuery() {
         Log.d(TAG, "processDataQuery()");
         getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
-        recordsStats.setText("");
-        eventsStats.setText("");
+        stats.setText("");
     }
 
     @Override
     public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()" + "result = [" + result + "]");
-        Map<String, Object> statistics = result.getStatistics();
+        statistics = result.getStatistics();
+        stats.setText(getStatsShortMessage());
+    }
+
+    private String getStatsShortMessage() {
         if (statistics != null) {
+            StringBuilder builder = new StringBuilder();
+            long eventsSum = 0, recordsSum = 0;
             if (statistics.containsKey(AppConsts.SUM_EVENTS_TIME)) {
-                long eventsSum = (long) statistics.get(AppConsts.SUM_EVENTS_TIME);
-                eventsStats.setText(TimeUtil.formatTime(eventsSum));
+                eventsSum = (long) statistics.get(AppConsts.SUM_EVENTS_TIME);
             }
             if (statistics.containsKey(AppConsts.SUM_RECORDS_TIME)) {
-                long recordsSum = (long) statistics.get(AppConsts.SUM_RECORDS_TIME);
-                recordsStats.setText(TimeUtil.formatTime(recordsSum));
+                recordsSum = (long) statistics.get(AppConsts.SUM_RECORDS_TIME);
             }
+            long diff = recordsSum - eventsSum;
+            if (diff > 0) builder.append("+");
+            builder.append(TimeUtil.formatTimeInNonLimitHour(diff));
+            return builder.toString();
         }
+        return "";
+    }
+
+    private String getStatsDetailedMessage() {
+        if (statistics != null) {
+            StringBuilder builder = new StringBuilder();
+            long eventsSum = 0, recordsSum = 0;
+            if (statistics.containsKey(AppConsts.SUM_EVENTS_TIME)) {
+                eventsSum = (long) statistics.get(AppConsts.SUM_EVENTS_TIME);
+            }
+            if (statistics.containsKey(AppConsts.SUM_RECORDS_TIME)) {
+                recordsSum = (long) statistics.get(AppConsts.SUM_RECORDS_TIME);
+            }
+            long diff = recordsSum - eventsSum;
+            builder.append(getString(R.string.sum_events) + TimeUtil.formatTimeInNonLimitHour(eventsSum) + "\n");
+            builder.append(getString(R.string.sum_records) + TimeUtil.formatTimeInNonLimitHour(recordsSum) + "\n");
+            builder.append(getString(R.string.sum_diff));
+            if (diff > 0) builder.append("+");
+            builder.append(TimeUtil.formatTimeInNonLimitHour(diff));
+            return builder.toString();
+        }
+        return "";
     }
 
 }

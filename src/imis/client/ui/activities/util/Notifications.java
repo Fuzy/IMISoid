@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
@@ -37,7 +38,7 @@ public class Notifications {
         nextIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);
         Event lastEvent = EventManager.getLastEvent(context);
         if (lastEvent != null && lastEvent.isDruhArrival()) {
-            nextIntent.putExtra(ActivityConsts.ID_ARRIVE, lastEvent.get_id());
+            nextIntent.putExtra(AppConsts.ID_ARRIVE, lastEvent.get_id());
         }
         showNotification(context, title, context.getString(R.string.missing_event_hint), nextIntent);
     }

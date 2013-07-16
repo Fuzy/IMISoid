@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,8 +26,6 @@ import imis.client.ui.adapters.EmployeeResourceCursorAdapter;
  * Time: 21:24
  */
 public class WidgetConfigure extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-
-
     private static final String TAG = WidgetConfigure.class.getSimpleName();
     protected static final int LOADER_EMPLOYEES = 0x04;
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -39,7 +36,6 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate()");
         setContentView(R.layout.widget_config);
         spinnerEmp = (Spinner) findViewById(R.id.spinnerEmp);
 
@@ -62,13 +58,11 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
         adapter = new EmployeeResourceCursorAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, null, -1);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEmp.setAdapter(adapter);
-        Log.d(TAG, "onCreate() mAppWidgetId " + mAppWidgetId);
     }
 
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        Log.d(TAG, "onCreateLoader()");
         switch (i) {
             case LOADER_EMPLOYEES:
                 return new CursorLoader(getApplicationContext(), EmployeeManager.EmployeeQuery.CONTENT_URI,
@@ -80,24 +74,32 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        Log.d(TAG, "onLoadFinished()");
         switch (cursorLoader.getId()) {
             case LOADER_EMPLOYEES:
-                Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
                 adapter.swapCursor(cursor);
+                if (adapter.getCount() == 0) {
+                    showInfoEmpty();
+                }
                 break;
         }
     }
 
+    private void showInfoEmpty() {
+        AppUtil.showInfo(this, getString(R.string.no_employees));
+    }
+
+    private void showNoEmpSelected() {
+        AppUtil.showInfo(this, getString(R.string.noEmp));
+    }
+
+
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        Log.d(TAG, "onLoaderReset()");
         adapter.swapCursor(null);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.save_options_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -105,7 +107,6 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.save:
                 saveWidgetEmployee();
@@ -116,16 +117,13 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
     }
 
     private void saveWidgetEmployee() {
-        Log.d(TAG, "saveWidgetEmployee() ");
         CursorWrapper wrapper = (CursorWrapper) spinnerEmp.getSelectedItem();
         if (wrapper != null) {
             int prevWidgetId = wrapper.getInt(Employee.IND_COL_WIDGET_ID);
             if (prevWidgetId != 0) {
                 AppUtil.showWidgetAlreadyExists(this);
             } else {
-                Log.d(TAG, "saveWidgetEmployee() prevWidgetId " + prevWidgetId);
                 int empId = wrapper.getInt(Employee.IND_COL_ID);
-                Log.d(TAG, "saveWidgetEmployee() empId " + empId + " mAppWidgetId " + mAppWidgetId);
                 EmployeeManager.updateEmployeeWidgetId(this, empId, mAppWidgetId);
 
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
@@ -136,7 +134,10 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
                 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                 setResult(RESULT_OK, resultValue);
             }
+            finish();
+        } else {
+            showNoEmpSelected();
         }
-        finish();
+
     }
 }

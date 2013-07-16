@@ -2,7 +2,6 @@ package imis.client.ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -28,7 +27,6 @@ public class EmployeeDetailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate()");
         setContentView(R.layout.employee_profile);
 
         kody_po_values = getResources().getStringArray(R.array.kody_po_values);
@@ -36,19 +34,17 @@ public class EmployeeDetailActivity extends Activity {
 
         long id = getIntent().getLongExtra(Employee.COL_ID, -1);
         employee = EmployeeManager.getEmployeeOnId(this, id);
-        Log.d(TAG, "onCreate() employee " + employee);
         populateEmployeeFields();
     }
 
     private void populateEmployeeFields() {
-        //TODO layout
         String name = employee.getName() + "(" + employee.getKodpra() + ")";
         ((TextView) findViewById(R.id.emp_name)).setText(name);
         int i = Arrays.asList(kody_po_values).indexOf(employee.getKod_po());
         if (i != -1) {
             ((TextView) findViewById(R.id.emp_kod_po)).setText(kody_po_desc[i]);
         }
-        ((TextView) findViewById(R.id.emp_time)).setText(TimeUtil.formatTime(employee.getCas()));
+        ((TextView) findViewById(R.id.emp_time)).setText(TimeUtil.formatTimeInNonLimitHour(employee.getCas()));
 
         favButton = (ImageButton) findViewById(R.id.emp_favorite);
         if (employee.isFav()) {
@@ -86,7 +82,6 @@ public class EmployeeDetailActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause()");
         EmployeeManager.updateEmployeeIsFav(this, employee.get_id(), employee.isFav());
     }
 }

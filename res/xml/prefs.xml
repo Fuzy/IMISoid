@@ -60,7 +60,9 @@
     <PreferenceCategory
             android:title="@string/pref_misc"
             android:key="pref_notification_period">
-        <Preference android:title="@string/menu_network">
+        <Preference android:title="@string/menu_network"
+                    android:key="@string/prefNetworkUrl"
+                    android:summary="@string/not_set">
             <intent android:targetClass="imis.client.ui.activities.NetworkSettingsActivity"
                     android:targetPackage="imis.client"/>
         </Preference>
@@ -68,7 +70,10 @@
             <intent android:targetClass="imis.client.ui.activities.InfoColorActivity"
                     android:targetPackage="imis.client"/>
         </Preference>
-        <Preference android:title="@string/pref_location">
+        <Preference
+                android:key="@string/prefLocation"
+                android:title="@string/pref_location"
+                android:summary="@string/location_not_saved">
             <intent android:targetClass="imis.client.ui.activities.LocationSettingsActivity"
                     android:targetPackage="imis.client"/>
         </Preference>

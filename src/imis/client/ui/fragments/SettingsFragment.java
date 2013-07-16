@@ -2,6 +2,7 @@ package imis.client.ui.fragments;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -10,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import imis.client.AccountUtil;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.services.AttendanceGuardService;
 
@@ -25,46 +27,69 @@ import java.util.Map;
  */
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
-    //TODO popisky
+
     private static Map<String, String> eventsFreq = new HashMap<>();
     private static Map<String, String> widgetsFreq = new HashMap<>();
     private static Map<String, String> employeesFreq = new HashMap<>();
     private static Map<String, String> networkType = new HashMap<>();
     private static Map<String, String> notificationDelay = new HashMap<>();
     private static String KEY_PREF_NETWORK_TYPE;
+    private static String KEY_PREF_NETWORK_URL;
     private static String KEY_PREF_SYNC_EVENTS;
     private static String KEY_PREF_SYNC_WIDGETS;
     private static String KEY_PREF_SYNC_EMPLOYEES;
     private static String KEY_PREF_NOTIFI_ARRIVE;
     private static String KEY_PREF_NOTIFI_LEAVE;
     private static String KEY_PREF_NOTIFI_FREQ;
+    private static String KEY_PREF_LOCATION;
     private static String[] KEYS_WITH_SUMMARIES;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // load the preferences from an XML resource
         addPreferencesFromResource(R.xml.prefs);
 
         //load resources
         loadKeys();
         populateMaps();
 
-        // set all summaries
+        // init
         initSummaries();
+        setListeners();
+    }
+
+    private void setListeners() {
+        Preference pref = findPreference(KEY_PREF_NETWORK_URL);
+        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(preference.getIntent(), 1234);
+                return true;
+            }
+        });
+        pref = findPreference(KEY_PREF_LOCATION);
+        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(preference.getIntent(), 1235);
+                return true;
+            }
+        });
     }
 
     private void loadKeys() {
-        KEY_PREF_NETWORK_TYPE = getResources().getString(R.string.prefSyncOnNetworkType);
-        KEY_PREF_SYNC_EVENTS = getResources().getString(R.string.prefSyncEventsFrequency);
-        KEY_PREF_SYNC_WIDGETS = getResources().getString(R.string.prefSyncWidgetsFrequency);
-        KEY_PREF_SYNC_EMPLOYEES = getResources().getString(R.string.prefSyncEmployeesFrequency);
-        KEY_PREF_NOTIFI_ARRIVE = getResources().getString(R.string.prefNotificationArrive);
-        KEY_PREF_NOTIFI_LEAVE = getResources().getString(R.string.prefNotificationLeave);
-        KEY_PREF_NOTIFI_FREQ = getResources().getString(R.string.prefNotificationFrequency);
-        KEYS_WITH_SUMMARIES = new String[]{KEY_PREF_NETWORK_TYPE, KEY_PREF_SYNC_EVENTS,
-                KEY_PREF_SYNC_WIDGETS, KEY_PREF_SYNC_EMPLOYEES, KEY_PREF_NOTIFI_FREQ};
+        KEY_PREF_NETWORK_TYPE = getString(R.string.prefSyncOnNetworkType);
+        KEY_PREF_NETWORK_URL = getString(R.string.prefNetworkUrl);
+        KEY_PREF_SYNC_EVENTS = getString(R.string.prefSyncEventsFrequency);
+        KEY_PREF_SYNC_WIDGETS = getString(R.string.prefSyncWidgetsFrequency);
+        KEY_PREF_SYNC_EMPLOYEES = getString(R.string.prefSyncEmployeesFrequency);
+        KEY_PREF_NOTIFI_ARRIVE = getString(R.string.prefNotificationArrive);
+        KEY_PREF_NOTIFI_LEAVE = getString(R.string.prefNotificationLeave);
+        KEY_PREF_NOTIFI_FREQ = getString(R.string.prefNotificationFrequency);
+        KEY_PREF_LOCATION = getString(R.string.prefLocation);
+        KEYS_WITH_SUMMARIES = new String[]{KEY_PREF_NETWORK_TYPE, KEY_PREF_NETWORK_URL, KEY_PREF_SYNC_EVENTS,
+                KEY_PREF_SYNC_WIDGETS, KEY_PREF_SYNC_EMPLOYEES, KEY_PREF_NOTIFI_FREQ, KEY_PREF_LOCATION};
     }
 
     private void populateMaps() {
@@ -154,8 +179,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 ContentResolver.removePeriodicSync(account, AppConsts.AUTHORITY3, new Bundle());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            Log.d(TAG, "applySyncSetting() exception");
+            AppUtil.showError(getActivity(), getString(R.string.no_account_set_prev));
         }
     }
 
@@ -168,28 +192,37 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(TAG, "onSharedPreferenceChanged()" + "key = [" + key + "]");
         if (Arrays.asList(KEYS_WITH_SUMMARIES).contains(key)) {
             setSummary(sharedPreferences, key);
         }
     }
 
     private void setSummary(SharedPreferences sharedPref, String key) {
-        Log.d(TAG, "setSummary()" + "key = [" + key + "]");
         Preference connectionPref = findPreference(key);
-        String value = sharedPref.getString(key, "");
         String summary = null;
+
         if (key.equals(KEY_PREF_NETWORK_TYPE)) {
-            summary = networkType.get(value);
+            summary = networkType.get(sharedPref.getString(key, ""));
         } else if (key.equals(KEY_PREF_SYNC_EVENTS)) {
-            summary = eventsFreq.get(value);
+            summary = eventsFreq.get(sharedPref.getString(key, ""));
         } else if (key.equals(KEY_PREF_SYNC_WIDGETS)) {
-            summary = widgetsFreq.get(value);
+            summary = widgetsFreq.get(sharedPref.getString(key, ""));
         } else if (key.equals(KEY_PREF_NOTIFI_FREQ)) {
-            summary = notificationDelay.get(value);
+            summary = notificationDelay.get(sharedPref.getString(key, ""));
         } else if (key.equals(KEY_PREF_SYNC_EMPLOYEES)) {
-            summary = employeesFreq.get(value);
+            summary = employeesFreq.get(sharedPref.getString(key, ""));
+        } else if (key.equals(KEY_PREF_NETWORK_URL)) {
+            summary = sharedPref.getString(key, "");
+        } else if (key.equals(KEY_PREF_LOCATION)) {
+            summary = getString(R.string.location_saved);
         }
+        Log.d(TAG, "setSummary() key " + key + " summary " + summary);
         connectionPref.setSummary(summary);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        initSummaries();
     }
 }

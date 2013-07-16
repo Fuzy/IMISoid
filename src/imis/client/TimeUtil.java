@@ -3,10 +3,10 @@ package imis.client;
 import android.util.Log;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,14 +17,15 @@ import java.util.TimeZone;
 public class TimeUtil {
     private static final String TAG = TimeUtil.class.getSimpleName();
 
+    private static final DecimalFormat decf = new DecimalFormat("00");
     private static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
     private static final DateFormat dfAbbr = new SimpleDateFormat("d.M.");//"d.M.yy"
-    private static final DateFormat dfTime;
+//    private static final DateFormat dfTime;
 
-    static {
+   /* static {
         dfTime = new SimpleDateFormat("HH:mm");
         dfTime.setTimeZone(TimeZone.getTimeZone("Etc/GMT"));
-    }
+    }*/
 
     public static long currentDayTimeInLong() {
         Calendar now = Calendar.getInstance();
@@ -70,12 +71,21 @@ public class TimeUtil {
         cal.setTimeInMillis(date);
         return dfAbbr.format(cal.getTime());
     }
-
-    public static String formatTime(Long time) {
+/*
+    public static String formatTimeInNonLimitHour(Long time) {
         if (time == null) return "";
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(time);
         return dfTime.format(cal.getTime());
+    }*/
+
+    public static String formatTimeInNonLimitHour(Long time) {
+        if (time == null) return "";
+        long hours = time / AppConsts.MS_IN_HOUR;
+        Log.d(TAG, "formatTimeInNonLimitHour() hours " + hours);
+        long mins = (time - hours * AppConsts.MS_IN_HOUR) / AppConsts.MS_IN_MIN;
+        Log.d(TAG, "formatTimeInNonLimitHour() mins " + mins);
+        return decf.format(hours) + ":" + decf.format(mins);
     }
 
     public static void validateDate(String date) throws ParseException {

@@ -251,7 +251,7 @@ public class Event {
                 ", datum=" + datum +
                 ", kod_po='" + kod_po + '\'' +
                 ", druh='" + druh + '\'' +
-                ", cas=" + TimeUtil.formatTime(cas) +
+                ", cas=" + TimeUtil.formatTimeInNonLimitHour(cas) +
                 ", cas=" + cas +
                 ", ic_obs='" + ic_obs + '\'' +
                 ", typ='" + typ + '\'' +

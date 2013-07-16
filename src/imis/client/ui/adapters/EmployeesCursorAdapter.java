@@ -43,7 +43,7 @@ public class EmployeesCursorAdapter extends CursorAdapter {
         StringBuilder last = new StringBuilder();
         if (employee.getDruh() != null) last.append(employee.getDruh() + " ");
         if (employee.getDatum() != null) last.append(TimeUtil.formatEmpDate(employee.getDatum()));
-        if (employee.getCas() != null) last.append(TimeUtil.formatTime(employee.getCas()));
+        if (employee.getCas() != null) last.append(TimeUtil.formatTimeInNonLimitHour(employee.getCas()));
         ((TextView) view.findViewById(R.id.emp_time)).setText(last.toString());
         view.findViewById(R.id.emp_kod_po).setBackgroundColor(ColorConfig.getColor(context, employee.getKod_po()));
     }

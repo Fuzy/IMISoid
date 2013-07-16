@@ -4,9 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/emp_border"
               android:gravity="center">
-
 
     <TextView
             android:id="@+id/emp_kod_po"
@@ -26,7 +24,7 @@
             android:layout_centerInParent="true"
             android:includeFontPadding="false">
     </ImageButton>
-    <!--android:layout_marginTop="@dimen/empMargin"-->
+
     <TextView
             android:id="@+id/emp_time"
             android:layout_width="wrap_content"
@@ -38,7 +36,8 @@
             android:textSize="20sp"
             android:layout_below="@id/widget_add_event"
             android:layout_centerInParent="true"
-            android:includeFontPadding="false">
+            android:includeFontPadding="false"
+            android:textColor="@android:color/white">
     </TextView>
 
 </RelativeLayout>

@@ -46,7 +46,7 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
         if (lastEvent != null) {
             views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorConfig.getColor(context, lastEvent.getKod_po()));
             String last = lastEvent.getDruh() + " " + TimeUtil.formatEmpDate(lastEvent.getDatum())
-                    + " " + TimeUtil.formatTime(lastEvent.getCas());
+                    + " " + TimeUtil.formatTimeInNonLimitHour(lastEvent.getCas());
             views.setTextViewText(R.id.emp_time, last);
         }
         // Register an onClickListener

@@ -41,7 +41,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         RestTemplate restTemplate;
         Map<String, Object> statistics = new HashMap<String, Object>();
 
-        // Get list of records
+        // get list of records
         entity = prepareEntity();
         restTemplate = prepareRestTemplate();
         try {
@@ -55,6 +55,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
             return resultList;
         }
 
+        //get total time for records
         entity = prepareEntity();
         restTemplate = prepareRestTemplate();
         try {
@@ -67,12 +68,25 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
             e.printStackTrace();
         }
 
+        //get total time for events
+        entity = prepareEntity();
+        restTemplate = prepareRestTemplate();
+        try {
+            ResponseEntity<Long> response = restTemplate.exchange(NetworkUtilities.getEventsTimeGetURL(context), HttpMethod.GET, entity,
+                    Long.class, kodpra, from, to);
+            long body = response.getBody();
+            Log.d(TAG, "doInBackground() ok " + body);
+            statistics.put(AppConsts.SUM_EVENTS_TIME, body);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         resultList.setStatistics(statistics);
         Log.d(TAG, "doInBackground() resultList " + resultList);
         return resultList;
     }
 
-    private RestTemplate prepareRestTemplate() {
+    private RestTemplate prepareRestTemplate() {  //TODO nekam jako util
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());

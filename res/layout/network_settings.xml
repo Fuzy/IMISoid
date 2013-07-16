@@ -9,56 +9,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/network_settings_lab"
-            android:id="@+id/settLabServer" android:layout_gravity="left|center_vertical"/>
+            android:id="@+id/settLabServer"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="20sp"/>
     <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_gravity="right|center_vertical">
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:text="@string/network_host_lab"
-                android:id="@+id/settLabIP" android:layout_gravity="center_horizontal|top"/>
+                android:id="@+id/settLabIP"
+                android:layout_gravity="center_horizontal|top"/>
         <EditText
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:id="@+id/settEditIP"/>
     </LinearLayout>
-    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
                   android:layout_height="wrap_content" android:layout_gravity="left|center_vertical"
                   android:id="@+id/linearLayout">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        <TextView android:layout_width="60dp" android:layout_height="wrap_content"
                   android:text="@string/network_port_lab"
                   android:id="@+id/settLabPort" android:layout_gravity="center_horizontal|top"/>
-        <EditText android:layout_width="fill_parent" android:layout_height="wrap_content" android:text=""
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:text=""
                   android:id="@+id/settEditPort"/>
     </LinearLayout>
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/network_services_reach_lab" android:layout_gravity="left|center_vertical"/>
-    <!--<LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="24dp" android:layout_gravity="left|center_vertical">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:text="@string/network_host_reach_lab"
-                android:id="@+id/settLabHost"/>
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/setHostImage" android:layout_gravity="center"
-                android:src="@drawable/ic_lockscreen_forgotpassword_pressed"/>
-    </LinearLayout>-->
+            android:text="@string/network_services_reach_lab"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="20sp"/>
+
     <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="22dp" android:layout_gravity="left|center_vertical">
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="@string/network_ws_reach_lab"
                 android:id="@+id/settLabWS" android:layout_gravity="center"/>
@@ -68,12 +61,13 @@
                 android:id="@+id/setWSImage" android:layout_gravity="center"
                 android:src="@drawable/ic_lockscreen_forgotpassword_pressed"/>
     </LinearLayout>
+
     <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="25dp" android:layout_gravity="left|center_vertical">
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="@string/network_db_reach_lab"
                 android:id="@+id/settLabDB" android:layout_gravity="center_horizontal|top"/>
@@ -83,9 +77,12 @@
                 android:id="@+id/setDBImage" android:layout_gravity="center"
                 android:src="@drawable/ic_lockscreen_forgotpassword_pressed"/>
     </LinearLayout>
+
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Test spojení"
-            android:id="@+id/buttonTest" android:layout_gravity="center"/>
+            android:id="@+id/buttonTest"
+            android:layout_gravity="center"/>
+
 </LinearLayout>

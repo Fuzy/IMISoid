@@ -53,7 +53,7 @@ public class RecordsCursorAdapter extends CursorAdapter {
         String cpolzak = (record.getCpolzak() == null) ? "" : "" + record.getCpolzak().intValue();
         String cpozzak = (record.getCpozzak() == null) ? "" : "" + record.getCpozzak().intValue();
         String identification = zc + "/" + cpolzak + "/" + cpozzak;
-        String odvedeno = TimeUtil.formatTime(record.getMnozstvi_odved());
+        String odvedeno = TimeUtil.formatTimeInNonLimitHour(record.getMnozstvi_odved());
         String poznamka = record.getPoznamka();
 
         TextView tt = (TextView) view.findViewById(R.id.recordIdentification);

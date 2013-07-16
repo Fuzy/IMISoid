@@ -86,6 +86,10 @@ public class NetworkUtilities {
         return NetworkConfig.getBaseURI(context) + NetworkConsts.EVENTS_GET_PATH;
     }
 
+    public static String getEventsTimeGetURL(Context context) {
+        return NetworkConfig.getBaseURI(context) + NetworkConsts.EVENTS_TIME_GET_PATH;
+    }
+
     public static String getRecordsGetURL(Context context) {
         return NetworkConfig.getBaseURI(context) + NetworkConsts.RECORDS_GET_PATH;
     }

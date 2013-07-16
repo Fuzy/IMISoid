@@ -24,7 +24,6 @@ import imis.client.persistent.EventManager;
 import imis.client.persistent.RecordManager;
 import imis.client.processor.EventsProcessor;
 import imis.client.sync.eventssync.EventsSync;
-import imis.client.ui.activities.util.ActivityConsts;
 import imis.client.ui.dialogs.ColorPickerDialog;
 import imis.client.ui.fragments.DayTimelineBlocksFragment;
 import imis.client.ui.fragments.DayTimelineListFragment;
@@ -48,8 +47,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     protected static final String FRAG_LIST = "DayTimelineListFragment",
             FRAG_BLOCKS = "DayTimelineBlocksFragment", KEY_FRAGMENT = "key_fragment";
     private String currentFragment;
-    //TODO logo
-    //TODO smazat zbytecne komenty
+    //TODO chybova zprava toast, zobrazuje se i nevhodne
+    //TODO layouty
     private EventsProcessor processor;
 
     @Override
@@ -321,7 +320,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         intent.putExtra(Event.KEY_DATE, date);
         Event event = getLastEvent();
         if (event != null && event.isDruhArrival()) {
-            intent.putExtra(ActivityConsts.ID_ARRIVE, event.get_id());
+            intent.putExtra(AppConsts.ID_ARRIVE, event.get_id());
             intent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);
         } else {
             intent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_ARRIVE, true);
@@ -332,8 +331,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     public void startEditActivity(int arriveID, int leaveID) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.putExtra(ActivityConsts.ID_ARRIVE, arriveID);
-        intent.putExtra(ActivityConsts.ID_LEAVE, leaveID);
+        intent.putExtra(AppConsts.ID_ARRIVE, arriveID);
+        intent.putExtra(AppConsts.ID_LEAVE, leaveID);
         intent.setType("vnd.android.cursor.item/event.imisoid");
         startActivity(intent);
     }

@@ -9,7 +9,6 @@ import imis.client.AppConsts;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
 import imis.client.ui.activities.EventEditorActivity;
-import imis.client.ui.activities.util.ActivityConsts;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,7 +26,7 @@ public class ShortcutWidgetReceiver extends BroadcastReceiver {
         Intent startIntent = new Intent(Intent.ACTION_INSERT);
         Event lastEvent = EventManager.getLastEvent(context);
         if (lastEvent != null && lastEvent.isDruhArrival()) {
-            startIntent.putExtra(ActivityConsts.ID_ARRIVE, lastEvent.get_id());
+            startIntent.putExtra(AppConsts.ID_ARRIVE, lastEvent.get_id());
             startIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);
         } else {
             startIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_ARRIVE, true);

@@ -14,9 +14,10 @@ public class NetworkConsts {
     public static final String EVENTS_DELETE_PATH = EVENTS_PATH + "/{rowid}";
     public static final String EVENTS_UPDATE_PATH = EVENTS_PATH + "/{rowid}";
     public static final String EVENTS_GET_PATH = EVENTS_PATH + "/{icp}?from={from}&to={to}";
+    public static final String EVENTS_TIME_GET_PATH = EVENTS_PATH + "/time/{icp}?from={from}&to={to}";
     private static final String RECORDS_PATH = "/records";
     public static final String RECORDS_GET_PATH = RECORDS_PATH + "/{kodpra}?from={from}&to={to}";
-    public static final String RECORDS_TIME_GET_PATH = RECORDS_PATH + "/time/{icp}";
+    public static final String RECORDS_TIME_GET_PATH = RECORDS_PATH + "/time/{icp}?from={from}&to={to}";
     private static final String EMPLOYEES_PATH = "/employees";
     public static final String EMPLOYEE_GET_PATH = EMPLOYEES_PATH + "/{icp}";
     public static final String EMPLOYEES_GET_PATH = EMPLOYEES_PATH + "/all/{icp}";

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.asynctasks.TestConnection;
 import imis.client.asynctasks.result.Result;
@@ -65,13 +66,12 @@ public class NetworkSettingsActivity extends AsyncActivity {
         if (baseUri != null) {
             Log.d(TAG, "extractBaseURI() baseUri " + baseUri);
             String[] split = baseUri.split("[:/]");
-            Log.d(TAG, "extractBaseURI() split " + Arrays.toString(split));
 
             if (split.length > IND_DOMAIN) parseDomain(split[IND_DOMAIN]);
             if (split.length > IND_PORT) parsePort(split[IND_PORT]);
             if (split.length > IND_TEST) isTest = split[IND_TEST].equals(NetworkConsts.TEST_MODE);
 
-            String domainText = (isTest) ? domain.concat( NetworkConsts.TEST_PATH) : domain;
+            String domainText = (isTest) ? domain.concat(NetworkConsts.TEST_PATH) : domain;
             isTest = false;
             editTextDomain.setText(domainText);
             editTextPort.setText(Integer.toString(port));
@@ -79,10 +79,12 @@ public class NetworkSettingsActivity extends AsyncActivity {
     }
 
     private void testIPandPort() {
-        Log.d("NetworkSettingsActivity", "testIPandPort() domain: " + domain + " port: " + port);
+        setIconsOfAvailability(0);
         readDomainAndPort();
-        NetworkUtilities.applyDomainAndPort(this, domain, port, isTest);
+        Log.d("NetworkSettingsActivity", "testIPandPort() domain = [" + domain + "], port = [" + port + "], isTest = [" + isTest + "]");
         if (domain.length() != 0 && domain != null) {
+            NetworkUtilities.applyDomainAndPort(this, domain, port, isTest);
+            AppUtil.showInfo(this, getString(R.string.saved));
             processAsyncTask();
         }
     }
@@ -94,7 +96,9 @@ public class NetworkSettingsActivity extends AsyncActivity {
 
     private void parseDomain(String domainS) {
         String[] split = domainS.split("[/]");
+        Log.d(TAG, "parseDomain() split " + Arrays.toString(split));
         if (split.length > 0) domain = split[0];
+        isTest = false;
         if (split.length > 1) {
             isTest = split[1].equals(NetworkConsts.TEST_MODE);
         }
@@ -107,26 +111,6 @@ public class NetworkSettingsActivity extends AsyncActivity {
             port = -1;
         }
     }
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu");
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.save_options_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected");
-        switch (item.getItemId()) {
-            case R.id.save:
-                saveDomainAndPortAndFinish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
-
 
     @Override
     protected void processAsyncTask() {
@@ -141,12 +125,20 @@ public class NetworkSettingsActivity extends AsyncActivity {
         imageView.setImageResource(R.drawable.ic_delete);
     }
 
+    private void setImageAsReset(ImageView imageView) {
+        imageView.setImageResource(R.drawable.ic_lockscreen_forgotpassword_pressed);
+    }
+
 
     private void setIconsOfAvailability(int code) {
         switch (code) {
             case -1:
                 setImageAsUnreachable(imageWebService);
                 setImageAsUnreachable(imageDatabase);
+                break;
+            case 0:
+                setImageAsReset(imageWebService);
+                setImageAsReset(imageDatabase);
                 break;
             case HttpURLConnection.HTTP_OK:
                 setImageAsReachable(imageWebService);
@@ -190,5 +182,6 @@ public class NetworkSettingsActivity extends AsyncActivity {
             setIconsOfAvailability(code);
         }
     }
+
 }
 

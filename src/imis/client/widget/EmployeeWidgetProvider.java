@@ -46,7 +46,7 @@ public class EmployeeWidgetProvider extends AppWidgetProvider {
             String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
             views.setTextViewText(R.id.emp_kodpra, name);
             String last = employee.getDruh() + " " + TimeUtil.formatEmpDate(employee.getDatum())
-                    + " " + TimeUtil.formatTime(employee.getCas());
+                    + " " + TimeUtil.formatTimeInNonLimitHour(employee.getCas());
             views.setTextViewText(R.id.emp_time, last);
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
             //context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);

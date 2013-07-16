@@ -7,7 +7,7 @@
 
     <string name="sync_button">Synchronizuj</string>
     <string name="menu_network_save">Uložit</string>
-    <string name="menu_network">Síť</string>
+    <string name="menu_network">Připojení k serveru</string>
     <string name="menu_calendar">Kalendář</string>
     <string name="menu_add">Přidat</string>
     <string name="button_ok">OK</string>
@@ -88,13 +88,13 @@
     <string name="login_password_label">Heslo</string>
     <string name="login_ok">Ok</string>
 
-    <string name="network_settings_lab">Síť</string>
-    <string name="network_host_lab">Host</string>
+    <string name="network_settings_lab">Připojení k serveru</string>
+    <string name="network_host_lab">Doména</string>
     <string name="network_port_lab">Port</string>
     <string name="network_services_reach_lab">Dostupnost</string>
     <string name="network_host_reach_lab">Host</string>
-    <string name="network_ws_reach_lab">WS</string>
-    <string name="network_db_reach_lab">DB</string>
+    <string name="network_ws_reach_lab">Webová služba</string>
+    <string name="network_db_reach_lab">Databázový server</string>
 
     <string name="login_activity_loginfail_text_both">Chybné uživatelské jméno nebo heslo.</string>
     <string name="ui_activity_authenticating">Authentikace\u2026</string>
@@ -104,7 +104,7 @@
     <string name="menu_records">Výkazy</string>
     <string name="ok">Ok</string>
     <string name="cancel">Zrušit</string>
-    <string name="menu_employees_refresh">Zaměstnanci akt.</string>
+    <string name="menu_employees_refresh">Aktualizovat zaměstnance</string>
     <string name="menu_employees_present">Přítomní zaměstnanci</string>
     <string name="menu_eventsChart">Graf docházka</string>
     <string name="error_unknown_host">unknown host</string>
@@ -118,6 +118,7 @@
     <string name="service_unavailable">Služba není dostupná</string>
     <string name="no_records">Těmto parametrům nevyhovují žádné záznamy</string>
     <string name="no_account_set_title">Neeexistuje účet</string>
+    <string name="no_account_set_prev">Nejdříve vytvoř účet pro synchronizaci</string>
     <string name="no_account_set_desc">Není nastaven účet pro synchronizaci, přejete si ho vytvořit?</string>
     <string name="no_position_set">Není nastavena geografická pozice pracoviště</string>
     <string name="login_icp_label">ICP</string>
@@ -138,7 +139,7 @@
     <string name="spinnerRecordType_title">Typ zakázky</string>
     <string name="selectEmp">Vyber zaměstnance</string>
     <string name="noEmp">Není vybrán zaměstnanec</string>
-    <string name="menu_color_info">Barvy</string>
+    <string name="menu_color_info">Barvy pro docházku a výkazy</string>
     <string name="eventsType">Události docházky</string>
     <string name="recordsType">Zakázky</string>
     <string name="eventTypeOthers">Ostatní</string>
@@ -153,8 +154,8 @@
     <string name="pref_sync_period">Perioda synchronizace</string>
     <string name="pref_network_type">Datový přenos</string>
     <string name="widget_allready_exists">Widget pro daného zaměstnance již existuje</string>
-    <string name="widget_label_employees">Přítomnost zaměstnance</string>
-    <string name="widget_label_shortcut">Zadávání docházky</string>
+    <string name="widget_label_employees">Imisoid - přítomnost</string>
+    <string name="widget_label_shortcut">Imisoid - docházka</string>
     <string name="other_option">Jiný</string>
     <string name="location_settings">Nastavení umístění</string>
     <string name="pref_notification">Upozornění při opomenutí</string>
@@ -183,6 +184,15 @@
     <string name="eventsStats">" Doch:"</string>
     <string name="pref_act_period">Perioda aktualizace</string>
     <string name="pref_misc">Ostatní</string>
-    <string name="pref_location">Umístění</string>
+    <string name="pref_location">Poloha pracoviště</string>
+    <string name="location_saved">Poloha nastavena</string>
+    <string name="location_not_saved">Poloha nenastavena</string>
+    <string name="no_employees">Seznam zaměstnanců je prázdný</string>
+    <string name="saved">Uloženo</string>
+    <string name="menu_request_position">Získej polohu</string>
+    <string name="not_set">Nenastaveno</string>
+    <string name="sum_records">"Vykázáno: "</string>
+    <string name="sum_events">"Odpracováno: "</string>
+    <string name="sum_diff">"Rozdíl: "</string>
 
 </resources>

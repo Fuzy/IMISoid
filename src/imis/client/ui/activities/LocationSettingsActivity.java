@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.*;
 import imis.client.AppUtil;
 import imis.client.R;
 
+import java.util.Map;
+
 import static imis.client.AppConsts.*;
 
 /**
@@ -36,10 +38,10 @@ public class LocationSettingsActivity extends FragmentActivity {
     private LatLng position;
     private Circle circle;
     private Marker marker;
-   //TODO nastavena pozice je prepsana novou
     private final float ZOOM = 18f;
     private final double RADIUS = 10.0, MIN_RADIUS = 5.0;
     private int seekPos;
+    private SeekBar seekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,31 +50,61 @@ public class LocationSettingsActivity extends FragmentActivity {
 
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                 .getMap();
-        Log.d(TAG, "onCreate() map " + map);
         map.setOnMapClickListener(myMapClickListener);
 
-        SeekBar seekBar = (SeekBar) findViewById(R.id.seek);
+        seekBar = (SeekBar) findViewById(R.id.seek);
         seekBar.setOnSeekBarChangeListener(onSeekBarChangeListener);
-        seekPos = loadSeekPosition();
-        seekBar.setProgress(seekPos);
 
-        // Acquire a reference to the system Location Manager
+        loadPreviousLocation();
+        if (position == null) {
+            requestLocationUpdates();
+        }
+    }
+
+    private void loadPreviousLocation() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Map<String, ?> all = settings.getAll();
+        Log.d(TAG, "loadPreviousLocation() all " + all);
+
+        if (settings.contains(KEY_LATITUDE) && settings.contains(KEY_LONGITUDE)) {
+            double latitude = settings.getFloat(KEY_LATITUDE, 0f);
+            double longitude = settings.getFloat(KEY_LONGITUDE, 0f);
+            position = new LatLng(latitude, longitude);
+            drawMarker(position);
+            arrangeCamera();
+            Log.d(TAG, "loadPreviousLocation() position loaded");
+        }
+
+        seekPos = settings.getInt(KEY_SEEK_POS, 0);
+        seekBar.setProgress(seekPos);
+        drawCircle(position, seekPos);
+    }
+
+
+    private void requestLocationUpdates() {
+        Log.d(TAG, "requestLocationUpdates()");
+
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
+
 
     private final GoogleMap.OnMapClickListener myMapClickListener = new GoogleMap.OnMapClickListener() {
         @Override
         public void onMapClick(LatLng latLng) {
             position = latLng;
-            drawMarker();
-            drawCircle();
+            drawMarker(position);
+            drawCircle(position, seekPos);
         }
     };
 
-    // Define a listener that responds to location updates
+    private void arrangeCamera() {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, ZOOM));
+        map.animateCamera(CameraUpdateFactory.zoomTo(ZOOM), 1000, null);
+    }
+
+
     private final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -82,14 +114,10 @@ public class LocationSettingsActivity extends FragmentActivity {
             Log.d(TAG, "onLocationChanged() longitude " + longitude);
 
             position = new LatLng(location.getLatitude(), location.getLongitude());
-            drawMarker();
-            drawCircle();
+            drawMarker(position);
+            drawCircle(position, seekPos);
+            arrangeCamera();
 
-            // Move the camera instantly to hamburg with a zoom of 15.
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, ZOOM));
-            // Zoom in, animating the camera.
-            map.animateCamera(CameraUpdateFactory.zoomTo(ZOOM), 1000, null);
-            // Remove the listener you previously added
             locationManager.removeUpdates(locationListener);
         }
 
@@ -109,13 +137,15 @@ public class LocationSettingsActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Remove the listener you previously added
-        locationManager.removeUpdates(locationListener);
+        if (locationManager != null) {
+            locationManager.removeUpdates(locationListener);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.location_options_menu, menu);
         inflater.inflate(R.menu.save_options_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -125,6 +155,9 @@ public class LocationSettingsActivity extends FragmentActivity {
         switch (item.getItemId()) {
             case R.id.save:
                 savePosition();
+                return true;
+            case R.id.requestPosition:
+                requestLocationUpdates();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -147,19 +180,13 @@ public class LocationSettingsActivity extends FragmentActivity {
         finish();
     }
 
-    private int loadSeekPosition() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        int anInt = settings.getInt(KEY_SEEK_POS, 0);
-        return anInt;
-    }
 
     SeekBar.OnSeekBarChangeListener onSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
             seekPos = i;
             Log.d(TAG, "onProgressChanged() i " + i);
-            drawCircle();
+            drawCircle(position, seekPos);
         }
 
         @Override
@@ -173,22 +200,16 @@ public class LocationSettingsActivity extends FragmentActivity {
         }
     };
 
-    private void drawMarker() {
+    private void drawMarker(LatLng position) {
         if (marker != null) marker.remove();
         marker = map.addMarker(new MarkerOptions().position(position));
     }
 
-    private void drawCircle() {
+    private void drawCircle(LatLng position, int seekPos) {
         if (circle != null) circle.remove();
         if (position != null) {
-            circle = map.addCircle(new CircleOptions()
-                    .center(position)
-                    .radius(RADIUS * seekPos + MIN_RADIUS)
-                    .strokeColor(Color.BLACK)
-                    .strokeWidth(5.0F));
-        }
-        if (circle != null) {
-            Log.d(TAG, "drawCircle() getRadius " + circle.getRadius());
+            circle = map.addCircle(new CircleOptions().center(position).radius(RADIUS * seekPos + MIN_RADIUS)
+                    .strokeColor(Color.BLACK).strokeWidth(5.0F));
         }
     }
 }

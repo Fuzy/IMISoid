@@ -29,7 +29,7 @@ public abstract class ChartActivity extends ControlActivity {
     private static final String TAG = ChartActivity.class.getSimpleName();
     protected static final String FRAG_PIE = "PieChartFragment",
             FRAG_STACK = "StackedBarFragment", FRAG_STATS = "StatisticsFragment";
-
+    //TODO zivotni cyklus - zmizi fragment pri upozadeni, rotace checkboxy
     private static final String FRAG_TAG = "fragment";
     private String currentFragment;
 

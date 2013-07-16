@@ -63,9 +63,9 @@
         <item>60 min</item>
     </string-array>
     <string-array name="prefNotificationDelayValues">
-        <item>900</item>
-        <item>1800</item>
-        <item>3600</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
     </string-array>
 
 
@@ -83,5 +83,8 @@
         <item>0</item>
     </string-array>
     <string name="sync_employees_frequency_default">0</string>
+
+    <string name="prefNetworkUrl">KEY_BASE_URI</string>
+    <string name="prefLocation">LATITUDE</string>
 
 </resources>

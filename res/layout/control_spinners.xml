@@ -9,11 +9,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:prompt="@string/spinnerEmployee_title"
-            />
+            android:prompt="@string/spinnerEmployee_title"/>
 
     <CheckBox android:id="@+id/subOnly"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:background="@android:color/white"/>
+              android:layout_height="wrap_content"/>
 </LinearLayout>

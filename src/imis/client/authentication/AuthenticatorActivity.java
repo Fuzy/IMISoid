@@ -98,7 +98,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
 
     @Override
     public void onTaskFinished(Result result) {
-        ResultItem<Employee> employeeResult = (ResultItem<Employee>) result;
+        ResultItem<Employee> employeeResult = (ResultItem<Employee>) result;//TOTO unchecked
         Log.d(TAG, "onTaskFinished() employeeResult " + employeeResult);
 
         if (employeeResult != null) {

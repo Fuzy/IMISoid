@@ -5,29 +5,13 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView android:layout_width="wrap_content"
+    <TextView android:layout_width="85dp"
               android:layout_height="wrap_content"
-              android:textSize="20sp"
+              android:textSize="25sp"
               android:layout_marginTop="@dimen/statsMargin"
-              android:text="@string/recordsStats"/>
-
-    <TextView android:layout_width="60dp"
-              android:layout_height="wrap_content"
-              android:textSize="20sp"
-              android:layout_marginTop="@dimen/statsMargin"
-              android:id="@+id/recordsStats"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginTop="@dimen/statsMargin"
-            android:text="@string/eventsStats"/>
-
-    <TextView android:layout_width="60dp"
-              android:layout_height="wrap_content"
-              android:textSize="20sp"
-              android:layout_marginTop="@dimen/statsMargin"
-              android:id="@+id/eventsStats"/>
+              android:layout_marginLeft="@dimen/statsMargin"
+              android:paddingLeft="@dimen/empMargin"
+              android:id="@+id/stats"
+              android:background="@drawable/emp_border"/>
 
 </LinearLayout>

@@ -117,13 +117,13 @@ public class RecordsProcessor {
             double amount = (double) value / (double) AppConsts.MS_IN_HOUR;
             serie = new PieChartSerie(entry.getKey(), amount);
             serie.setColor(ColorConfig.getColor(context, entry.getKey()));
-            serie.setTime(TimeUtil.formatTime(value));
+            serie.setTime(TimeUtil.formatTimeInNonLimitHour(value));
             int percent = (int) (((double) value / (double) total) * 100);
             serie.setPercent(percent);
             pieChartData.addSerie(serie);
         }
 
-        pieChartData.setTotal(TimeUtil.formatTime(total));
+        pieChartData.setTotal(TimeUtil.formatTimeInNonLimitHour(total));
         Log.d(TAG, "countRecordsPieChartData() pieChartData " + pieChartData);
         return pieChartData;
     }

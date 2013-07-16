@@ -22,7 +22,12 @@ public class EmployeeResourceCursorAdapter extends ResourceCursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         Employee employee = Employee.cursorToEmployee(cursor);
-        String name = (employee.getKodpra() != null) ? employee.getKodpra() : employee.getIcp();
-        ((TextView)view.findViewById(android.R.id.text1)).setText(name);
+        String name = employee.getName();
+        String kodpra = employee.getKodpra();
+        StringBuilder builder = new StringBuilder();
+        if (name != null) builder.append(name);
+        if (kodpra != null) builder.append("(" + kodpra + ")");
+        if (name == null && kodpra == null) builder.append(employee.getIcp());
+        ((TextView) view.findViewById(android.R.id.text1)).setText(builder.toString());
     }
 }

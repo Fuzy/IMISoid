@@ -78,7 +78,7 @@ public class RecordDetailFragment extends Fragment {
             tt = (TextView) detail.findViewById(R.id.date);
             tt.setText(TimeUtil.formatAbbrDate(record.getDatum()));
             tt = (TextView) detail.findViewById(R.id.time);
-            tt.setText(TimeUtil.formatTime(record.getMnozstvi_odved()));
+            tt.setText(TimeUtil.formatTimeInNonLimitHour(record.getMnozstvi_odved()));
             tt = (TextView) detail.findViewById(R.id.record_detail_report);
             tt.setText(record.getPozn_hl());
             tt = (TextView) detail.findViewById(R.id.record_detail_task);

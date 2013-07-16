@@ -15,7 +15,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import imis.client.*;
 import imis.client.model.Event;
 import imis.client.persistent.EventManager;
-import imis.client.ui.activities.util.ActivityConsts;
 import imis.client.ui.dialogs.AddEventDialog;
 import imis.client.ui.dialogs.DeleteEventDialog;
 import imis.client.widget.ShortcutWidgetProvider;
@@ -52,7 +51,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private TimePicker arriveTime, leaveTime;
     private Button arriveBtn, leaveBtn;
     private LinearLayout arriveLayout, leaveLayout;
-    //TODO mazani
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +72,8 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
             }
         }
 
-        arriveId = intent.getIntExtra(ActivityConsts.ID_ARRIVE, -1);
-        leaveId = intent.getIntExtra(ActivityConsts.ID_LEAVE, -1);
+        arriveId = intent.getIntExtra(AppConsts.ID_ARRIVE, -1);
+        leaveId = intent.getIntExtra(AppConsts.ID_LEAVE, -1);
         loadEvents(arriveId, leaveId);
         showToastIfErrors();
 
@@ -117,11 +116,11 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
         if (isArrive) {
             title = getString(R.string.add_arrive);
-            time = TimeUtil.formatTime(arriveEvent.getCas());
+            time = TimeUtil.formatTimeInNonLimitHour(arriveEvent.getCas());
             desc = spinnerKod_poArrive.getSelectedItem().toString();
         } else {
             title = getString(R.string.add_leave);
-            time = TimeUtil.formatTime(leaveEvent.getCas());
+            time = TimeUtil.formatTimeInNonLimitHour(leaveEvent.getCas());
             desc = spinnerKod_poLeave.getSelectedItem().toString();
 
         }
@@ -283,6 +282,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     @Override
     public void deleteEvent(int deleteCode) {
+        Log.d(TAG, "deleteEvent()" + "deleteCode = [" + deleteCode + "]");
         if (deleteCode == -1) return;
         switch (deleteCode) {
             case DeleteEventDialog.DEL_ARRIVE:
@@ -432,6 +432,10 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private void showDeleteDialog() {
         DialogFragment deleteEventDialog = new DeleteEventDialog();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConsts.ID_ARRIVE, arriveId);
+        bundle.putInt(AppConsts.ID_LEAVE, leaveId);
+        deleteEventDialog.setArguments(bundle);
         deleteEventDialog.show(getSupportFragmentManager(), "DeleteEventDialog");
     }
 

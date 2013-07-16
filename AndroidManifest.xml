@@ -37,7 +37,7 @@
             android:required="true"/>
 
     <uses-sdk
-            android:minSdkVersion="12"
+            android:minSdkVersion="10"
             android:targetSdkVersion="17"/>
 
     <!--Setup Google Play Services SDK Android 2.2 or higher -->
