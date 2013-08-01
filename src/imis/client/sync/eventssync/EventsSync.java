@@ -3,20 +3,18 @@ package imis.client.sync.eventssync;
 import android.content.Context;
 import android.util.Log;
 import imis.client.TimeUtil;
+import imis.client.RestUtil;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.asynctasks.util.AsyncUtil;
-import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Event;
-import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
-import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.Collections;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,13 +35,8 @@ public class EventsSync {
     public Result deleteEvent(final String rowid) {
         Log.d(TAG, "delete() rowid: " + rowid);
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
-        requestHeaders.setAuthorization(authHeader);
-        HttpEntity<Object> entity = new org.springframework.http.HttpEntity<>(requestHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
+        HttpEntity<Object> entity = new HttpEntity<Object>(RestUtil.prepareHttpHeaders(context));
+        RestTemplate restTemplate = RestUtil.prepareRestTemplate();
 
         try {
             ResponseEntity response = restTemplate.exchange(NetworkUtilities.getEventsDeleteURL(context),
@@ -60,15 +53,8 @@ public class EventsSync {
         String strTo = TimeUtil.formatDate(to);
         Log.d(TAG, "getUserEvents() icp: " + icp + " strFrom: " + strFrom + " strTo: " + strTo);
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
-        requestHeaders.setAuthorization(authHeader);
-        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity entity = new org.springframework.http.HttpEntity<>(requestHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
-        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+        HttpEntity<Object> entity = new HttpEntity<Object>(RestUtil.prepareHttpHeaders(context));
+        RestTemplate restTemplate = RestUtil.prepareRestTemplate();
 
         try {
             ResponseEntity<Event[]> response = restTemplate.exchange(NetworkUtilities.getEventsGetURL(context),
@@ -77,6 +63,7 @@ public class EventsSync {
             Log.d(TAG, "getUserEvents() events " + events);
             return new ResultList<Event>(response.getStatusCode(), events);
         } catch (Exception e) {
+            @SuppressWarnings("unchecked")
             ResultList<Event> resultList = AsyncUtil.processException(context, e, ResultList.class);
             return resultList;
         }
@@ -85,16 +72,8 @@ public class EventsSync {
     public Result createEvent(Event event) {
         Log.d(TAG, "createEvent() event: " + event);
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
-        requestHeaders.setAuthorization(authHeader);
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.setContentEncoding(ContentCodingType.valueOf("UTF-8"));
-        HttpEntity<Event> entity = new HttpEntity<>(event, requestHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
-        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+        HttpEntity<Event> entity = new HttpEntity<>(event, RestUtil.prepareHttpHeaders(context));
+        RestTemplate restTemplate = RestUtil.prepareRestTemplate();
 
         try {
             ResponseEntity response = restTemplate.exchange(NetworkUtilities.getEventsCreateURL(context), HttpMethod.POST, entity, null);
@@ -113,16 +92,8 @@ public class EventsSync {
     public Result updateEvent(Event event) {
         Log.d(TAG, "updateEvent() event: " + event);
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
-        requestHeaders.setAuthorization(authHeader);
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.setContentEncoding(ContentCodingType.valueOf("UTF-8"));
-        HttpEntity<Event> entity = new HttpEntity<>(event, requestHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
-        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+        HttpEntity<Event> entity = new HttpEntity<>(event, RestUtil.prepareHttpHeaders(context));
+        RestTemplate restTemplate = RestUtil.prepareRestTemplate();
 
         try {
             ResponseEntity response = restTemplate.exchange(NetworkUtilities.getEventsUpdateURL(context), HttpMethod.PUT,

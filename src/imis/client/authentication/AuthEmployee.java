@@ -3,14 +3,12 @@ package imis.client.authentication;
 import android.content.Context;
 import android.util.Log;
 import imis.client.asynctasks.NetworkingAsyncTask;
+import imis.client.RestUtil;
 import imis.client.asynctasks.result.ResultItem;
 import imis.client.asynctasks.util.AsyncUtil;
 import imis.client.model.Employee;
-import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -39,10 +37,7 @@ public class AuthEmployee extends NetworkingAsyncTask<String, Void, ResultItem<E
         requestHeaders.setAuthorization(authHeader);
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity entity = new org.springframework.http.HttpEntity<>(requestHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
-        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+        RestTemplate restTemplate = RestUtil.prepareRestTemplate();
 
         try {
             ResponseEntity<Employee> response = restTemplate.exchange(NetworkUtilities.getEmployeeGetURL(context),

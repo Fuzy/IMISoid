@@ -10,6 +10,7 @@ import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.util.AsyncUtil;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class NetworkUtilities {
         }
 
         HttpHeaders requestHeaders = new HttpHeaders();
-        org.springframework.http.HttpEntity<Object> entity = new org.springframework.http.HttpEntity<>(requestHeaders);
+        HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));

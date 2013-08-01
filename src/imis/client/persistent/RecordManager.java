@@ -1,10 +1,12 @@
 package imis.client.persistent;
 
+import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.util.Log;
 import imis.client.AppConsts;
 import imis.client.model.Record;
@@ -23,20 +25,28 @@ import java.util.List;
 public class RecordManager {
     private static final String TAG = RecordManager.class.getSimpleName();
 
-    public static int addRecord(Context context, Record record) {
+    public static int addRecord(ContentProviderClient client, Record record) {
         Log.d(TAG, "addRecord() " + record);
         ContentValues values = record.getAsContentValues();
-        ContentResolver resolver = context.getContentResolver();
-        Uri uri = resolver.insert(RecordQuery.CONTENT_URI, values);
-        return Integer.valueOf(uri.getLastPathSegment());
+
+        try {
+            Uri uri = client.insert(RecordQuery.CONTENT_URI, values);
+            return Integer.valueOf(uri.getLastPathSegment());
+        } catch (RemoteException e) {
+            return -1;
+        }
     }
 
     public static void addRecords(Context context, Record[] records) {
-        Log.d(TAG, "addEvents()");
+        Log.d(TAG, "addRecords()");
+        ContentResolver resolver = context.getContentResolver();
+        ContentProviderClient client = resolver.acquireContentProviderClient(RecordQuery.CONTENT_URI);
         for (Record record : records) {
-            if (updateRecordOnServerId(context, record) == 0)
-                addRecord(context, record);
+            if (updateRecordOnServerId(context, record) == 0) {
+                addRecord(client, record);
+            }
         }
+        client.release();
     }
 
     public static int deleteRecordsOlderThan(Context context, long date) {
@@ -44,13 +54,13 @@ public class RecordManager {
         return delete(context, RecordQuery.SELECTION_OLDER_THAN, new String[]{String.valueOf(date)});
     }
 
-   public static int deleteRecordsOnKodpra(Context context, String kodpra) {
-       Log.d(TAG,"deleteRecordsOnKodpra()" + "kodpra = [" + kodpra + "]");
+    public static int deleteRecordsOnKodpra(Context context, String kodpra) {
+        Log.d(TAG, "deleteRecordsOnKodpra()" + "kodpra = [" + kodpra + "]");
         return delete(context, RecordQuery.SELECTION_KODPRA, new String[]{kodpra});
     }
 
-    public static int delete(Context context, String where, String[] selectionArgs){
-        Log.d(TAG,"delete()" + "where = [" + where + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
+    public static int delete(Context context, String where, String[] selectionArgs) {
+        Log.d(TAG, "delete()" + "where = [" + where + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
         return resolver.delete(RecordQuery.CONTENT_URI, where, selectionArgs);
     }

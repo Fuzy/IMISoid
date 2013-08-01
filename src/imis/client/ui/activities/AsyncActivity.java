@@ -1,7 +1,6 @@
 package imis.client.ui.activities;
 
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import imis.client.asynctasks.NetworkingAsyncTask;
 import imis.client.ui.fragments.TaskFragment;
 
@@ -17,8 +16,6 @@ public abstract class AsyncActivity extends FragmentActivity implements TaskFrag
     private static final String TAG = AsyncActivity.class.getSimpleName();
 
     protected void createTaskFragment(NetworkingAsyncTask task) {
-        Log.d(TAG, "createTaskFragment()");
-
         // We will create a new TaskFragment.
         TaskFragment taskFragment = new TaskFragment();
         taskFragment.setTask(task);

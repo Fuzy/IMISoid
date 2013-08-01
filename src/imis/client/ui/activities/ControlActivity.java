@@ -138,6 +138,9 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     private void initSelectionValues() {
         setMonth(TimeUtil.todayDateInLong());
+
+        Log.d(TAG, "initSelectionValues() dateFrom " + dateFrom);
+        Log.d(TAG, "initSelectionValues() dateTo " + dateTo);
     }
 
     private void startCalendarActivity(long actual, int code) {
@@ -200,7 +203,6 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
                 adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
                     @Override
                     public boolean setViewValue(View view, Cursor cursor, int i) {
-                        Log.d(TAG, "setViewValue() icp " + cursor.getString(Employee.IND_COL_ICP));
                         if (cursor.isNull(Employee.IND_COL_ICP)) return false;
                         String value = (cursor.isNull(i)) ? cursor.getString(Employee.IND_COL_ICP) : cursor.getString(i);
                         ((TextView) view).setText(value);
@@ -227,7 +229,6 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     protected Employee getSelectedUser() {
         MergeCursor selectedItem = (MergeCursor) spinnerEmp.getSelectedItem();
         Employee employee = Employee.cursorToEmployee(selectedItem);
-        Log.d(TAG, "getSelectedUser() employee " + employee);
         return employee;
     }
 
@@ -326,7 +327,6 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.d(TAG, "onItemSelected()");
         switch (adapterView.getId()) {
             case R.id.spinnerEmp:
                 Log.d(TAG, "onItemSelected() spinnerEmp");
@@ -386,6 +386,22 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             Log.d(TAG, "refreshRecords() " + e.getMessage());
             showAccountNotExistsError(getSupportFragmentManager());
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putLong(PAR_FROM, dateFrom);
+        outState.putLong(PAR_TO, dateTo);
+        Log.d(TAG, "onSaveInstanceState() outState " + outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG, "onRestoreInstanceState() savedInstanceState " + savedInstanceState);
+        setFromDate(savedInstanceState.getLong(PAR_FROM));
+        setToDate(savedInstanceState.getLong(PAR_TO));
     }
 
     protected abstract void processControlAsyncTask(Employee emp, String from, String to);

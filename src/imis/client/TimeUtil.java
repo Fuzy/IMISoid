@@ -85,7 +85,10 @@ public class TimeUtil {
         Log.d(TAG, "formatTimeInNonLimitHour() hours " + hours);
         long mins = (time - hours * AppConsts.MS_IN_HOUR) / AppConsts.MS_IN_MIN;
         Log.d(TAG, "formatTimeInNonLimitHour() mins " + mins);
-        return decf.format(hours) + ":" + decf.format(mins);
+        String res = new String();
+        if (time < 0) res = res.concat("-");
+        res = res.concat(decf.format(Math.abs(hours)) + ":" + decf.format(Math.abs(mins)));
+        return res;
     }
 
     public static void validateDate(String date) throws ParseException {

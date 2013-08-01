@@ -34,7 +34,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
                 "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
         SyncStats stats = new SyncStats();
-        //TODO zvazit predelani s vyuzitim ContentProviderClient
+
         boolean isManual = false;
         if (extras.containsKey(Event.KEY_DATE)) {
             Log.d(TAG, "onPerformSync() manual");

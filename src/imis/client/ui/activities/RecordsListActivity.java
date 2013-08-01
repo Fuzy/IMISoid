@@ -36,9 +36,9 @@ import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_LIST;
  * Date: 15.4.13
  * Time: 17:25
  */
-public class RecordListActivity extends ControlActivity implements
+public class RecordsListActivity extends ControlActivity implements
         RecordListFragment.OnItemSelectedListener {
-    private static final String TAG = RecordListActivity.class.getSimpleName();
+    private static final String TAG = RecordsListActivity.class.getSimpleName();
     private RecordsCursorAdapter adapter;
     private static final int LOADER_RECORDS = 0x08;
     private static final int DETAIL_ACTIVITY_CODE = 1;
@@ -75,6 +75,13 @@ public class RecordListActivity extends ControlActivity implements
 
         addListFragment();
     }
+
+   /* @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume()");
+        processDataQuery();
+    }*/
 
     private void showToastWithStats() {
         AppUtil.showInfo(this, getStatsDetailedMessage());
@@ -158,7 +165,7 @@ public class RecordListActivity extends ControlActivity implements
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-
+        Log.d(TAG, "onItemSelected()");
         switch (adapterView.getId()) {
             case R.id.spinnerRecords:
                 selectionArgs.put(PAR_TYPE, (String) spinnerType.getSelectedItem());

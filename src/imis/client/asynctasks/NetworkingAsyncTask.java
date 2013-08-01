@@ -45,11 +45,11 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
             }
         } else if (result.isUnknownErr()) {
             AppUtil.showError(context, result.getMsg());
-        } else if (result.isServerError()) {
+        } /*else if (result.isServerError()) {
             AppUtil.showError(context, context.getString(R.string.server_error));
         } else if (result.isClientError()) {
             AppUtil.showError(context, context.getString(R.string.client_error));
-        }
+        }*/
 
         if (mFragment != null) {
             Log.d(TAG, "onPostExecute() resultData " + v);

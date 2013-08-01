@@ -150,7 +150,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private void insertEventsTestData(SQLiteDatabase database) {
+    /*private void insertEventsTestData(SQLiteDatabase database) {
         Log.d(TAG, "insertEventsTestData()");
         database
                 .execSQL("insert into "
@@ -177,6 +177,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                         + TABLE_EVENTS
                         + " values (6,null,1,0,'700510',1364169600000,'00','O','75600000','KDA','O',1364169600000,null, 0, null)");//75600000
 
-    }
+    }*/
 
 }

@@ -69,7 +69,7 @@ public class PieChartFragment extends ChartFragment {
         }
 
         LinearLayout layout = (LinearLayout) mChartContainerView;
-        layout.removeAllViews();
+        layout.removeAllViews();//TODO null pointer exc
         GraphicalView mChartView = ChartFactory.getPieChartView(getActivity(), mSeries, mRenderer);
 
         layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,

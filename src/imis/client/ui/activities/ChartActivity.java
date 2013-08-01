@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.*;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -29,7 +30,6 @@ public abstract class ChartActivity extends ControlActivity {
     private static final String TAG = ChartActivity.class.getSimpleName();
     protected static final String FRAG_PIE = "PieChartFragment",
             FRAG_STACK = "StackedBarFragment", FRAG_STATS = "StatisticsFragment";
-    //TODO zivotni cyklus - zmizi fragment pri upozadeni, rotace checkboxy
     private static final String FRAG_TAG = "fragment";
     private String currentFragment;
 
@@ -53,14 +53,14 @@ public abstract class ChartActivity extends ControlActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(FRAG_TAG, currentFragment);
-
+        Log.d(TAG, "onSaveInstanceState() outState " + outState);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
+        Log.d(TAG, "onRestoreInstanceState() savedInstanceState " + savedInstanceState);
         currentFragment = savedInstanceState.getString(FRAG_TAG);
     }
 

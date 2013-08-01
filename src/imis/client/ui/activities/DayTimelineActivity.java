@@ -47,7 +47,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     protected static final String FRAG_LIST = "DayTimelineListFragment",
             FRAG_BLOCKS = "DayTimelineBlocksFragment", KEY_FRAGMENT = "key_fragment";
     private String currentFragment;
-    //TODO chybova zprava toast, zobrazuje se i nevhodne
     //TODO layouty
     private EventsProcessor processor;
 
@@ -67,6 +66,10 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
         // delete old data
         deleteOldData();
+    }
+
+    private void initUser() {
+
     }
 
     private void deleteOldData() {
@@ -349,7 +352,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     private void startRecordsListActivity() {
-        Intent intent = new Intent(this, RecordListActivity.class);
+        Intent intent = new Intent(this, RecordsListActivity.class);
         startActivity(intent);
     }
 

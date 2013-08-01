@@ -17,7 +17,6 @@ import imis.client.R;
 import imis.client.asynctasks.result.Result;
 import imis.client.asynctasks.result.ResultItem;
 import imis.client.model.Employee;
-import imis.client.persistent.EmployeeManager;
 import imis.client.ui.activities.AsyncActivity;
 import imis.client.ui.dialogs.AuthConfirmDialog;
 import imis.client.ui.dialogs.SetNetworkDialog;
@@ -83,8 +82,8 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         ContentResolver.setIsSyncable(account, AppConsts.AUTHORITY3, 1);
         ContentResolver.setSyncAutomatically(account, AppConsts.AUTHORITY3, true);
 
-        int inserted = EmployeeManager.addEmployee(this, employee);
-        Log.d(TAG, "finishLogin() inserted " + inserted);
+        /*int inserted = EmployeeManager.addEmployee(this, employee);
+        Log.d(TAG, "finishLogin() inserted " + inserted);*/
 
         // Now we tell our caller, could be the Android Account Manager or even our own application
         // that the process was successful
@@ -98,7 +97,8 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
 
     @Override
     public void onTaskFinished(Result result) {
-        ResultItem<Employee> employeeResult = (ResultItem<Employee>) result;//TOTO unchecked
+        @SuppressWarnings("unchecked")
+        ResultItem<Employee> employeeResult = (ResultItem<Employee>) result;
         Log.d(TAG, "onTaskFinished() employeeResult " + employeeResult);
 
         if (employeeResult != null) {

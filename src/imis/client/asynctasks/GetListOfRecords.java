@@ -3,19 +3,17 @@ package imis.client.asynctasks;
 import android.content.Context;
 import android.util.Log;
 import imis.client.AppConsts;
+import imis.client.RestUtil;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.asynctasks.util.AsyncUtil;
-import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Record;
-import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.RecordManager;
-import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +30,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         super(context, params);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected ResultList<Record> doInBackground(String... params) {
         String kodpra = params[0], from = params[1], to = params[2];
@@ -42,8 +41,9 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         Map<String, Object> statistics = new HashMap<String, Object>();
 
         // get list of records
-        entity = prepareEntity();
-        restTemplate = prepareRestTemplate();
+        entity = new HttpEntity<Object>(RestUtil.prepareHttpHeaders(context));
+
+        restTemplate = RestUtil.prepareRestTemplate();
         try {
             ResponseEntity<Record[]> response = restTemplate.exchange(NetworkUtilities.getRecordsGetURL(context), HttpMethod.GET, entity,
                     Record[].class, kodpra, from, to);
@@ -56,8 +56,9 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         }
 
         //get total time for records
-        entity = prepareEntity();
-        restTemplate = prepareRestTemplate();
+        entity = new HttpEntity<Object>(RestUtil.prepareHttpHeaders(context));
+
+        restTemplate = RestUtil.prepareRestTemplate();
         try {
             ResponseEntity<Long> response = restTemplate.exchange(NetworkUtilities.getRecordsTimeGetURL(context), HttpMethod.GET, entity,
                     Long.class, kodpra, from, to);
@@ -69,8 +70,9 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         }
 
         //get total time for events
-        entity = prepareEntity();
-        restTemplate = prepareRestTemplate();
+        entity = new HttpEntity<Object>(RestUtil.prepareHttpHeaders(context));
+
+        restTemplate = RestUtil.prepareRestTemplate();
         try {
             ResponseEntity<Long> response = restTemplate.exchange(NetworkUtilities.getEventsTimeGetURL(context), HttpMethod.GET, entity,
                     Long.class, kodpra, from, to);
@@ -86,21 +88,6 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         return resultList;
     }
 
-    private RestTemplate prepareRestTemplate() {  //TODO nekam jako util
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
-        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
-        return restTemplate;
-    }
-
-    private HttpEntity<Object> prepareEntity() {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
-        requestHeaders.setAuthorization(authHeader);
-        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
-        return entity;
-    }
 
     @Override
     protected void onPostExecute(ResultList<Record> resultList) {

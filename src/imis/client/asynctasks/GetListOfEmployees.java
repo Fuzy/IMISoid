@@ -2,19 +2,16 @@ package imis.client.asynctasks;
 
 import android.content.Context;
 import android.util.Log;
+import imis.client.RestUtil;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.asynctasks.util.AsyncUtil;
-import imis.client.authentication.AuthenticationUtil;
 import imis.client.model.Employee;
-import imis.client.network.HttpClientFactory;
 import imis.client.network.NetworkUtilities;
 import imis.client.persistent.EmployeeManager;
-import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Collections;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,16 +37,10 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
             icp = params[0];
         }
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        HttpAuthentication authHeader = AuthenticationUtil.createAuthHeader(context);
-        requestHeaders.setAuthorization(authHeader);
-        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<Object> entity = new HttpEntity<>(requestHeaders);
+        HttpEntity<Object> entity = new HttpEntity<Object>(RestUtil.prepareHttpHeaders(context));
 
         //Create a Rest template
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(HttpClientFactory.getThreadSafeClient()));
-        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+        RestTemplate restTemplate = RestUtil.prepareRestTemplate();
 
         try {
             Log.d(TAG, "doInBackground() url " + url + " icp " + icp);
@@ -59,6 +50,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
             Log.d(TAG, "doInBackground() body " + body);
             return new ResultList<Employee>(response.getStatusCode(), body);
         } catch (Exception e) {
+            @SuppressWarnings("unchecked")
             ResultList<Employee> resultList = AsyncUtil.processException(context,e, ResultList.class);
             Log.d(TAG, "doInBackground() resultList " + resultList);
             return resultList;
