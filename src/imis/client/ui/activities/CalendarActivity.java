@@ -22,7 +22,6 @@ public class CalendarActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("CalendarActivity", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
 
@@ -47,14 +46,18 @@ public class CalendarActivity extends Activity {
 
         @Override
         public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+            Log.d(TAG, "onSelectedDayChange()" +
+                    "year = [" + year + "], month = [" + month + "], dayOfMonth = [" + dayOfMonth + "]");
             Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(0);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
             cal.set(year, month, dayOfMonth);
 
             if (year != initYear || month != initMonth || dayOfMonth != initDay) {
                 Intent resIntent = getIntentWithDateSet(cal.getTimeInMillis());
-                Log.d(TAG, "onSelectedDayChange() cal " + cal.getTimeInMillis() + " year: " + year + " month: " + month +
-                        " dayOfMonth: " + dayOfMonth);
+                Log.d(TAG, "onSelectedDayChange() cal " + cal);
                 setResult(RESULT_OK, resIntent);
                 finish();
             }

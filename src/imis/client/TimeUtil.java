@@ -19,21 +19,16 @@ public class TimeUtil {
 
     private static final DecimalFormat decf = new DecimalFormat("00");
     private static final DateFormat df = new SimpleDateFormat("d.M.yyyy");
-    private static final DateFormat dfAbbr = new SimpleDateFormat("d.M.");//"d.M.yy"
-//    private static final DateFormat dfTime;
-
-   /* static {
-        dfTime = new SimpleDateFormat("HH:mm");
-        dfTime.setTimeZone(TimeZone.getTimeZone("Etc/GMT"));
-    }*/
+    private static final DateFormat dfAbbr = new SimpleDateFormat("d.M.");
 
     public static long currentDayTimeInLong() {
         Calendar now = Calendar.getInstance();
-        long timeInMs = now.get(Calendar.HOUR_OF_DAY) * AppConsts.MS_IN_HOUR + now.get(Calendar.MINUTE) * AppConsts.MS_IN_MIN;
+        long timeInMs = now.get(Calendar.HOUR_OF_DAY) * AppConsts.MS_IN_HOUR +
+                now.get(Calendar.MINUTE) * AppConsts.MS_IN_MIN;
         return timeInMs;
     }
 
-    public static long todayDateInLong() {//TODO BUG!!! casovy posun, datum jako long
+    public static long todayDateInLong() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -71,20 +66,11 @@ public class TimeUtil {
         cal.setTimeInMillis(date);
         return dfAbbr.format(cal.getTime());
     }
-/*
-    public static String formatTimeInNonLimitHour(Long time) {
-        if (time == null) return "";
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(time);
-        return dfTime.format(cal.getTime());
-    }*/
 
     public static String formatTimeInNonLimitHour(Long time) {
         if (time == null) return "";
         long hours = time / AppConsts.MS_IN_HOUR;
-        Log.d(TAG, "formatTimeInNonLimitHour() hours " + hours);
         long mins = (time - hours * AppConsts.MS_IN_HOUR) / AppConsts.MS_IN_MIN;
-        Log.d(TAG, "formatTimeInNonLimitHour() mins " + mins);
         String res = new String();
         if (time < 0) res = res.concat("-");
         res = res.concat(decf.format(Math.abs(hours)) + ":" + decf.format(Math.abs(mins)));

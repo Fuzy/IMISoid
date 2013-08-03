@@ -76,13 +76,6 @@ public class RecordsListActivity extends ControlActivity implements
         addListFragment();
     }
 
-   /* @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-        processDataQuery();
-    }*/
-
     private void showToastWithStats() {
         AppUtil.showInfo(this, getStatsDetailedMessage());
 
