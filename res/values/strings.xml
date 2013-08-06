@@ -71,11 +71,9 @@
         <item>W</item>
     </string-array>
 
-    <string-array name="delete_event_options">
-        <item>Příchod</item>
-        <item>Odchod</item>
-        <item>Obojí</item>
-    </string-array>
+    <string name="deleteChoiceArrive">Příchod</string>
+    <string name="deleteChoiceLeave">Odchod</string>
+    <string name="deleteChoiceBoth">Obojí</string>
 
     <!-- Polozky menu pri edit aktivite -->
     <string name="menu_save">Uložit</string>
@@ -111,7 +109,8 @@
     <string name="working">Čekejte prosím...</string>
     <string name="delete_event">Smazat událost</string>
     <string name="title_editing">Editace</string>
-    <string name="test_connection">Testuji spojení...</string>
+    <string name="testing_connection">Testuji spojení...</string>
+    <string name="test_connection">Test spojení</string>
     <string name="connection_unavailable">Spojení se nezdařilo</string>
     <string name="device_is_offline">Zařízení není připojeno k síti</string>
     <string name="connection_unavailable_desc">Přejete si změnit nastavení připojení?</string>
@@ -194,5 +193,8 @@
     <string name="sum_records">"Vykázáno: "</string>
     <string name="sum_events">"Odpracováno: "</string>
     <string name="sum_diff">"Rozdíl: "</string>
+    <string name="chart_lab_attendance">Události docházky pro daný den</string>
+    <string name="chart_lab_day">Den</string>
+    <string name="chart_lab_time">Čas[h]</string>
 
 </resources>

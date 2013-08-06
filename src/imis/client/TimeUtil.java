@@ -71,7 +71,7 @@ public class TimeUtil {
         if (time == null) return "";
         long hours = time / AppConsts.MS_IN_HOUR;
         long mins = (time - hours * AppConsts.MS_IN_HOUR) / AppConsts.MS_IN_MIN;
-        String res = new String();
+        String res = "";
         if (time < 0) res = res.concat("-");
         res = res.concat(decf.format(Math.abs(hours)) + ":" + decf.format(Math.abs(mins)));
         return res;

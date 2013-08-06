@@ -81,7 +81,7 @@
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test spojení"
+            android:text="@string/test_connection"
             android:id="@+id/buttonTest"
             android:layout_gravity="center"/>
 

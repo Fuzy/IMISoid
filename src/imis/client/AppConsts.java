@@ -43,7 +43,4 @@ public class AppConsts {
     public static final String PERIOD = "PERIOD";
     public static final String ID_ARRIVE = "id_arrive";
     public static final String ID_LEAVE = "id_leave";
-    public static final String PAR_FROM = "FROM";
-    public static final String PAR_TO = "TO";
-    public static final String PAR_EMP = "EMP";
 }

@@ -25,7 +25,7 @@ public class TaskFragment extends DialogFragment {
 
     private OnAsyncActionCompletedListener mCallbacks = sDummyCallbacks;
 
-    private static OnAsyncActionCompletedListener sDummyCallbacks = new OnAsyncActionCompletedListener() {
+    private static final OnAsyncActionCompletedListener sDummyCallbacks = new OnAsyncActionCompletedListener() {
         public void onTaskFinished(Result result) {
         }
     };

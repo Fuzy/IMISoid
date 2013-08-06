@@ -3,7 +3,6 @@ package imis.client.ui.fragments;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,8 @@ public class StackedBarFragment extends ChartFragment {
 
     private void prepareGraph(StackedBarChartData chartData) {
         XYMultipleSeriesRenderer renderer = buildBarRenderer(chartData.getColors());
-        setChartSettings(renderer, "Události docházky pro daný den", "Den", "Čas[h]", 0.5,
+        setChartSettings(renderer, getString(R.string.chart_lab_attendance), getString(R.string.chart_lab_day),
+                getString(R.string.chart_lab_time), 0.5,
                 12.5, 0, (chartData.getyMax() * 1.1), Color.GRAY, Color.LTGRAY);
         renderer.setXLabels(12);
         renderer.setYLabels(10);

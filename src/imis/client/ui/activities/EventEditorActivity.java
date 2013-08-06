@@ -25,7 +25,7 @@ import java.util.Set;
 public class EventEditorActivity extends FragmentActivity implements OnItemSelectedListener,
         View.OnClickListener, DeleteEventDialog.OnDeleteEventListener, AddEventDialog.AddEventDialogListener {
     private static final String TAG = EventEditorActivity.class.getSimpleName();
-
+    //TODO nelze smazat samotny prichod
     public static final String KEY_ENABLE_ADD_ARRIVE = "key_enable_add_arrive",
             KEY_ENABLE_ADD_LEAVE = "key_enable_add_leave";
 
@@ -336,11 +336,6 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         arriveEvent.setKod_po(kody_po_values[selectedArrive]);
         arriveEvent.setCas(getPickerCurrentTimeInMs(arriveTime));
         arriveEvent.setPoznamka(textPoznamkaArrive.getText().toString());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     private void saveLeaveEvent() {

@@ -12,7 +12,7 @@ import imis.client.ui.fragments.TaskFragment;
  */
 public abstract class AsyncActivity extends FragmentActivity implements TaskFragment.OnAsyncActionCompletedListener {
     // Tag so we can find the task fragment again, in another instance of this fragment after rotation.
-    static final String TASK_FRAGMENT_TAG = "task";
+    private static final String TASK_FRAGMENT_TAG = "task";
     private static final String TAG = AsyncActivity.class.getSimpleName();
 
     protected void createTaskFragment(NetworkingAsyncTask task) {

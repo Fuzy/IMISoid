@@ -15,8 +15,8 @@ public class Block {
     private int arriveId;
     private int leaveId;
     private String kod_po;
-    boolean dirty;
-    boolean error;
+    private boolean dirty;
+    private boolean error;
 
     public Block() {
     }

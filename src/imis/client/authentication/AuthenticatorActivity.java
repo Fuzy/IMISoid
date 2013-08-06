@@ -57,11 +57,6 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         initLayoutComponents();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     private void initLayoutComponents() {
         passwordEdit = (EditText) findViewById(R.id.password_edit);
         icpEdit = (EditText) findViewById(R.id.icp_edit);

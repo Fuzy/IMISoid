@@ -56,11 +56,6 @@ public class NetworkSettingsActivity extends AsyncActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     private void extractBaseURI() {
         String baseUri = NetworkConfig.getBaseURI(this);
         if (baseUri != null) {

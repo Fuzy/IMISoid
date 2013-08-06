@@ -49,8 +49,11 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
             ContentResolver.requestSync(account, authority, extras);
             return;
         }
+
+
+        String icp = account.name;
         // get local changes
-        List<Event> dirtyEvents = EventManager.getUserDirtyEvents(context);
+        List<Event> dirtyEvents = EventManager.getUserDirtyEvents(context, icp);
         Log.d(TAG, "onPerformSync() dirtyEvents " + dirtyEvents.size());
         for (Event event : dirtyEvents) {
 
@@ -69,7 +72,6 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
 
         }
 
-        String icp = account.name;
         //Delete all events already synchronized
         int i = EventManager.deleteUserNotDirtyEvents(context, icp);//TODO test
         Log.d(TAG, "onPerformSync() deleted " + i);

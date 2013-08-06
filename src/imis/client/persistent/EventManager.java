@@ -44,7 +44,7 @@ public class EventManager {
     }
 
     public static int deleteEventsOnIcp(Context context, String icp) {
-        Log.d(TAG,"deleteEventsOnIcp()" + "icp = [" + icp + "]");
+        Log.d(TAG, "deleteEventsOnIcp()" + "icp = [" + icp + "]");
         return delete(context, EventQuery.SELECTION_ICP, new String[]{icp});
     }
 
@@ -102,20 +102,20 @@ public class EventManager {
     }
 
 
-    public static List<Event> getUserDirtyEvents(Context context) {
+    public static List<Event> getUserDirtyEvents(Context context, String icp) {
         Log.d(TAG, "getUserDirtyEvents()");
-        return getEvents(context, EventQuery.SELECTION_USER_DIRTY);
+        return getEvents(context, EventQuery.SELECTION_USER_DIRTY, new String[]{icp});
     }
 
     public static List<Event> getAllEvents(Context context) {
         Log.d(TAG, "getAllEvents()");
-        return getEvents(context, null);
+        return getEvents(context, null, null);
     }
 
-    private static List<Event> getEvents(Context context, String selection) {
-        Log.d(TAG, "getEvents()" + "selection = [" + selection + "]");
+    private static List<Event> getEvents(Context context, String selection, String[] selectionArgs) {
+        Log.d(TAG,"getEvents()" + "selection = [" + selection + "], selectionArgs = [" + selectionArgs + "]");
         ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null, selection, null, null);
+        Cursor cursor = resolver.query(EventQuery.CONTENT_URI, null, selection, selectionArgs, null);
         List<Event> events = new ArrayList<>();
         Event event;
         while (cursor.moveToNext()) {
@@ -208,8 +208,8 @@ public class EventManager {
         private static final String ORDER_BY_LAST = ORDER_BY_DATE_DESC + ", " + ORDER_BY_TIME_DESC + ", " + ORDER_BY_ID + " LIMIT 1";
 
         public static final String SELECTION_ID = Event.COL_ID + "=?";
-        public static final String SELECTION_USER_DIRTY = Event.COL_DIRTY + "=1"+ " and " + SELECTION_ICP;
-        public static final String SELECTION_USER_NOT_DIRTY = Event.COL_DIRTY + "=0"+ " and " + SELECTION_ICP;
+        public static final String SELECTION_USER_DIRTY = Event.COL_DIRTY + "=1" + " and " + SELECTION_ICP;
+        public static final String SELECTION_USER_NOT_DIRTY = Event.COL_DIRTY + "=0" + " and " + SELECTION_ICP;
         public static final String SELECTION_DAY_USER_UNDELETED = SELECTION_DATUM + " and " + SELECTION_UNDELETED + " and " + SELECTION_ICP;
         public static final String SELECTION_CHART = SELECTION_ICP + " and " + SELECTION_PERIOD + " and " + SELECTION_UNDELETED;
         public static final String ORDER_BY_DATE_TIME_ASC = ORDER_BY_DATE_ASC + ", " + ORDER_BY_TIME_ASC;

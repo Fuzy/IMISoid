@@ -28,11 +28,11 @@ import java.util.Map;
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
-    private static Map<String, String> eventsFreq = new HashMap<>();
-    private static Map<String, String> widgetsFreq = new HashMap<>();
-    private static Map<String, String> employeesFreq = new HashMap<>();
-    private static Map<String, String> networkType = new HashMap<>();
-    private static Map<String, String> notificationDelay = new HashMap<>();
+    private static final Map<String, String> eventsFreq = new HashMap<>();
+    private static final Map<String, String> widgetsFreq = new HashMap<>();
+    private static final Map<String, String> employeesFreq = new HashMap<>();
+    private static final Map<String, String> networkType = new HashMap<>();
+    private static final Map<String, String> notificationDelay = new HashMap<>();
     private static String KEY_PREF_NETWORK_TYPE;
     private static String KEY_PREF_NETWORK_URL;
     private static String KEY_PREF_SYNC_EVENTS;
