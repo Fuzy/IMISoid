@@ -73,8 +73,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         }
 
         //Delete all events already synchronized
-        int i = EventManager.deleteUserNotDirtyEvents(context, icp);//TODO test
-        Log.d(TAG, "onPerformSync() deleted " + i);
+        EventManager.deleteUserNotDirtyEvents(context, icp);
 
         // Download all events for period and user
         long date = extras.getLong(Event.KEY_DATE, TimeUtil.todayDateInLong());
@@ -154,8 +153,9 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
                 Log.d(TAG, "onPerformSync() isEmpty");
             } else if (!getResult.isEmpty()) {
                 for (Event event : getResult.getArray()) {
-                    if (EventManager.updateEventOnServerId(context, event) == 0) EventManager.addEvent(context, event);
-                    //TODO pouze pridavat, neprepisovat chybovy stav
+                    if (EventManager.getEvent(context, event.getServer_id()) == null) {
+                        EventManager.addEvent(context, event);
+                    }
                 }
                 stats.setDownloaded(getResult.getArray().length);
             }

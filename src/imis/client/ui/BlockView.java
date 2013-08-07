@@ -22,11 +22,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 import imis.client.R;
 
-/**
- * Custom view that represents a {Blocks#BLOCK_ID} instance, including its
- * title and time span that it occupies. Usually organized automatically by
- * {@link BlocksLayout} to match up against a {@link TimeRulerView} instance.
- */
 public class BlockView extends View {
     private static final String TAG = BlockView.class.getSimpleName();
 
@@ -39,14 +34,10 @@ public class BlockView extends View {
     private boolean dirty;
     private boolean error;
 
-//    private ColorConfig colorConfig;
-
+    @SuppressWarnings("deprecation")
     public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime,
                      String type, boolean dirty, boolean error) {
         super(context);
-        // Log.d(TAG, "BlockView()");
-//        colorConfig = new ColorConfig(context);
-
 
         this.arriveId = arriveId;
         this.leaveId = leaveId;
@@ -70,7 +61,13 @@ public class BlockView extends View {
                     R.drawable.btn_block_not_dirty);
         }
         buttonDrawable.getDrawable(0).setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP);
-        setBackground(buttonDrawable);
+
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            setBackgroundDrawable(buttonDrawable);
+        } else {
+            setBackground(buttonDrawable);
+        }
     }
 
 

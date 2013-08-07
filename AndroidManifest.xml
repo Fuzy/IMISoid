@@ -28,7 +28,7 @@
             android:required="true"/>
 
     <uses-sdk
-            android:minSdkVersion="10"
+            android:minSdkVersion="11"
             android:targetSdkVersion="17"/>
 
     <application
@@ -121,8 +121,7 @@
         </activity>
 
         <!--Activity for add and edit event-->
-        <activity android:name=".ui.activities.EventEditorActivity"
-                  android:parentActivityName=".ui.activities.DayTimelineActivity">
+        <activity android:name=".ui.activities.EventEditorActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

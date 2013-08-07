@@ -10,7 +10,9 @@
   </component>
   <component name="FacetManager">
     <facet type="android" name="Android">
-      <configuration />
+      <configuration>
+        <option name="UPDATE_PROPERTY_FILES" value="true" />
+      </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
@@ -24,7 +26,6 @@
     <orderEntry type="jdk" jdkName="Maven Android 4.2 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="achartengine-1.0.0" level="project" />
-    <orderEntry type="module" module-name="google-play-services_lib" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

@@ -52,6 +52,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
         a.recycle();
     }
 
+    @SuppressWarnings("deprecation")
     private void ensureChildren() {
         if (mRulerView == null) {
             mRulerView = new TimeRulerView(getContext());
@@ -67,7 +68,12 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
             mNowView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             NinePatchDrawable buttonDrawable = (NinePatchDrawable) getContext().getResources().getDrawable(
                     R.drawable.now_bar);
-            mNowView.setBackground(buttonDrawable);
+            int sdk = android.os.Build.VERSION.SDK_INT;
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                mNowView.setBackgroundDrawable(buttonDrawable);
+            } else {
+                mNowView.setBackground(buttonDrawable);
+            }
             addViewInLayout(mNowView, -1, mNowView.getLayoutParams());
         }
 
