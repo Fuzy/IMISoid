@@ -68,12 +68,14 @@ public class PieChartFragment extends ChartFragment {
             addSeriesRenderer(serie.getColor());
         }
 
-        LinearLayout layout = (LinearLayout) mChartContainerView;
-        layout.removeAllViews();//TODO null pointer exc
-        GraphicalView mChartView = ChartFactory.getPieChartView(getActivity(), mSeries, mRenderer);
+        if (mChartContainerView != null) {
+            LinearLayout layout = (LinearLayout) mChartContainerView;
+            layout.removeAllViews();
+            GraphicalView mChartView = ChartFactory.getPieChartView(getActivity(), mSeries, mRenderer);
 
-        layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
+            layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT));
+        }
     }
 
     private void addSeriesRenderer(int color) {

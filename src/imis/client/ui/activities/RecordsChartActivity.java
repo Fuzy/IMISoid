@@ -51,7 +51,7 @@ public class RecordsChartActivity extends ChartActivity {
 
     @Override
     protected void processControlAsyncTask(Employee emp, String from, String to) {
-        createTaskFragment(new GetListOfRecords(this, emp.getKodpra(), from, to));
+        createTaskFragment(new GetListOfRecords(this, emp.getIcp(), emp.getKodpra(), from, to));
     }
 
     /*@Override

@@ -33,7 +33,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
     @SuppressWarnings("unchecked")
     @Override
     protected ResultList<Record> doInBackground(String... params) {
-        String kodpra = params[0], from = params[1], to = params[2];
+        String icp = params[0], kodpra = params[1], from = params[2], to = params[3];
 
         ResultList<Record> resultList;
         HttpEntity<Object> entity;
@@ -61,7 +61,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         restTemplate = RestUtil.prepareRestTemplate();
         try {
             ResponseEntity<Long> response = restTemplate.exchange(NetworkUtilities.getRecordsTimeGetURL(context), HttpMethod.GET, entity,
-                    Long.class, kodpra, from, to);
+                    Long.class, icp, from, to);
             long body = response.getBody();
             Log.d(TAG, "doInBackground() ok " + body);
             statistics.put(AppConsts.SUM_RECORDS_TIME, body);
@@ -75,7 +75,7 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
         restTemplate = RestUtil.prepareRestTemplate();
         try {
             ResponseEntity<Long> response = restTemplate.exchange(NetworkUtilities.getEventsTimeGetURL(context), HttpMethod.GET, entity,
-                    Long.class, kodpra, from, to);
+                    Long.class, icp, from, to);
             long body = response.getBody();
             Log.d(TAG, "doInBackground() ok " + body);
             statistics.put(AppConsts.SUM_EVENTS_TIME, body);

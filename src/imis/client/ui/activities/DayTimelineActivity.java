@@ -49,7 +49,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             FRAG_BLOCKS = "DayTimelineBlocksFragment", KEY_FRAGMENT = "key_fragment",
             KEY_DATE = "key_date";
     private String currentFragment;
-    //TODO layouty
     private EventsProcessor processor;
 
     @Override

@@ -77,12 +77,9 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
             addViewInLayout(mNowView, -1, mNowView.getLayoutParams());
         }
 
-        Log.d(TAG, "ensureChildren() mAdapter.getDate() " + mAdapter.getDate());
         if (TimeUtil.belongsNowToDate(mAdapter.getDate())) {
-            Log.d(TAG, "ensureChildren() VISIBLE");
             mNowView.setVisibility(View.VISIBLE);
         } else {
-            Log.d(TAG, "ensureChildren() INVISIBLE");
             mNowView.setVisibility(View.INVISIBLE);
         }
 
@@ -90,7 +87,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.d("BlocksLayout", "onMeasure()");
         ensureChildren();
 
         mRulerView.measure(widthMeasureSpec, heightMeasureSpec);
@@ -107,24 +103,19 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.d(TAG, "onLayout()");
         ensureChildren();
 
         if (mAdapter != null) {
-            printAllChilds();
+//            printAllChilds();
             removeViewsInLayout(0, getChildCount() - countOfNonBlocksViews);
-            printAllChilds();
+//            printAllChilds();
             final int count = mAdapter.getCount();
-            Log.d(TAG, "count: " + count);
             for (int i = 0; i < count; i++) {
                 final BlockView blockView = (BlockView) mAdapter.getView(i, null, this);
                 if (blockView == null) {
-                    Log.d(TAG, "onLayout() blockView=null");
                     continue;
                 }
 
-
-                Log.d(TAG, "onLayout() new id: " + blockView.getArriveId());
                 blockView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
                 blockView.setId(blockView.getArriveId());
                 addViewInLayout(blockView, -1, blockView.getLayoutParams(), true);
@@ -133,8 +124,7 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
             }
         }
         positionItems();
-        printAllChilds();
-        Log.d(TAG, "onLayout() end");
+//        printAllChilds();
     }
 
     private void positionItems() {
@@ -222,7 +212,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     }
 
     private void startTouch(final MotionEvent event) {
-        Log.d("BlocksLayout", "startTouch()");
         touchStartX = (int) event.getX();
         touchStartY = (int) event.getY();
         // start checking for a long press
@@ -231,7 +220,6 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     }
 
     private void endTouch() {
-        Log.d("BlocksLayout", "endTouch()");
         removeCallbacks(longPressRunnable);
         touchState = TOUCH_STATE_RESTING;
     }
@@ -260,11 +248,9 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
 
     private void longClickChild(final int index) {
         touchState = TOUCH_STATE_LONG_CLICK;
-        Log.d("BlocksLayout", "longClickChild()");
         final View itemView = getChildAt(index);
         final long id = mAdapter.getItemId(index);
         final OnItemLongClickListener listener = getOnItemLongClickListener();
-        Log.d("BlocksLayout", "longClickChild() OnItemLongClickListener " + listener);
         if (listener != null) {
             listener.onItemLongClick(null, itemView, index, id);
         }
@@ -299,11 +285,11 @@ public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
         return INVALID_INDEX;
     }
 
-    private void printAllChilds() {
+    /*private void printAllChilds() {
         for (int index = 0; index < getChildCount(); index++) {
             View child = getChildAt(index);
             //Log.d("BlocksLayout", "child i=" + index + " " + child.toString() + " id: " + child.getId());
         }
-    }
+    }*/
 
 }

@@ -34,33 +34,35 @@ public class SyncAdapterEmployeeWidgets extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(TAG,"onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
+        Log.d(TAG, "onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
                 "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
-
-        Result testResult = NetworkUtilities.testWebServiceAndDBAvailability(context);
-        if (testResult.getStatusCode() == null || testResult.getStatusCode().value() != HttpStatus.SC_OK) {
-            Log.d(TAG, "onPerformSync() connection unavailable");
-            syncResult.delayUntil = (System.currentTimeMillis() + AppConsts.MS_IN_MIN) / 1000L;
-            ContentResolver.requestSync(account, authority, extras);
-            return;
-        }
 
         EmployeesSync sync = new EmployeesSync(context);
 
         List<Employee> employees = EmployeeManager.getEmployeesWithWidget(context);
-        Log.d(TAG, "onPerformSync() employees " + employees);
-        ResultItem<Employee> employeeToSync;
-        for (Employee employee : employees) {
-            employeeToSync = sync.getEmployeeLastEvent(employee.getIcp());
-            if (employeeToSync.isEmpty()) {
-                Log.d(TAG, "onPerformSync() isEmpty");
-            } else {
-                Log.d(TAG, "onPerformSync()  updating widget Icp() " + employee.getIcp());
-                EmployeeManager.updateEmployeeOnIcp(context, employeeToSync.getItem());
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                new EmployeeWidgetProvider().updateAppWidget(context, appWidgetManager, employee.getWidgetId());
+        if (employees.size() > 0) {
+
+            Result testResult = NetworkUtilities.testWebServiceAndDBAvailability(context);
+            if (testResult.getStatusCode() == null || testResult.getStatusCode().value() != HttpStatus.SC_OK) {
+                Log.d(TAG, "onPerformSync() connection unavailable");
+                syncResult.delayUntil = (System.currentTimeMillis() + AppConsts.MS_IN_MIN) / 1000L;
+                ContentResolver.requestSync(account, authority, extras);
+                return;
             }
 
+            Log.d(TAG, "onPerformSync() employees " + employees);
+            ResultItem<Employee> employeeToSync;
+            for (Employee employee : employees) {
+                employeeToSync = sync.getEmployeeLastEvent(employee.getIcp());
+                if (employeeToSync.isEmpty()) {
+                    Log.d(TAG, "onPerformSync() isEmpty");
+                } else {
+                    Log.d(TAG, "onPerformSync()  updating widget Icp() " + employee.getIcp());
+                    EmployeeManager.updateEmployeeOnIcp(context, employeeToSync.getItem());
+                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                    new EmployeeWidgetProvider().updateAppWidget(context, appWidgetManager, employee.getWidgetId());
+                }
+            }
         }
     }
 

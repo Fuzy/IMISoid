@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 /*records + events*/
 public class MyContentProvider extends ContentProvider {
-    private static final String TAG = "MyContentProvider";
+    private static final String TAG = MyContentProvider.class.getSimpleName();
 
     private MyDatabaseHelper database;
     private static final int EVENTS = 1;
@@ -131,7 +131,6 @@ public class MyContentProvider extends ContentProvider {
 
 
         int uriType = sURIMatcher.match(uri);
-        Log.d(TAG, "query() uriType " + uriType);
         switch (uriType) {
             case EVENTS:
                 // vsechny radky tabulky
@@ -179,22 +178,17 @@ public class MyContentProvider extends ContentProvider {
             case RECORD_ID:
                 id = uri.getLastPathSegment();
                 rowsUpdated = sqlDB.update(TABLE_RECORDS, values, Record.COL_ID + "=" + id, null);
-                Log.d(TAG, "update() RECORDS_ID rowsUpdated " + rowsUpdated);
                 break;
             case EMPLOYEE_ID:
                 id = uri.getLastPathSegment();
                 rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, Employee.COL_ID + "=" + id, null);
-                Log.d(TAG, "update() EMPLOYEE_ID rowsUpdated " + rowsUpdated);
                 break;
             case EMPLOYEES:
                 rowsUpdated = sqlDB.update(TABLE_EMPLOYEES, values, selection, selectionArgs);
                 if (rowsUpdated > 0) uri = Uri.withAppendedPath(uri, selectionArgs[0]);
-                Log.d(TAG, "update() EMPLOYEES rowsUpdated " + rowsUpdated);/*
-                throw new NotImplementedException();*/
                 break;
             case EVENT_ID:
                 id = uri.getLastPathSegment();
-                Log.d(TAG, "update EVENT_ID id: " + id);
                 rowsUpdated = sqlDB.update(TABLE_EVENTS, values, Event.COL_ID + "=" + id, null);
                 break;
             default:

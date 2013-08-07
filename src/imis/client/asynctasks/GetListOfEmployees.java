@@ -67,6 +67,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
             if (employees != null) {
                 EmployeeManager.syncEmployees(context, employees);
             }
+            //TODO pokud aktualiazce - synchronizuj seznam, pokud pritomnost pouze updatuj
         }
 
         Log.d(TAG, "onPostExecute() " + EmployeeManager.getAllEmployees(context));
