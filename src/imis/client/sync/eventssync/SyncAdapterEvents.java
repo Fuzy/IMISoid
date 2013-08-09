@@ -113,7 +113,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         Result deleteResult = sync.deleteEvent(event.getServer_id());
         Log.d(TAG, "processDeleteEvent()" + "event = [" + event + "]" + "deleteResult = [" + deleteResult + "]");
         stats.incDeletedAttempt();
-        if (deleteResult.getStatusCode().value() == HttpStatus.SC_OK) {
+        if (deleteResult.getStatusCode() != null && deleteResult.getStatusCode().value() == HttpStatus.SC_OK) {
             EventManager.deleteEventOnId(context, event.get_id());
             stats.incDeleted();
         }
@@ -125,7 +125,8 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         stats.incUpdatedAttempt();
         if (updateResult.isClientError()) {
             EventManager.markEventAsError(context, event.get_id(), updateResult.getMsg());
-        } else if (updateResult.getStatusCode().value() == HttpStatus.SC_ACCEPTED) {
+        } else if (updateResult.getStatusCode() != null &&
+                updateResult.getStatusCode().value() == HttpStatus.SC_ACCEPTED) {
             EventManager.markEventAsSynced(context, event.get_id());
             stats.incUpdated();
         }
@@ -137,7 +138,8 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         stats.incCreatedAttempt();
         if (createResult.isClientError()) {
             EventManager.markEventAsError(context, event.get_id(), createResult.getMsg());
-        } else if (createResult.getStatusCode().value() == HttpStatus.SC_CREATED) {
+        } else if (createResult.getStatusCode() != null &&
+                createResult.getStatusCode().value() == HttpStatus.SC_CREATED) {
             EventManager.updateEventServerId(context, event.get_id(), event.getServer_id());
             EventManager.markEventAsSynced(context, event.get_id());
             stats.incCreated();

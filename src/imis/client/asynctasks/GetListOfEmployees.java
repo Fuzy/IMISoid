@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
  */
 public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, ResultList<Employee>> {
     private static final String TAG = GetListOfEmployees.class.getSimpleName();
+    private boolean isSync;
 
     public GetListOfEmployees(Context context, String... params) {
         super(context, params);
@@ -32,8 +33,10 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
         String url, icp = "";
         if (params.length == 0) {
             url = NetworkUtilities.getEmployeesGetEventsURL(context);
+            isSync = false;
         } else {
             url = NetworkUtilities.getEmployeesGetURL(context);
+            isSync = true;
             icp = params[0];
         }
 
@@ -51,7 +54,7 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
             return new ResultList<Employee>(response.getStatusCode(), body);
         } catch (Exception e) {
             @SuppressWarnings("unchecked")
-            ResultList<Employee> resultList = AsyncUtil.processException(context,e, ResultList.class);
+            ResultList<Employee> resultList = AsyncUtil.processException(context, e, ResultList.class);
             Log.d(TAG, "doInBackground() resultList " + resultList);
             return resultList;
         }
@@ -59,15 +62,16 @@ public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, Result
 
     @Override
     protected void onPostExecute(ResultList<Employee> resultList) {
-//        Log.d(TAG, "onPostExecute() employees " + Arrays.toString(employees));
 
         if (resultList.isOk() && !resultList.isEmpty()) {
-            Log.d(TAG, "onPostExecute() OK and not empty");
             Employee[] employees = resultList.getArray();
             if (employees != null) {
-                EmployeeManager.syncEmployees(context, employees);
+                if (isSync) {
+                    EmployeeManager.syncEmployees(context, employees);
+                } else {
+                    EmployeeManager.updateEmployees(context, employees);
+                }
             }
-            //TODO pokud aktualiazce - synchronizuj seznam, pokud pritomnost pouze updatuj
         }
 
         Log.d(TAG, "onPostExecute() " + EmployeeManager.getAllEmployees(context));

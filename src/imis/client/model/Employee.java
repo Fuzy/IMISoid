@@ -2,7 +2,6 @@ package imis.client.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +10,7 @@ import android.util.Log;
  * Time: 15:59
  */
 public class Employee {
-    private static final String TAG = Employee.class.getSimpleName();
+//    private static final String TAG = Employee.class.getSimpleName();
 
     private int _id;
     private String icp;
@@ -167,12 +166,10 @@ public class Employee {
         }
         values.put(COL_USER, isUser);
 
-        Log.d(TAG, "asContentValues() values " + values);
         return values;
     }
 
     public static Employee cursorToEmployee(Cursor c) {
-        //Log.d(TAG, "cursorToEmployee()  " + Arrays.toString(c.getColumnNames()));
         Employee employee = new Employee();
         employee.set_id(c.getInt(IND_COL_ID));
         employee.setIcp(c.getString(IND_COL_ICP));
@@ -186,8 +183,6 @@ public class Employee {
         if (!c.isNull(IND_COL_WIDGET_ID)) employee.setWidgetId(c.getInt(IND_COL_WIDGET_ID));
         employee.setFav(c.getInt(IND_COL_FAV) > 0);
         employee.setUser(c.getInt(IND_COL_USER) > 0);
-
-        Log.d(TAG, "cursorToEmployee() employee " + employee);
         return employee;
     }
 

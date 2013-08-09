@@ -1,8 +1,6 @@
 package imis.client.persistent;
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.content.UriMatcher;
+import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -13,6 +11,7 @@ import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.model.Record;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /*records + events*/
@@ -43,6 +42,33 @@ public class MyContentProvider extends ContentProvider {
 
         sURIMatcher.addURI(AppConsts.AUTHORITY3, TABLE_EMPLOYEES, EMPLOYEES);
         sURIMatcher.addURI(AppConsts.AUTHORITY3, TABLE_EMPLOYEES + "/#", EMPLOYEE_ID);
+    }
+
+    @Override
+    public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations)
+            throws OperationApplicationException {
+        Log.d(TAG, "applyBatch()");
+        ContentProviderResult[] result = new ContentProviderResult[operations
+                .size()];
+        int i = 0;
+        // Opens the database object in "write" mode.
+        SQLiteDatabase db = database.getWritableDatabase();
+        // Begin a transaction
+        db.beginTransaction();
+        try {
+            for (ContentProviderOperation operation : operations) {
+                // Chain the result for back references
+                result[i++] = operation.apply(this, result, i);
+            }
+
+            db.setTransactionSuccessful();
+        } catch (OperationApplicationException e) {
+            Log.d(TAG, "batch failed: " + e.getLocalizedMessage());
+        } finally {
+            db.endTransaction();
+        }
+        Log.d(TAG, "applyBatch() result[0] " + result[0]);
+        return result;
     }
 
     @Override
