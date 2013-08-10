@@ -24,16 +24,6 @@ import java.util.List;
 public class EmployeeManager {
     private static final String TAG = EmployeeManager.class.getSimpleName();
 
-
-    private static void addEmployee(ContentProviderClient client, Employee employee) {
-//        Log.d(TAG, "addEmployee()" + "client = [" + client + "], employee = [" + employee + "]");
-        ContentValues values = employee.asContentValues();
-        try {
-            client.insert(EmployeeQuery.CONTENT_URI, values);
-        } catch (RemoteException e) {
-        }
-    }
-
     private static ContentProviderOperation addEmployeeOp(Employee employee) {
         ContentValues values = employee.asContentValues();
         return ContentProviderOperation.newInsert(EmployeeQuery.CONTENT_URI).withValues(values).build();
@@ -120,7 +110,6 @@ public class EmployeeManager {
     //TODO zkontrolovat zda zustava widgetID
     public static void syncEmployees(Context context, ContentProviderClient client, Employee[] employees) {
 //        Log.d(TAG, "syncEmployees() employees " + Arrays.toString(employees));
-        long start = System.currentTimeMillis();
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
         List<Employee> currentList = getAllEmployees(context);
@@ -141,47 +130,38 @@ public class EmployeeManager {
             ops.add(deleteEmployeeOp(employee));
         }
 
-        try {
-            Log.d(TAG, "syncEmployees() ops size " + ops.size());
-            client.applyBatch(ops);
-        } catch (Exception e) {
-            AppUtil.showInfo(context, context.getString(R.string.employees_act_fail));
-            return;
-        }
-
-        markUser(client, context);
-
-        long elapsedTimeMillis = System.currentTimeMillis() - start;
-        float elapsedTimeSec = elapsedTimeMillis / 1000F;
-        Log.d(TAG, "syncEmployees() elapsedTimeSec " + elapsedTimeSec);
-
-        AppUtil.showInfo(context, context.getString(R.string.employees_act_ok) + employees.length);
-
-        //update all employees widget
-        new EmployeeWidgetProvider().updateAllWidgets(context);
-    }
-
-    private static void markUser(ContentProviderClient client, Context context) {//TODO refaktor
-//        Log.d(TAG, "markUser()");
+        //mark which of employees is user
         try {
             String icp = AccountUtil.getUserICP(context);
-            Employee employee = getEmployee(client, EmployeeQuery.SELECTION_ICP, new String[]{String.valueOf(icp)});
-            if (employee != null) {
-                int id = employee.get_id();
-                ContentValues values = new ContentValues();
-                values.put(Employee.COL_USER, true);
-                updateEmployee(client, values, id);
-            }
+            ops.add(markUserOp(icp));
         } catch (Exception e) {
+            Log.e(TAG, "Marking user failed.");
         }
+
+        try {
+            Log.d(TAG, "syncEmployees() ops size " + ops.size());
+            long start = System.currentTimeMillis();
+            client.applyBatch(ops);
+            long elapsedTimeMillis = System.currentTimeMillis() - start;
+            float elapsedTimeSec = elapsedTimeMillis / 1000F;
+            Log.d(TAG, "syncEmployees() elapsedTimeSec " + elapsedTimeSec);
+            AppUtil.showInfo(context, context.getString(R.string.employees_act_ok) + employees.length);
+
+            //update all employees widget
+            new EmployeeWidgetProvider().updateAllWidgets(context);
+        } catch (Exception e) {
+            AppUtil.showInfo(context, context.getString(R.string.act_fail));
+        }
+
     }
 
-    private static Employee getEmployeeOnIcp(ContentProviderClient client, String icp) {
-//        Log.d(TAG, "getEmployeeOnIcp()" + "client = [" + client + "], icp = [" + icp + "]");
-        Employee employee = getEmployee(client, EmployeeQuery.SELECTION_ICP, new String[]{String.valueOf(icp)});
-        return employee;
+    private static ContentProviderOperation markUserOp(String icp) {
+//        Log.d(TAG, "markUser()");
+        ContentValues values = new ContentValues();
+        values.put(Employee.COL_USER, true);
+        return ContentProviderOperation.newUpdate(EmployeeQuery.CONTENT_URI).withSelection(EmployeeQuery.SELECTION_ICP,
+                new String[]{String.valueOf(icp)}).withValues(values).build();
     }
-
 
     public static Employee getEmployeeOnWidgetId(Context context, int widgetId) {
 //        Log.d(TAG, "getEmployeeOnId()" + "widgetId = [" + widgetId + "]");
@@ -240,16 +220,6 @@ public class EmployeeManager {
         cursor.close();
         return employees;
     }
-
-   /* private static int deleteEmployee(ContentProviderClient client, long id) {
-//        Log.d(TAG, "delete()" + "id = [" + id + "]");
-        Uri uri = Uri.withAppendedPath(EmployeeQuery.CONTENT_URI, String.valueOf(id));
-        try {
-            return client.delete(uri, null, null);
-        } catch (RemoteException e) {
-            return 0;
-        }
-    }*/
 
     private static ContentProviderOperation deleteEmployeeOp(Employee employee) {
         return ContentProviderOperation.newDelete(EmployeeQuery.CONTENT_URI).withSelection(EmployeeQuery.SELECTION_ICP,

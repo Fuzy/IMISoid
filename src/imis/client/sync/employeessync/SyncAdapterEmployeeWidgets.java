@@ -58,7 +58,7 @@ public class SyncAdapterEmployeeWidgets extends AbstractThreadedSyncAdapter {
                     Log.d(TAG, "onPerformSync() isEmpty");
                 } else {
                     Log.d(TAG, "onPerformSync()  updating widget Icp() " + employee.getIcp());
-                    EmployeeManager.updateEmployeeOnIcp(provider, employeeToSync.getItem()); //TODO test
+                    EmployeeManager.updateEmployeeOnIcp(provider, employeeToSync.getItem());
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                     new EmployeeWidgetProvider().updateAppWidget(context, appWidgetManager, employee.getWidgetId());
                 }

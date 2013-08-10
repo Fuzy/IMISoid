@@ -154,7 +154,7 @@ public class Record {
         return record;
     }
 
-    public ContentValues getAsContentValues() {
+    public ContentValues asContentValues() {
         ContentValues values = new ContentValues();
         if (id != null) {
             values.put(COL_SERVER_ID, id);

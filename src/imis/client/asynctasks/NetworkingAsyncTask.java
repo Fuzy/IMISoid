@@ -47,9 +47,11 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
             AppUtil.showError(context, result.getMsg());
         } /*else if (result.isServerError()) {
             AppUtil.showError(context, context.getString(R.string.server_error));
-        } else if (result.isClientError()) {
-            AppUtil.showError(context, context.getString(R.string.client_error));
-        }*/
+        }*/ else if (result.isClientError()) {
+            if (result.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
+                AppUtil.showError(context, context.getString(R.string.unauthorized));
+            }
+        }
 
         if (mFragment != null) {
             Log.d(TAG, "onPostExecute() resultData " + v);

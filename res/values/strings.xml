@@ -193,6 +193,8 @@
     <string name="chart_lab_attendance">Události docházky pro daný den</string>
     <string name="chart_lab_day">Den</string>
     <string name="chart_lab_time">Čas[h]</string>
-    <string name="employees_act_fail">Aktualizace selhala</string>
+    <string name="act_fail">Aktualizace selhala</string>
+    <string name="records_act_fail">Aktualizace výkazů selhala</string>
+    <string name="unauthorized">Neautorizovaný požadavek</string>
 
 </resources>

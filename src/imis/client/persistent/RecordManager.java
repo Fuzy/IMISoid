@@ -1,14 +1,12 @@
 package imis.client.persistent;
 
-import android.content.ContentProviderClient;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
+import android.content.*;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.RemoteException;
 import android.util.Log;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
+import imis.client.R;
 import imis.client.model.Record;
 
 import java.util.ArrayList;
@@ -25,26 +23,30 @@ import java.util.List;
 public class RecordManager {
     private static final String TAG = RecordManager.class.getSimpleName();
 
-    public static int addRecord(ContentProviderClient client, Record record) {
-        Log.d(TAG, "addRecord() " + record);
-        ContentValues values = record.getAsContentValues();
-
-        try {
-            Uri uri = client.insert(RecordQuery.CONTENT_URI, values);
-            return Integer.valueOf(uri.getLastPathSegment());
-        } catch (RemoteException e) {
-            return -1;
-        }
+    private static ContentProviderOperation addRecordOp(Record record) {
+        ContentValues values = record.asContentValues();
+        return ContentProviderOperation.newInsert(RecordQuery.CONTENT_URI).withValues(values).build();
     }
 
     public static void addRecords(Context context, Record[] records) {
         Log.d(TAG, "addRecords()");
         ContentResolver resolver = context.getContentResolver();
         ContentProviderClient client = resolver.acquireContentProviderClient(RecordQuery.CONTENT_URI);
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+
         for (Record record : records) {
-            if (updateRecordOnServerId(context, record) == 0) {
-                addRecord(client, record);
-            }
+            ops.add(addRecordOp(record));
+        }
+        try {
+            Log.d(TAG, "RecordManager() ops size " + ops.size());
+            long start = System.currentTimeMillis();
+            client.applyBatch(ops);
+            long elapsedTimeMillis = System.currentTimeMillis() - start;
+            float elapsedTimeSec = elapsedTimeMillis / 1000F;
+            Log.d(TAG, "RecordManager() elapsedTimeSec " + elapsedTimeSec);
+        } catch (Exception e) {
+            AppUtil.showInfo(context, context.getString(R.string.act_fail));
         }
         client.release();
     }
@@ -59,27 +61,10 @@ public class RecordManager {
         return delete(context, RecordQuery.SELECTION_KODPRA, new String[]{kodpra});
     }
 
-    public static int delete(Context context, String where, String[] selectionArgs) {
+    private static int delete(Context context, String where, String[] selectionArgs) {
         Log.d(TAG, "delete()" + "where = [" + where + "], selectionArgs = [" + Arrays.toString(selectionArgs) + "]");
         ContentResolver resolver = context.getContentResolver();
         return resolver.delete(RecordQuery.CONTENT_URI, where, selectionArgs);
-    }
-
-    private static int updateRecordOnServerId(Context context, Record record) {
-        Record record1 = getRecord(context, record.getId());
-        Log.d(TAG, "updateRecordOnServerId() record1 " + ((record1 != null) ? record1.get_id() : null));
-        if (record1 == null) return 0;
-        Uri uri = Uri.withAppendedPath(RecordQuery.CONTENT_URI, String.valueOf(record1.get_id()));
-        ContentResolver resolver = context.getContentResolver();
-        ContentValues values = record.getAsContentValues();
-        int updated = resolver.update(uri, values, null, null);
-        Log.d(TAG, "updateRecord() updated " + updated);
-        return updated;
-    }
-
-    public static Record getRecord(Context context, String serverId) {
-        Log.d(TAG, "getRecord()" + "serverId = [" + serverId + "]");
-        return getRecord(context, RecordQuery.SELECTION_SERVER_ID, new String[]{serverId});
     }
 
     public static Record getRecord(Context context, long id) {
@@ -119,7 +104,6 @@ public class RecordManager {
                 + MyDatabaseHelper.TABLE_RECORDS);
 
         public static final String SELECTION_ID = Record.COL_ID + "=?";
-        public static final String SELECTION_SERVER_ID = Record.COL_SERVER_ID + " LIKE ? || '%' ";
         public static final String SELECTION_ZC = Record.COL_ZC + " LIKE ? || '%' ";
         public static final String SELECTION_OLDER_THAN = Record.COL_DATUM + "<?";
         public static final String SELECTION_KODPRA = Record.COL_KODPRA + " LIKE ? || '%' ";

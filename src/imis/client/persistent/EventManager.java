@@ -17,7 +17,7 @@ import java.util.List;
 public class EventManager {
     private static final String TAG = EventManager.class.getSimpleName();
 
-    public static void addEvents(Context context, Event[] events) {
+    public static void addEvents(Context context, Event[] events) {//TODO transakce
         Log.d(TAG, "addEvents()");
         for (Event event : events) {
             if (updateEventOnServerId(context, event) == 0)
@@ -25,7 +25,7 @@ public class EventManager {
         }
     }
 
-    public static int addEvent(Context context, Event event) {
+    public static int addEvent(Context context, Event event) {//TODO operation
         ContentValues values = event.asContentValues();
         ContentResolver resolver = context.getContentResolver();
         Uri uri = resolver.insert(EventQuery.CONTENT_URI, values);
