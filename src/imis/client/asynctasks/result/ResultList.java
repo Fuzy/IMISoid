@@ -31,7 +31,7 @@ public class ResultList<T> extends Result {
     }
 
     public boolean isEmpty() {
-        return array == null;
+        return array == null || array.length == 0;
     }
 
     @Override

@@ -324,7 +324,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
                 if (arriveEvent.get_id() == 0) {
                     setImplicitEventValues(arriveEvent);
                     arriveEvent.setDruh(Event.DRUH_ARRIVAL);
-                    arriveId = EventManager.addEvent(getApplicationContext(), arriveEvent);
+                    arriveId = EventManager.addUserEvent(getApplicationContext(), arriveEvent);
                 } else {
                     EventManager.updateEvent(getApplicationContext(), arriveEvent);
                 }
@@ -347,7 +347,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
                 if (leaveEvent.get_id() == 0) {
                     setImplicitEventValues(leaveEvent);
                     leaveEvent.setDruh(Event.DRUH_LEAVE);
-                    leaveId = EventManager.addEvent(getApplicationContext(), leaveEvent);
+                    leaveId = EventManager.addUserEvent(getApplicationContext(), leaveEvent);
                 } else {
                     EventManager.updateEvent(getApplicationContext(), leaveEvent);
                 }

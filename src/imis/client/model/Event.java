@@ -6,6 +6,7 @@ import imis.client.TimeUtil;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class Event {
+
     // private static final String TAG = Event.class.getSimpleName();
     // sync
     @JsonIgnore
@@ -13,6 +14,8 @@ public class Event {
     private String server_id;
     @JsonIgnore
     private boolean dirty;
+    @JsonIgnore
+    private boolean syncManaged;
     @JsonIgnore
     private boolean deleted;
     @JsonIgnore
@@ -36,7 +39,7 @@ public class Event {
         this.setCas(TimeUtil.currentDayTimeInLong());
     }
 
-    public Event(boolean dirty, boolean deleted, String icp, long datum, String kod_po, String druh,
+    /*public Event(boolean dirty, boolean deleted, String icp, long datum, String kod_po, String druh,
                  long cas, String ic_obs, String typ, long datum_zmeny, String poznamka) {
         super();
         this.dirty = dirty;
@@ -50,7 +53,7 @@ public class Event {
         this.typ = typ;
         this.datum_zmeny = datum_zmeny;
         this.poznamka = poznamka;
-    }
+    }*/
 
     public Event(Event other) {
         this._id = other._id;
@@ -73,6 +76,14 @@ public class Event {
 
     public boolean isDirty() {
         return dirty;
+    }
+
+    public boolean isSyncManaged() {
+        return syncManaged;
+    }
+
+    public void setSyncManaged(boolean syncManaged) {
+        this.syncManaged = syncManaged;
     }
 
     @JsonIgnore
@@ -206,6 +217,7 @@ public class Event {
         this.poznamka = poznamka;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -220,6 +232,7 @@ public class Event {
         if (deleted != event.deleted) return false;
         if (dirty != event.dirty) return false;
         if (error != event.error) return false;
+        if (syncManaged != event.syncManaged) return false;
         if (druh != null ? !druh.equals(event.druh) : event.druh != null) return false;
         if (ic_obs != null ? !ic_obs.equals(event.ic_obs) : event.ic_obs != null) return false;
         if (icp != null ? !icp.equals(event.icp) : event.icp != null) return false;
@@ -245,6 +258,7 @@ public class Event {
                 "_id=" + _id +
                 ", server_id='" + server_id + '\'' +
                 ", dirty=" + dirty +
+                ", syncManaged=" + syncManaged +
                 ", deleted=" + deleted +
                 ", icp='" + icp + '\'' +
                 ", datum=" + TimeUtil.formatDate(datum) +
@@ -268,9 +282,10 @@ public class Event {
         event.set_id(c.getInt(COL_NUM_ID));
         event.setServer_id(c.getString(COL_NUM_SERVER_ID));
         event.setDirty(c.getInt(COL_NUM_DIRTY) > 0);
+        event.setSyncManaged(c.getInt(COL_NUM_SYNC_MANAGED) > 0);
         event.setDeleted(c.getInt(COL_NUM_DELETED) > 0);
         event.setIcp(c.getString(COL_NUM_ICP));
-        event.setDatum((c.getLong(COL_NUM_DATUM)));//event.setDatum(stringToDate(c.getString(COL_NUM_DATUM)))
+        event.setDatum((c.getLong(COL_NUM_DATUM)));
         event.setKod_po(c.getString(COL_NUM_KOD_PO));
         event.setDruh(c.getString(COL_NUM_DRUH));
         event.setCas(c.getLong(COL_NUM_CAS));
@@ -286,6 +301,7 @@ public class Event {
     public ContentValues asContentValues() {
         ContentValues values = new ContentValues();
         values.put(COL_DIRTY, dirty);
+        values.put(COL_SYNC_MANAGED, syncManaged);
         values.put(COL_DELETED, deleted);
         if (server_id != null) {
             values.put(COL_SERVER_ID, server_id);
@@ -321,6 +337,7 @@ public class Event {
     public static final String COL_ID = "_id";
     public static final String COL_SERVER_ID = "server_id";// rowid v oracle db
     public static final String COL_DIRTY = "dirty";
+    public static final String COL_SYNC_MANAGED = "sync_managed";
     public static final String COL_DELETED = "deleted";
     public static final String COL_ICP = "ICP";
     public static final String COL_DATUM = "DATUM";
@@ -336,23 +353,20 @@ public class Event {
 
     private static int COL_NUM_ID = 0;
     private static int COL_NUM_SERVER_ID = 1;
-    private static int COL_NUM_DIRTY = 2;
-    private static int COL_NUM_DELETED = 3;
-    private static int COL_NUM_ICP = 4;
-    private static int COL_NUM_DATUM = 5;
-    private static int COL_NUM_KOD_PO = 6;
-    private static int COL_NUM_DRUH = 7;
-    private static int COL_NUM_CAS = 8;
-    private static int COL_NUM_IC_OBS = 9;
-    private static int COL_NUM_TYP = 10;
-    private static int COL_NUM_DATUM_ZMENY = 11;
-    private static int COL_NUM_POZNAMKA = 12;
-    private static int COL_NUM_ERROR = 13;
-    private static int COL_NUM_MSG = 14;
-
-    public static final String JSON_SERVER_ID = "si";
-    public static final String JSON_DELETED = "de";
-    public static final String JSON_SYNC = "sy";
+    private static int COL_NUM_SYNC_MANAGED  = 2;
+    private static int COL_NUM_DIRTY = 3;
+    private static int COL_NUM_DELETED = 4;
+    private static int COL_NUM_ICP = 5;
+    private static int COL_NUM_DATUM = 6;
+    private static int COL_NUM_KOD_PO = 7;
+    private static int COL_NUM_DRUH = 8;
+    private static int COL_NUM_CAS = 9;
+    private static int COL_NUM_IC_OBS = 10;
+    private static int COL_NUM_TYP = 11;
+    private static int COL_NUM_DATUM_ZMENY = 12;
+    private static int COL_NUM_POZNAMKA = 13;
+    private static int COL_NUM_ERROR = 14;
+    private static int COL_NUM_MSG = 15;
 
 
     public static final String[] KOD_PO_VALUES = {"00", "01", "02", "03", "04", "10", "XX"};

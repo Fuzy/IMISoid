@@ -24,7 +24,6 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
         this.params = params;
     }
 
-
     public void setFragment(TaskFragment fragment) {
         mFragment = fragment;
     }

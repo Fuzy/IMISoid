@@ -3,6 +3,8 @@ package imis.client.asynctasks;
 import android.content.Context;
 import android.util.Log;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
+import imis.client.R;
 import imis.client.RestUtil;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.asynctasks.util.AsyncUtil;
@@ -94,16 +96,16 @@ public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultLi
 
         if (resultList.isOk()) {
             Log.d(TAG, "onPostExecute() OK");
-            String kodpra = params[0];
+            String kodpra = params[1];
             RecordManager.deleteRecordsOnKodpra(context, kodpra);
 
             if (!resultList.isEmpty()) {
                 Log.d(TAG, "onPostExecute() OK and not empty");
                 Record[] records = resultList.getArray();
-                if (records != null) {
-                    RecordManager.addRecords(context, records);
-                    Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(context));
-                }
+                RecordManager.addRecords(context, records);
+                Log.d(TAG, "onPostExecute() getAllRecords size " + records.length + " " + RecordManager.getAllRecords(context));
+            } else {
+                AppUtil.showInfo(context, context.getString(R.string.no_records));
             }
         }
 

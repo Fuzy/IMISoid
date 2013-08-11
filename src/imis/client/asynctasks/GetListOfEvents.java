@@ -2,7 +2,8 @@ package imis.client.asynctasks;
 
 import android.content.Context;
 import android.util.Log;
-import imis.client.AccountUtil;
+import imis.client.AppUtil;
+import imis.client.R;
 import imis.client.RestUtil;
 import imis.client.asynctasks.result.ResultList;
 import imis.client.asynctasks.util.AsyncUtil;
@@ -41,7 +42,7 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultLis
             return new ResultList<Event>(response.getStatusCode(), body);
         } catch (Exception e) {
             @SuppressWarnings("unchecked")
-            ResultList<Event> resultItem = AsyncUtil.processException(context,e, ResultList.class);
+            ResultList<Event> resultItem = AsyncUtil.processException(context, e, ResultList.class);
             return resultItem;
         }
     }
@@ -51,7 +52,7 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultLis
 
         if (resultList.isOk()) {
             Log.d(TAG, "onPostExecute() OK");
-            try {
+            /*try {
                 String userIcp = AccountUtil.getUserICP(context);
                 String icp = params[0];
                 if (!userIcp.equals(icp)) {
@@ -60,12 +61,17 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultLis
                     EventManager.deleteEventsOnIcp(context, icp);
                 }
             } catch (Exception e) {
-            }
+            }*/
+
+            // Delete old data for employee
+            String icp = params[0];
+            EventManager.deleteEventsOnIcp(context, icp);
 
             if (!resultList.isEmpty()) {
-                Log.d(TAG, "onPostExecute() adding");
                 Event[] events = resultList.getArray();
                 EventManager.addEvents(context, events);
+            } else {
+                AppUtil.showInfo(context, context.getString(R.string.no_records));
             }
         }
 

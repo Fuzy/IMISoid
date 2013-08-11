@@ -53,7 +53,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
 
         String icp = account.name;
         // get local changes
-        List<Event> dirtyEvents = EventManager.getUserDirtyEvents(context, icp);
+        List<Event> dirtyEvents = EventManager.getUserDirtyEvents(context);
         Log.d(TAG, "onPerformSync() dirtyEvents " + dirtyEvents.size());
         for (Event event : dirtyEvents) {
 
@@ -73,7 +73,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
         }
 
         //Delete all events already synchronized
-        EventManager.deleteUserNotDirtyEvents(context, icp);
+        EventManager.deleteUserNotDirtyEvents(context);
 
         // Download all events for period and user
         long date = extras.getLong(Event.KEY_DATE, TimeUtil.todayDateInLong());
@@ -156,7 +156,7 @@ public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
             } else if (!getResult.isEmpty()) {
                 for (Event event : getResult.getArray()) {
                     if (EventManager.getEvent(context, event.getServer_id()) == null) {
-                        EventManager.addEvent(context, event);
+                        EventManager.addUserEvent(context, event);
                     }
                 }
                 stats.setDownloaded(getResult.getArray().length);

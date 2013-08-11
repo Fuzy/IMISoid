@@ -96,6 +96,7 @@ public class EventsProcessor {
     public PieChartData countEventsPieChartData(List<Block> blocks, List<String> codes, Map<String, String> kody_po) {
         PieChartData pieChartData = new PieChartData();
         long total = 0L;
+        Log.d(TAG, "countEventsPieChartData() blocks " + blocks);
 
         Map<String, Long> statistics = new HashMap<>();
         for (Block block : blocks) {

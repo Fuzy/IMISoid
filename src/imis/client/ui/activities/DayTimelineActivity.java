@@ -276,9 +276,9 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         switch (i) {
             case LOADER_EVENTS:
                 try {
-                    String icp = AccountUtil.getUserICP(this);
+//                    String icp = AccountUtil.getUserICP(this);
                     return new CursorLoader(getApplicationContext(), EventQuery.CONTENT_URI, null,
-                            EventQuery.SELECTION_DAY_USER_UNDELETED, new String[]{String.valueOf(date), icp}, EventQuery.ORDER_BY_DATE_TIME_ASC);
+                            EventQuery.SELECTION_DAY_USER_UNDELETED, new String[]{String.valueOf(date)}, EventQuery.ORDER_BY_DATE_TIME_ASC);
                 } catch (Exception e) {
                     return null;
                 }

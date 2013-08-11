@@ -22,6 +22,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String EV_COL_LOCAL_ID = Event.COL_ID;
     public static final String EV_COL_SERVER_ID = Event.COL_SERVER_ID;
     public static final String EV_COL_DIRTY = Event.COL_DIRTY;
+    public static final String EV_COL_SYNCMANAGED = Event.COL_SYNC_MANAGED;
     public static final String EV_COL_DELETED = Event.COL_DELETED;
     public static final String EV_COL_ICP = Event.COL_ICP;
     public static final String EV_COL_DATUM = Event.COL_DATUM;
@@ -70,6 +71,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             .concat(EV_COL_LOCAL_ID + " integer primary key autoincrement, ")
             .concat(EV_COL_SERVER_ID + " text,")
             .concat(EV_COL_DIRTY + " integer not null, ")
+            .concat(EV_COL_SYNCMANAGED + " integer not null, ")
             .concat(EV_COL_DELETED + " integer not null, ")
             .concat(EV_COL_ICP + " text not null, ")
             .concat(EV_COL_DATUM + " integer not null,")
