@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 import imis.client.ui.dialogs.AddAccountDialog;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Martin Kadlec
@@ -53,6 +56,22 @@ public class AppUtil {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
         v.vibrate(500);
+    }
+
+    public static Map<String, String> getCodes(Context context) {
+        final Map<String, String> kody_po = new HashMap<>();
+        String[] arr_kody_po_values = context.getResources().getStringArray(R.array.arr_kody_po_values);
+        String[] arr_kody_po_desc = context.getResources().getStringArray(R.array.arr_kody_po_desc);
+        for (int i = 0; i < arr_kody_po_values.length; i++) {
+            kody_po.put(arr_kody_po_values[i], arr_kody_po_desc[i]);
+        }
+
+        String[] lea_kody_po_values = context.getResources().getStringArray(R.array.lea_kody_po_values);
+        String[] lea_kody_po_desc = context.getResources().getStringArray(R.array.lea_kody_po_desc);
+        for (int i = 0; i < lea_kody_po_values.length; i++) {
+            kody_po.put(lea_kody_po_values[i], lea_kody_po_desc[i]);
+        }
+        return kody_po;
     }
 
 }

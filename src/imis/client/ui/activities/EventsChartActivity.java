@@ -6,7 +6,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.CheckBox;
-import imis.client.R;
+import imis.client.AppUtil;
 import imis.client.asynctasks.GetListOfEvents;
 import imis.client.asynctasks.result.Result;
 import imis.client.data.graph.PieChartData;
@@ -17,7 +17,10 @@ import imis.client.model.Event;
 import imis.client.processor.EventsProcessor;
 import imis.client.ui.ColorConfig;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static imis.client.persistent.EventManager.EventQuery;
 
@@ -32,24 +35,15 @@ public class EventsChartActivity extends ChartActivity {
 
     private static final int LOADER_EVENTS = 0x03;
     private List<Block> blockList;
-    private final Map<String, String> kody_po = new HashMap<>();
+    private Map<String, String> codes;
     private EventsProcessor processor;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()" + savedInstanceState == null ? "true" : "false");
         processor = new EventsProcessor(getApplicationContext());
-        initEventCodesAndDesc();
-    }
-
-    private void initEventCodesAndDesc() {
-        String[] kody_po_values = getResources().getStringArray(R.array.kody_po_values);
-        String[] kody_po_desc = getResources().getStringArray(R.array.kody_po_desc);
-        for (int i = 0; i < kody_po_values.length; i++) {
-            kody_po.put(kody_po_values[i], kody_po_desc[i]);
-        }
+        codes = AppUtil.getCodes(this);
     }
 
     protected void addCheckBox(String kod_po) {
@@ -57,7 +51,6 @@ public class EventsChartActivity extends ChartActivity {
         int color = ColorConfig.getColor(this, kod_po);
         addCheckBox(index, color);
     }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -147,17 +140,16 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     public PieChartData getPieChartData() {
         Log.d(TAG, "getPieChartData()");
-        PieChartData data = processor.countEventsPieChartData(blockList, getCheckedCodes(), kody_po);
+        PieChartData data = processor.countEventsPieChartData(blockList, getCheckedCodes(), codes);
         return data;
     }
 
     @Override
     public StackedBarChartData getStackedBarChartData() {
         Log.d(TAG, "getStackedBarChartData()");
-        StackedBarChartData data = processor.countEventsStackedBarChartData(blockList, getCheckedCodes(), kody_po, selectionArgs);
+        StackedBarChartData data = processor.countEventsStackedBarChartData(blockList, getCheckedCodes(), codes, selectionArgs);
         return data;
     }
-
 
     @Override
     public void onTaskFinished(Result result) {

@@ -36,6 +36,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
 
+    //TODO obed se neprodlouyil k aktualni ose
     private long date;
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
     private volatile Cursor mCursor;

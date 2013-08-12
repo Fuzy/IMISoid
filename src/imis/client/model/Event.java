@@ -379,6 +379,9 @@ public class Event {
     public static final String KOD_PO_LEAVE_MEDIC = "04";
     public static final String KOD_PO_ARRIVE_PRIVATE = "10";
     public static final String KOD_PO_OTHERS = "XX";
+    public static final String[] KOD_PO_VALUES_REQ_ARRIVE = {KOD_PO_LEAVE_SERVICE, KOD_PO_LEAVE_LUNCH,
+            KOD_PO_LEAVE_SUPPER, KOD_PO_LEAVE_MEDIC};
+
 
 
     public static final String TYPE_ORIG = "O";

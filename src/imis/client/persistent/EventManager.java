@@ -16,7 +16,7 @@ import java.util.List;
 public class EventManager {
     private static final String TAG = EventManager.class.getSimpleName();
 
-    public static void addEvents(Context context, Event[] events) {//TODO test
+    public static void addEvents(Context context, Event[] events) {
         Log.d(TAG, "addEvents()");
 
         ContentResolver resolver = context.getContentResolver();

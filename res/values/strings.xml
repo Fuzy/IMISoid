@@ -4,7 +4,6 @@
 
     <string name="app_name">Imisoid</string>
 
-
     <string name="sync_button">Synchronizuj</string>
     <string name="menu_network_save">Uložit</string>
     <string name="menu_network">Připojení k serveru</string>
@@ -28,7 +27,29 @@
     <string name="dialog_add_time">"Čas: "</string>
     <string name="dialog_add_type">"Typ: "</string>
 
-    <string-array name="kody_po_desc">
+    <string-array name="arr_kody_po_desc">
+        <item>Normální pracovní doba</item>
+        <item>Nemoc</item>
+        <item>Dovolená</item>
+        <item>Ošetřování člena rodiny</item>
+        <item>Studijní volno</item>
+        <item>Refundace</item>
+        <item>Soukromá přítomnost</item>
+        <item>Příchod na pohotovost na prac</item>
+    </string-array>
+
+    <string-array name="arr_kody_po_values">
+        <item>00</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="lea_kody_po_desc">
         <item>Normální pracovní doba</item>
         <item>Služebně</item>
         <item>Oběd</item>
@@ -39,11 +60,10 @@
         <item>Ošetřování člena rodiny</item>
         <item>Studijní volno</item>
         <item>Refundace</item>
-        <item>Soukromě</item>
-        <item>Odchod na pohotovost mimo pracoviště</item>
+        <item>Odchod na pohotovost mimo prac</item>
     </string-array>
 
-    <string-array name="kody_po_values">
+    <string-array name="lea_kody_po_values">
         <item>00</item>
         <item>01</item>
         <item>02</item>
@@ -54,9 +74,38 @@
         <item>07</item>
         <item>08</item>
         <item>09</item>
-        <item>10</item>
         <item>11</item>
     </string-array>
+
+    <!-- <string-array name="arr_kody_po_desc">
+         <item>Normální pracovní doba</item>
+         <item>Služebně</item>
+         <item>Oběd</item>
+         <item>Večeře</item>
+         <item>Lékař</item>
+         <item>Nemoc</item>
+         <item>Dovolená</item>
+         <item>Ošetřování člena rodiny</item>
+         <item>Studijní volno</item>
+         <item>Refundace</item>
+         <item>Soukromě</item>
+         <item>Odchod na pohotovost mimo pracoviště</item>
+     </string-array>-->
+
+    <!-- <string-array name="arr_kody_po_values">
+         <item>00</item>
+         <item>01</item>
+         <item>02</item>
+         <item>03</item>
+         <item>04</item>
+         <item>05</item>
+         <item>06</item>
+         <item>07</item>
+         <item>08</item>
+         <item>09</item>
+         <item>10</item>
+         <item>11</item>
+     </string-array>-->
 
     <string-array name="typ_zakazky">
         <item>-</item>

@@ -9,11 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.TimeUtil;
 import imis.client.model.Event;
 
-import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,14 +25,13 @@ import java.util.Arrays;
 public class EventsCursorAdapter extends CursorAdapter {
     private static final String TAG = EventsCursorAdapter.class.getSimpleName();
     private LayoutInflater inflater;
-    private String[] values;
-    private String[] desc;
+    private Map<String, String> codes;
 
     public EventsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        values = context.getResources().getStringArray(R.array.kody_po_values);
-        desc = context.getResources().getStringArray(R.array.kody_po_desc);
+        codes = AppUtil.getCodes(context);
+
     }
 
     @Override
@@ -44,8 +44,7 @@ public class EventsCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         Log.d(TAG, "bindView()");
         Event event = Event.cursorToEvent(cursor);
-        int i = Arrays.asList(values).indexOf(event.getKod_po());
-        String description = desc[i];
+        String description = codes.get(event.getKod_po());
         TextView tt = (TextView) view.findViewById(R.id.event_type);
         String type = event.getDruh() + " " + description;
         tt.setText(type);

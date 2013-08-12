@@ -47,7 +47,7 @@ public class SyncAdapterListOfEmployees extends AbstractThreadedSyncAdapter {
             Log.d(TAG, "onPostExecute() OK and not empty");
             Employee[] employees = resultList.getArray();
             if (employees != null) {
-                EmployeeManager.syncEmployees(context, provider, employees);//TODO test
+                EmployeeManager.syncEmployees(context, provider, employees);
             }
         }
     }

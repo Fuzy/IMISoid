@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.model.Event;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,16 +25,10 @@ public class EventsColorAdapter extends ArrayAdapter<Map.Entry<String, Integer>>
     private LayoutInflater inflater;
     private Map<String, String> codes;
 
-
     public EventsColorAdapter(Context context, int textViewResourceId, List<Map.Entry<String, Integer>> objects) {
         super(context, textViewResourceId, objects);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        String[] kody_po_values = context.getResources().getStringArray(R.array.kody_po_values);
-        String[] kody_po_desc = context.getResources().getStringArray(R.array.kody_po_desc);
-        codes = new HashMap<>();
-        for (int i = 0; i < kody_po_values.length; i++) {
-            codes.put(kody_po_values[i], kody_po_desc[i]);
-        }
+        codes = AppUtil.getCodes(context);
         codes.put(Event.KOD_PO_OTHERS, context.getString(R.string.eventTypeOthers));
         Log.d(TAG, "EventsColorAdapter() codes " + codes);
     }

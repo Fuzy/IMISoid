@@ -34,7 +34,7 @@
                     android:id="@+id/spinner_kod_po_arrive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/kody_po_desc"
+                    android:entries="@array/arr_kody_po_desc"
                     android:prompt="@string/kody_po_prompt"/>
 
             <TimePicker
@@ -89,7 +89,7 @@
                     android:id="@+id/spinner_kod_po_leave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/kody_po_desc"
+                    android:entries="@array/lea_kody_po_desc"
                     android:prompt="@string/kody_po_prompt"/>
 
             <TimePicker

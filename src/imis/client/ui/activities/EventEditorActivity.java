@@ -25,7 +25,8 @@ import java.util.Set;
 public class EventEditorActivity extends FragmentActivity implements OnItemSelectedListener,
         View.OnClickListener, DeleteEventDialog.OnDeleteEventListener, AddEventDialog.AddEventDialogListener {
     private static final String TAG = EventEditorActivity.class.getSimpleName();
-
+    //TODO dynamicky volby v ciselniku?
+    //TODO odchod +1 minuta
     public static final String KEY_ENABLE_ADD_ARRIVE = "key_enable_add_arrive",
             KEY_ENABLE_ADD_LEAVE = "key_enable_add_leave";
 
@@ -46,7 +47,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     // UI units
     private Spinner spinnerKod_poArrive, spinnerKod_poLeave;
     int selectedArrive = 0, selectedLeave = 0;
-    private String[] kody_po_values;
+    private String[] arrKody_po_values, leaKody_po_values; //TODO kolekce
     private EditText textPoznamkaArrive, textPoznamkaLeave;
     private TimePicker arriveTime, leaveTime;
     private Button arriveBtn, leaveBtn;
@@ -172,10 +173,13 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private void setTimePickerToNow(TimePicker timePicker) {
         long l = TimeUtil.currentDayTimeInLong();
-        long hours = (l / AppConsts.MS_IN_HOUR);
-        timePicker.setCurrentHour((int) hours);
-        long mins = (l - hours * AppConsts.MS_IN_HOUR) / AppConsts.MS_IN_MIN;
-        timePicker.setCurrentMinute((int) mins);
+        setTimePickerToTime(timePicker, l);
+    }
+
+    private void setTimePickerToNowPlusMin(TimePicker timePicker) {
+        long l = TimeUtil.currentDayTimeInLong();
+        l += AppConsts.MS_IN_MIN;
+        setTimePickerToTime(timePicker, l);
     }
 
     private void setTimePickerToTime(TimePicker timePicker, long millis) {
@@ -187,20 +191,39 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private void prepareSpinners() {
         // Nacte hodnoty kodu dochazky
-        kody_po_values = getResources().getStringArray(R.array.kody_po_values);
+        arrKody_po_values = getResources().getStringArray(R.array.arr_kody_po_values);
+        leaKody_po_values = getResources().getStringArray(R.array.lea_kody_po_values);
 
         // Vyber kodu dochazky
         spinnerKod_poArrive = (Spinner) this.findViewById(R.id.spinner_kod_po_arrive);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.kody_po_desc, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerKod_poArrive.setAdapter(adapter);
+        ArrayAdapter<CharSequence> arrAdapter = ArrayAdapter.createFromResource(this,
+                R.array.arr_kody_po_desc, android.R.layout.simple_spinner_item);
+        arrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerKod_poArrive.setAdapter(arrAdapter);
         spinnerKod_poArrive.setOnItemSelectedListener(this);
 
         // Leave spinner
         spinnerKod_poLeave = (Spinner) this.findViewById(R.id.spinner_kod_po_leave);
-        spinnerKod_poLeave.setAdapter(adapter);
+        ArrayAdapter<CharSequence> leaAdapter = ArrayAdapter.createFromResource(this,
+                R.array.lea_kody_po_desc, android.R.layout.simple_spinner_item);
+        leaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerKod_poLeave.setAdapter(leaAdapter);
         spinnerKod_poLeave.setOnItemSelectedListener(this);
+    }
+
+    private void setArriveSpinnerValues(String leaveCode) {
+        String[] codes;
+        if (leaveCode != null && Arrays.asList(Event.KOD_PO_VALUES).contains(leaveCode)) {
+            codes = new String[1];
+            codes[0] = Event.KOD_PO_ARRIVE_NORMAL;
+        } else {
+            codes = getResources().getStringArray(R.array.arr_kody_po_values);
+        }
+
+    }
+
+    private void setLeaveSpinnerValues(String arriveCode) {
+
     }
 
     private void prepareNoteFields() {
@@ -237,8 +260,9 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         if (spinnerArr != -1) {
             selectedArrive = spinnerArr;
         } else if (arriveEvent != null) {
-            selectedArrive = Arrays.asList(kody_po_values).indexOf(arriveEvent.getKod_po());
+            selectedArrive = Arrays.asList(arrKody_po_values).indexOf(arriveEvent.getKod_po());
         }
+        //TODO nastavit ciselnik
         spinnerKod_poArrive.setSelection(selectedArrive);
 
         // Time
@@ -261,8 +285,9 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         if (spinnerLea != -1) {
             selectedLeave = spinnerLea;
         } else if (leaveEvent != null) {
-            selectedLeave = Arrays.asList(kody_po_values).indexOf(leaveEvent.getKod_po());
+            selectedLeave = Arrays.asList(leaKody_po_values).indexOf(leaveEvent.getKod_po());
         }
+        //TODO nastavit ciselnik
         spinnerKod_poLeave.setSelection(selectedLeave);
 
         // Time
@@ -333,7 +358,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     }
 
     private void actualizeArriveEvent() {
-        arriveEvent.setKod_po(kody_po_values[selectedArrive]);
+        arriveEvent.setKod_po(arrKody_po_values[selectedArrive]);
         arriveEvent.setCas(getPickerCurrentTimeInMs(arriveTime));
         arriveEvent.setPoznamka(textPoznamkaArrive.getText().toString());
     }
@@ -356,7 +381,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     }
 
     private void actualizeLeaveEvent() {
-        leaveEvent.setKod_po(kody_po_values[selectedLeave]);
+        leaveEvent.setKod_po(leaKody_po_values[selectedLeave]);
         leaveEvent.setCas(getPickerCurrentTimeInMs(leaveTime));
         leaveEvent.setPoznamka(textPoznamkaLeave.getText().toString());
     }
@@ -391,6 +416,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         switch (parent.getId()) {
             case R.id.spinner_kod_po_arrive:
                 selectedArrive = pos;
+                //TODO nastavit ciselnik
                 break;
             case R.id.spinner_kod_po_leave:
                 selectedLeave = pos;
@@ -475,12 +501,14 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         arriveBtn.setVisibility(View.GONE);
         arriveLayout.setVisibility(View.VISIBLE);
         arriveEvent = new Event();
+        //TODO nastavit ciselnik
     }
 
     private void enableAddLeave() {
         leaveBtn.setVisibility(View.GONE);
         leaveLayout.setVisibility(View.VISIBLE);
         leaveEvent = new Event();
+        //TODO nastavit ciselnik
     }
 
     @Override
