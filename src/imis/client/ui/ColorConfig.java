@@ -18,7 +18,7 @@ public class ColorConfig {
 
     private static int getDefault(Context context, String key) {
         if (key == null) return Color.GRAY;
-        if (key.equals(Event.KOD_PO_ARRIVE_NORMAL)) {
+        if (key.equals(Event.KOD_PO_NORMAL)) {
             return context.getResources().getColor(R.color.COLOR_PRESENT_NORMAL_DEFAULT);
         } else if (key.equals(Event.KOD_PO_ARRIVE_PRIVATE)) {
             return context.getResources().getColor(R.color.COLOR_PRESENT_PRIVATE_DEFAULT);

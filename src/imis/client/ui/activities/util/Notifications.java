@@ -28,6 +28,7 @@ public class Notifications {
         String title = context.getString(R.string.missing_arrive_event);
         Intent nextIntent = new Intent(context, EventEditorActivity.class);
         nextIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_ARRIVE, true);
+        //TODO typ posledni
         showNotification(context, title, context.getString(R.string.missing_event_hint), nextIntent);
     }
 

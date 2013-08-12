@@ -25,7 +25,7 @@ public class ShortcutWidgetReceiver extends BroadcastReceiver {
 
         Intent startIntent = new Intent(Intent.ACTION_INSERT);
         Event lastEvent = EventManager.getLastEvent(context);
-        if (lastEvent != null && lastEvent.isDruhArrival()) {
+        if (lastEvent != null && lastEvent.isDruhArrival()) {//TODO typ posledni
             startIntent.putExtra(AppConsts.ID_ARRIVE, lastEvent.get_id());
             startIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);
         } else {

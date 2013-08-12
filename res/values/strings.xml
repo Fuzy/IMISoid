@@ -35,7 +35,7 @@
         <item>Studijní volno</item>
         <item>Refundace</item>
         <item>Soukromá přítomnost</item>
-        <item>Příchod na pohotovost na prac</item>
+        <!--<item>Příchod na pohotovost na prac</item>-->
     </string-array>
 
     <string-array name="arr_kody_po_values">
@@ -46,7 +46,7 @@
         <item>08</item>
         <item>09</item>
         <item>10</item>
-        <item>12</item>
+        <!--<item>12</item> -->
     </string-array>
 
     <string-array name="lea_kody_po_desc">
@@ -60,7 +60,7 @@
         <item>Ošetřování člena rodiny</item>
         <item>Studijní volno</item>
         <item>Refundace</item>
-        <item>Odchod na pohotovost mimo prac</item>
+       <!-- <item>Odchod na pohotovost mimo prac</item>-->
     </string-array>
 
     <string-array name="lea_kody_po_values">
@@ -74,7 +74,7 @@
         <item>07</item>
         <item>08</item>
         <item>09</item>
-        <item>11</item>
+        <!--<item>11</item>-->
     </string-array>
 
     <!-- <string-array name="arr_kody_po_desc">

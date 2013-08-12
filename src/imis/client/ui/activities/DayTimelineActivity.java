@@ -314,7 +314,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.dir/event.imisoid");
         intent.putExtra(Event.KEY_DATE, date);
-        Event event = getLastEvent();
+        Event event = getLastEvent();//TODO typ posledni
         if (event != null && event.isDruhArrival()) {
             intent.putExtra(AppConsts.ID_ARRIVE, event.get_id());
             intent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);

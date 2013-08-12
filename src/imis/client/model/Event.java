@@ -372,7 +372,7 @@ public class Event {
     public static final String[] KOD_PO_VALUES = {"00", "01", "02", "03", "04", "10", "XX"};
     public static final String DRUH_ARRIVAL = "P";
     public static final String DRUH_LEAVE = "O";
-    public static final String KOD_PO_ARRIVE_NORMAL = "00";
+    public static final String KOD_PO_NORMAL = "00";
     public static final String KOD_PO_LEAVE_SERVICE = "01";
     public static final String KOD_PO_LEAVE_LUNCH = "02";
     public static final String KOD_PO_LEAVE_SUPPER = "03";
@@ -381,6 +381,8 @@ public class Event {
     public static final String KOD_PO_OTHERS = "XX";
     public static final String[] KOD_PO_VALUES_REQ_ARRIVE = {KOD_PO_LEAVE_SERVICE, KOD_PO_LEAVE_LUNCH,
             KOD_PO_LEAVE_SUPPER, KOD_PO_LEAVE_MEDIC};
+    public static final String[] KOD_PO_VALUES_AFT_NORMAL_ARRIVE = {KOD_PO_NORMAL, KOD_PO_LEAVE_SERVICE,
+            KOD_PO_LEAVE_LUNCH, KOD_PO_LEAVE_SUPPER, KOD_PO_LEAVE_MEDIC};
 
 
 
