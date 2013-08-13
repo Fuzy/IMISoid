@@ -29,7 +29,6 @@ public class Notifications {
         if (lastEvent != null && lastEvent.isDruhLeave()) {
             nextIntent.putExtra(EventEditorActivity.KEY_LEAVE_TYPE, lastEvent.getKod_po());
         }
-        //TODO test
         showNotification(context, title, context.getString(R.string.missing_event_hint), nextIntent);
     }
 

@@ -286,9 +286,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         }
 
         spinnerKod_poArrive.setSelection(selectedArrive);
-        Log.d(TAG, "populateArriveFields() availableArrValues " + availableArrValues);
-        Log.d(TAG, "populateArriveFields() selectedArrive " + selectedArrive);
-        setLeaveSpinnerValues(availableArrValues.get(selectedArrive));//TODO
+        setLeaveSpinnerValues(availableArrValues.get(selectedArrive));
 
         // Time
         if (timeArr != -1) {
