@@ -9,10 +9,7 @@ import imis.client.model.Event;
 import imis.client.model.Record;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 4.4.13
- * Time: 17:52
+ *  Class for access to color settings.
  */
 public class ColorConfig {
 
@@ -57,14 +54,12 @@ public class ColorConfig {
 
     public static int getColor(Context context, String key) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        //context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
         int color = settings.getInt(key, ColorConfig.getDefault(context, key));
         return color;
     }
 
     public static void setColor(Context context, String key, int color) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        //context.getSharedPreferences(AppConsts.PREFS_EVENTS_COLOR, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(key, color);
         editor.apply();

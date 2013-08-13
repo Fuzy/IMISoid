@@ -19,10 +19,7 @@ import imis.client.R;
 import imis.client.ui.ColorConfig;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 3.4.13
- * Time: 13:59
+ * Dialog for setting color of event or record type.
  */
 public class ColorPickerDialog extends DialogFragment {
     private static final String TAG = ColorPickerDialog.class.getSimpleName();

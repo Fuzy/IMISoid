@@ -1,10 +1,7 @@
 package imis.client.network;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 19.6.13
- * Time: 19:31
+ * Constants used for access web service.
  */
 public class NetworkConsts {
     public static final String SCHEME = "http://";

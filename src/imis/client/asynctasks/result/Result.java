@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 17.5.13
- * Time: 22:25
+ *   Class stores result of HTTP request.
  */
 public class Result {
     protected HttpStatus statusCode;

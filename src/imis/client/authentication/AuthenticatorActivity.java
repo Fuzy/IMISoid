@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import imis.client.AccountUtil;
 import imis.client.AppConsts;
 import imis.client.R;
 import imis.client.asynctasks.result.Result;
@@ -21,6 +22,9 @@ import imis.client.ui.activities.AsyncActivity;
 import imis.client.ui.dialogs.AuthConfirmDialog;
 import imis.client.ui.dialogs.SetNetworkDialog;
 
+/**
+ * Activity for authentication.
+ */
 public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmDialog.AuthConfirmDialogListener {
     private static final String TAG = AuthenticatorActivity.class.getSimpleName();
 
@@ -30,7 +34,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
     //Fields from android.accounts.AccountAuthenticatorActivity ends
 
     private String icp = null, password = null;
-    private static final String ACCOUNT_TYPE = AuthenticationConsts.ACCOUNT_TYPE;
+    private static final String ACCOUNT_TYPE = AccountUtil.ACCOUNT_TYPE;
     private AccountManager accountManager;
     private TextView mMessage;
     private EditText passwordEdit, icpEdit;

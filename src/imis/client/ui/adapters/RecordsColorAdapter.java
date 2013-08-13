@@ -11,11 +11,9 @@ import imis.client.R;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 9.5.13
- * Time: 21:16
+ *  Adapter which makes accessible events obtained from array.
  */
 public class RecordsColorAdapter extends ArrayAdapter<Map.Entry<String, Integer>> {
     private LayoutInflater inflater;

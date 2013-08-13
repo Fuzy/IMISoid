@@ -13,10 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 9.4.13
- * Time: 16:56
+ * Dialog for confirm deleting of event.
  */
 public class DeleteEventDialog extends DialogFragment {
     private static final String TAG = DeleteEventDialog.class.getSimpleName();

@@ -14,17 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 25.5.13
- * Time: 12:54
+ * Contains methods for actualization info about employees.
  */
-public class EmployeesSync {
-    private static final String TAG = EmployeesSync.class.getSimpleName();
+public class EmployeesAct {
+    private static final String TAG = EmployeesAct.class.getSimpleName();
 
     private final Context context;
 
-    public EmployeesSync(Context context) {
+    public EmployeesAct(Context context) {
         this.context = context;
     }
 

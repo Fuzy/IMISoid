@@ -18,10 +18,7 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 10.4.13
- * Time: 22:54
+ * Fragment hosts pie chart.
  */
 public class PieChartFragment extends ChartFragment {
     private static final String TAG = PieChartFragment.class.getSimpleName();

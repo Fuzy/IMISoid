@@ -11,10 +11,7 @@ import imis.client.model.Event;
 import java.util.Calendar;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 14.3.13
- * Time: 23:03
+ * Activity for choosing date.
  */
 public class CalendarActivity extends Activity {
     private static final String TAG = CalendarActivity.class.getSimpleName();

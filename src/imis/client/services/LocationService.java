@@ -21,10 +21,7 @@ import imis.client.ui.activities.util.Notifications;
 import static imis.client.AppConsts.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 12.6.13
- * Time: 20:39
+ * Serves listening for location info.
  */
 public class LocationService extends Service {
     private static final String TAG = LocationService.class.getSimpleName();

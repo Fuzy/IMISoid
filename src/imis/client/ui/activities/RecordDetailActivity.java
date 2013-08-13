@@ -11,10 +11,7 @@ import imis.client.ui.dialogs.ColorPickerDialog;
 import imis.client.ui.fragments.RecordDetailFragment;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 16.5.13
- * Time: 13:38
+ * Activity showing detail of record.
  */
 public class RecordDetailActivity extends FragmentActivity implements ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = RecordDetailActivity.class.getSimpleName();

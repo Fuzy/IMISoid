@@ -18,15 +18,11 @@ import imis.client.ui.ColorConfig;
 import imis.client.ui.dialogs.ColorPickerDialog;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 18.4.13
- * Time: 23:14
+ * Fragment showing detail of work record.
  */
 public class RecordDetailFragment extends Fragment {
     private static final String TAG = RecordDetailFragment.class.getSimpleName();
 
-//    private ColorConfig colorConfig;
     private Context context;
     private View detail;
     private Record record;
@@ -34,7 +30,6 @@ public class RecordDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        colorConfig = new ColorConfig(getActivity());
         setHasOptionsMenu(true);
     }
 

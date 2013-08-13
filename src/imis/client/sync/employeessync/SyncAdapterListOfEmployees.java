@@ -13,10 +13,7 @@ import imis.client.persistent.EmployeeManager;
 import org.apache.http.HttpStatus;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 24.5.13
- * Time: 21:09
+ * Adapter for actualization list of employees.
  */
 public class SyncAdapterListOfEmployees extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapterListOfEmployees.class.getSimpleName();
@@ -41,7 +38,7 @@ public class SyncAdapterListOfEmployees extends AbstractThreadedSyncAdapter {
             return;
         }
 
-        EmployeesSync sync = new EmployeesSync(context);
+        EmployeesAct sync = new EmployeesAct(context);
         ResultList<Employee> resultList = sync.getListOfEmployees();
         if (resultList.isOk() && !resultList.isEmpty()) {
             Log.d(TAG, "onPostExecute() OK and not empty");

@@ -17,10 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 13.4.13
- * Time: 19:29
+ * Contains methods for synchronization of attendance events.
  */
 public class EventsSync {
     private static final String TAG = EventsSync.class.getSimpleName();

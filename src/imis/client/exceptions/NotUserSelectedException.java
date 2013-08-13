@@ -1,10 +1,7 @@
 package imis.client.exceptions;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 13.6.13
- * Time: 13:54
+ * Exception is thrown if user is not selected.
  */
 public class NotUserSelectedException extends Exception {
 

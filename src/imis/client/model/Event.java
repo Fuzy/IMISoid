@@ -5,6 +5,9 @@ import android.database.Cursor;
 import imis.client.TimeUtil;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+/**
+ * Represents an attendance event.
+ */
 public class Event {
 
     // private static final String TAG = Event.class.getSimpleName();
@@ -38,22 +41,6 @@ public class Event {
     public Event() {
         this.setCas(TimeUtil.currentDayTimeInLong());
     }
-
-    /*public Event(boolean dirty, boolean deleted, String icp, long datum, String kod_po, String druh,
-                 long cas, String ic_obs, String typ, long datum_zmeny, String poznamka) {
-        super();
-        this.dirty = dirty;
-        this.deleted = deleted;
-        this.icp = icp;
-        this.datum = datum;
-        this.kod_po = kod_po;
-        this.druh = druh;
-        this.cas = cas;
-        this.ic_obs = ic_obs;
-        this.typ = typ;
-        this.datum_zmeny = datum_zmeny;
-        this.poznamka = poznamka;
-    }*/
 
     public Event(Event other) {
         this._id = other._id;

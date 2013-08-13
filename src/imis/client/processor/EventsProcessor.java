@@ -16,10 +16,7 @@ import imis.client.ui.activities.ControlActivity;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 10.4.13
- * Time: 14:15
+ * Contains methods for processing set of event records for use in charts, statistics and timeline view.
  */
 public class EventsProcessor {
     private static final String TAG = EventsProcessor.class.getSimpleName();

@@ -7,6 +7,9 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+/**
+ * Factory for creating HTTP client.
+ */
 public class HttpClientFactory {
     private static final int TIMEOUT = 20 * 1000;
 

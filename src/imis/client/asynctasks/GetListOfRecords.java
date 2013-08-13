@@ -20,10 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 13.4.13
- * Time: 19:36
+ * Asynchronous task for download list of work records.
  */
 public class GetListOfRecords extends NetworkingAsyncTask<String, Void, ResultList<Record>> {
     private static final String TAG = GetListOfRecords.class.getSimpleName();

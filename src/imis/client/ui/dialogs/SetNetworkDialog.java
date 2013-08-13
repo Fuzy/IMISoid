@@ -10,10 +10,7 @@ import imis.client.R;
 import imis.client.ui.activities.NetworkSettingsActivity;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 23.6.13
- * Time: 22:43
+ * Dialog calling for setting connection to server.
  */
 public class SetNetworkDialog extends DialogFragment {
 

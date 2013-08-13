@@ -3,10 +3,7 @@ package imis.client.data.graph;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 12.4.13
- * Time: 11:12
+ * Class storing data for use in stacked bar chart.
  */
 public class StackedBarChartData {
     private long minDay;
@@ -18,7 +15,6 @@ public class StackedBarChartData {
     private List<double[]> values;
     private String[] titles;
     private int[] colors;
-    //private Map<String, String> kody_po;
 
     public StackedBarChartData() {
         minDay = Long.MAX_VALUE;
@@ -98,11 +94,4 @@ public class StackedBarChartData {
         this.yMax = yMax;
     }
 
-   /* public Map<String, String> getKody_po() {
-        return kody_po;
-    }
-
-    public void setKody_po(Map<String, String> kody_po) {
-        this.kody_po = kody_po;
-    }*/
 }

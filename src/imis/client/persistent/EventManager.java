@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Contains methods for accessing to persistent storage of attendance events.
+ */
 public class EventManager {
     private static final String TAG = EventManager.class.getSimpleName();
 

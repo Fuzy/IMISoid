@@ -23,11 +23,9 @@ import java.util.List;
 import static imis.client.persistent.RecordManager.RecordQuery.CONTENT_URI;
 import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_CHART;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 29.3.13
- * Time: 15:34
+ * Activity hosting chart and statistic for work record.
  */
 public class RecordsChartActivity extends ChartActivity {
     private static final String TAG = RecordsChartActivity.class.getSimpleName();

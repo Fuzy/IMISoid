@@ -5,10 +5,7 @@ import android.util.Log;
 import com.appkilt.client.AppKilt;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 13.7.13
- * Time: 14:22
+ * Extended Application class providing bug reporting of AppKlit service.
  */
 public class MyApplication extends Application {
     private static final String TAG = MyApplication.class.getSimpleName();

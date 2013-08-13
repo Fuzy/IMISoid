@@ -15,10 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 9.5.13
- * Time: 21:16
+ *  Adapter which makes accessible employees obtained from array.
  */
 public class EventsColorAdapter extends ArrayAdapter<Map.Entry<String, Integer>> {
     private static final String TAG = EventsColorAdapter.class.getSimpleName();

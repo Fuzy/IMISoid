@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 27.4.13
- * Time: 19:37
+ *   Class stores result of HTTP request which returns list of records.
  */
 public class ResultList<T> extends Result {
     protected T[] array;

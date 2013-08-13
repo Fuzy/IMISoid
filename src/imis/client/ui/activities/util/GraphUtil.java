@@ -8,10 +8,7 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 11.4.13
- * Time: 15:33
+ * Utility methods for creating charts.
  */
 public class GraphUtil {
 

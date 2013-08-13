@@ -9,10 +9,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 16.6.13
- * Time: 16:49
+ *  Stores utility methods for processing of async request to server.
  */
 public class AsyncUtil {
     private static final String TAG = AsyncUtil.class.getSimpleName();

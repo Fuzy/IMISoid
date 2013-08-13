@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Contains methods for setting and test connection to server.
+ */
 public class NetworkUtilities {
     private static final String TAG = NetworkUtilities.class.getSimpleName();
 

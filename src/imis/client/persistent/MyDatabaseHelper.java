@@ -8,6 +8,9 @@ import imis.client.model.Employee;
 import imis.client.model.Event;
 import imis.client.model.Record;
 
+/**
+ * Class for creating a database.
+ */
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = MyDatabaseHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "imisoid.db";
@@ -149,7 +152,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, int arg1, int arg2) {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         onCreate(database);
-
     }
 
     /*private void insertEventsTestData(SQLiteDatabase database) {

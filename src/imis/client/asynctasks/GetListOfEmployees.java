@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 8.4.13
- * Time: 22:29
+ * Asynchronous task for downloading list of employees.
  */
 public class GetListOfEmployees extends NetworkingAsyncTask<String, Void, ResultList<Employee>> {
     private static final String TAG = GetListOfEmployees.class.getSimpleName();

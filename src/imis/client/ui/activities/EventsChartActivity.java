@@ -25,10 +25,7 @@ import java.util.Map;
 import static imis.client.persistent.EventManager.EventQuery;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 7.4.13
- * Time: 14:43
+ * Activity hosting chart and statistic for attendance events.
  */
 public class EventsChartActivity extends ChartActivity {
     private static final String TAG = EventsChartActivity.class.getSimpleName();

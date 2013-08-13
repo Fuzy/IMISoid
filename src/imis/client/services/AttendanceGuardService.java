@@ -12,10 +12,7 @@ import imis.client.AppConsts;
 import static imis.client.AppConsts.PERIOD;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 31.5.13
- * Time: 23:00
+ * Service checks if missing arrive or leave event.
  */
 public class AttendanceGuardService extends IntentService {
     private static final String TAG = AttendanceGuardService.class.getSimpleName();

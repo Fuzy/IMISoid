@@ -8,10 +8,7 @@ import android.widget.TextView;
 import imis.client.model.Employee;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 8.5.13
- * Time: 17:09
+ *  Adapter which makes accessible employees obtained from set.
  */
 public class EmployeeResourceCursorAdapter extends ResourceCursorAdapter {
 

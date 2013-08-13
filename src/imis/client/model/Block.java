@@ -3,10 +3,7 @@ package imis.client.model;
 import imis.client.TimeUtil;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 10.4.13
- * Time: 14:17
+ * Block represents a period of user presence or absence bounded by arrival and leave event.
  */
 public class Block {
     private long date;

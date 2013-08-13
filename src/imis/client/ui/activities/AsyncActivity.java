@@ -5,10 +5,7 @@ import imis.client.asynctasks.NetworkingAsyncTask;
 import imis.client.ui.fragments.TaskFragment;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 27.4.13
- * Time: 19:51
+ * Generic activity which hosts performing asynchronous request to server.
  */
 public abstract class AsyncActivity extends FragmentActivity implements TaskFragment.OnAsyncActionCompletedListener {
     // Tag so we can find the task fragment again, in another instance of this fragment after rotation.

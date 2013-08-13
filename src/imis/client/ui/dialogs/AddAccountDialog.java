@@ -11,10 +11,7 @@ import imis.client.AppConsts;
 import imis.client.R;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 17.6.13
- * Time: 16:39
+ * Dialog for adding an account.
  */
 public class AddAccountDialog extends DialogFragment {
 

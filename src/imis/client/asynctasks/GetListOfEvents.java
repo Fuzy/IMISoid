@@ -16,10 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 17.4.13
- * Time: 0:17
+ * Asynchronous task for downloading list of attendance events.
  */
 public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultList<Event>> {
     private static final String TAG = GetListOfEvents.class.getSimpleName();
@@ -52,16 +49,6 @@ public class GetListOfEvents extends NetworkingAsyncTask<String, Void, ResultLis
 
         if (resultList.isOk()) {
             Log.d(TAG, "onPostExecute() OK");
-            /*try {
-                String userIcp = AccountUtil.getUserICP(context);
-                String icp = params[0];
-                if (!userIcp.equals(icp)) {
-                    Log.d(TAG, "onPostExecute() deleteing " + icp);
-                    // Delete old data for employee (not for user)
-                    EventManager.deleteEventsOnIcp(context, icp);
-                }
-            } catch (Exception e) {
-            }*/
 
             // Delete old data for employee
             String icp = params[0];

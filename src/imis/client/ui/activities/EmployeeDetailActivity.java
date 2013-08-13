@@ -14,10 +14,7 @@ import imis.client.persistent.EmployeeManager;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 16.5.13
- * Time: 14:56
+ * Activity showing profile of employee.
  */
 public class EmployeeDetailActivity extends Activity {
     private static final String TAG = EmployeeDetailActivity.class.getSimpleName();

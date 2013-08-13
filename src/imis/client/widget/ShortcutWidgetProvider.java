@@ -18,10 +18,7 @@ import imis.client.ui.ColorConfig;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 27.5.13
- * Time: 19:51
+ * Provider for widget containing shortcut for add event.
  */
 public class ShortcutWidgetProvider extends AppWidgetProvider {
     private static final String TAG = ShortcutWidgetProvider.class.getSimpleName();
@@ -37,7 +34,6 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    //TODO aktualizace, text neexistujici
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                  int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.shortcut_widget);
@@ -46,7 +42,6 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
         Event lastEvent = EventManager.getLastEvent(context);
         Log.d(TAG, "updateAppWidget() lastEvent " + lastEvent);
         if (lastEvent != null) {
-//            views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorConfig.getColor(context, lastEvent.getKod_po()));
             code = lastEvent.getKod_po();
             last = lastEvent.getDruh() + " " + TimeUtil.formatEmpDate(lastEvent.getDatum())
                     + " " + TimeUtil.formatTimeInNonLimitHour(lastEvent.getCas());

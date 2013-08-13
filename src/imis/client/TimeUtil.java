@@ -8,11 +8,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 22.6.13
- * Time: 14:27
+ * Utility method used for work with date and time.
  */
 public class TimeUtil {
     private static final String TAG = TimeUtil.class.getSimpleName();

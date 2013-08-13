@@ -15,10 +15,7 @@ import imis.client.ui.activities.EventEditorActivity;
 import imis.client.ui.activities.LocationSettingsActivity;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 11.6.13
- * Time: 14:42
+ * Contains methods for showing notifications.
  */
 public class Notifications {
     private static final String TAG = Notifications.class.getSimpleName();

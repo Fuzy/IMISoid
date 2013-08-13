@@ -6,10 +6,7 @@ import imis.client.asynctasks.result.Result;
 import imis.client.network.NetworkUtilities;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 10.4.13
- * Time: 0:13
+ * Asynchronous task for testing connection to server.
  */
 public class TestConnection extends NetworkingAsyncTask<Void, Void, Result> {
     private static final String TAG = "TestConnection";

@@ -6,8 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 /**
- * Sluzba provadejici synchronizaci uctu. 
- *  
+ * Service for synchronization of attendance events.
  */
 public class SyncServiceEvents extends Service {
   private static final String TAG = SyncServiceEvents.class.getSimpleName();

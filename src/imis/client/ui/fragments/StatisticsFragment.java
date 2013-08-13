@@ -12,10 +12,7 @@ import imis.client.data.graph.PieChartSerie;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 15.4.13
- * Time: 17:32
+ * Fragment showing statistics.
  */
 public class StatisticsFragment extends ChartFragment {
     private static final String TAG = StatisticsFragment.class.getSimpleName();

@@ -20,10 +20,7 @@ import imis.client.persistent.EmployeeManager;
 import imis.client.ui.adapters.EmployeeResourceCursorAdapter;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 2.5.13
- * Time: 21:24
+ * Activity for choosing employee for widget.
  */
 public class WidgetConfigure extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = WidgetConfigure.class.getSimpleName();
@@ -138,6 +135,5 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
         } else {
             showNoEmpSelected();
         }
-
     }
 }

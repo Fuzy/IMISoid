@@ -11,10 +11,7 @@ import imis.client.AppConsts;
 import imis.client.R;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 2.6.13
- * Time: 19:11
+ * Dialog for confirm authorization.
  */
 public class AuthConfirmDialog extends DialogFragment {
     private static final String TAG = AuthConfirmDialog.class.getSimpleName();

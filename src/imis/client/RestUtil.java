@@ -15,10 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 31.7.13
- * Time: 11:58
+ * Utility method used for creating REST request.
  */
 public class RestUtil {
     private static final String TAG = RestUtil.class.getSimpleName();

@@ -1,10 +1,7 @@
 package imis.client.exceptions;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 12.6.13
- * Time: 16:45
+ * Exception is thrown when position of user workplace is not set.
  */
 public class PositionNotSetException extends Exception {
 

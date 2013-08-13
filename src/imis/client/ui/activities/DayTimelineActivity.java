@@ -31,7 +31,9 @@ import imis.client.ui.fragments.DayTimelineListFragment;
 import static imis.client.AppUtil.showAccountNotExistsError;
 import static imis.client.persistent.EventManager.EventQuery;
 
-
+/**
+ * Activity showing time line of day events.
+ */
 public class DayTimelineActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = DayTimelineActivity.class.getSimpleName();

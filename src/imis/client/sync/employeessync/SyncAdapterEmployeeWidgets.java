@@ -17,10 +17,7 @@ import org.apache.http.HttpStatus;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 24.5.13
- * Time: 21:09
+ * Adapter for actualization other employees last event used in widgets.
  */
 public class SyncAdapterEmployeeWidgets extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapterEmployeeWidgets.class.getSimpleName();
@@ -37,7 +34,7 @@ public class SyncAdapterEmployeeWidgets extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "onPerformSync()" + "account = [" + account + "], extras = [" + extras + "], " +
                 "authority = [" + authority + "], provider = [" + provider + "], syncResult = [" + syncResult + "]");
 
-        EmployeesSync sync = new EmployeesSync(context);
+        EmployeesAct sync = new EmployeesAct(context);
 
         List<Employee> employees = EmployeeManager.getEmployeesWithWidget(context);
         if (employees.size() > 0) {

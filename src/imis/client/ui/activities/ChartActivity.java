@@ -21,10 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 23.4.13
- * Time: 17:51
+ * Activity which hosts chart.
  */
 public abstract class ChartActivity extends ControlActivity {
     private static final String TAG = ChartActivity.class.getSimpleName();

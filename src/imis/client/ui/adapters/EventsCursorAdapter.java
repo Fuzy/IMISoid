@@ -17,10 +17,7 @@ import imis.client.model.Event;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 15.6.13
- * Time: 11:02
+ *  Adapter which makes accessible events obtained from cursor.
  */
 public class EventsCursorAdapter extends CursorAdapter {
     private static final String TAG = EventsCursorAdapter.class.getSimpleName();

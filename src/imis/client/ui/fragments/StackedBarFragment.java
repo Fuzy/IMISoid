@@ -17,10 +17,7 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import static imis.client.ui.activities.util.GraphUtil.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 11.4.13
- * Time: 18:38
+ * Fragment hosts stacked bar chart.
  */
 public class StackedBarFragment extends ChartFragment {
     private static final String TAG = StackedBarFragment.class.getSimpleName();

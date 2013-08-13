@@ -15,10 +15,7 @@ import java.util.List;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 7.4.13
- * Time: 18:38
+ * Contains methods for accessing to persistent storage of records.
  */
 public class RecordManager {
     private static final String TAG = RecordManager.class.getSimpleName();

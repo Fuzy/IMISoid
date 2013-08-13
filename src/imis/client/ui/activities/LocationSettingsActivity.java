@@ -26,10 +26,7 @@ import java.util.Map;
 import static imis.client.AppConsts.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 30.5.13
- * Time: 14:37
+ * Activity for settings location of workplace.
  */
 public class LocationSettingsActivity extends FragmentActivity {
     private static final String TAG = LocationSettingsActivity.class.getSimpleName();

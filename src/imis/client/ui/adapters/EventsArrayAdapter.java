@@ -10,10 +10,7 @@ import imis.client.ui.BlockView;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 10.4.13
- * Time: 15:20
+ *  Adapter which makes accessible events obtained from array.
  */
 public class EventsArrayAdapter extends ArrayAdapter<Block> {
     private long date = 0;

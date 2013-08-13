@@ -17,6 +17,9 @@ import org.apache.http.HttpStatus;
 
 import java.util.List;
 
+/**
+ * Adapter for synchronization of attendance events.
+ */
 public class SyncAdapterEvents extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapterEvents.class.getSimpleName();
     private final Context context;

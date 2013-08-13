@@ -7,10 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 15.4.13
- * Time: 17:29
+ * Fragment showing list work records.
  */
 public class RecordListFragment extends ListFragment {
     private static final String TAG = RecordListFragment.class.getSimpleName();

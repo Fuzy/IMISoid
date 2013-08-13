@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 12.4.13
- * Time: 11:13
+ *  Class storing data for use in pie chart.
  */
 public class PieChartData {
     private String total;

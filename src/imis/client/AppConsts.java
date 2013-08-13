@@ -1,10 +1,7 @@
 package imis.client;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 31.3.13
- * Time: 22:26
+ * Constants.
  */
 public class AppConsts {
     public static final String AUTHORITY1 = "imisoid.contentprovider1";

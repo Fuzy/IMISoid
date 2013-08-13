@@ -10,10 +10,7 @@ import imis.client.AppConsts;
 import imis.client.R;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 28.5.13
- * Time: 20:08
+ * Dialog for adding an event.
  */
 public class AddEventDialog extends DialogFragment {
 

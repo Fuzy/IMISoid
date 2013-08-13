@@ -10,11 +10,9 @@ import imis.client.model.Event;
 import imis.client.persistent.EventManager;
 import imis.client.ui.activities.EventEditorActivity;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 27.5.13
- * Time: 20:15
+ * Receiver processing widget click.
  */
 public class ShortcutWidgetReceiver extends BroadcastReceiver {
     private static final String TAG = ShortcutWidgetReceiver.class.getSimpleName();

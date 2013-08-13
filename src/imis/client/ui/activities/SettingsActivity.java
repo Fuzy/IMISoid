@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import imis.client.ui.fragments.SettingsFragment;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 25.5.13
- * Time: 22:35
+ * Activity hosts user settings.
  */
 public class SettingsActivity extends Activity {
     @Override

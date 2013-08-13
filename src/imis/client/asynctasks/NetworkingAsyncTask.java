@@ -12,6 +12,12 @@ import org.springframework.http.HttpStatus;
 import java.io.Serializable;
 import java.util.Arrays;
 
+/**
+ * Generic class for asynchronous request to server.
+ * @param <T>  the type of the parameters sent to the task upon execution.
+ * @param <U>  the type of the progress units published during the background computation.
+ * @param <V>  the type of the result of the background computation.
+ */
 public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> implements Serializable {
     private static final String TAG = NetworkingAsyncTask.class.getSimpleName();
     protected TaskFragment mFragment;
@@ -44,16 +50,13 @@ public abstract class NetworkingAsyncTask<T, U, V> extends AsyncTask<T, U, V> im
             }
         } else if (result.isUnknownErr()) {
             AppUtil.showError(context, result.getMsg());
-        } /*else if (result.isServerError()) {
-            AppUtil.showError(context, context.getString(R.string.server_error));
-        }*/ else if (result.isClientError()) {
+        } else if (result.isClientError()) {
             if (result.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
                 AppUtil.showError(context, context.getString(R.string.unauthorized));
             }
         }
 
         if (mFragment != null) {
-            Log.d(TAG, "onPostExecute() resultData " + v);
             mFragment.taskFinished((Result) v);
         }
 

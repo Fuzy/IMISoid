@@ -13,11 +13,9 @@ import imis.client.TimeUtil;
 import imis.client.model.Employee;
 import imis.client.ui.ColorConfig;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 6.4.13
- * Time: 23:05
+ *  Adapter which makes accessible employees obtained from database.
  */
 public class EmployeesCursorAdapter extends CursorAdapter {
     private static final String TAG = EmployeesCursorAdapter.class.getSimpleName();

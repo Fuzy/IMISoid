@@ -16,10 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 6.4.13
- * Time: 18:03
+ * Contains methods for accessing to persistent storage of employees.
  */
 public class EmployeeManager {
     private static final String TAG = EmployeeManager.class.getSimpleName();
@@ -107,7 +104,6 @@ public class EmployeeManager {
         client.release();
     }
 
-    //TODO zkontrolovat zda zustava widgetID
     public static void syncEmployees(Context context, ContentProviderClient client, Employee[] employees) {
 //        Log.d(TAG, "syncEmployees() employees " + Arrays.toString(employees));
 

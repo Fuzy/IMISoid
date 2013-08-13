@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import imis.client.TimeUtil;
 
+/**
+ * Represents a work record.
+ */
 public class Record {
     private int _id;
     private String id;

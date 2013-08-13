@@ -14,7 +14,9 @@ import imis.client.model.Record;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/*records + events*/
+/**
+ * Contains methods for accessing to persistent storage (SQLite database).
+ */
 public class MyContentProvider extends ContentProvider {
     private static final String TAG = MyContentProvider.class.getSimpleName();
 

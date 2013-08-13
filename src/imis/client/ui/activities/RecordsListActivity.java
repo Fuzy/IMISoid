@@ -30,11 +30,9 @@ import java.util.Map;
 import static imis.client.persistent.RecordManager.RecordQuery.CONTENT_URI;
 import static imis.client.persistent.RecordManager.RecordQuery.SELECTION_LIST;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 15.4.13
- * Time: 17:25
+ * Activity showing list of work records.
  */
 public class RecordsListActivity extends ControlActivity implements
         RecordListFragment.OnItemSelectedListener {

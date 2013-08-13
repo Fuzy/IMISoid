@@ -9,11 +9,9 @@ import imis.client.ui.dialogs.AddAccountDialog;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 9.4.13
- * Time: 16:25
+ * Utility methods for showing info toasts and getting list of event tzpe codes.
  */
 public class AppUtil {
     private static final String TAG = AppUtil.class.getSimpleName();

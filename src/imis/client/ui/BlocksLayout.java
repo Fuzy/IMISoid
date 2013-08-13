@@ -15,6 +15,9 @@ import imis.client.R;
 import imis.client.TimeUtil;
 import imis.client.ui.adapters.EventsArrayAdapter;
 
+/**
+ * Layout showing presence and absence block.
+ */
 public class BlocksLayout extends AdapterView<EventsArrayAdapter> {
     private static final String TAG = BlocksLayout.class.getSimpleName();
     private static final int INVALID_INDEX = -1;

@@ -12,10 +12,7 @@ import imis.client.asynctasks.NetworkingAsyncTask;
 import imis.client.asynctasks.result.Result;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 27.4.13
- * Time: 13:58
+ * Fragment showing progress dialog for asynchronous task.
  */
 public class TaskFragment extends DialogFragment {
     private static final String TAG = TaskFragment.class.getSimpleName();

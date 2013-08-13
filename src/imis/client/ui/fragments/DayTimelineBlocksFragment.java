@@ -26,10 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 15.6.13
- * Time: 17:06
+ * Fragment showing blocks of presence and absence.
  */
 public class DayTimelineBlocksFragment extends Fragment implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener {

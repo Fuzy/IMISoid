@@ -25,10 +25,7 @@ import static imis.client.persistent.EmployeeManager.EmployeeQuery.CONTENT_URI;
 import static imis.client.persistent.EmployeeManager.EmployeeQuery.ORDER_BY;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 6.4.13
- * Time: 22:44
+ * Activity for showing of present employees.
  */
 public class PresentEmployeesActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = PresentEmployeesActivity.class.getSimpleName();

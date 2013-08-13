@@ -6,10 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 24.5.13
- * Time: 21:07
+ * Service for actualization list of employees.
  */
 public class SyncServiceListOfEmployees extends Service {
     private static final String TAG = SyncServiceListOfEmployees.class.getSimpleName();

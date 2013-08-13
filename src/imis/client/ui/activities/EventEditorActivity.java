@@ -21,13 +21,16 @@ import imis.client.widget.ShortcutWidgetProvider;
 
 import java.util.*;
 
+/**
+ * Activity for showing and editing attendance event.
+ */
 public class EventEditorActivity extends FragmentActivity implements OnItemSelectedListener,
         View.OnClickListener, DeleteEventDialog.OnDeleteEventListener, AddEventDialog.AddEventDialogListener {
     private static final String TAG = EventEditorActivity.class.getSimpleName();
 
     public static final String KEY_ENABLE_ADD_ARRIVE = "key_enable_add_arrive",
             KEY_ENABLE_ADD_LEAVE = "key_enable_add_leave", KEY_LEAVE_TYPE = "key_leave_type";
-    //TODO nesmi byt 2 udalosti ve stejne minute
+
     // Activity state
     private static final String KEY_KOD_PO_ARR = "key_kod_po_arr", KEY_KOD_PO_LEA = "key_kod_po_lea",
             KEY_POZN_ARR = "key_pozn_arr", KEY_POZN_LEA = "key_pozn_lea",

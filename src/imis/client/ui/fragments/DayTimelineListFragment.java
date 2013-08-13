@@ -13,10 +13,7 @@ import imis.client.ui.activities.DayTimelineActivity;
 import imis.client.ui.adapters.EventsCursorAdapter;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 15.6.13
- * Time: 10:40
+ * Fragment showing list of attendance events.
  */
 public class DayTimelineListFragment extends ListFragment {
     private static final String TAG = DayTimelineListFragment.class.getSimpleName();

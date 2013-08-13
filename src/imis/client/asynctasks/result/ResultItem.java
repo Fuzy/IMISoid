@@ -3,10 +3,7 @@ package imis.client.asynctasks.result;
 import org.springframework.http.HttpStatus;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 1.6.13
- * Time: 16:51
+ *   Class stores result of HTTP request which returns exactly one record.
  */
 public class ResultItem<T> extends Result {
     protected T item;

@@ -17,10 +17,7 @@ import imis.client.ui.ColorConfig;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 2.5.13
- * Time: 21:23
+ * Provider for widget showing last event of employee.
  */
 public class EmployeeWidgetProvider extends AppWidgetProvider {
     private static final String TAG = EmployeeWidgetProvider.class.getSimpleName();

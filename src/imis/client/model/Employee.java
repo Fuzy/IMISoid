@@ -4,10 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 6.4.13
- * Time: 15:59
+ * Represents an employee.
  */
 public class Employee {
 //    private static final String TAG = Employee.class.getSimpleName();

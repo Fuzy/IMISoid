@@ -1,10 +1,7 @@
 package imis.client.sync.eventssync;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 23.6.13
- * Time: 11:52
+ * Class contains result of stats.
  */
 public class SyncStats {
     private int created = 0;

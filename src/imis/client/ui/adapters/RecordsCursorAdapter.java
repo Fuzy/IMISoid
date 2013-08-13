@@ -13,24 +13,18 @@ import imis.client.TimeUtil;
 import imis.client.model.Record;
 import imis.client.ui.ColorConfig;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 16.4.13
- * Time: 10:24
+ *  Adapter which makes accessible records obtained from cursor.
  */
 public class RecordsCursorAdapter extends CursorAdapter {
-    private static final String TAG = "RecordsCursorAdapter";
+    private static final String TAG = RecordsCursorAdapter.class.getSimpleName();
     private LayoutInflater inflater;
-//    private ColorConfig colorConfig;
-
 
     public RecordsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        colorConfig = new ColorConfig(context);
     }
-
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {

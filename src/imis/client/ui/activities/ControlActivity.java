@@ -32,10 +32,7 @@ import java.util.Map;
 import static imis.client.AppUtil.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 25.4.13
- * Time: 20:44
+ * Generic activity which hosts control panel for selecting user and period.
  */
 public abstract class ControlActivity extends AsyncActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         AdapterView.OnItemSelectedListener {

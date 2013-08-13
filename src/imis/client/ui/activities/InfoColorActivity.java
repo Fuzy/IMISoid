@@ -20,10 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 9.5.13
- * Time: 20:38
+ * Activity showing color setting for types of events and records.
  */
 public class InfoColorActivity extends FragmentActivity implements ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = InfoColorActivity.class.getSimpleName();

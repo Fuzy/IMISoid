@@ -18,10 +18,7 @@ import java.net.HttpURLConnection;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 12.3.13
- * Time: 11:05
+ * Activity for settings connection to server.
  */
 public class NetworkSettingsActivity extends AsyncActivity {
     private static final String TAG = NetworkSettingsActivity.class.getSimpleName();

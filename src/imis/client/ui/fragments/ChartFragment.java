@@ -8,10 +8,7 @@ import android.view.View;
 import imis.client.ui.activities.ChartActivity;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Martin Kadlec
- * Date: 24.4.13
- * Time: 18:15
+ * Generic fragment which hosts chart.
  */
 public abstract class ChartFragment extends Fragment {
     private static final String TAG = ChartFragment.class.getSimpleName();
