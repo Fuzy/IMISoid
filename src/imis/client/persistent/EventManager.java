@@ -7,6 +7,7 @@ import android.util.Log;
 import imis.client.AppConsts;
 import imis.client.AppUtil;
 import imis.client.R;
+import imis.client.TimeUtil;
 import imis.client.model.Event;
 
 import java.util.ArrayList;
@@ -99,7 +100,8 @@ public class EventManager {
         Log.d(TAG, "getLastEvent()");
 //        try {
 //            String icp = AccountUtil.getUserICP(context);
-        return getEvent(context, EventQuery.SELECTION_USER_LAST, null, EventQuery.ORDER_BY_LAST);
+        long today = TimeUtil.todayDateInLong();
+        return getEvent(context, EventQuery.SELECTION_USER_LAST, new String[]{String.valueOf(today)}, EventQuery.ORDER_BY_LAST);
         /*} catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());
             return null;
@@ -223,7 +225,7 @@ public class EventManager {
         private static final String SELECTION_ICP_NOT_SYNCED = Event.COL_ICP + " LIKE ? || '%' " + " and " + Event.COL_SYNC_MANAGED + "=0";
         private static final String SELECTION_SERVER_ID = Event.COL_SERVER_ID + "=?";
         private static final String SELECTION_PERIOD = " ? <= " + Event.COL_DATUM + " and " + Event.COL_DATUM + " <= ? ";
-        private static final String SELECTION_USER_LAST = Event.COL_DATUM + " and " + Event.COL_SYNC_MANAGED + "=1";
+        private static final String SELECTION_USER_LAST = SELECTION_DATUM + " and " + Event.COL_SYNC_MANAGED + "=1";
         private static final String ORDER_BY_DATE_DESC = Event.COL_DATUM + " DESC";
         private static final String ORDER_BY_TIME_DESC = Event.COL_CAS + " DESC";
         private static final String ORDER_BY_DATE_ASC = Event.COL_DATUM + " ASC";

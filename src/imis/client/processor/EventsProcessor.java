@@ -64,8 +64,15 @@ public class EventsProcessor {
                     && startEvent.getCas() <= TimeUtil.currentDayTimeInLong()
                     && startEvent.getDatum() == TimeUtil.todayDateInLong();
             Log.d(TAG, "eventsToMapOfBlocks() isUnfinishedPresence " + isTodayUnfinishedPresence);
-            if (isTodayUnfinishedPresence || endEvent != null) {
+
+            boolean isTodayUnfinishedAbsence = startEvent.isDruhLeave() && endEvent == null
+                    && startEvent.getCas() <= TimeUtil.currentDayTimeInLong()
+                    && startEvent.getDatum() == TimeUtil.todayDateInLong();
+            Log.d(TAG, "eventsToMapOfBlocks() isTodayUnfinishedAbsence " + isTodayUnfinishedAbsence);
+
+            if (isTodayUnfinishedPresence || endEvent != null) {//isTodayUnfinishedAbsence ||
                 block = new Block();
+                block.setPresence(startEvent.isDruhArrival());
                 block.setDate(startEvent.getDatum());
                 block.setStartTime(startEvent.getCas());
                 block.setArriveId(startEvent.get_id());

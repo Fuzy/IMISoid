@@ -31,11 +31,11 @@ public class AppUtil {
         Toast toast = Toast.makeText(context, R.string.error_perriod_set, Toast.LENGTH_SHORT);
         toast.show();
     }
-
+/*
     public static void showNetworkAccessUnavailable(Context context) {
         Toast toast = Toast.makeText(context, R.string.connection_unavailable, Toast.LENGTH_SHORT);
         toast.show();
-    }
+    }*/
 
     public static void showWidgetAlreadyExists(Context context) {
         Toast toast = Toast.makeText(context, R.string.widget_allready_exists, Toast.LENGTH_SHORT);

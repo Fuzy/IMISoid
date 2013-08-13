@@ -1,6 +1,6 @@
 package imis.client.model;
 
-import static imis.client.TimeUtil.formatTimeInNonLimitHour;
+import imis.client.TimeUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +17,7 @@ public class Block {
     private String kod_po;
     private boolean dirty;
     private boolean error;
+    private boolean presence;
 
     public Block() {
     }
@@ -85,16 +86,26 @@ public class Block {
         this.error = error;
     }
 
+    public boolean isPresence() {
+        return presence;
+    }
+
+    public void setPresence(boolean presence) {
+        this.presence = presence;
+    }
+
     @Override
     public String toString() {
         return "Block{" +
                 "date=" + date +
-                ", startTime=" + formatTimeInNonLimitHour(startTime) +
-                ", endTime=" + formatTimeInNonLimitHour(endTime) +
+                ", startTime=" + TimeUtil.formatTimeInNonLimitHour(startTime) +
+                ", endTime=" + TimeUtil.formatTimeInNonLimitHour(endTime) +
                 ", arriveId=" + arriveId +
                 ", leaveId=" + leaveId +
                 ", kod_po='" + kod_po + '\'' +
                 ", dirty=" + dirty +
+                ", error=" + error +
+                ", presence=" + presence +
                 '}';
     }
 }

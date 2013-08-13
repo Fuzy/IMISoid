@@ -33,10 +33,10 @@ public class BlockView extends View {
 
     private boolean dirty;
     private boolean error;
+    private boolean presence;
 
-    @SuppressWarnings("deprecation")
     public BlockView(Context context, int arriveId, int leaveId, long startTime, long endTime,
-                     String type, boolean dirty, boolean error) {
+                     String type, boolean dirty, boolean error, boolean presence) {
         super(context);
 
         this.arriveId = arriveId;
@@ -46,6 +46,7 @@ public class BlockView extends View {
         this.type = type;
         this.dirty = dirty;
         this.error = error;
+        this.presence = presence;
 
         int accentColor = ColorConfig.getColor(context, type);
         LayerDrawable buttonDrawable;
@@ -75,49 +76,24 @@ public class BlockView extends View {
         return arriveId;
     }
 
-    public void setArriveId(int arriveId) {
-        this.arriveId = arriveId;
-    }
-
-   /* public boolean isDirty() {
-        return dirty;
-    }*/
-
-    public void setDirty(boolean dirty) {
-        this.dirty = dirty;
-    }
-
     public int getLeaveId() {
         return leaveId;
     }
 
-    public void setLeaveId(int leaveId) {
-        this.leaveId = leaveId;
-    }
-
-
     public long getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
     }
 
     public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
-    }
-
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public boolean isPresence() {
+        return presence;
     }
 
     @Override

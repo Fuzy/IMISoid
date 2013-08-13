@@ -245,5 +245,6 @@
     <string name="act_fail">Aktualizace selhala</string>
     <string name="records_act_fail">Aktualizace výkazů selhala</string>
     <string name="unauthorized">Neautorizovaný požadavek</string>
+    <string name="block_not_editable">Blok nepřítomnosti není editovatelný</string>
 
 </resources>

@@ -37,18 +37,23 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    //TODO aktualizace, text neexistujici
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                  int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.shortcut_widget);
 
+        String code = null, last = null;
         Event lastEvent = EventManager.getLastEvent(context);
         Log.d(TAG, "updateAppWidget() lastEvent " + lastEvent);
         if (lastEvent != null) {
-            views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorConfig.getColor(context, lastEvent.getKod_po()));
-            String last = lastEvent.getDruh() + " " + TimeUtil.formatEmpDate(lastEvent.getDatum())
+//            views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorConfig.getColor(context, lastEvent.getKod_po()));
+            code = lastEvent.getKod_po();
+            last = lastEvent.getDruh() + " " + TimeUtil.formatEmpDate(lastEvent.getDatum())
                     + " " + TimeUtil.formatTimeInNonLimitHour(lastEvent.getCas());
-            views.setTextViewText(R.id.emp_time, last);
         }
+        views.setTextViewText(R.id.emp_time, last);
+        views.setInt(R.id.emp_kod_po, "setBackgroundColor", ColorConfig.getColor(context, code));
+
         // Register an onClickListener
         Intent intent = new Intent(context, ShortcutWidgetReceiver.class);
 

@@ -26,8 +26,8 @@ public class EventsArrayAdapter extends ArrayAdapter<Block> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Block block = getItem(position);
         BlockView blockView = new BlockView(getContext(), block.getArriveId(), block.getLeaveId(),
-                block.getStartTime(), block.getEndTime(), block.getKod_po(), block.isDirty(), block.isError()) ;
-        return  blockView;
+                block.getStartTime(), block.getEndTime(), block.getKod_po(), block.isDirty(), block.isError(), block.isPresence());
+        return blockView;
     }
 
     public void setDate(long date) {

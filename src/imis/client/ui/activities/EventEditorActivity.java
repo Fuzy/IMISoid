@@ -24,10 +24,10 @@ import java.util.*;
 public class EventEditorActivity extends FragmentActivity implements OnItemSelectedListener,
         View.OnClickListener, DeleteEventDialog.OnDeleteEventListener, AddEventDialog.AddEventDialogListener {
     private static final String TAG = EventEditorActivity.class.getSimpleName();
-    //TODO odchod +1 minuta?
-    public static final String KEY_ENABLE_ADD_ARRIVE = "key_enable_add_arrive",
-            KEY_ENABLE_ADD_LEAVE = "key_enable_add_leave";
 
+    public static final String KEY_ENABLE_ADD_ARRIVE = "key_enable_add_arrive",
+            KEY_ENABLE_ADD_LEAVE = "key_enable_add_leave", KEY_LEAVE_TYPE = "key_leave_type";
+    //TODO nesmi byt 2 udalosti ve stejne minute
     // Activity state
     private static final String KEY_KOD_PO_ARR = "key_kod_po_arr", KEY_KOD_PO_LEA = "key_kod_po_lea",
             KEY_POZN_ARR = "key_pozn_arr", KEY_POZN_LEA = "key_pozn_lea",
@@ -41,6 +41,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private int arriveId = -1, leaveId = -1;
     private long date;
     private boolean widgetIsSource = false;
+    private String prevLeaveCode;
 
     // UI units
     private Spinner spinnerKod_poArrive, spinnerKod_poLeave;
@@ -79,8 +80,9 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
         init();
         boolean enableAddArrive = intent.getBooleanExtra(KEY_ENABLE_ADD_ARRIVE, false);
+        prevLeaveCode = intent.getStringExtra(KEY_LEAVE_TYPE);
+        Log.d(TAG, "onCreate() prevLeaveCode " + prevLeaveCode);
         if (enableAddArrive) enableAddArrive();
-        //TODO kontrola posledniho odchodu
         boolean enableAddLeave = intent.getBooleanExtra(KEY_ENABLE_ADD_LEAVE, false);
         if (enableAddLeave) enableAddLeave();
         Log.d(TAG, "onCreate() enableAddArrive " + enableAddArrive + " enableAddLeave " + enableAddLeave);
@@ -192,8 +194,8 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     private void prepareSpinners() {
         spinnerKod_poArrive = (Spinner) this.findViewById(R.id.spinner_kod_po_arrive);
-        spinnerKod_poArrive.setOnItemSelectedListener(this);
         spinnerKod_poLeave = (Spinner) this.findViewById(R.id.spinner_kod_po_leave);
+        spinnerKod_poArrive.setOnItemSelectedListener(this);
         spinnerKod_poLeave.setOnItemSelectedListener(this);
     }
 
@@ -269,15 +271,21 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
     private void populateArriveFields() {
         // Type
         if (arriveEvent != null) {
-            setArriveSpinnerValues(null);
-            setLeaveSpinnerValues(arriveEvent.getKod_po());
+            setArriveSpinnerValues(prevLeaveCode);
             selectedArrive = availableArrValues.indexOf(arriveEvent.getKod_po());
             if (spinnerArr != -1) {
                 selectedArrive = spinnerArr;
             }
         }
 
+        if (selectedArrive == -1) {
+            selectedArrive = 0;
+        }
+
         spinnerKod_poArrive.setSelection(selectedArrive);
+        Log.d(TAG, "populateArriveFields() availableArrValues " + availableArrValues);
+        Log.d(TAG, "populateArriveFields() selectedArrive " + selectedArrive);
+        setLeaveSpinnerValues(availableArrValues.get(selectedArrive));//TODO
 
         // Time
         if (timeArr != -1) {
@@ -298,9 +306,16 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         // Type
         if (spinnerLea != -1) {
             selectedLeave = spinnerLea;
+            Log.d(TAG, "populateLeaveFields() spinnerLea != -1");
         } else if (leaveEvent != null) {
             selectedLeave = availableLeaValues.indexOf(leaveEvent.getKod_po());
+            Log.d(TAG, "populateLeaveFields() leaveEvent != null");
         }
+
+        if (selectedLeave == -1) {
+            selectedLeave = 0;
+        }
+        Log.d(TAG, "populateLeaveFields() selectedLeave " + selectedLeave);
         spinnerKod_poLeave.setSelection(selectedLeave);
 
         // Time
@@ -426,13 +441,18 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
         switch (parent.getId()) {
             case R.id.spinner_kod_po_arrive:
+                if (pos != selectedArrive) {
+                    setLeaveSpinnerValues(availableArrValues.get(pos));
+                }
                 selectedArrive = pos;
-                setLeaveSpinnerValues(availableArrValues.get(selectedArrive));
+                Log.d(TAG, "onItemSelected() spinner_kod_po_arrive selectedArrive " + selectedArrive + " pos " + pos);
                 break;
             case R.id.spinner_kod_po_leave:
                 selectedLeave = pos;
+                Log.d(TAG, "onItemSelected() spinner_kod_po_leave " + selectedLeave + " pos " + pos);
                 break;
             default:
                 break;
@@ -521,7 +541,12 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         leaveBtn.setVisibility(View.GONE);
         leaveLayout.setVisibility(View.VISIBLE);
         leaveEvent = new Event();
-        setLeaveSpinnerValues(availableArrValues.get(selectedArrive));
+        String code = null;
+        if (selectedArrive < availableArrValues.size()) {
+            code = availableArrValues.get(selectedArrive);
+        }
+        Log.d(TAG, "enableAddLeave() code " + code);
+        setLeaveSpinnerValues(code);
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import imis.client.AppConsts;
+import imis.client.AppUtil;
 import imis.client.R;
 import imis.client.TimeUtil;
 import imis.client.model.Block;
@@ -38,7 +39,6 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
     private List<Block> blockList;
     private EventsArrayAdapter adapter;
     private DayTimelineActivity mActivity;
-
 
     private DataSetObserver mObserver = new DataSetObserver() {
         @Override
@@ -104,10 +104,15 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         BlockView block = (BlockView) view;
-        int arriveID = block.getArriveId(), leaveID = block.getLeaveId();
-        Log.d(TAG, "onItemClick() position: " + position + " id: " + id + " arriveID: " + arriveID
-                + " leaveID: " + leaveID);
-        mActivity.startEditActivity(arriveID, leaveID);
+        Log.d(TAG, "onItemClick() block isPresence " + block.isPresence());
+        if (block.isPresence()) {
+            int arriveID = block.getArriveId(), leaveID = block.getLeaveId();
+            Log.d(TAG, "onItemClick() position: " + position + " id: " + id + " arriveID: " + arriveID
+                    + " leaveID: " + leaveID);
+            mActivity.startEditActivity(arriveID, leaveID);
+        } else {
+            AppUtil.showInfo(getActivity(),  getActivity().getString(R.string.block_not_editable));
+        }
     }
 
     @Override
@@ -123,10 +128,12 @@ public class DayTimelineBlocksFragment extends Fragment implements AdapterView.O
     }
 
     public void scrollTo() {
-        int y = (int) (((double) TimeUtil.currentDayTimeInLong() / (double) AppConsts.MS_IN_DAY) * blocks.getHeight());
-        y -= blocks.getHeight() / 4;
-        y = (y < 0) ? 0 : y;
-        scroll.scrollTo(0, y);
+        if (blocks != null) {
+            int y = (int) (((double) TimeUtil.currentDayTimeInLong() / (double) AppConsts.MS_IN_DAY) * blocks.getHeight());
+            y -= blocks.getHeight() / 4;
+            y = (y < 0) ? 0 : y;
+            scroll.scrollTo(0, y);
+        }
     }
 
 }

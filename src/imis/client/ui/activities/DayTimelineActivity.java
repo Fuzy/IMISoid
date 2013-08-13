@@ -36,7 +36,6 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = DayTimelineActivity.class.getSimpleName();
 
-    //TODO obed se neprodlouyil k aktualni ose
     private long date;
     protected final DataSetObservable mDataSetObservable = new DataSetObservable();
     private volatile Cursor mCursor;
@@ -314,12 +313,16 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.dir/event.imisoid");
         intent.putExtra(Event.KEY_DATE, date);
-        Event event = getLastEvent();//TODO typ posledni
+        Event event = getLastEvent();
         if (event != null && event.isDruhArrival()) {
             intent.putExtra(AppConsts.ID_ARRIVE, event.get_id());
             intent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);
         } else {
             intent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_ARRIVE, true);
+        }
+
+        if (event != null && event.isDruhLeave()) {
+            intent.putExtra(EventEditorActivity.KEY_LEAVE_TYPE, event.getKod_po());
         }
         startActivity(intent);
         Log.d(TAG, "startInsertActivity() event " + event);

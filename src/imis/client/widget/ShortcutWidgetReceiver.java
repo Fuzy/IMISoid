@@ -25,11 +25,15 @@ public class ShortcutWidgetReceiver extends BroadcastReceiver {
 
         Intent startIntent = new Intent(Intent.ACTION_INSERT);
         Event lastEvent = EventManager.getLastEvent(context);
-        if (lastEvent != null && lastEvent.isDruhArrival()) {//TODO typ posledni
+        Log.d(TAG, "onReceive() lastEvent " + lastEvent);
+        if (lastEvent != null && lastEvent.isDruhArrival()) {
             startIntent.putExtra(AppConsts.ID_ARRIVE, lastEvent.get_id());
             startIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_LEAVE, true);
         } else {
             startIntent.putExtra(EventEditorActivity.KEY_ENABLE_ADD_ARRIVE, true);
+        }
+        if (lastEvent != null && lastEvent.isDruhLeave()) {
+            startIntent.putExtra(EventEditorActivity.KEY_LEAVE_TYPE, lastEvent.getKod_po());
         }
         startIntent.putExtra(AppConsts.KEY_WIDGET_IS_SOURCE, true);
         startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
