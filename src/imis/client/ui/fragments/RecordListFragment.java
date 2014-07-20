@@ -1,7 +1,7 @@
 package imis.client.ui.fragments;
 
 import android.app.Activity;
-import android.support.v4.app.ListFragment;
+import android.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;

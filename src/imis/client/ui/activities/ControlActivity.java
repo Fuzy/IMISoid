@@ -1,14 +1,13 @@
 package imis.client.ui.activities;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -61,7 +60,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
+        getLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
     }
 
 
@@ -359,7 +358,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
         @Override
         public void onClick(View view) {
             Log.d(TAG, "onClick()");
-            getSupportLoaderManager().restartLoader(LOADER_EMPLOYEES, null, ControlActivity.this);
+            getLoaderManager().restartLoader(LOADER_EMPLOYEES, null, ControlActivity.this);
             processDataQuery();
         }
     }
@@ -381,7 +380,7 @@ public abstract class ControlActivity extends AsyncActivity implements LoaderMan
             showNotUserSelectedError(this, e.getMessage());
         } catch (Exception e) {
             Log.d(TAG, "refreshRecords() " + e.getMessage());
-            showAccountNotExistsError(getSupportFragmentManager());
+            showAccountNotExistsError(getFragmentManager());
         }
     }
 

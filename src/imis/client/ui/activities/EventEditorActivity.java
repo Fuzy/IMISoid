@@ -1,9 +1,9 @@
 package imis.client.ui.activities;
 
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -24,7 +24,7 @@ import java.util.*;
 /**
  * Activity for showing and editing attendance event.
  */
-public class EventEditorActivity extends FragmentActivity implements OnItemSelectedListener,
+public class EventEditorActivity extends Activity implements OnItemSelectedListener,
         View.OnClickListener, DeleteEventDialog.OnDeleteEventListener, AddEventDialog.AddEventDialogListener {
     private static final String TAG = EventEditorActivity.class.getSimpleName();
 
@@ -138,7 +138,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         bundle.putString(AppConsts.KEY_TITLE, title);
         bundle.putString(AppConsts.KEY_MSG, message.toString());
         deleteEventDialog.setArguments(bundle);
-        deleteEventDialog.show(getSupportFragmentManager(), "AddEventDialog");
+        deleteEventDialog.show(getFragmentManager(), "AddEventDialog");
     }
 
     private void init() {
@@ -427,7 +427,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
 //            event.setIc_obs(kod);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            AppUtil.showAccountNotExistsError(getSupportFragmentManager());
+            AppUtil.showAccountNotExistsError(getFragmentManager());
             finish();
         }
     }
@@ -491,7 +491,7 @@ public class EventEditorActivity extends FragmentActivity implements OnItemSelec
         bundle.putInt(AppConsts.ID_ARRIVE, arriveId);
         bundle.putInt(AppConsts.ID_LEAVE, leaveId);
         deleteEventDialog.setArguments(bundle);
-        deleteEventDialog.show(getSupportFragmentManager(), "DeleteEventDialog");
+        deleteEventDialog.show(getFragmentManager(), "DeleteEventDialog");
     }
 
     @Override

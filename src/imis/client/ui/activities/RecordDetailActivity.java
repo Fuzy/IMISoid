@@ -1,8 +1,8 @@
 package imis.client.ui.activities;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import imis.client.R;
 import imis.client.model.Record;
@@ -13,7 +13,7 @@ import imis.client.ui.fragments.RecordDetailFragment;
 /**
  * Activity showing detail of record.
  */
-public class RecordDetailActivity extends FragmentActivity implements ColorPickerDialog.OnColorChangedListener {
+public class RecordDetailActivity extends Activity implements ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = RecordDetailActivity.class.getSimpleName();
 
     private Record record;
@@ -32,7 +32,7 @@ public class RecordDetailActivity extends FragmentActivity implements ColorPicke
     }
 
     private void refreshDetailFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         RecordDetailFragment detailFragment = new RecordDetailFragment();
         detailFragment.setRecord(record);
         ft.replace(R.id.record, detailFragment, "RecordDetailFragment");

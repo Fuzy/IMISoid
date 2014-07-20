@@ -1,8 +1,8 @@
 package imis.client;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Vibrator;
-import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 import imis.client.ui.dialogs.AddAccountDialog;
 

@@ -1,14 +1,14 @@
 package imis.client.widget;
 
+import android.app.Activity;
+import android.app.LoaderManager;
 import android.appwidget.AppWidgetManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +22,7 @@ import imis.client.ui.adapters.EmployeeResourceCursorAdapter;
 /**
  * Activity for choosing employee for widget.
  */
-public class WidgetConfigure extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class WidgetConfigure extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = WidgetConfigure.class.getSimpleName();
     protected static final int LOADER_EMPLOYEES = 0x04;
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -36,7 +36,7 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
         setContentView(R.layout.widget_config);
         spinnerEmp = (Spinner) findViewById(R.id.spinnerEmp);
 
-        getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
+        getLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
 
         setResult(RESULT_CANCELED);
 
@@ -68,6 +68,7 @@ public class WidgetConfigure extends FragmentActivity implements LoaderManager.L
                 return null;
         }
     }
+
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {

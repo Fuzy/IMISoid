@@ -1,9 +1,9 @@
 package imis.client.ui.activities;
 
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.CheckBox;
 import imis.client.AppUtil;
@@ -68,7 +68,7 @@ public class EventsChartActivity extends ChartActivity {
             case LOADER_EMPLOYEES:
                 Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
                 super.onLoadFinished(cursorLoader, cursor);
-                getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
+                getLoaderManager().initLoader(LOADER_EVENTS, null, this);
                 break;
             case LOADER_EVENTS:
                 Log.d(TAG, "onLoadFinished() LOADER_EVENT size " + cursor.getCount());
@@ -131,7 +131,7 @@ public class EventsChartActivity extends ChartActivity {
     @Override
     protected void processDataQuery() {
         Log.d(TAG, "processDataQuery()");
-        getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
+        getLoaderManager().restartLoader(LOADER_EVENTS, null, this);
     }
 
     @Override

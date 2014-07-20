@@ -1,9 +1,9 @@
 package imis.client.ui.activities;
 
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.CheckBox;
 import imis.client.AppConsts;
@@ -90,7 +90,7 @@ public class RecordsChartActivity extends ChartActivity {
             case LOADER_EMPLOYEES:
                 Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
                 super.onLoadFinished(cursorLoader, cursor);
-                getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
+                getLoaderManager().initLoader(LOADER_RECORDS, null, this);
                 break;
             case LOADER_RECORDS:
                 records.clear();
@@ -126,7 +126,7 @@ public class RecordsChartActivity extends ChartActivity {
     @Override
     protected void processDataQuery() {
         Log.d(TAG, "processDataQuery()");
-        getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
+        getLoaderManager().restartLoader(LOADER_RECORDS, null, this);
     }
 
     @Override

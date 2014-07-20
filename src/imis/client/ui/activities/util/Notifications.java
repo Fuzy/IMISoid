@@ -1,11 +1,11 @@
 package imis.client.ui.activities.util;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import imis.client.AppConsts;
 import imis.client.R;
@@ -51,8 +51,8 @@ public class Notifications {
     }
 
     private static void showNotification(Context context, String title, String contentText, Intent nextIntent) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
+        Notification.Builder mBuilder =
+                new Notification.Builder(context)
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle(title)
                         .setContentText(contentText)

@@ -1,5 +1,6 @@
 package imis.client.ui.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -8,7 +9,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.SeekBar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.*;
 import imis.client.AppUtil;
 import imis.client.R;
@@ -28,7 +28,7 @@ import static imis.client.AppConsts.*;
 /**
  * Activity for settings location of workplace.
  */
-public class LocationSettingsActivity extends FragmentActivity {
+public class LocationSettingsActivity extends Activity {
     private static final String TAG = LocationSettingsActivity.class.getSimpleName();
     private LocationManager locationManager;
     private GoogleMap map;
@@ -45,7 +45,7 @@ public class LocationSettingsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_settings);
 
-        map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
         map.setOnMapClickListener(myMapClickListener);
 

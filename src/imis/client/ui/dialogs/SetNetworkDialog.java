@@ -2,10 +2,10 @@ package imis.client.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import imis.client.R;
 import imis.client.ui.activities.NetworkSettingsActivity;
 

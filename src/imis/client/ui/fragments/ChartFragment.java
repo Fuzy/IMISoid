@@ -1,8 +1,8 @@
 package imis.client.ui.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.database.DataSetObserver;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import imis.client.ui.activities.ChartActivity;

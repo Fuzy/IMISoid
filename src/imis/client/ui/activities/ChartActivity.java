@@ -1,10 +1,10 @@
 package imis.client.ui.activities;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.*;
 import android.widget.CheckBox;
@@ -80,13 +80,13 @@ public abstract class ChartActivity extends ControlActivity {
     }
 
     protected void switchFragment() {
-        if (getSupportFragmentManager().findFragmentByTag(FRAG_STATS) != null) {
+        if (getFragmentManager().findFragmentByTag(FRAG_STATS) != null) {
             removeFragment(FRAG_STATS);
             switchToPieChartFragment();
-        } else if (getSupportFragmentManager().findFragmentByTag(FRAG_PIE) != null) {
+        } else if (getFragmentManager().findFragmentByTag(FRAG_PIE) != null) {
             removeFragment(FRAG_PIE);
             switchToStackedBarFragment();
-        } else if (getSupportFragmentManager().findFragmentByTag(FRAG_STACK) != null) {
+        } else if (getFragmentManager().findFragmentByTag(FRAG_STACK) != null) {
             removeFragment(FRAG_STACK);
             switchToStatisticsFragment();
         }
@@ -109,8 +109,8 @@ public abstract class ChartActivity extends ControlActivity {
     }
 
     protected void removeFragment(String tag) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = getFragmentManager().findFragmentByTag(tag);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.remove(fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         ft.commit();
@@ -118,7 +118,7 @@ public abstract class ChartActivity extends ControlActivity {
 
     protected void switchToStackedBarFragment() {
         currentFragment = FRAG_STACK;
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         StackedBarFragment barFragment = new StackedBarFragment();
         ft.replace(R.id.displayChart, barFragment, FRAG_STACK);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -127,7 +127,7 @@ public abstract class ChartActivity extends ControlActivity {
 
     protected void switchToPieChartFragment() {
         currentFragment = FRAG_PIE;
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         PieChartFragment pieFragment = new PieChartFragment();
         ft.replace(R.id.displayChart, pieFragment, FRAG_PIE);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -136,7 +136,7 @@ public abstract class ChartActivity extends ControlActivity {
 
     protected void switchToStatisticsFragment() {
         currentFragment = FRAG_STATS;
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         StatisticsFragment statsFragment = new StatisticsFragment();
         ft.replace(R.id.displayChart, statsFragment, FRAG_STATS);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);

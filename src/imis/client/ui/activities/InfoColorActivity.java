@@ -1,8 +1,8 @@
 package imis.client.ui.activities;
 
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Activity showing color setting for types of events and records.
  */
-public class InfoColorActivity extends FragmentActivity implements ColorPickerDialog.OnColorChangedListener {
+public class InfoColorActivity extends Activity implements ColorPickerDialog.OnColorChangedListener {
     private static final String TAG = InfoColorActivity.class.getSimpleName();
 
     private RecordsColorAdapter recordsAdapter;
@@ -95,7 +95,7 @@ public class InfoColorActivity extends FragmentActivity implements ColorPickerDi
         Bundle bundle = new Bundle();
         bundle.putString(AppConsts.KEY_TYPE, key);
         dialog.setArguments(bundle);
-        dialog.show(getSupportFragmentManager(), "ColorPickerDialog");
+        dialog.show(getFragmentManager(), "ColorPickerDialog");
     }
 
     final class MyEntry<K, V> implements Map.Entry<K, V> {

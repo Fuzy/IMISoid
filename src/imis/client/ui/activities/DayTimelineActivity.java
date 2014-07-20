@@ -1,16 +1,14 @@
 package imis.client.ui.activities;
 
 import android.accounts.Account;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.app.LoaderManager;
 import android.content.*;
 import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,7 +61,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
         changeDate(TimeUtil.todayDateInLong());
 
-        getSupportLoaderManager().initLoader(LOADER_EVENTS, null, this);
+        getLoaderManager().initLoader(LOADER_EVENTS, null, this);
         processor = new EventsProcessor(getApplicationContext());
 
         // delete old data
@@ -91,8 +89,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             public void onReceive(Context ctx, Intent intent) {
                 if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
 //                    Log.d(TAG, "onReceive()");
-                    if (getSupportLoaderManager().getLoader(LOADER_EVENTS) != null) {
-                        getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, DayTimelineActivity.this);
+                    if (getLoaderManager().getLoader(LOADER_EVENTS) != null) {
+                        getLoaderManager().restartLoader(LOADER_EVENTS, null, DayTimelineActivity.this);
                     }
                     performScroll();
                 }
@@ -112,7 +110,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     }
 
     public void performScroll() {
-        DayTimelineBlocksFragment fragment = (DayTimelineBlocksFragment) getSupportFragmentManager().findFragmentByTag(FRAG_BLOCKS);
+        DayTimelineBlocksFragment fragment = (DayTimelineBlocksFragment) getFragmentManager().findFragmentByTag(FRAG_BLOCKS);
         if (fragment != null) {
             fragment.scrollTo();
         }
@@ -153,15 +151,15 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             switchToDayTimelineBlocksFragment();
         }
 
-        if (getSupportLoaderManager().getLoader(LOADER_EVENTS) != null) {
-            getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
+        if (getLoaderManager().getLoader(LOADER_EVENTS) != null) {
+            getLoaderManager().restartLoader(LOADER_EVENTS, null, this);
         }
     }
 
     private void switchToDayTimelineListFragment() {
         Log.d(TAG, "switchToDayTimelineListFragment()");
         currentFragment = FRAG_LIST;
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         DayTimelineListFragment listFragment = new DayTimelineListFragment();
         ft.replace(R.id.dayTimeline, listFragment, "DayTimelineListFragment");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -171,7 +169,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
     private void switchToDayTimelineBlocksFragment() {
         Log.d(TAG, "switchToDayTimelineBlocksFragment()");
         currentFragment = FRAG_BLOCKS;
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         DayTimelineBlocksFragment listFragment = new DayTimelineBlocksFragment();
         ft.replace(R.id.dayTimeline, listFragment, "DayTimelineBlocksFragment");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -180,22 +178,22 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
 
     private void switchFragment() {
         Log.d(TAG, "switchFragment() num of existing ");
-        if (getSupportFragmentManager().findFragmentByTag(FRAG_LIST) != null) {
+        if (getFragmentManager().findFragmentByTag(FRAG_LIST) != null) {
             removeFragment(FRAG_LIST);
             switchToDayTimelineBlocksFragment();
-        } else if (getSupportFragmentManager().findFragmentByTag(FRAG_BLOCKS) != null) {
+        } else if (getFragmentManager().findFragmentByTag(FRAG_BLOCKS) != null) {
             removeFragment(FRAG_BLOCKS);
             switchToDayTimelineListFragment();
         }
-        if (getSupportLoaderManager().getLoader(LOADER_EVENTS) != null) {
-            getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
+        if (getLoaderManager().getLoader(LOADER_EVENTS) != null) {
+            getLoaderManager().restartLoader(LOADER_EVENTS, null, this);
         }
     }
 
     private void removeFragment(String tag) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        Fragment fragment = getFragmentManager().findFragmentByTag(tag);
         Log.d(TAG, "removeFragment() fragment " + fragment.getTag());
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.remove(fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         ft.commit();
@@ -253,7 +251,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             icp = AccountUtil.getUserICP(this);
             createTaskFragment(new GetListOfEmployees(this, icp));
         } catch (Exception e) {
-            showAccountNotExistsError(getSupportFragmentManager());
+            showAccountNotExistsError(getFragmentManager());
 
         }
     }
@@ -268,7 +266,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             ContentResolver.requestSync(account, AppConsts.AUTHORITY1, extras);
         } catch (Exception e) {
             Log.d(TAG, "performSync() showAccountNotExistsError");
-            showAccountNotExistsError(getSupportFragmentManager());
+            showAccountNotExistsError(getFragmentManager());
         }
     }
 
@@ -308,7 +306,7 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
             AccountUtil.getUserICP(this);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            AppUtil.showAccountNotExistsError(getSupportFragmentManager());
+            AppUtil.showAccountNotExistsError(getFragmentManager());
             return;
         }
 
@@ -412,8 +410,8 @@ public class DayTimelineActivity extends AsyncActivity implements LoaderManager.
         Log.d(TAG, "changeDate() date " + TimeUtil.formatDate(date));
         this.date = date;
         setDateTitle(date);
-        if (getSupportLoaderManager().getLoader(LOADER_EVENTS) != null) {
-            getSupportLoaderManager().restartLoader(LOADER_EVENTS, null, this);
+        if (getLoaderManager().getLoader(LOADER_EVENTS) != null) {
+            getLoaderManager().restartLoader(LOADER_EVENTS, null, this);
         }
     }
 

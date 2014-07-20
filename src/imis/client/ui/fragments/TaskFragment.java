@@ -2,10 +2,10 @@ package imis.client.ui.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import imis.client.R;
 import imis.client.asynctasks.NetworkingAsyncTask;

@@ -1,13 +1,13 @@
 package imis.client.ui.activities;
 
-import android.support.v4.app.FragmentActivity;
+import android.app.Activity;
 import imis.client.asynctasks.NetworkingAsyncTask;
 import imis.client.ui.fragments.TaskFragment;
 
 /**
  * Generic activity which hosts performing asynchronous request to server.
  */
-public abstract class AsyncActivity extends FragmentActivity implements TaskFragment.OnAsyncActionCompletedListener {
+public abstract class AsyncActivity extends Activity implements TaskFragment.OnAsyncActionCompletedListener {
     // Tag so we can find the task fragment again, in another instance of this fragment after rotation.
     private static final String TASK_FRAGMENT_TAG = "task";
     private static final String TAG = AsyncActivity.class.getSimpleName();
@@ -17,7 +17,7 @@ public abstract class AsyncActivity extends FragmentActivity implements TaskFrag
         TaskFragment taskFragment = new TaskFragment();
         taskFragment.setTask(task);
         // Show the fragment.
-        taskFragment.show(getSupportFragmentManager(), TASK_FRAGMENT_TAG);
+        taskFragment.show(getFragmentManager(), TASK_FRAGMENT_TAG);
     }
 
     protected abstract void processAsyncTask();

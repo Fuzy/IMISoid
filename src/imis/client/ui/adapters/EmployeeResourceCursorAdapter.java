@@ -2,8 +2,8 @@ package imis.client.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.ResourceCursorAdapter;
 import android.view.View;
+import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 import imis.client.model.Employee;
 

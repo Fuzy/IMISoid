@@ -1,12 +1,12 @@
 package imis.client.ui.activities;
 
+import android.app.FragmentTransaction;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -80,7 +80,7 @@ public class RecordsListActivity extends ControlActivity implements
     }
 
     private void addListFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         RecordListFragment listFragment = new RecordListFragment();
         ft.replace(R.id.recordsList, listFragment, "RecordListFragment");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -109,7 +109,7 @@ public class RecordsListActivity extends ControlActivity implements
             case LOADER_EMPLOYEES:
                 Log.d(TAG, "onLoadFinished() LOADER_EMPLOYEES");
                 super.onLoadFinished(cursorLoader, cursor);
-                getSupportLoaderManager().initLoader(LOADER_RECORDS, null, this);
+                getLoaderManager().initLoader(LOADER_RECORDS, null, this);
                 break;
             case LOADER_RECORDS:
                 adapter.swapCursor(cursor);
@@ -184,7 +184,7 @@ public class RecordsListActivity extends ControlActivity implements
     @Override
     protected void processDataQuery() {
         Log.d(TAG, "processDataQuery()");
-        getSupportLoaderManager().restartLoader(LOADER_RECORDS, null, this);
+        getLoaderManager().restartLoader(LOADER_RECORDS, null, this);
         stats.setText("");
     }
 

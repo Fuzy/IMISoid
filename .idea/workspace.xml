@@ -96,6 +96,10 @@
         <option name="name" value="ShortcutWidgetProvider" />
         <option name="pid" value="" />
       </filter>
+      <filter>
+        <option name="name" value="app: imis.client" />
+        <option name="packageNamePattern" value="imis.client" />
+      </filter>
     </filters>
   </component>
   <component name="AndroidDesignerProfile">
@@ -111,260 +115,89 @@
     </option>
     <option name="selection" value="[Full]" />
   </component>
+  <component name="AndroidExternalApklibDependenciesManager">
+    <artifacts>
+      <entry key="com.google.android.gms_google-play-services_16.0.0" value="$MAVEN_REPOSITORY$/com/google/android/gms/google-play-services/16.0.0/google-play-services-16.0.0.apklib" />
+      <entry key="com.google.android.gms_google-play-services_17.0.0" value="$MAVEN_REPOSITORY$/com/google/android/gms/google-play-services/17.0.0/google-play-services-17.0.0.apklib" />
+    </artifacts>
+    <resolved-infos>
+      <entry key="com.google.android.gms_google-play-services_17.0.0">
+        <value>
+          <resolved-info>
+            <option name="apiLevel" value="" />
+          </resolved-info>
+        </value>
+      </entry>
+    </resolved-infos>
+  </component>
   <component name="AndroidLayoutPreviewToolWindow">
     <option name="state">
       <GlobalState>
-        <option name="device" value="2.7in QVGA" />
-        <option name="dockMode" value="" />
-        <option name="nightMode" value="notnight" />
-        <option name="targetHashString" value="android-17" />
-        <option name="theme" value="Theme.Holo" />
         <option name="visible" value="false" />
       </GlobalState>
     </option>
-    <device-configurations>
-      <entry key="file://$PROJECT_DIR$/res/layout-land/chart_layout.xml" value="Portrait" />
-      <entry key="file://$PROJECT_DIR$/res/layout-land/records.xml" value="Portrait" />
-      <entry key="file://$PROJECT_DIR$/res/layout/records_chart.xml" value="Landscape" />
-      <entry key="file://$PROJECT_DIR$/res/layout/statistics.xml" value="Landscape" />
-    </device-configurations>
+  </component>
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: imis.client" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83319ee7-2f42-4678-ad2d-6b04d3de4826" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_android_annotations_4_1_1_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_android_support_v4_r7.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_achartengine_achartengine_1_1_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_core_asl_1_9_8.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_mapper_asl_1_9_8.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_simpleframework_simple_xml_2_6_6.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_android_spring_android_core_1_0_0_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_android_spring_android_rest_template_1_0_0_RELEASE.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/dialogs/AddAccountDialog.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/dialogs/AddAccountDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/dialogs/AddEventDialog.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/dialogs/AddEventDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/AppUtil.java" afterPath="$PROJECT_DIR$/src/imis/client/AppUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/AsyncActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/AsyncActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/dialogs/AuthConfirmDialog.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/dialogs/AuthConfirmDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/authentication/AuthenticatorActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/authentication/AuthenticatorActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/imis/client/BuildConfig.java" afterPath="$PROJECT_DIR$/gen/imis/client/BuildConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/ChartActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/ChartActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/fragments/ChartFragment.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/fragments/ChartFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/dialogs/ColorPickerDialog.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/dialogs/ColorPickerDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/ControlActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/ControlActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DP.iml" afterPath="$PROJECT_DIR$/DP.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/fragments/DayTimelineBlocksFragment.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/fragments/DayTimelineBlocksFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/fragments/DayTimelineListFragment.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/fragments/DayTimelineListFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/dialogs/DeleteEventDialog.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/dialogs/DeleteEventDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/adapters/EmployeeResourceCursorAdapter.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/adapters/EmployeeResourceCursorAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/EventEditorActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/EventEditorActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/EventsChartActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/EventsChartActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/adapters/EventsCursorAdapter.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/adapters/EventsCursorAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/InfoColorActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/InfoColorActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/LocationSettingsActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/LocationSettingsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/util/Notifications.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/util/Notifications.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/TimeUtil.java" afterPath="$PROJECT_DIR$/src/imis/client/TimeUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/PresentEmployeesActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/PresentEmployeesActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordDetailActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordDetailActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/fragments/RecordDetailFragment.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/fragments/RecordDetailFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/fragments/RecordListFragment.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/fragments/RecordListFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordsChartActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordsChartActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordsListActivity.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/activities/RecordsListActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/dialogs/SetNetworkDialog.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/dialogs/SetNetworkDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/ui/fragments/TaskFragment.java" afterPath="$PROJECT_DIR$/src/imis/client/ui/fragments/TaskFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/imis/client/widget/WidgetConfigure.java" afterPath="$PROJECT_DIR$/src/imis/client/widget/WidgetConfigure.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/location_settings.xml" afterPath="$PROJECT_DIR$/res/layout/location_settings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project.properties" afterPath="$PROJECT_DIR$/project.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DP.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376424166205" ignored="false" />
-    <file path="/fragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417146315" ignored="false" />
-    <file path="/DayTimelineActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420851162" ignored="false" />
-    <file path="/BlocksLayout.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423013301" ignored="false" />
-    <file path="/NetworkSettingsActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421155522" ignored="false" />
-    <file path="/BlockView.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376406191225" ignored="false" />
-    <file path="/EventsAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365599988401" ignored="false" />
-    <file path="/SyncAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369413839809" ignored="false" />
-    <file path="/NetworkUtilities.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417902125" ignored="false" />
-    <file path="/EventEditor.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1363293742196" ignored="false" />
-    <file path="/AndroidManifest.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1375543022670" ignored="false" />
-    <file path="/list_options_menu.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373749513961" ignored="false" />
-    <file path="/strings.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376312240545" ignored="false" />
-    <file path="/CalendarActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420684138" ignored="false" />
-    <file path="/network_settings.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1375608998527" ignored="false" />
-    <file path="/network_options_menu.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1364219324223" ignored="false" />
-    <file path="/AuthenticatorActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417247394" ignored="false" />
-    <file path="/user_login.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365892139998" ignored="false" />
-    <file path="/Consts.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376418024206" ignored="false" />
-    <file path="/Authenticator.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1372766179307" ignored="false" />
-    <file path="/EventDatabaseHelper.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1364555030000" ignored="false" />
-    <file path="/Event.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417660028" ignored="false" />
-    <file path="/Util.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1364152031222" ignored="false" />
-    <file path="/EventManager.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376418114574" ignored="false" />
-    <file path="/a.dummy" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376424364869" ignored="false" />
-    <file path="/TimeRulerView.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1375609521581" ignored="false" />
-    <file path="/MyContentProvider.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376418154474" ignored="false" />
-    <file path="/MyDatabaseHelper.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376418274170" ignored="false" />
-    <file path="/Record.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417686265" ignored="false" />
-    <file path="/RecordsChartActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421306867" ignored="false" />
-    <file path="/records_chart_menu.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1364567948274" ignored="false" />
-    <file path="/HttpRequest.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365355463653" ignored="false" />
-    <file path="/AppConsts.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423484043" ignored="false" />
-    <file path="/ColorPickerDialog.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421920590" ignored="false" />
-    <file path="/ColorUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371664508943" ignored="false" />
-    <file path="/colors.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366488715560" ignored="false" />
-    <file path="/Employee.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417579012" ignored="false" />
-    <file path="/EmployeeManager.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376418090245" ignored="false" />
-    <file path="/PresentEmployeesActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421211378" ignored="false" />
-    <file path="/employees_present.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366134346063" ignored="false" />
-    <file path="/EmployeesAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366899519681" ignored="false" />
-    <file path="/EventsChartActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421002553" ignored="false" />
-    <file path="/events_chart.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366480282148" ignored="false" />
-    <file path="/RecordManager.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376418193420" ignored="false" />
-    <file path="/pom.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373719324151" ignored="false" />
-    <file path="/NetworkingService.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365676502769" ignored="false" />
-    <file path="/RefreshListOfEmployees.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365873021475" ignored="false" />
-    <file path="/EventEditorActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420957216" ignored="false" />
-    <file path="/AppUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423589677" ignored="false" />
-    <file path="/DeleteEventDialog.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421940773" ignored="false" />
-    <file path="/TestConnection.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416778868" ignored="false" />
-    <file path="/BlockController.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365758186304" ignored="false" />
-    <file path="/Block.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417560269" ignored="false" />
-    <file path="/EventsArrayAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421701822" ignored="false" />
-    <file path="/NetworkingActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366902146500" ignored="false" />
-    <file path="/EventsGraphSerie.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365758438920" ignored="false" />
-    <file path="/PieChartFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422744950" ignored="false" />
-    <file path="/chart.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365689816286" ignored="false" />
-    <file path="/a.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365677255005" ignored="false" />
-    <file path="C:/Program Files/Android/examples_net/AndroidFragmentListDetail/gen/com/example/AndroidFragmentListDetail/BuildConfig.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365680511152" ignored="false" />
-    <file path="C:/Program Files/Android/libs/achartengine/achartengine-1.0.0-demo-source/gen/org/achartengine/chartdemo/demo/BuildConfig.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365698590302" ignored="false" />
-    <file path="/GraphUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420512026" ignored="false" />
-    <file path="/StackedBarFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422931162" ignored="false" />
-    <file path="/PieChartData.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417333348" ignored="false" />
-    <file path="/StackedBarData.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365772970152" ignored="false" />
-    <file path="/BlockProcessor.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366750738176" ignored="false" />
-    <file path="/StackedBarChartData.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417350902" ignored="false" />
-    <file path="/HttpClientFactory.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417774484" ignored="false" />
-    <file path="/EmployeeList.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365806806481" ignored="false" />
-    <file path="/EventsSync.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1375285699321" ignored="false" />
-    <file path="/GetListOfRecords.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416584490" ignored="false" />
-    <file path="/GetListOfEmployees.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416533349" ignored="false" />
-    <file path="/SyncUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1365886522760" ignored="false" />
-    <file path="/AuthenticationConsts.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366640864065" ignored="false" />
-    <file path="/RecordListActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1374007169831" ignored="false" />
-    <file path="/record_row.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366467724956" ignored="false" />
-    <file path="/RecordList.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366041805560" ignored="false" />
-    <file path="/records.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1374049198775" ignored="false" />
-    <file path="/RecordListFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422828642" ignored="false" />
-    <file path="/ChartControlFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366061748742" ignored="false" />
-    <file path="/charts_control.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366150290439" ignored="false" />
-    <file path="/RecordsAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366834058759" ignored="false" />
-    <file path="/RecordsCursorAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421814019" ignored="false" />
-    <file path="/GetEmployeesLastEvent.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1367086671712" ignored="false" />
-    <file path="/employee_profile.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373969959817" ignored="false" />
-    <file path="/emp_border.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373982829284" ignored="false" />
-    <file path="/item_border_selected.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366134957376" ignored="false" />
-    <file path="/switch_chart_menu.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366151506531" ignored="false" />
-    <file path="/events_control.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366184886694" ignored="false" />
-    <file path="/fragment_control.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1367166083844" ignored="false" />
-    <file path="/statistics.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366319633468" ignored="false" />
-    <file path="/StatisticsFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422950951" ignored="false" />
-    <file path="/PieChartSerie.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366232354327" ignored="false" />
-    <file path="/record_detail.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1372158812980" ignored="false" />
-    <file path="/RecordDetailFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422770002" ignored="false" />
-    <file path="/color_picker_dialog.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366452586514" ignored="false" />
-    <file path="/column_select.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366481566892" ignored="false" />
-    <file path="/records_chart.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366480152766" ignored="false" />
-    <file path="/checkbox_label.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1366482098934" ignored="false" />
-    <file path="/NetworkingAsyncTask.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416664265" ignored="false" />
-    <file path="/GetListOfEvents.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416528473" ignored="false" />
-    <file path="/btn_block_error.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369044996381" ignored="false" />
-    <file path="/MyResponse.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368803558481" ignored="false" />
-    <file path="/ChartActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420727173" ignored="false" />
-    <file path="/DataProcessor.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371748541389" ignored="false" />
-    <file path="/ChartFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422650798" ignored="false" />
-    <file path="$APPLICATION_HOME_DIR$/plugins/android/lib/android.jar!/org/jetbrains/android/android.xsd" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1370954821564" ignored="false" />
-    <file path="/ControlActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420779115" ignored="false" />
-    <file path="/AsyncFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1367079234489" ignored="false" />
-    <file path="/TaskFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422980921" ignored="false" />
-    <file path="/TestConnectionResultData.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368818798009" ignored="false" />
-    <file path="/AsyncActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420627715" ignored="false" />
-    <file path="/WidgetProvider.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371898865707" ignored="false" />
-    <file path="/WidgetConfigure.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423414158" ignored="false" />
-    <file path="/appwidget_provider.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1367526601481" ignored="false" />
-    <file path="/widget_config.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1367523411239" ignored="false" />
-    <file path="/dimens.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373302738098" ignored="false" />
-    <file path="/EmployeeCursorAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368027368679" ignored="false" />
-    <file path="/InfoActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368125309471" ignored="false" />
-    <file path="/InfoColorActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421079348" ignored="false" />
-    <file path="/color_info.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368128236303" ignored="false" />
-    <file path="/RecordsColorAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421765941" ignored="false" />
-    <file path="/color_info_row.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368130074045" ignored="false" />
-    <file path="/EventsColorAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421714738" ignored="false" />
-    <file path="/control.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368279790162" ignored="false" />
-    <file path="/control_period.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368280418266" ignored="false" />
-    <file path="/control_spinners.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373748092755" ignored="false" />
-    <file path="/chart_layout.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373987168482" ignored="false" />
-    <file path="/RecordDetailActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421272876" ignored="false" />
-    <file path="/record_detail_activity.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368705289650" ignored="false" />
-    <file path="/EmployeeDetailActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420887354" ignored="false" />
-    <file path="/ResultData.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1370098104077" ignored="false" />
-    <file path="/RecordsResultData.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368803493999" ignored="false" />
-    <file path="/GetEventsResult.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368821280871" ignored="false" />
-    <file path="/Result.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416274447" ignored="false" />
-    <file path="/TestConnectionResult.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368822668417" ignored="false" />
-    <file path="/DeleteEventResult.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1368822776208" ignored="false" />
-    <file path="/btn_block_not_dirty.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369045090262" ignored="false" />
-    <file path="/EmployeesCursorAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421666086" ignored="false" />
-    <file path="/MyContentProvider2.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369421049078" ignored="false" />
-    <file path="/MyContentProvider1.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371153416408" ignored="false" />
-    <file path="/SyncAdapter2.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371154158084" ignored="false" />
-    <file path="/SyncService1.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369422706342" ignored="false" />
-    <file path="/SyncService2.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369422746103" ignored="false" />
-    <file path="/syncadapter2.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371153177186" ignored="false" />
-    <file path="/syncadapter1.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369514798269" ignored="false" />
-    <file path="/EmployeesSync.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420228745" ignored="false" />
-    <file path="/AuthenticationUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371575415213" ignored="false" />
-    <file path="/SyncAdapter1.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371154134991" ignored="false" />
-    <file path="/sync1_prefs.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369512812214" ignored="false" />
-    <file path="/EventsSyncSettingsFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369513756141" ignored="false" />
-    <file path="/EventsSyncSettingsActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369514194030" ignored="false" />
-    <file path="/account_preferences.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369516891694" ignored="false" />
-    <file path="/SyncSettingsActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369571325192" ignored="false" />
-    <file path="/SyncSettingsFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369660210981" ignored="false" />
-    <file path="/sync_events_prefs.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369574593551" ignored="false" />
-    <file path="/settings.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373971374713" ignored="false" />
-    <file path="/sync_prefs.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1370011240401" ignored="false" />
-    <file path="/NetworkReceiver.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371575854835" ignored="false" />
-    <file path="/employees_widget_provider.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369676272645" ignored="false" />
-    <file path="/shortcut_widget.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373905944853" ignored="false" />
-    <file path="/ShortcutWidgetProvider.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423214585" ignored="false" />
-    <file path="/shortcut_widget_provider.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1369677279190" ignored="false" />
-    <file path="/ShortcutWidgetReceiver.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423324071" ignored="false" />
-    <file path="/AddEventDialog.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421858450" ignored="false" />
-    <file path="/LocationSettingsActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421131780" ignored="false" />
-    <file path="/SettingsFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422905757" ignored="false" />
-    <file path="/location_settings.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1370017661710" ignored="false" />
-    <file path="/AttendanceGuardService.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376419629491" ignored="false" />
-    <file path="/ResultItem.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416323166" ignored="false" />
-    <file path="/GetEmployee.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1370109498658" ignored="false" />
-    <file path="/AuthEmployee.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371735270068" ignored="false" />
-    <file path="/AuthConfirmDialog.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421890099" ignored="false" />
-    <file path="/Notifications.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420559436" ignored="false" />
-    <file path="/prefs.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373979914509" ignored="false" />
-    <file path="/PositionManager.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371051418480" ignored="false" />
-    <file path="/UnknownPositionException.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371050457602" ignored="false" />
-    <file path="/LocationManager.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371050479266" ignored="false" />
-    <file path="/MyLocationManager.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371063487409" ignored="false" />
-    <file path="/LocationService.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376419808258" ignored="false" />
-    <file path="/control_period_edit.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373987598281" ignored="false" />
-    <file path="/SyncServiceListOfEmployees.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420028473" ignored="false" />
-    <file path="/SyncAdapterListOfEmployees.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376419986472" ignored="false" />
-    <file path="/DayTimelineListActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371286797855" ignored="false" />
-    <file path="/DayTimelineListFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422727381" ignored="false" />
-    <file path="/EventsCursorAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421734396" ignored="false" />
-    <file path="/DayTimelineBlocksFragment.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422703452" ignored="false" />
-    <file path="/daytimeline.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371309623564" ignored="false" />
-    <file path="/event_row.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371333109726" ignored="false" />
-    <file path="/btn_block_dirty.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371376750541" ignored="false" />
-    <file path="/AsyncUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416456527" ignored="false" />
-    <file path="/SyncAdapterEvents.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420293892" ignored="false" />
-    <file path="/AddAccountDialog.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421844123" ignored="false" />
-    <file path="/AuthenticationService.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417225228" ignored="false" />
-    <file path="/event_editor.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376312638973" ignored="false" />
-    <file path="/ColorConfig.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423089191" ignored="false" />
-    <file path="/SyncAdapterEmployeeWidgets.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376419964840" ignored="false" />
-    <file path="/NetworkConfig.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1371746898314" ignored="false" />
-    <file path="/NetworkConsts.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417820924" ignored="false" />
-    <file path="/RecordsProcessor.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376418468103" ignored="false" />
-    <file path="/TimeUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423778257" ignored="false" />
-    <file path="/EventsProcessor.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376418436078" ignored="false" />
-    <file path="/SyncStats.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420369360" ignored="false" />
-    <file path="/SetNetworkDialog.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376422029768" ignored="false" />
-    <file path="/EmployeeWidgetProvider.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423163305" ignored="false" />
-    <file path="/AccountUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423463020" ignored="false" />
-    <file path="/record_stats.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373983098245" ignored="false" />
-    <file path="/MyApplication.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423652979" ignored="false" />
-    <file path="/BootCompletedIntentReceiver.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373814323062" ignored="false" />
-    <file path="/BootCompletedReceiver.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376419678130" ignored="false" />
-    <file path="/employee_preview.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373905666464" ignored="false" />
-    <file path="/EmployeeResourceCursorAdapter.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421681852" ignored="false" />
-    <file path="/save_options_menu.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1373979366361" ignored="false" />
-    <file path="/control_period_buttons.xml" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1374049665690" ignored="false" />
-    <file path="/RestUtil.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376423749522" ignored="false" />
-    <file path="/RecordsListActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421330476" ignored="false" />
-    <file path="/SettingsActivity.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376421351712" ignored="false" />
-    <file path="/ResultList.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376416346172" ignored="false" />
-    <file path="/AccountAuthenticator.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417064907" ignored="false" />
-    <file path="/NotUserSelectedException.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417442748" ignored="false" />
-    <file path="/PositionNotSetException.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376417489202" ignored="false" />
-    <file path="/SyncServiceEmployeeWidgets.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420002776" ignored="false" />
-    <file path="/SyncServiceEvents.java" changelist="83319ee7-2f42-4678-ad2d-6b04d3de4826" time="1376420103856" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -379,7 +212,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true" converted="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
         <option name="NOTIFY_UNCAUGHT" value="true" />
@@ -415,16 +248,121 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <breakpoint_rules />
-    <ui_properties />
+    <breakpoint_rules converted="true" />
+    <ui_properties converted="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="DP" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.26923078" vertical-offset="1560" max-vertical-offset="1950">
+              <caret line="111" column="28" selection-start-line="111" selection-start-column="28" selection-end-line="111" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DayTimelineActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.2" vertical-offset="0" max-vertical-offset="6600">
+              <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
+              <folding>
+                <element signature="e#3058#3585#0" expanded="true" />
+                <element signature="e#3574#3575#0" expanded="true" />
+                <element signature="e#3706#4054#0" expanded="true" />
+                <element signature="e#4043#4044#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BootCompletedReceiver.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/services/BootCompletedReceiver.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.2" vertical-offset="0" max-vertical-offset="480">
+              <caret line="12" column="62" selection-start-line="12" selection-start-column="62" selection-end-line="12" selection-end-column="62" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AttendanceGuardService.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/services/AttendanceGuardService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.2" vertical-offset="450" max-vertical-offset="930">
+              <caret line="48" column="27" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LocationSettingsActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/LocationSettingsActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.5769231" vertical-offset="0" max-vertical-offset="2880">
+              <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-10.740741" vertical-offset="2830" max-vertical-offset="3270">
+              <caret line="208" column="53" selection-start-line="208" selection-start-column="53" selection-end-line="208" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="version.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gen-external-apklibs/com.google.android.gms_google-play-services_17.0.0/res/values/version.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.8" vertical-offset="0" max-vertical-offset="135">
+              <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RestUtil.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/RestUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.0" vertical-offset="100" max-vertical-offset="480">
+              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HttpHeaders.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-rest-template/1.0.1.RELEASE/spring-android-rest-template-1.0.1.RELEASE.jar!/org/springframework/http/HttpHeaders.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.88" vertical-offset="748" max-vertical-offset="2535">
+              <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AuthenticationUtil.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/imis/client/authentication/AuthenticationUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.28" vertical-offset="133" max-vertical-offset="510">
+              <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -444,21 +382,50 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/src/imis/client/ui/fragments/StatisticsFragment.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/ui/fragments/TaskFragment.java" />
         <option value="$PROJECT_DIR$/src/imis/client/ui/BlocksLayout.java" />
         <option value="$PROJECT_DIR$/src/imis/client/ui/ColorConfig.java" />
         <option value="$PROJECT_DIR$/src/imis/client/widget/EmployeeWidgetProvider.java" />
         <option value="$PROJECT_DIR$/src/imis/client/widget/ShortcutWidgetProvider.java" />
         <option value="$PROJECT_DIR$/src/imis/client/widget/ShortcutWidgetReceiver.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/widget/WidgetConfigure.java" />
         <option value="$PROJECT_DIR$/src/imis/client/AccountUtil.java" />
         <option value="$PROJECT_DIR$/src/imis/client/AppConsts.java" />
-        <option value="$PROJECT_DIR$/src/imis/client/AppUtil.java" />
         <option value="$PROJECT_DIR$/src/imis/client/MyApplication.java" />
         <option value="$PROJECT_DIR$/src/imis/client/RestUtil.java" />
         <option value="$PROJECT_DIR$/src/imis/client/TimeUtil.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/AppUtil.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/dialogs/AddAccountDialog.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/widget/WidgetConfigure.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/adapters/EmployeeResourceCursorAdapter.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/AsyncActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/fragments/TaskFragment.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/ControlActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/RecordsListActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/fragments/RecordListFragment.java" />
+        <option value="$USER_HOME$/.m2/settings.xml" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/fragments/DayTimelineBlocksFragment.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/dialogs/ColorPickerDialog.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/fragments/ChartFragment.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/ChartActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/RecordsChartActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/PresentEmployeesActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/dialogs/SetNetworkDialog.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/RecordDetailActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/fragments/RecordDetailFragment.java" />
         <option value="$PROJECT_DIR$/src/imis/client/ui/activities/util/Notifications.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/EventsChartActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/dialogs/AuthConfirmDialog.java" />
         <option value="$PROJECT_DIR$/src/imis/client/ui/activities/EventEditorActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/dialogs/AddEventDialog.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/InfoColorActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/fragments/DayTimelineListFragment.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/dialogs/DeleteEventDialog.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/authentication/AuthenticatorActivity.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/adapters/EventsCursorAdapter.java" />
+        <option value="$PROJECT_DIR$/src/imis/client/ui/activities/LocationSettingsActivity.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/res/layout/location_settings.xml" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -480,10 +447,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-4" />
-    <option name="y" value="-4" />
-    <option name="width" value="1288" />
-    <option name="height" value="764" />
+    <option name="x" value="57" />
+    <option name="y" value="24" />
+    <option name="width" value="1223" />
+    <option name="height" value="776" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -499,7 +466,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -511,6 +478,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -530,17 +498,56 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="dp_android" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
               <option name="myItemId" value="DP" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dp_android" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dp_android" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="services" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="129" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="129" />
     <property name="OverrideImplement.combined" value="true" />
@@ -572,13 +579,14 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="options.lastSelected" value="Template Data Languages" />
+    <property name="options.lastSelected" value="reference.settings.project.maven.repository.indices" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
-    <property name="project.structure.side.proportion" value="0.287703" />
+    <property name="project.structure.side.proportion" value="0.34288538" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="014994E418004010" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="options.searchVisible" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -619,6 +627,7 @@
       <option name="CLASS_NAME" value="" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -627,6 +636,8 @@
       <option name="NETWORK_SPEED" value="full" />
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
       <method />
     </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -635,19 +646,6 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -675,6 +673,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -716,7 +727,9 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
       <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -725,6 +738,8 @@
       <option name="NETWORK_SPEED" value="full" />
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="true" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
       <method />
     </configuration>
     <configuration default="false" name="DP_config" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -732,7 +747,9 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
       <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -741,6 +758,8 @@
       <option name="NETWORK_SPEED" value="full" />
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="true" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
       <RunnerSettings RunnerId="AndroidDebugRunner" />
       <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
       <method />
@@ -759,22 +778,8 @@
       <AnalysisUIOptions />
     </option>
   </component>
-  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
-    <option name="USER" value="" />
-    <option name="PASSWORD" value="" />
-    <option name="mySSHConnectionTimeout" value="30000" />
-    <option name="mySSHReadTimeout" value="30000" />
-    <option name="LAST_MERGED_REVISION" />
-    <option name="MERGE_DRY_RUN" value="false" />
-    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
-    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
-    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
-    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
-    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
-    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <option name="FORCE_UPDATE" value="false" />
-    <option name="IGNORE_EXTERNALS" value="false" />
-    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  <component name="SvnConfiguration" myUseAcceleration="nothing">
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -1014,91 +1019,82 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1288" height="764" extended-state="0" />
+    <frame x="57" y="24" width="1223" height="776" extended-state="6" />
     <editor active="false" />
     <layout>
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3249595" sideWeight="0.8080645" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2815534" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.8300971" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3184765" sideWeight="0.8080645" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.8446602" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.60679615" sideWeight="0.49918962" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.8074434" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.71682847" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3080292" sideWeight="0.12785774" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.2815534" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1763754" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22006473" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.61488676" sideWeight="0.49918962" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29635036" sideWeight="0.49957663" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3080292" sideWeight="0.87214226" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.050161812" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.2815534" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.697411" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21507198" sideWeight="0.7799353" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23357664" sideWeight="0.49872988" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.8365696" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.8300971" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.60679615" sideWeight="0.49918962" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2588997" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3249595" sideWeight="0.8080645" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2815534" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.8074434" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17226277" sideWeight="0.5004234" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1763754" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.050161812" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16680779" sideWeight="0.7799353" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.8365696" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2341954" sideWeight="0.49877352" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3184765" sideWeight="0.8080645" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.8300971" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.8446602" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.60679615" sideWeight="0.49918962" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.2815534" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17226277" sideWeight="0.49957663" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.61488676" sideWeight="0.49918962" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.2815534" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298217" sideWeight="0.697411" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27552673" sideWeight="0.7799353" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32686085" sideWeight="0.49918962" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3249595" sideWeight="0.8080645" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3184765" sideWeight="0.8080645" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.8446602" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959481" sideWeight="0.8365696" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2588997" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-    </layout>
+    </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="CHECK_NEW_TODO" value="true" />
     <option name="myTodoPanelSettings">
-      <value>
-        <are-packages-shown value="false" />
-        <are-modules-shown value="false" />
-        <flatten-packages value="false" />
-        <is-autoscroll-to-source value="false" />
-      </value>
+      <TodoPanelSettings />
     </option>
-    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
-    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
-    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
-    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
-    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
-    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
-    <option name="SHORT_DIFF_HORIZONTALLY" value="true" />
-    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
-    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
-    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
-    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
-    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
-    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
-    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
-    <option name="LIMIT_HISTORY" value="true" />
-    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
-    <option name="UPDATE_FILTER_SCOPE_NAME" />
-    <option name="USE_COMMIT_MESSAGE_MARGIN" value="false" />
-    <option name="COMMIT_MESSAGE_MARGIN_SIZE" value="72" />
-    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
-    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="added javadoc for all classes" />
-    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
-    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
-    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
-    <option name="ACTIVE_VCS_NAME" />
-    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
-    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
-    <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
-    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
-    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="event editor refactored - events are saved only on change" />
     <MESSAGE value="color settings is working also outside activities" />
     <MESSAGE value="network configuration working with shared preferences" />
@@ -1124,6 +1120,7 @@
     <MESSAGE value="dynamically filled spinners" />
     <MESSAGE value="dynamically filled spinners, absence blocks, absence blocks are not editable, edit activity input" />
     <MESSAGE value="added javadoc for all classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="added javadoc for all classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1151,114 +1148,406 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/imis/client/widget/EmployeeWidgetProvider.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/AsyncActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="4" selection-start="528" selection-end="590" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.44987774" vertical-offset="56" max-vertical-offset="465">
+          <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/dialogs/AddAccountDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.07334963" vertical-offset="195" max-vertical-offset="735">
+          <caret line="15" column="54" selection-start-line="15" selection-start-column="54" selection-end-line="15" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/ControlActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33263597" vertical-offset="366" max-vertical-offset="5700">
+          <caret line="35" column="22" selection-start-line="35" selection-start-column="22" selection-end-line="35" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/fragments/RecordListFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.31171548" vertical-offset="16" max-vertical-offset="705">
+          <caret line="11" column="45" selection-start-line="11" selection-start-column="45" selection-end-line="11" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/RecordsListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33175355" vertical-offset="1105" max-vertical-offset="3645">
+          <caret line="83" column="16" selection-start-line="83" selection-start-column="16" selection-end-line="83" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.m2/settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="585">
+          <caret line="2" column="26" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/widget/ShortcutWidgetProvider.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/dialogs/ColorPickerDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="8" selection-start="529" selection-end="595" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.6962025" vertical-offset="15" max-vertical-offset="3855">
+          <caret line="23" column="45" selection-start-line="23" selection-start-column="39" selection-end-line="23" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/fragments/DayTimelineBlocksFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.27419356" vertical-offset="1589" max-vertical-offset="2085">
+          <caret line="118" column="47" selection-start-line="118" selection-start-column="47" selection-end-line="118" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/fragments/ChartFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35106382" vertical-offset="15" max-vertical-offset="720">
+          <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/model/Event.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15243903" vertical-offset="0" max-vertical-offset="4740">
+          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/widget/ShortcutWidgetReceiver.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/asynctasks/result/ResultItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="35" selection-start="400" selection-end="400" vertical-scroll-proportion="0.0">
-          <folding />
+        <state vertical-scroll-proportion="-4.8" vertical-offset="0" max-vertical-offset="585">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/widget/WidgetConfigure.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/util/GraphUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="45" selection-start="748" selection-end="748" vertical-scroll-proportion="0.20286396">
-          <folding />
+        <state vertical-scroll-proportion="0.625" vertical-offset="765" max-vertical-offset="1320">
+          <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/AccountUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/ChartActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="56" selection-start="188" selection-end="188" vertical-scroll-proportion="0.1574074">
-          <folding />
+        <state vertical-scroll-proportion="-0.26944444" vertical-offset="472" max-vertical-offset="3015">
+          <caret line="25" column="22" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/AppConsts.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/RecordsChartActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="13" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0">
-          <folding />
+        <state vertical-scroll-proportion="0.33128834" vertical-offset="1812" max-vertical-offset="2250">
+          <caret line="128" column="69" selection-start-line="128" selection-start-column="69" selection-end-line="128" selection-end-column="69" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/AppUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/PresentEmployeesActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="80" selection-start="341" selection-end="341" vertical-scroll-proportion="0.0">
-          <folding />
+        <state vertical-scroll-proportion="2.3167539" vertical-offset="0" max-vertical-offset="1815">
+          <caret line="62" column="25" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/MyApplication.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/dialogs/SetNetworkDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="72" selection-start="191" selection-end="191" vertical-scroll-proportion="0.0">
-          <folding />
+        <state vertical-scroll-proportion="0.5104712" vertical-offset="15" max-vertical-offset="720">
+          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/RestUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/fragments/RecordDetailFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="4" selection-start="637" selection-end="695" vertical-scroll-proportion="0.0">
-          <folding />
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="1215" max-vertical-offset="1620">
+          <caret line="93" column="20" selection-start-line="93" selection-start-column="20" selection-end-line="93" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/TimeUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/util/Notifications.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="41" selection-start="1100" selection-end="1100" vertical-scroll-proportion="1.0625">
-          <folding />
+        <state vertical-scroll-proportion="0.18337408" vertical-offset="735" max-vertical-offset="1200">
+          <caret line="54" column="32" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/android/android/17/android-17.jar!/android/app/Activity.class">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/EventsChartActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="432" column="0" selection-start="19421" selection-end="19421" vertical-scroll-proportion="0.53333336">
-          <folding />
+        <state vertical-scroll-proportion="-5.88" vertical-offset="1773" max-vertical-offset="2355">
+          <caret line="130" column="13" selection-start-line="130" selection-start-column="13" selection-end-line="130" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/LocationSettingsActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/dialogs/AuthConfirmDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="27" selection-start="1116" selection-end="1116" vertical-scroll-proportion="0.29188254">
-          <folding />
+        <state vertical-scroll-proportion="0.4516129" vertical-offset="15" max-vertical-offset="840">
+          <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/android/android/4.4.2_r3/android-4.4.2_r3-sources.jar!/android/app/DialogFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3309859" vertical-offset="1631" max-vertical-offset="7860">
+          <caret line="139" column="13" selection-start-line="139" selection-start-column="13" selection-end-line="139" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/EventEditorActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="288" column="70" selection-start="11853" selection-end="11853" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-5.84" vertical-offset="1879" max-vertical-offset="8535">
+          <caret line="135" column="51" selection-start-line="135" selection-start-column="51" selection-end-line="135" selection-end-column="51" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/RecordDetailActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6525096" vertical-offset="356" max-vertical-offset="765">
+          <caret line="35" column="15" selection-start-line="35" selection-start-column="15" selection-end-line="35" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/dialogs/AddEventDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17253521" vertical-offset="56" max-vertical-offset="1020">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/InfoColorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.7466063" vertical-offset="1132" max-vertical-offset="1950">
+          <caret line="24" column="39" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/dialogs/DeleteEventDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.45646438" vertical-offset="82" max-vertical-offset="1125">
+          <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/authentication/AuthenticatorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="1805" max-vertical-offset="3165">
+          <caret line="128" column="13" selection-start-line="128" selection-start-column="13" selection-end-line="128" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/adapters/EventsCursorAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.57361376" vertical-offset="15" max-vertical-offset="1140">
+          <caret line="21" column="46" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/fragments/DayTimelineListFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.6" vertical-offset="0" max-vertical-offset="1065">
+          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/BlockView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17445482" vertical-offset="664" max-vertical-offset="1305">
+          <caret line="66" column="62" selection-start-line="66" selection-start-column="62" selection-end-line="66" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/services/LocationService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39714867" vertical-offset="0" max-vertical-offset="2580">
+          <caret line="13" column="40" selection-start-line="13" selection-start-column="40" selection-end-line="13" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/appkilt/appkilt/1.0.0/appkilt-1.0.0.jar!/com/appkilt/client/AppKilt.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.36516854" vertical-offset="270" max-vertical-offset="810">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/android/android/4.4.2_r3/android-4.4.2_r3-sources.jar!/android/content/SharedPreferences.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33199194" vertical-offset="3450" max-vertical-offset="5430">
+          <caret line="256" column="11" selection-start-line="256" selection-start-column="11" selection-end-line="256" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/android/gms/google-play-services/17.0.0/google-play-services-17.0.0.jar!/com/google/android/gms/maps/MapFragment.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1395">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/location_settings.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.88235295" vertical-offset="0" max-vertical-offset="450">
+          <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-10.740741" vertical-offset="2830" max-vertical-offset="3270">
+          <caret line="208" column="53" selection-start-line="208" selection-start-column="53" selection-end-line="208" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/util/Notifications.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/android/gms/google-play-services/17.0.0/google-play-services-17.0.0.jar!/com/google/android/gms/common/GooglePlayServicesUtil.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="17" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.5497512">
+        <state vertical-scroll-proportion="2.52809" vertical-offset="0" max-vertical-offset="1335">
+          <caret line="60" column="49" selection-start-line="60" selection-start-column="26" selection-end-line="60" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#4433#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/TimeUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0227273" vertical-offset="0" max-vertical-offset="1545">
+          <caret line="33" column="41" selection-start-line="33" selection-start-column="41" selection-end-line="33" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/imis/client/services/LocationService.java">
+    <entry file="file://$PROJECT_DIR$/src/imis/client/MyApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="40" selection-start="444" selection-end="444" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.2651515" vertical-offset="0" max-vertical-offset="396">
+          <caret line="9" column="48" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/AppUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.47727272" vertical-offset="819" max-vertical-offset="1215">
+          <caret line="42" column="30" selection-start-line="42" selection-start-column="30" selection-end-line="42" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/AccountUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2651515" vertical-offset="0" max-vertical-offset="525">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/fragments/StackedBarFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63492066" vertical-offset="620" max-vertical-offset="1065">
+          <caret line="60" column="31" selection-start-line="60" selection-start-column="31" selection-end-line="60" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/DayTimelineActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.2" vertical-offset="0" max-vertical-offset="6600">
+          <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
+          <folding>
+            <element signature="e#3058#3585#0" expanded="true" />
+            <element signature="e#3574#3575#0" expanded="true" />
+            <element signature="e#3706#4054#0" expanded="true" />
+            <element signature="e#4043#4044#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/services/BootCompletedReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.2" vertical-offset="0" max-vertical-offset="480">
+          <caret line="12" column="62" selection-start-line="12" selection-start-column="62" selection-end-line="12" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/ui/activities/LocationSettingsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.5769231" vertical-offset="0" max-vertical-offset="2880">
+          <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/services/AttendanceGuardService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.2" vertical-offset="450" max-vertical-offset="930">
+          <caret line="48" column="27" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen-external-apklibs/com.google.android.gms_google-play-services_17.0.0/res/values/version.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.8" vertical-offset="0" max-vertical-offset="135">
+          <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/authentication/AuthenticationUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.28" vertical-offset="133" max-vertical-offset="510">
+          <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-rest-template/1.0.1.RELEASE/spring-android-rest-template-1.0.1.RELEASE.jar!/org/springframework/http/HttpHeaders.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.88" vertical-offset="748" max-vertical-offset="2535">
+          <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/imis/client/RestUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.0" vertical-offset="100" max-vertical-offset="480">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26923078" vertical-offset="1560" max-vertical-offset="1950">
+          <caret line="111" column="28" selection-start-line="111" selection-start-column="28" selection-end-line="111" selection-end-column="28" />
           <folding />
         </state>
       </provider>
@@ -1272,7 +1561,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.287703" />
+                <option value="0.34288538" />
               </list>
             </option>
           </splitter-proportions>
@@ -1291,11 +1580,11 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Android</last-edited>
+          <last-edited>Detection</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.287703" />
+                <option value="0.34288538" />
               </list>
             </option>
           </splitter-proportions>
@@ -1306,7 +1595,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.287703" />
+                <option value="0.34288538" />
               </list>
             </option>
           </splitter-proportions>
@@ -1314,11 +1603,11 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>Android 3.0 Platform</last-edited>
+          <last-edited>Maven Android API 19 Platform</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.287703" />
+                <option value="0.34288538" />
               </list>
             </option>
           </splitter-proportions>
@@ -1330,7 +1619,8 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.287703" />
+                <option value="0.34288538" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -1350,11 +1640,11 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>google-play-services</last-edited>
+          <last-edited>Maven: org.springframework.android:spring-android-rest-template:1.0.1.RELEASE</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.287703" />
+                <option value="0.34288538" />
               </list>
             </option>
           </splitter-proportions>

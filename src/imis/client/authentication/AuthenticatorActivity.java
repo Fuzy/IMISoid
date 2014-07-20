@@ -3,10 +3,10 @@ package imis.client.authentication;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
+import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -108,7 +108,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         if (employeeResult.isUnknownErr()) {
             Log.d(TAG, "onTaskFinished() isUnknownErr");
             mMessage.setText(getText(R.string.unknown_error));
-            new SetNetworkDialog().show(getSupportFragmentManager(), "SetNetworkDialog");
+            new SetNetworkDialog().show(getFragmentManager(), "SetNetworkDialog");
         } else if (employeeResult.isServerError()) {
             Log.d(TAG, "onTaskFinished() isServerError");
             mMessage.setText(getText(R.string.server_error));
@@ -131,7 +131,7 @@ public class AuthenticatorActivity extends AsyncActivity implements AuthConfirmD
         bundle.putString(AppConsts.KEY_TITLE, getString(R.string.auth_success));
         bundle.putString(AppConsts.KEY_MSG, message);
         deleteEventDialog.setArguments(bundle);
-        deleteEventDialog.show(getSupportFragmentManager(), "AddEventDialog");
+        deleteEventDialog.show(getFragmentManager(), "AddEventDialog");
     }
 
     public void handleLogin(View view) {

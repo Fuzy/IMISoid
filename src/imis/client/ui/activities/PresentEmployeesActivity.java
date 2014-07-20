@@ -1,12 +1,12 @@
 package imis.client.ui.activities;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,7 +53,7 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
             }
         });
 
-        getSupportLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
+        getLoaderManager().initLoader(LOADER_EMPLOYEES, null, this);
         processAsyncTask();
     }
 
@@ -113,8 +113,8 @@ public class PresentEmployeesActivity extends AsyncActivity implements LoaderMan
     @Override
     public void onTaskFinished(Result result) {
         Log.d(TAG, "onTaskFinished()");
-        if (getSupportLoaderManager().getLoader(LOADER_EMPLOYEES) != null) {
-            getSupportLoaderManager().restartLoader(LOADER_EMPLOYEES, null, this);
+        if (getLoaderManager().getLoader(LOADER_EMPLOYEES) != null) {
+            getLoaderManager().restartLoader(LOADER_EMPLOYEES, null, this);
         }
     }
 }

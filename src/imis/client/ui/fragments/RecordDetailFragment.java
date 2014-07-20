@@ -1,12 +1,12 @@
 package imis.client.ui.fragments;
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.*;
 import android.widget.TextView;
@@ -91,7 +91,7 @@ public class RecordDetailFragment extends Fragment {
                 Log.d(TAG, "onLongClick()");
                 Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(50);
-                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentManager fm = getActivity().getFragmentManager();
                 DialogFragment dialog = new ColorPickerDialog();
                 Bundle bundle = new Bundle();
                 bundle.putString(AppConsts.KEY_TYPE, record.recordType());
